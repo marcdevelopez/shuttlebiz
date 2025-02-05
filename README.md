@@ -17,4 +17,3 @@ We welcome contributions, feedback, and improvements. If you want to collaborate
 
 ## Contact
 For any inquiries regarding collaboration or commercial use, please reach out to us through GitHub issues or via email.
-
