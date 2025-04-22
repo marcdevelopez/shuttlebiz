@@ -3,6 +3,15 @@
 ## Project Description
 A mobile application that enables users to create and join shuttles, connecting people in a shared vehicle to travel to a specific destination. The platform provides real-time location tracking and communication features to enhance coordination and user experience.
 
+## Full Project Requirements
+
+You can find the complete documentation and feature specifications for the Shuttle App at the link below. This document includes all functional requirements, UX considerations, and development planning.
+
+[View ShuttleBiz Documentation (Google Docs)](https://docs.google.com/document/d/1s8RNLU1G44f9LPcwh9iYUH9xHjjnzWUr3-vaJOhsLuU/edit?usp=sharing)
+
+> If you're collaborating on this project, please request editing access using the same link.
+
+
 ##  License & Usage Terms
 This project is open for learning purposes and public visibility. However:
 
