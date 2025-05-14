@@ -1,28 +1,77 @@
-# Shuttle App
+# ShuttleBiz APP
 
-## Project Description
-A mobile application that enables users to create and join shuttles, connecting people in a shared vehicle to travel to a specific destination. The platform provides real-time location tracking and communication features to enhance coordination and user experience.
+**ShuttleBiz** is a new mobile application concept designed to address a very specific need in the shared transportation space:
 
-## Full Project Requirements
+While many apps help people travel from point A to point B, ShuttleBiz focuses on **bringing together groups of people with a shared purpose**—such as employees from the same company or participants of a common event—and helping them coordinate rides in a shuttle provided either by themselves or by their organization.
 
-You can find the complete documentation and feature specifications for the Shuttle App at the link below. This document includes all functional requirements, UX considerations, and development planning.
+The platform aims to include **real-time group chat**, **live GPS tracking**, and a **seat reservation system** to improve efficiency, communication, and overall usefulness.
 
-[View ShuttleBiz Documentation (Google Docs)](https://docs.google.com/document/d/1s8RNLU1G44f9LPcwh9iYUH9xHjjnzWUr3-vaJOhsLuU/edit?usp=sharing)
+> This project is currently in its **early planning and design phase**, focused on gathering requirements, creating initial wireframes, and exploring technical feasibility using Flutter and Firebase.
 
-> If you're collaborating on this project, please request editing access using the same link.
+This is not just another ride-sharing app—ShuttleBiz is being built with **coordinated group transport** in mind, offering new possibilities for organizations and communities.
 
+---
 
-##  License & Usage Terms
-This project is open for learning purposes and public visibility. However:
+## 📋 Project Documentation
 
-- **Any commercial use requires explicit permission from the project owners.**
-- **All contributions must be approved before being merged into the project.**
-- **Unauthorized modifications and redistributions for commercial purposes are strictly prohibited.**
+You can find the complete documentation and feature specifications at the link below. This includes functional requirements, UX considerations, and planning details.
 
-If you are interested in collaborating or using this project commercially, please contact us to discuss terms and obtain proper authorization.
+👉 [View ShuttleBiz Documentation (Google Docs)](https://docs.google.com/document/d/1s8RNLU1G44f9LPcwh9iYUH9xHjjnzWUr3-vaJOhsLuU/edit?usp=sharing)
+
+> If you're collaborating on this project, please request editing access via the same link.
+
+---
+
+## Tech Stack
+
+- **Frontend**: Flutter (Dart)
+- **Backend**: Firebase (Authentication, Firestore, Messaging)
+- **Location Services**: Google Maps API
+- **State Management**: *(To be defined: Provider, Riverpod, Bloc...)*
+- **Version Control**: Git + GitHub Projects
+
+---
+
+## What I'm Learning
+
+- Firebase integration with Flutter
+- Location and real-time mapping
+- UI/UX design for mobility solutions
+- Project structure and modular development
+- Collaborative workflows with GitHub Projects
+
+---
 
 ## Collaboration
-We welcome contributions, feedback, and improvements. If you want to collaborate, feel free to submit a pull request or open an issue. However, all contributions must be reviewed and approved before being integrated.
+
+This is a collaborative project currently being developed with [Ezequiel Coello](https://github.com/ezecoeli), who is contributing in areas such as UI/UX design and feature planning.
+
+We welcome contributions, feedback, and improvements.  
+If you'd like to collaborate:
+
+- Submit a pull request
+- Open an issue
+- Or contact us directly
+
+**Note:** All contributions must be reviewed and approved before being merged.
+
+---
+
+## License & Usage Terms
+
+This project is open for learning purposes and public visibility. However:
+
+- **Commercial use requires explicit permission from the project owner.**
+- **All contributions must be approved before merging.**
+- **Unauthorized commercial redistribution is strictly prohibited.**
+
+---
 
 ## Contact
-For any inquiries regarding collaboration or commercial use, please reach out to us through GitHub issues or via email.
+
+For collaboration inquiries or commercial use requests, feel free to open a GitHub issue or reach out via email.
+
+---
+
+ Created by [Marcos García](https://github.com/marcdevelopez)  
+ Personal website coming soon: [marcdevelopez.com](https://marcdevelopez.com)
