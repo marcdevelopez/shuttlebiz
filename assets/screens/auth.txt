@@ -1,1 +1,0 @@
-Este archivo es para crear los directorios para agregar las imagenes en assets screens
