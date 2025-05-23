@@ -42,6 +42,18 @@ You can find the complete documentation and feature specifications at the link b
 
 ---
 
+## 📱 Screenshots
+
+Here are some early in-app screens and mockups from the ShuttleBiz development:
+
+| User Authentication | Create Shuttle | Shuttle List |
+|---------------------|----------------|--------------|
+| ![Auth](assets/screens/auth.png) | ![Create](assets/screens/create-shuttle.png) | ![List](assets/screens/shuttle-list.png) |
+
+> These screens reflect the current stage of development. More features and refinements are on the way.
+
+---
+
 ## Collaboration
 
 This is a collaborative project currently being developed with [Ezequiel Coello](https://github.com/ezecoeli), who is contributing in areas such as UI/UX design and feature planning.
