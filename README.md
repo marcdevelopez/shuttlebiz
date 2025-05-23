@@ -54,6 +54,20 @@ Here are some early in-app screens and mockups from the ShuttleBiz development:
 
 ---
 
+## Roadmap
+
+- [x] Project planning and requirement gathering
+- [x] UI/UX wireframes (in progress)
+- [ ] Firebase setup and user authentication
+- [ ] Basic navigation and routing
+- [ ] Chat module implementation
+- [ ] Real-time location sharing
+- [ ] Booking and seat availability
+- [ ] Notifications and reminders
+- [ ] MVP launch
+
+---
+
 ## Collaboration
 
 This is a collaborative project currently being developed with [Ezequiel Coello](https://github.com/ezecoeli), who is contributing in areas such as UI/UX design and feature planning.
