@@ -21,3 +21,4 @@ Recommended tools for creating diagrams:
 - [Draw.io](https://draw.io) - Free online diagram tool
 - [Lucidchart](https://lucidchart.com) - Professional diagramming
 - [Figma](https://figma.com) - UI/UX flows and mockups
+- [Miro](https://miro.com) - Collaborative whiteboard for wireframes and app mockups
