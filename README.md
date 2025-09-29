@@ -16,7 +16,7 @@ This is not just another ride-sharing app—ShuttleBiz is being built with **coo
 
 You can find the complete documentation and feature specifications at the link below. This includes functional requirements, UX considerations, and planning details.
 
-👉 [View ShuttleBiz Documentation (Google Docs)](https://docs.google.com/document/d/1s8RNLU1G44f9LPcwh9iYUH9xHjjnzWUr3-vaJOhsLuU/edit?usp=sharing)
+👉 [View ShuttleBiz Documentation (Google Docs)](https://docs.google.com/document/d/1u8MrYFg9uJtUdZA6xxKZzGJdanygsCp4sY4xKx7st5Y/edit?usp=sharing)
 
 > If you're collaborating on this project, please request editing access via the same link.
 
