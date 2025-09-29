@@ -70,7 +70,7 @@ Here are some early in-app screens and mockups from the ShuttleBiz development:
 
 ## Collaboration
 
-This is a collaborative project currently being developed with [Ezequiel Coello](https://github.com/ezecoeli), who is contributing in areas such as UI/UX design and feature planning.
+This is a collaborative project currently being developed with [Ezequiel Coeli](https://github.com/ezecoeli), who is contributing in areas such as UI/UX design and feature planning.
 
 We welcome contributions, feedback, and improvements.  
 If you'd like to collaborate:
