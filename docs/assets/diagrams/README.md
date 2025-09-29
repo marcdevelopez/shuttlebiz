@@ -6,7 +6,7 @@ This directory contains technical diagrams and visual documentation for the Shut
 
 - **Architecture diagrams** - System design and component relationships
 - **Database schemas** - Entity relationship diagrams
-- **User flow diagrams** - UX/UI navigation flows  
+- **User flow diagrams** - UX/UI navigation flows
 - **API flow charts** - Backend integration flows
 
 ## File formats
@@ -18,6 +18,7 @@ This directory contains technical diagrams and visual documentation for the Shut
 ## Tools
 
 Recommended tools for creating diagrams:
+
 - [Draw.io](https://draw.io) - Free online diagram tool
 - [Lucidchart](https://lucidchart.com) - Professional diagramming
 - [Figma](https://figma.com) - UI/UX flows and mockups
