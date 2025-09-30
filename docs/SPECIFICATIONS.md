@@ -28,9 +28,9 @@
   - **Conductor**
   - **Viajero**
 
-  ***
+---
 
-  ## **2\. Gestión de Grupos (“Biz”)**
+## **2\. Gestión de Grupos (“Biz”)**
 
 - 📦 Los usuarios pueden **crear un grupo** (biz) para organizar lanzaderas.
 - 👤 Solo el **creador del grupo** puede:
@@ -47,11 +47,11 @@
   - Si no hay designación, será el miembro más antiguo.
 - 👥 Si tiene permisos, un usuario **puede invitar a otros**, pero **no puede crear lanzaderas**.
 
-  ***
+---
 
-  ## **3\. Gestión de Lanzaderas**
+## **3\. Gestión de Lanzaderas**
 
-  ### **3.1. Creación**
+### **3.1. Creación**
 
 - ➕ El creador de un grupo puede crear lanzaderas dentro de él.
 - 🛣️ Requiere definir:
@@ -93,11 +93,11 @@
 - 🧾 Cada horario muestra de forma clara el día al que pertenece (etiqueta de fecha o subtítulo).
 - 🧑‍💻 Si el usuario tiene permisos de edición (creador o administrador), podrá acceder a la pantalla completa de configuración de horarios.
 - Para mayor usabilidad intentar implementar Copiar horarios con un botón “Copiar configuración a otro día”.
-- ## Colores diferenciados en Horarios de ida y Horarios de vuelta. Usar estos colores ya que además enlazan con los del logo de la app: \#0077B6 (azul intenso), \#FF6B6B (rojo coral).
+- Colores diferenciados en Horarios de ida y Horarios de vuelta. Usar estos colores ya que además enlazan con los del logo de la app: \#0077B6 (azul intenso), \#FF6B6B (rojo coral).
 
-  ## **4\. Consulta y Solicitud de Lanzaderas**
+## **4\. Consulta y Solicitud de Lanzaderas**
 
-  ### **4.1. Vista en Home**
+### **4.1. Vista en Home**
 
 - 🏡 Se muestran las **lanzaderas** del **grupo activo**.
 - Cada ítem incluye:
@@ -171,19 +171,17 @@
   - Provider, Riverpod o Bloc para actualización reactiva.
   - ExpansionTile para mostrar horarios organizadamente.
 
-  #
+<br>
 
-  #
+#
 
-  # **🚩 Navegación y Pantallas – ShuttleBiz**
+# **🚩 Navegación y Pantallas – ShuttleBiz**
 
 ## **🔹 Barra Superior de Navegación**
 
-**Estructura:**
+### **Estructura:**
 
 \[ Nombre de la App (HOME) \] \[ Nombre del grupo \] \[ Menú \]
-
-###
 
 ### **Comportamiento del selector de grupo:**
 
@@ -194,13 +192,11 @@
 
   - Al pulsarlo: se abre un diálogo con una lista desplegable para cambiar entre grupos.
 
-  ***
+<br>
 
-  ##
+---
 
-  ##
-
-  ## **📱 Pantallas**
+# **📱 Pantallas**
 
 ### **1\. LOGIN**
 
@@ -212,21 +208,25 @@
   - Enlaza con pantalla de **Registro con Código**.
 - Opcional: subir una imagen de usuario.
 
-  ### **2\. REGISTRO CON CÓDIGO**
+---
+
+### **2\. REGISTRO CON CÓDIGO**
 
 - Parte superior: texto indicando que se debe ingresar el código recibido por SMS.
 - Se muestra el número de teléfono al que se envió el código.
 
   - Es editable tras pulsar "(editar)".
 
-  ### **3\. ONBOARDING (próximamente)**
+---
+
+### **3\. ONBOARDING (próximamente)**
 
 - Ayuda sobre el funcionamiento de la app.
 - Disponible dentro del menú superior \> Ayuda.
 
-  ***
+---
 
-  ### **4\. HOME**
+### **4\. HOME**
 
 - Pantalla por defecto tras iniciar sesión.
 - Comportamiento:
@@ -251,11 +251,11 @@
   - Verde claro: activa, con plazas disponibles.
   - Rojo: sin plazas o fuera de horario.
 
-  ***
+---
 
-  ### **5\. NEW SHUTTLE SCREEN**
+### **5\. NEW SHUTTLE SCREEN**
 
-  #### **Campos editables obligatorios:**
+#### **Campos editables obligatorios:**
 
 - Nombre de la lanzadera
 - Origen y destino
@@ -265,7 +265,7 @@
 
   - Normas, instrucciones, etc.
 
-  #### **Configuración de horario:**
+#### **Configuración de horario:**
 
 - Dos modos excluyentes:
 
@@ -316,17 +316,17 @@
   - Lista de ida y de vuelta (si existe)
   - Editable al pulsar las listas
 
-  ***
+---
 
-  ### **6\. PANTALLA DE LANZADERA**
+### **6\. PANTALLA DE LANZADERA**
 
-  ###
+###
 
-  ### Al pulsar sobre una lanzadera desde Home, dentro de un grupo:
+### Al pulsar sobre una lanzadera desde Home, dentro de un grupo:
 
-  Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
+Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
 
-  #### **Las Subpantallas navegables son:**
+#### **Las Subpantallas navegables son:**
 
 - **PLAZAS** (por defecto)
   - Aquí se organiza todo lo relacionado con la solicitud de plazas, es el centro de la app; sin esta parte, la app no tendría sentido.
@@ -340,7 +340,8 @@
 - **CHAT** (A todo el grupo, Chat general)
   - Se distinguirá del otro chat de hora en concreto de una salida, en que aparecerá arriba muy visible el nombre: Chat general \[nombre del grupo\]
 - **MAPA** (no MVP)
-  ***
+
+---
 
 ### **7\. SOLICITUD DE LANZADERA**
 
@@ -382,9 +383,11 @@
 - Mensaje de éxito: "Plaza reservada correctamente"
 - Botón de cancelación visible si ya se tiene plaza.
 
+<br>
+
 ---
 
-**TECNOLOGÍAS:**
+## **TECNOLOGÍAS:**
 
 - Flutter
 - State Management \- Bloc o Riverpod (manejar interacciones)
@@ -400,7 +403,11 @@
   - ramas main, develop, feature…
   - Usar "GitHub Projects" o "Issues" para organizar tareas en sprints.
 
-**PASOS DEL PROYECTO**:
+<br>
+
+---
+
+## **PASOS DEL PROYECTO**:
 
 1. MVP Minimal Viable Product: login, funcionalidad de grupo, lanzadera, chat? mapa?
 2. User Interface (Miro): Diseño y navegación de pantallas.
@@ -412,7 +419,11 @@
    3. Tareas: cada developer tiene un issue asignado.
    4. Revisar antes de fusionar a develop y main: Pull Request (PR)
 
-**FUTURAS FUNCIONALIDADES:**
+<br>
+
+---
+
+## **FUTURAS FUNCIONALIDADES:**
 
 - [ ] Viajeros reciben notificaciones de seguimiento del vehículo.
 - [ ] Características del coche (color, matrícula, etc)
@@ -420,7 +431,11 @@
 - [ ] En la lanzadera se podrá definir el lugar exacto en el mapa para el origen y destino, además del nombre que ya tiene, quedando guardado para poderlo usar en el mapa cuando se implemente.
 - [ ] Posibilidad de incorporar lanzadera a demanda de tal manera que no sea necesario tenerlas programadas pudiendo haber usuarios que entren a la aplicación directamente como conductor y que usuarios puedan solicitar a demanda un transporte por si hay algún conductor disponible con un vehículo en la lanzadera seleccionada.
 
-**RECOMENDACIONES PARA VERSIONES FUTURAS**:
+<br>
+
+---
+
+#### **RECOMENDACIONES PARA VERSIONES FUTURAS**:
 
 - [ ] Definir bien los permisos de los usuarios que pueden invitar a otros miembros dentro del grupo.
 - [ ] Cuando implementes Firestore en el MVP, verificar costos y optimización para evitar lecturas innecesarias y consumo excesivo de recursos.
@@ -431,9 +446,13 @@ Notas:
 1. **Product Backlog**: Contiene todas las características, mejoras y correcciones que se desean en el producto final. Es gestionado por el Product Owner.
 2. **Sprint Backlog**: Es una lista de tareas seleccionadas del Product Backlog que el equipo se compromete a completar durante un sprint (un período de trabajo definido, generalmente de 1 a 4 semanas). Esto lo hará el Scrum Master…
 
-De modo que hay que hacer una lista de product backlog aquí:  
-…  
-(TODO)
+De modo que hay que hacer una lista de product backlog aquí:
+
+<br>
+
+---
+
+### Roles de trabajo en equipo
 
 Sería interesante organizar cada trabajo según estos roles, para mejor organización en github, por grupos de trabajo:
 
