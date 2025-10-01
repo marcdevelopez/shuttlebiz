@@ -343,7 +343,7 @@ Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
 
 ---
 
-### **7\. SOLICITUD DE LANZADERA**
+### **7. SOLICITUD DE LANZADERA**
 
 #### **🧹 Reglas Generales de Solicitud**
 
@@ -382,6 +382,219 @@ Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
 
 - Mensaje de éxito: "Plaza reservada correctamente"
 - Botón de cancelación visible si ya se tiene plaza.
+
+---
+
+### **8. SELECCIÓN DE ROL**
+
+Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para esa sesión.
+
+- **Cuándo aparece:** Al pulsar una lanzadera desde HOME
+- **Opciones:**
+  - 🚗 **Conductor** - Ofrece el vehículo y maneja la lanzadera
+  - 🧑‍🤝‍🧑 **Viajero** - Solicita plaza como pasajero
+- **Comportamiento:**
+  - La elección afecta qué puede hacer en la pantalla de lanzadera
+  - El conductor puede modificar plazas disponibles ese día
+  - Los viajeros solo pueden solicitar plaza
+- **Persistencia:** Se recuerda la última elección por lanzadera
+
+---
+
+### **9. GESTIÓN DE GRUPOS**
+
+Pantalla para administrar grupos existentes (accesible desde menú superior).
+
+#### **Para creadores/administradores:**
+- **Información del grupo:**
+  - Nombre (editable)
+  - Fecha de creación
+  - Número de miembros
+- **Gestión de miembros:**
+  - Lista de usuarios del grupo
+  - Promover a administrador
+  - Expulsar miembros
+- **Configuración:**
+  - Grupo público/privado
+  - Auto-aprobación de nuevos miembros
+- **Acciones:**
+  - Invitar nuevos miembros (código/enlace)
+  - Eliminar grupo (confirmación)
+
+#### **Para miembros regulares:**
+- Ver información del grupo
+- Lista de miembros
+- Abandonar grupo
+
+---
+
+### **10. UNIRSE A GRUPO EXISTENTE**
+
+Flujo para usuarios que quieren unirse a un grupo creado por otros.
+
+- **Métodos de acceso:**
+  - Código de invitación (6 dígitos)
+  - Enlace compartido
+  - Búsqueda por nombre (si es público)
+- **Pantalla de búsqueda:**
+  - Campo para código/nombre
+  - Lista de grupos públicos cercanos
+- **Vista previa del grupo:**
+  - Nombre, descripción
+  - Número de miembros
+  - Lanzaderas activas (preview)
+- **Solicitud:**
+  - Botón "Solicitar unirse"
+  - Mensaje opcional al administrador
+
+---
+
+### **11. GESTIÓN DE NOTIFICACIONES**
+
+Sistema completo de notificaciones push e in-app para mantener informados a los usuarios.
+
+- **Tipos de notificaciones:**
+  - Nueva lanzadera creada en grupo
+  - Alguien solicita plaza en tu viaje
+  - Plaza confirmada/rechazada
+  - Recordatorio 30min antes del viaje
+  - Cambios en horarios
+  - Mensajes del chat específico
+  - **Invitación recibida** para ser miembro de un grupo
+- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones
+- **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
+- **Centro de notificaciones:** Historial in-app de notificaciones recibidas
+
+---
+
+### **12. PERFIL DE USUARIO**
+
+Pantalla de gestión del perfil personal y configuración de la aplicación.
+
+- **Información personal:**
+  - Foto de perfil (opcional)
+  - Nombre de usuario
+  - Número de teléfono (no editable)
+  - Fecha de registro
+- **Estadísticas:**
+  - Viajes completados
+  - Grupos activos
+  - Calificación como conductor/viajero (futuro)
+- **Configuración:**
+  - Notificaciones push
+  - Visibilidad del perfil
+  - Tema de la app
+
+---
+
+### **13. SISTEMA DE CHAT DETALLADO**
+
+Comunicación completa entre usuarios con múltiples canales de chat.
+
+#### **Chat general del grupo:**
+- Historial persistente de mensajes
+- Mensajes multimedia (fotos, ubicación)
+- Menciones @usuario
+- Funcionalidad de búsqueda de mensajes
+
+#### **Chat específico de viaje:**
+- Solo visible para participantes de esa salida específica
+- Se archiva automáticamente después del viaje
+- Información contextual (hora, destino) siempre visible
+- Lista de participantes del viaje
+
+#### **Características de mensajes:**
+- Estados de mensajes (enviado, entregado, leído)
+- Indicador de "escribiendo..."
+- Timestamps de mensajes
+- Cola de mensajes offline
+
+<br>
+
+---
+
+## **🎨 Mejoras de Interfaz y Experiencia de Usuario**
+
+### **Navegación y Encabezados**
+
+#### **Títulos de pantalla:**
+- Mostrar en la esquina superior izquierda el nombre de cada pantalla (Grupos, Lanzaderas, Horarios, Chat, etc.)
+- Seguir el patrón de aplicaciones exitosas para facilitar la orientación del usuario
+
+#### **Navegación inferior:**
+- Implementar paginador inferior (BottomNavigationBar) en:
+  - Pantalla de grupos
+  - Pantalla de lanzaderas  
+  - Pantalla de chat
+- Mejora la accesibilidad y navegación rápida entre secciones principales
+
+#### **Botones de acción:**
+- **En pantalla de lanzaderas:** Botón (+) en esquina inferior derecha para crear nueva lanzadera
+- **En pantalla de grupos:** Botón (+) en barra superior (centro-izquierda, antes del menú hamburguesa) para agregar grupos
+
+### **Estados de Error y Casos Extremos**
+
+#### **Pantalla HOME:**
+- **Estado sin conexión:** Interfaz clara cuando no hay internet disponible
+- **Grupos archivados:** Sistema para gestionar grupos inactivos
+- **Límite de grupos:** Definir y manejar el máximo número de grupos por usuario
+
+#### **Pantalla de LANZADERA:**
+- **Lanzadera inactiva:** Visualización cuando está deshabilitada temporalmente
+- **Sin horarios hoy:** Estado informativo cuando no hay viajes programados
+- **Conflicto de horarios:** Manejo de overlapping entre diferentes viajes
+
+### **Accesibilidad:**
+- Soporte para lectores de pantalla
+- Validación de contraste de colores
+- Tamaños de fuente accesibles
+- Tamaños mínimos de áreas táctiles
+
+<br>
+
+---
+
+## **⚖️ Reglas de Negocio y Resolución de Conflictos**
+
+### **Preguntas Críticas del Sistema:**
+
+#### **Conflictos de Conductores:**
+1. **¿Qué pasa si hay dos conductores para la misma lanzadera/horario?**
+   - Sistema de resolución: primer conductor confirmado tiene prioridad
+   - Notificación al segundo solicitante con opciones alternativas
+
+2. **¿Usuario solicita plaza pero ya hay conductor asignado?**
+   - Validación automática antes de mostrar opciones
+   - Interfaz clara del estado actual de la lanzadera
+
+#### **Gestión de Plazas:**
+3. **¿Conductor cancela el día del viaje?**
+   - Sistema de notificaciones automáticas a todos los pasajeros
+   - Opciones de rebooking o cancelación automática
+
+4. **¿Más solicitudes que plazas disponibles?**
+   - Sistema de lista de espera o first-come-first-served
+   - Notificaciones automáticas cuando se liberen plazas
+
+#### **Gestión de Grupos:**
+5. **¿Usuario abandona grupo con lanzaderas activas?**
+   - Limpieza automática de datos y notificaciones relevantes
+   - Transferencia o cancelación de lanzaderas si es creador
+
+6. **¿Creador del grupo elimina su cuenta?**
+   - Sistema de transferencia de ownership automática
+   - Disolución controlada del grupo si no hay sucesores
+
+7. **¿Lanzadera tiene reservas pero se quiere eliminar?**
+   - Workflow de cancelación con notificaciones previas
+   - Confirmación obligatoria y período de gracia
+
+### **Sistema de Permisos Detallado:**
+
+- **Creador del grupo:** Permisos completos sobre todas las funcionalidades
+- **Administrador:** Gestión de miembros y lanzaderas, sin poder eliminar el grupo
+- **Miembro regular:** Crear lanzaderas propias y solicitar plazas en otras
+- **Invitado/Visitante:** Solo visualización (funcionalidad futura)
 
 <br>
 
