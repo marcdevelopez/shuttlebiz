@@ -1,6 +1,9 @@
 # ShuttleBiz Development Roadmap
 
-## 📋 Current Status: MVP Specification Phase
+## 📋 Current Status: MVP Specification Ph- **System Management:**
+
+- Conflict resolution for concurrent bookings
+- Vehicle management integration (Screen 12)
 
 ### ✅ **Completed**
 
@@ -35,34 +38,50 @@
 
 ---
 
-### **Phase 2: Core Features (4-5 weeks)**
+### **Phase 2: Core Features (5-6 weeks)**
 
-**Goal:** Group and shuttle management system
+**Goal:** Group and shuttle management system with enhanced functionality
 
 **Key Deliverables:**
 
-- Group creation and basic management
-- Shuttle configuration system (NewShuttleScreen)
-	- Role selection mechanism (Driver/Passenger, Screen 7)
-- Home screen with listings and empty states
+- **Group Management:**
+  - Group creation with visibility settings (private/public)
+  - Public group discovery and join requests
+  - Admin/creator permission system
+- **Shuttle System:**
+  - Shuttle configuration system (NewShuttleScreen)
+  - Dynamic role selection mechanism (Screen 7)
+  - Vehicle management system with frequent vehicles (Screen 12)
+- **User Experience:**
+  - Enhanced onboarding flow (Screen 14)
+  - Account recovery system (Screen 13)
+  - User profile management (Screen 11)
+  - Home screen with listings and empty states
 
-**Success Criteria:** Users can create groups, configure shuttles, and select roles
+**Success Criteria:** Users can create public/private groups, manage vehicles, configure shuttles, and select roles dynamically
 
 ---
 
-### **Phase 3: Booking System (3-4 weeks)**
+### **Phase 3: Booking System (4-5 weeks)**
 
-**Goal:** Complete seat reservation workflow
+**Goal:** Complete seat reservation workflow with privacy features
 
 **Key Deliverables:**
 
-	- Shuttle request and booking flow
-	- Shuttle detail screen with tab navigation
-	- Real-time seat booking and availability
-	- Booking notifications and confirmations
-	- Conflict resolution for concurrent bookings
+- **Booking Flow:**
+  - Shuttle request and booking flow (Screen 8)
+  - Shuttle detail screen with tab navigation
+  - Real-time seat booking and availability
+  - Vehicle selection integration during booking (Screen 12)
+- **Privacy & Communication:**
+  - Enhanced privacy system (hidden phone numbers)
+  - In-app messaging foundation (Screen 16)
+  - Booking notifications and confirmations (Screen 15)
+- **System Management:**
+  - Conflict resolution for concurrent bookings
+  - Vehicle management integration
 
-**Success Criteria:** End-to-end booking from request to ride completion
+**Success Criteria:** End-to-end booking from request to ride completion with full privacy protection
 
 ---
 
@@ -72,10 +91,10 @@
 
 **Key Deliverables:**
 
-- General group chat functionality
-- Ride-specific chat for booked passengers
-- Push notifications integration
-- Message persistence and history
+- General group chat functionality (Screen 16)
+- Ride-specific chat for booked passengers (Screen 16)
+- Push notifications integration (Screen 15)
+- Message persistence and history (Screen 16)
 
 **Success Criteria:** Users can communicate effectively before and during rides
 
@@ -167,6 +186,59 @@
 - Clear acceptance criteria and DoD
 - Regular milestone tracking
 - Documented workflows and processes
+
+---
+
+## 🚀 **Future Versions (Post-MVP)**
+
+### **Version 2.0: Advanced Features**
+
+**Timeline:** 3-4 months post-MVP
+
+**Key Features:**
+
+- **User Statistics & Reputation:**
+
+  - Trip cancellation tracking per user
+  - Rating system between passengers and drivers
+  - User reputation visible to group members
+  - Behavioral history for trust building
+
+- **Enhanced Communication:**
+  - Direct calling integrated in app
+  - Voice messaging system
+  - Advanced privacy controls per user
+  - Optional phone number visibility setting
+
+### **Version 3.0: AI Integration**
+
+**Timeline:** 6-8 months post-MVP (Post-Phase 5)
+
+**Key Features:**
+
+- **AI Assistant for ShuttleBiz:**
+
+  - Natural language request interpretation
+  - Automatic schedule and route suggestions
+  - Vehicle occupancy optimization
+  - Demand prediction by routes
+
+- **Smart Recommendations:**
+  - Optimal pickup/dropoff points
+  - Route efficiency suggestions
+  - Peak time predictions
+  - User preference learning
+
+### **Version 4.0: Advanced Mobility**
+
+**Timeline:** 12+ months post-MVP
+
+**Key Features:**
+
+- On-demand shuttle requests
+- Real-time vehicle tracking
+- Integration with mapping services
+- Multi-modal transport integration
 
 ---
 

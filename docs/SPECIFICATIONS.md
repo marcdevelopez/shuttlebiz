@@ -23,22 +23,27 @@
 - 🔐 **Login por número de teléfono** (usuario \+ contraseña).
 - ✅ **Sesión persistente** tras primer acceso.
 - 🔁 **Opción de recuperación** si el usuario cambia de número.
-- 👥 Al usar una lanzadera, el usuario debe **elegir su rol**:
-
-  - **Conductor**
-  - **Viajero**
+- 👥 **Sistema de roles flexible**: cualquier usuario puede usar tanto el rol de conductor como de viajero
+  - **Selección dinámica**: al entrar a una lanzadera, el usuario decide qué rol tendrá en esa ocasión
+  - **Configuración permanente**: opción para mantener un rol preferido por defecto
+  - **Cambio de rol**: pantalla de ajustes con opción "Cambiar rol predeterminado" para modificar la preferencia
 
 ---
 
-## **2\. Gestión de Grupos (“Biz”)**
+## **2\. Gestión de Grupos ("Biz")**
 
 - 📦 Los usuarios pueden **crear un grupo** (biz) para organizar lanzaderas.
 - 👤 Solo el **creador del grupo** puede:
   - Crear o modificar lanzaderas.
   - Expulsar usuarios.
   - Asignar otro administrador.
-- ✅ El grupo solo es visible para sus miembros.
-- ➕ El creador debe **agregar manualmente a los usuarios**.
+- 🔒 **Visibilidad del grupo** configurable al crearlo:
+  - **Privado**: solo accesible por invitación directa del creador/admin
+  - **Público**: aparece en la lista de grupos disponibles y permite solicitar acceso
+  - 🔄 **Modificable**: la visibilidad puede cambiarse después de crear el grupo
+- 👥 **Acceso según visibilidad**:
+  - **Grupos privados**: solo invitación del creador/administrador
+  - **Grupos públicos**: solicitud desde lista pública + aprobación del creador/admin
 - 🏠 Los usuarios agregados verán automáticamente ese grupo en su pantalla Home.
 - 📅 El sistema guarda internamente la **fecha/hora de incorporación al grupo**.
 - 🚪 Cualquier usuario puede **salir del grupo** en cualquier momento.
@@ -87,12 +92,12 @@
   - Cada horario puede editarse individualmente con pulsación corta.
   - La pulsación larga permite eliminar uno o varios horarios del grupo.
   - Las listas de horarios están ordenadas por día y por sentido del viaje (ida/vuelta).
-- 🛑 Botón “reset”:
+- 🛑 Botón "reset":
   - Elimina todos los horarios del grupo seleccionado.
   - Aparece junto al nombre del grupo o al final de la lista.
 - 🧾 Cada horario muestra de forma clara el día al que pertenece (etiqueta de fecha o subtítulo).
 - 🧑‍💻 Si el usuario tiene permisos de edición (creador o administrador), podrá acceder a la pantalla completa de configuración de horarios.
-- Para mayor usabilidad intentar implementar Copiar horarios con un botón “Copiar configuración a otro día”.
+- Para mayor usabilidad intentar implementar Copiar horarios con un botón "Copiar configuración a otro día".
 - Colores diferenciados en Horarios de ida y Horarios de vuelta. Usar estos colores ya que además enlazan con los del logo de la app: \#0077B6 (azul intenso), \#FF6B6B (rojo coral).
 
 ## **4\. Consulta y Solicitud de Lanzaderas**
@@ -132,7 +137,7 @@
     - Si ya hay uno: se envía **notificación al ya existente para aprobar/rechazar**.
     - Si está libre: se solicita matrícula y plazas. Puede haber la posibilidad de tener una base de datos con las plazas de cada vehículo por defecto.
   - El botón de solicitud de plaza como viajero se bloquea si la lanzadera está completa.
-  - Puede mostrarse como “estado completo”.
+  - Puede mostrarse como "estado completo".
 
   ***
 
@@ -152,6 +157,10 @@
   ## **6\. Comunicación y Notificaciones**
 
 - 📢 Chat general por lanzadera _(no incluido en MVP)_.
+- 🔐 **Privacidad de contacto**: el número de teléfono no será visible entre usuarios
+  - Comunicación exclusivamente a través de mensajes dentro del grupo
+  - **Versiones futuras**: llamada directa integrada en la app
+  - **Opción personal**: cada usuario podrá configurar si mostrar su número de teléfono en su perfil
 - 🔔 Notificaciones push:
   - Cuando un usuario se une a un grupo.
   - Cuando alguien solicita una plaza (informándose de plazas restantes).
@@ -164,7 +173,7 @@
 
 - 🔀 Cambiar de grupo desde el nombre en la barra superior.
 - 🟢 Estado visual por lanzadera y horario.
-- 📅 Días sin lanzaderas muestran etiqueta “sin lanzadera”.
+- 📅 Días sin lanzaderas muestran etiqueta "sin lanzadera".
 - 📊 Colores y etiquetas para horarios de ida y vuelta.
 - 📚 Implementación recomendada:
 
@@ -219,10 +228,16 @@
 
 ---
 
-### **3\. ONBOARDING (próximamente)**
+### **3\. ONBOARDING**
 
-- Ayuda sobre el funcionamiento de la app.
-- Disponible dentro del menú superior \> Ayuda.
+Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (implementación detallada en Screen 14).
+
+**Activación:**
+
+- Automático para usuarios nuevos tras primer login
+- Manual desde menú de configuración: Ajustes > Ayuda > Ver tutorial
+
+**Referencia:** Ver Screen 14 para especificación completa
 
 ---
 
@@ -406,6 +421,7 @@ Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para 
 Pantalla para administrar grupos existentes (accesible desde menú superior).
 
 #### **Para creadores/administradores:**
+
 - **Información del grupo:**
   - Nombre (editable)
   - Fecha de creación
@@ -422,6 +438,7 @@ Pantalla para administrar grupos existentes (accesible desde menú superior).
   - Eliminar grupo (confirmación)
 
 #### **Para miembros regulares:**
+
 - Ver información del grupo
 - Lista de miembros
 - Abandonar grupo
@@ -449,7 +466,110 @@ Flujo para usuarios que quieren unirse a un grupo creado por otros.
 
 ---
 
-### **11. GESTIÓN DE NOTIFICACIONES**
+### **11. PERFIL DE USUARIO**
+
+Pantalla de gestión del perfil personal y configuración de la aplicación.
+
+- **Información personal:**
+  - Foto de perfil (opcional)
+  - Nombre de usuario
+  - Número de teléfono (no editable)
+  - Fecha de registro
+- **Estadísticas:**
+  - Viajes completados
+  - Grupos activos
+  - Calificación como conductor/viajero (futuro)
+- **Configuración:**
+  - Notificaciones push
+  - Visibilidad del perfil
+  - Tema de la app
+  - **Cambiar rol predeterminado**: opción para establecer rol preferido (conductor/viajero)
+
+---
+
+### **12. GESTIÓN DE VEHÍCULOS**
+
+Pantalla dedicada para gestionar vehículos frecuentes o guardados por grupo.
+
+- **Acceso para crear/agregar:** Creadores, administradores y conductores del grupo
+- **Acceso para editar/eliminar:** Solo creadores y administradores del grupo
+- **Funcionalidades:**
+  - **Conductores:** Pueden agregar nuevos vehículos frecuentes cuando vayan a usarlos
+  - **Admins/Creadores:** Pueden crear, editar y eliminar vehículos existentes
+  - Corrección de datos erróneos ingresados por conductores
+  - Gestión de vehículos de conductores que ya no están en el grupo
+- **Datos del vehículo:**
+  - **Obligatorios:**
+    - Número de matrícula
+    - Número de plazas
+  - **Opcionales:**
+    - Modelo del vehículo
+    - Marca
+    - Color
+- **Persistencia:** Los vehículos se guardan por grupo y pueden ser reutilizados por cualquier conductor del grupo
+- **Integración:** Al crear una lanzadera como conductor, se puede seleccionar de la lista de vehículos frecuentes o agregar uno nuevo in-situ
+
+---
+
+### **13. RECUPERACIÓN DE CUENTA**
+
+Pantalla para casos de pérdida de móvil o cambio de número de teléfono.
+
+- **Acceso:** Enlace desde pantalla de login
+- **Métodos de recuperación:**
+  - Verificación con número de teléfono anterior (si está disponible)
+  - Verificación por email (si se configuró)
+  - Contacto con soporte (último recurso)
+- **Flujo de recuperación:**
+  - Ingreso del nuevo número de teléfono
+  - Verificación de identidad
+  - Transferencia de cuenta al nuevo número
+  - Confirmación y acceso restaurado
+- **Seguridad:** Proceso de verificación robusto para prevenir accesos no autorizados
+
+---
+
+### **14. ONBOARDING MEJORADO**
+
+Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
+
+**Contenido del tutorial:**
+
+- **Pantalla 1**: Bienvenida y presentación de ShuttleBiz
+  - Logo y mensaje de bienvenida
+  - Breve descripción: "Organiza viajes compartidos con tu comunidad"
+- **Pantalla 2**: Cómo funcionan los grupos
+  - Explicación de los "Biz" (grupos)
+  - Diferencia entre grupos públicos y privados
+  - Roles dentro de un grupo
+- **Pantalla 3**: Crear y gestionar lanzaderas
+  - Cómo crear una nueva lanzadera
+  - Configurar horarios y frecuencias
+  - Vista previa de lanzadera
+- **Pantalla 4**: Solicitar plazas y ser conductor
+  - Selección de rol (conductor/viajero)
+  - Proceso de solicitud de plaza
+  - Gestión de vehículos
+- **Pantalla 5**: Comunicación y notificaciones
+  - Sistema de chat por grupo
+  - Tipos de notificaciones
+  - Configuración de privacidad
+
+**Características técnicas:**
+
+- PageView con indicadores de progreso
+- Botones "Siguiente", "Saltar" y "Empezar"
+- Animaciones suaves entre pantallas
+- Disponible después como ayuda en el menú: Ajustes > Ayuda > Ver tutorial
+
+**Activación:**
+
+- Automático para usuarios nuevos tras primer login
+- Manual desde menú de configuración
+
+---
+
+### **15. GESTIÓN DE NOTIFICACIONES**
 
 Sistema completo de notificaciones push e in-app para mantener informados a los usuarios.
 
@@ -467,43 +587,26 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 ---
 
-### **12. PERFIL DE USUARIO**
-
-Pantalla de gestión del perfil personal y configuración de la aplicación.
-
-- **Información personal:**
-  - Foto de perfil (opcional)
-  - Nombre de usuario
-  - Número de teléfono (no editable)
-  - Fecha de registro
-- **Estadísticas:**
-  - Viajes completados
-  - Grupos activos
-  - Calificación como conductor/viajero (futuro)
-- **Configuración:**
-  - Notificaciones push
-  - Visibilidad del perfil
-  - Tema de la app
-
----
-
-### **13. SISTEMA DE CHAT DETALLADO**
+### **16. SISTEMA DE CHAT DETALLADO**
 
 Comunicación completa entre usuarios con múltiples canales de chat.
 
 #### **Chat general del grupo:**
+
 - Historial persistente de mensajes
 - Mensajes multimedia (fotos, ubicación)
 - Menciones @usuario
 - Funcionalidad de búsqueda de mensajes
 
 #### **Chat específico de viaje:**
+
 - Solo visible para participantes de esa salida específica
 - Se archiva automáticamente después del viaje
 - Información contextual (hora, destino) siempre visible
 - Lista de participantes del viaje
 
 #### **Características de mensajes:**
+
 - Estados de mensajes (enviado, entregado, leído)
 - Indicador de "escribiendo..."
 - Timestamps de mensajes
@@ -518,33 +621,39 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 ### **Navegación y Encabezados**
 
 #### **Títulos de pantalla:**
+
 - Mostrar en la esquina superior izquierda el nombre de cada pantalla (Grupos, Lanzaderas, Horarios, Chat, etc.)
 - Seguir el patrón de aplicaciones exitosas para facilitar la orientación del usuario
 
 #### **Navegación inferior:**
+
 - Implementar paginador inferior (BottomNavigationBar) en:
   - Pantalla de grupos
-  - Pantalla de lanzaderas  
+  - Pantalla de lanzaderas
   - Pantalla de chat
 - Mejora la accesibilidad y navegación rápida entre secciones principales
 
 #### **Botones de acción:**
+
 - **En pantalla de lanzaderas:** Botón (+) en esquina inferior derecha para crear nueva lanzadera
 - **En pantalla de grupos:** Botón (+) en barra superior (centro-izquierda, antes del menú hamburguesa) para agregar grupos
 
 ### **Estados de Error y Casos Extremos**
 
 #### **Pantalla HOME:**
+
 - **Estado sin conexión:** Interfaz clara cuando no hay internet disponible
 - **Grupos archivados:** Sistema para gestionar grupos inactivos
 - **Límite de grupos:** Definir y manejar el máximo número de grupos por usuario
 
 #### **Pantalla de LANZADERA:**
+
 - **Lanzadera inactiva:** Visualización cuando está deshabilitada temporalmente
 - **Sin horarios hoy:** Estado informativo cuando no hay viajes programados
 - **Conflicto de horarios:** Manejo de overlapping entre diferentes viajes
 
 ### **Accesibilidad:**
+
 - Soporte para lectores de pantalla
 - Validación de contraste de colores
 - Tamaños de fuente accesibles
@@ -559,7 +668,9 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 ### **Preguntas Críticas del Sistema:**
 
 #### **Conflictos de Conductores:**
+
 1. **¿Qué pasa si hay dos conductores para la misma lanzadera/horario?**
+
    - Sistema de resolución: primer conductor confirmado tiene prioridad
    - Notificación al segundo solicitante con opciones alternativas
 
@@ -568,7 +679,9 @@ Comunicación completa entre usuarios con múltiples canales de chat.
    - Interfaz clara del estado actual de la lanzadera
 
 #### **Gestión de Plazas:**
+
 3. **¿Conductor cancela el día del viaje?**
+
    - Sistema de notificaciones automáticas a todos los pasajeros
    - Opciones de rebooking o cancelación automática
 
@@ -577,11 +690,14 @@ Comunicación completa entre usuarios con múltiples canales de chat.
    - Notificaciones automáticas cuando se liberen plazas
 
 #### **Gestión de Grupos:**
+
 5. **¿Usuario abandona grupo con lanzaderas activas?**
+
    - Limpieza automática de datos y notificaciones relevantes
    - Transferencia o cancelación de lanzaderas si es creador
 
 6. **¿Creador del grupo elimina su cuenta?**
+
    - Sistema de transferencia de ownership automática
    - Disolución controlada del grupo si no hay sucesores
 
@@ -595,6 +711,22 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 - **Administrador:** Gestión de miembros y lanzaderas, sin poder eliminar el grupo
 - **Miembro regular:** Crear lanzaderas propias y solicitar plazas en otras
 - **Invitado/Visitante:** Solo visualización (funcionalidad futura)
+
+<br>
+
+---
+
+## **MODELO DE DATOS**
+
+> 📋 **Referencia completa:** Ver [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) para especificaciones detalladas de Firestore, modelos Dart con Freezed, reglas de seguridad y optimizaciones.
+
+### **Entidades principales:**
+- **User**: Perfil, roles, configuración de privacidad
+- **Group**: Grupos públicos/privados con gestión de miembros
+- **Vehicle**: Vehículos frecuentes por grupo con permisos específicos
+- **Shuttle**: Lanzaderas con horarios únicos o recurrentes
+- **Booking**: Reservas de plazas con roles de conductor/viajero
+- **Message**: Chat general y específico por viaje
 
 <br>
 
@@ -637,6 +769,36 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 ---
 
 ## **FUTURAS FUNCIONALIDADES:**
+
+### **Post-Fase 5 (Polish & Deploy):**
+
+- [ ] **Sistema de estadísticas de viajeros**:
+
+  - Contador de viajes cancelados por usuario
+  - Sistema de opiniones y puntuaciones entre usuarios
+  - Reputación visible para otros miembros del grupo
+  - Historial de comportamiento para mejorar la confianza
+
+- [ ] **IA Asistente en ShuttleBiz**:
+
+  - Interpretación de solicitudes en lenguaje natural
+  - Sugerencias automáticas de horarios y rutas
+  - Optimización de ocupación de vehículos
+  - Predicción de demanda por rutas
+
+- [ ] **Sistema de comunicación avanzado**:
+
+  - Llamadas directas integradas en la app
+  - Videollamadas para coordinación grupal
+  - Sistema de mensajes de voz
+  - Integración con servicios de mapas para ubicación en tiempo real
+
+- [ ] **Configuración avanzada de privacidad**:
+  - Opción por usuario para mostrar número de teléfono personal
+  - Niveles de visibilidad del perfil (completo/básico/anónimo)
+  - Control granular de notificaciones por tipo de evento
+
+### **Funcionalidades adicionales:**
 
 - [ ] Viajeros reciben notificaciones de seguimiento del vehículo.
 - [ ] Características del coche (color, matrícula, etc)
