@@ -343,7 +343,23 @@ Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
 
 ---
 
-### **7. SOLICITUD DE LANZADERA**
+### **7. SELECCIÓN DE ROL**
+
+Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para esa sesión.
+
+- **Cuándo aparece:** Al pulsar una lanzadera desde HOME
+- **Opciones:**
+  - 🚗 **Conductor** - Ofrece el vehículo y maneja la lanzadera
+  - 🧑‍🤝‍🧑 **Viajero** - Solicita plaza como pasajero
+- **Comportamiento:**
+  - La elección afecta qué puede hacer en la pantalla de lanzadera
+  - El conductor puede modificar plazas disponibles ese día
+  - Los viajeros solo pueden solicitar plaza
+- **Persistencia:** Se recuerda la última elección por lanzadera
+
+---
+
+### **8. SOLICITUD DE LANZADERA**
 
 #### **🧹 Reglas Generales de Solicitud**
 
@@ -382,22 +398,6 @@ Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
 
 - Mensaje de éxito: "Plaza reservada correctamente"
 - Botón de cancelación visible si ya se tiene plaza.
-
----
-
-### **8. SELECCIÓN DE ROL**
-
-Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para esa sesión.
-
-- **Cuándo aparece:** Al pulsar una lanzadera desde HOME
-- **Opciones:**
-  - 🚗 **Conductor** - Ofrece el vehículo y maneja la lanzadera
-  - 🧑‍🤝‍🧑 **Viajero** - Solicita plaza como pasajero
-- **Comportamiento:**
-  - La elección afecta qué puede hacer en la pantalla de lanzadera
-  - El conductor puede modificar plazas disponibles ese día
-  - Los viajeros solo pueden solicitar plaza
-- **Persistencia:** Se recuerda la última elección por lanzadera
 
 ---
 

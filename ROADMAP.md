@@ -43,7 +43,7 @@
 
 - Group creation and basic management
 - Shuttle configuration system (NewShuttleScreen)
-- Role selection mechanism (Driver/Passenger)
+	- Role selection mechanism (Driver/Passenger, Screen 7)
 - Home screen with listings and empty states
 
 **Success Criteria:** Users can create groups, configure shuttles, and select roles
@@ -56,10 +56,11 @@
 
 **Key Deliverables:**
 
-- Shuttle detail screen with tab navigation
-- Real-time seat booking and availability
-- Booking notifications and confirmations
-- Conflict resolution for concurrent bookings
+	- Shuttle request and booking flow
+	- Shuttle detail screen with tab navigation
+	- Real-time seat booking and availability
+	- Booking notifications and confirmations
+	- Conflict resolution for concurrent bookings
 
 **Success Criteria:** End-to-end booking from request to ride completion
 

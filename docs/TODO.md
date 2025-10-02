@@ -2,7 +2,7 @@
 
 ## 🚨 **Critical Missing Screens**
 
-### Screen 8: Role Selection
+### Screen 7: Role Selection
 
 **Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
 
@@ -28,6 +28,40 @@
   - El conductor puede modificar plazas disponibles ese día
   - Los viajeros solo pueden solicitar plaza
 - **Persistencia:** Se recuerda la última elección por lanzadera
+
+---
+
+### Screen 8: Shuttle Request
+
+**Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
+
+- [ ] Implement shuttle request UI and logic
+- [ ] Validate seat availability and role restrictions
+- [ ] Integrate with notification system for requests/confirmations
+- [ ] Handle error states (full shuttle, no driver, etc.)
+
+**Acceptance Criteria:**
+
+- User can request a seat as passenger
+- User can offer to be driver if no driver assigned
+- System validates seat limits and role conflicts
+- Notifications sent on request/confirmation/cancellation
+
+**Details:**
+
+- **Flujo:** Tras seleccionar rol, usuario accede a la pantalla de solicitud
+- **Acciones:**
+  - Solicitar plaza (si hay disponibilidad)
+  - Ser conductor (si no hay conductor asignado)
+  - Cancelar solicitud
+  - Ver viajeros
+- **Estados:**
+  - Verde: plazas disponibles
+  - Rojo: completo
+  - Gris: no disponible
+- **Indicadores:**
+  - Próximo horario resaltado
+  - Visualización de plazas y conductor asignado
 
 ---
 
