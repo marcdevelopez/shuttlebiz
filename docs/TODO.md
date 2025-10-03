@@ -1,21 +1,23 @@
-# 📝 Technical TODO & Missing Features
+# 📝 TODO Técnico y Funcionalidades Faltantes
 
-## 🚨 **Critical Missing Screens**
+## 🚨 **Pantallas Críticas Faltantes**
 
-### Screen 7: Role Selection
+> **⚠️ Nota Importante:** Las lanzaderas son únicas dentro de cada grupo y no pueden existir en otros grupos. Cada lanzadera pertenece exclusivamente al grupo donde fue creada.
 
-**Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
+### Pantalla 7: Selección de Rol
 
-- [ ] Design role selection UI (Driver vs Passenger)
-- [ ] Implement role persistence per shuttle
-- [ ] Add role-based permissions logic
-- [ ] Update navigation flow
+**Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
 
-**Acceptance Criteria:**
+- [ ] Diseñar interfaz de selección de rol (Conductor vs Viajero)
+- [ ] Implementar persistencia de rol por lanzadera
+- [ ] Agregar lógica de permisos basada en rol
+- [ ] Actualizar flujo de navegación
 
-- User must select role before accessing shuttle details
-- Role choice persists for each shuttle individually
-- Different UI elements shown based on role
+**Criterios de Aceptación:**
+
+- El usuario debe seleccionar rol antes de acceder a detalles de lanzadera
+- La elección de rol persiste para cada lanzadera individualmente
+- Diferentes elementos de UI mostrados según el rol
 
 **Details:**
 
@@ -31,21 +33,21 @@
 
 ---
 
-### Screen 8: Shuttle Request
+### Pantalla 8: Solicitud de Lanzadera
 
-**Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
 
-- [ ] Implement shuttle request UI and logic
-- [ ] Validate seat availability and role restrictions
-- [ ] Integrate with notification system for requests/confirmations
-- [ ] Handle error states (full shuttle, no driver, etc.)
+- [ ] Implementar interfaz y lógica de solicitud de lanzadera
+- [ ] Validar disponibilidad de plazas y restricciones de rol
+- [ ] Integrar con sistema de notificaciones para solicitudes/confirmaciones
+- [ ] Manejar estados de error (lanzadera llena, sin conductor, etc.)
 
-**Acceptance Criteria:**
+**Criterios de Aceptación:**
 
-- User can request a seat as passenger
-- User can offer to be driver if no driver assigned
-- System validates seat limits and role conflicts
-- Notifications sent on request/confirmation/cancellation
+- El usuario puede solicitar plaza como viajero
+- El usuario puede ofrecerse como conductor si no hay conductor asignado
+- El sistema valida límites de plazas y conflictos de rol
+- Se envían notificaciones al solicitar/confirmar/cancelar
 
 **Details:**
 
@@ -65,43 +67,46 @@
 
 ---
 
-### Screen 9: Group Management
+### Pantalla 9: Gestión de Grupos
 
-**Priority: HIGH** | **Effort: 1 week** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 1 semana** | **Asignado: POR DEFINIR**
 
-- [ ] Admin panel for group creators
-- [ ] Member list with admin controls
-- [ ] Invite system (codes/links)
-- [ ] Group settings configuration
+- [ ] Panel de administración para creadores de grupos
+- [ ] Lista de miembros con controles de administrador
+- [ ] Sistema de invitaciones (códigos/enlaces)
+- [ ] Configuración de ajustes del grupo
 
-**For creators/administrators:**
+**Para creadores/administradores:**
 
-- [ ] Editable group information (name, creation date, member count)
-- [ ] Member management (promote to admin, expel members)
-- [ ] Group configuration (public/private, auto-approval)
-- [ ] Actions (invite new members, delete group with confirmation)
+- [ ] Información del grupo editable (nombre, fecha de creación, número de miembros)
+- [ ] Gestión de miembros (promover a administrador, expulsar miembros)
+- [ ] Configuración de grupo (público/privado, auto-aprobación)
+- [ ] Acciones (invitar nuevos miembros, eliminar grupo con confirmación)
 
-**For regular members:**
+**Para miembros estándar (sin permisos de administrador):**
 
-- [ ] View group information and member list
-- [ ] Leave group functionality
+- [ ] Ver información del grupo y lista de miembros
+- [ ] Solicitar plazas en lanzaderas existentes
+- [ ] Gestionar sus propias solicitudes (anular, ver estado)
+- [ ] Participar en chat relacionado con sus solicitudes
+- [ ] Funcionalidad para abandonar grupo
 
-**Related Issues:** #3, #7, #12
+**Issues Relacionados:** #3, #7, #12
 
 ---
 
-### Screen 10: Join Existing Group
+### Pantalla 10: Unirse a Grupo Existente
 
-**Priority: HIGH** | **Effort: 3-4 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 3-4 días** | **Asignado: POR DEFINIR**
 
-- [ ] Group search/join interface
-- [ ] Invite code validation (6 digits)
-- [ ] Shared link functionality
-- [ ] Public group search by name
-- [ ] Group preview with member count and active shuttles
-- [ ] Join request with optional message to admin
+- [ ] Interfaz de búsqueda/unión a grupos
+- [ ] Validación de código de invitación (6 dígitos)
+- [ ] Funcionalidad de enlace compartido
+- [ ] Búsqueda de grupos públicos por nombre
+- [ ] Vista previa del grupo con número de miembros y lanzaderas activas
+- [ ] Solicitud de unión con mensaje opcional al administrador
 
-**Methods of access:**
+**Métodos de acceso:**
 
 - [ ] Invitation code (6 digits)
 - [ ] Shared link
@@ -126,47 +131,47 @@
 
 ---
 
-### Screen 12: Vehicle Management
+### Pantalla 12: Gestión de Vehículos
 
-**Priority: HIGH** | **Effort: 3-4 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 3-4 días** | **Asignado: POR DEFINIR**
 
-- [ ] Vehicle CRUD operations interface with role-based permissions
-- [ ] Group-specific vehicle management
-- [ ] Conductor vehicle creation during shuttle booking
-- [ ] Admin/creator edit/delete permissions validation
-- [ ] Integration with shuttle creation flow
+- [ ] Interfaz de operaciones CRUD de vehículos con permisos basados en rol
+- [ ] Gestión de vehículos específica por grupo
+- [ ] Creación de vehículos por conductores durante reserva de lanzadera
+- [ ] Validación de permisos de edición/eliminación para administradores/creadores
+- [ ] Integración con flujo de creación de lanzaderas
 
-**Acceptance Criteria:**
+**Criterios de Aceptación:**
 
-- **Create access:** Group admins/creators AND conductors can add vehicles
-- **Edit/Delete access:** Only group admins/creators can modify/remove vehicles
-- Required fields: license plate, seat count
-- Optional fields: model, brand, color
-- Vehicles can be reused across shuttles in same group
-- Integration with shuttle creation (vehicle selector + "add new" option)
-- In-situ vehicle creation during conductor booking flow
+- **Acceso crear:** Administradores y creadores pueden agregar vehículos directamente. Cualquier miembro actuando como conductor puede solicitar aprobación para crear nuevos vehículos
+- **Acceso editar/eliminar:** Administradores y creadores pueden modificar cualquier vehículo. El conductor que creó un vehículo puede editarlo sin autorización adicional
+- Campos obligatorios: matrícula, número de plazas
+- Campos opcionales: modelo, marca, color
+- Los vehículos pueden reutilizarse en lanzaderas del mismo grupo
+- Integración con creación de lanzaderas (selector de vehículo + opción "agregar nuevo")
+- Solicitud de creación de vehículo in-situ cuando miembro actúa como conductor
 
 **Details:**
 
-- **Acceso crear:** Administradores, creadores y conductores del grupo
-- **Acceso editar/eliminar:** Solo administradores y creadores del grupo
-- **Funcionalidades:** Conductores agregan vehículos cuando los usan, admins corrigen errores
+- **Acceso crear:** Administradores y creadores agregan directamente. Cualquier miembro como conductor puede solicitar aprobación para crear nuevos vehículos
+- **Acceso editar:** Administradores y creadores pueden editar cualquier vehículo. Conductor que creó vehículo puede editarlo sin autorización
+- **Funcionalidades:** Sistema de aprobación solo para creación de nuevos vehículos, trazabilidad automática de modificaciones, chat disponible durante aprobación
 - **Datos obligatorios:** Matrícula, número de plazas
 - **Datos opcionales:** Modelo, marca, color
 - **Persistencia:** Por grupo, reutilizable por cualquier conductor
 
-**Related Issues:** #15, #16
+**Issues Relacionados:** #15, #16
 
 ---
 
-### Screen 11: User Profile
+### Pantalla 11: Perfil de Usuario
 
-**Priority: MEDIUM** | **Effort: 2-3 days** | **Assignee: TBD**
+**Prioridad: MEDIA** | **Esfuerzo: 2-3 días** | **Asignado a: Por Definir**
 
 - [ ] Personal information display/edit
-- [ ] Profile photo upload (optional)
-- [ ] User statistics dashboard
-- [ ] App configuration settings
+- [ ] Subida de foto de perfil (opcional)
+- [ ] Dashboard de estadísticas de usuario
+- [ ] Configuración de la aplicación
 
 **Personal Information:**
 
@@ -189,21 +194,21 @@
 
 ---
 
-### Screen 13: Account Recovery
+### Pantalla 13: Recuperación de Cuenta
 
-**Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
 
-- [ ] Recovery flow for lost phone/number change
-- [ ] Identity verification system
-- [ ] Account transfer mechanism
-- [ ] Security validation
+- [ ] Flujo de recuperación para pérdida de teléfono/cambio de número
+- [ ] Sistema de verificación de identidad
+- [ ] Mecanismo de transferencia de cuenta
+- [ ] Validación de seguridad
 
-**Acceptance Criteria:**
+**Criterios de Aceptación:**
 
-- Accessible from login screen
-- Multiple recovery methods (old phone, email, support)
-- Secure identity verification process
-- Account successfully transferred to new number
+- Accesible desde pantalla de login
+- Múltiples métodos de recuperación (teléfono anterior, email, soporte)
+- Proceso seguro de verificación de identidad
+- Cuenta transferida exitosamente al nuevo número
 
 **Details:**
 
@@ -211,25 +216,25 @@
 - **Flujo:** Nuevo número → verificación → transferencia → confirmación
 - **Seguridad:** Proceso robusto para prevenir accesos no autorizados
 
-**Related Issues:** #17
+**Issues Relacionados:** #17
 
 ---
 
-### Screen 14: Enhanced Onboarding
+### Pantalla 14: Onboarding Mejorado
 
-**Priority: HIGH** | **Effort: 1 week** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 1 semana** | **Asignado: POR DEFINIR**
 
-- [ ] Interactive tutorial implementation
-- [ ] Multi-screen onboarding flow
-- [ ] Progress indicators and navigation
-- [ ] Skip and replay functionality
+- [ ] Implementación de tutorial interactivo
+- [ ] Flujo de onboarding multi-pantalla
+- [ ] Indicadores de progreso y navegación
+- [ ] Funcionalidad de saltar y repetir
 
-**Acceptance Criteria:**
+**Criterios de Aceptación:**
 
-- 5-screen tutorial covering all main features
-- Automatic trigger for new users
-- Manual access from settings menu
-- Smooth animations and transitions
+- Tutorial de 5 pantallas cubriendo todas las funciones principales
+- Activación automática para usuarios nuevos
+- Acceso manual desde menú de configuración
+- Animaciones y transiciones suaves
 
 **Content Requirements:**
 
@@ -239,26 +244,26 @@
 - **Pantalla 4:** Roles y solicitud de plazas
 - **Pantalla 5:** Comunicación y notificaciones
 
-**Technical Implementation:**
+**Implementación Técnica:**
 
-- PageView with progress indicators
-- "Siguiente", "Saltar", "Empezar" buttons
-- Available as help after first run
+- PageView con indicadores de progreso
+- Botones "Siguiente", "Saltar", "Empezar"
+- Disponible como ayuda después de la primera ejecución
 
-**Related Issues:** #18
+**Issues Relacionados:** #18
 
 ---
 
-### Screen 15: Notifications Management
+### Pantalla 15: Gestión de Notificaciones
 
-**Priority: MEDIUM** | **Effort: 4-5 days** | **Assignee: TBD**
+**Prioridad: MEDIA** | **Esfuerzo: 4-5 días** | **Asignado a: Por Definir**
 
-- [ ] Notification types configuration
-- [ ] Push notification setup (FCM)
-- [ ] In-app notification center
-- [ ] User preference settings
+- [ ] Configuración de tipos de notificación
+- [ ] Configuración de notificaciones push (FCM)
+- [ ] Centro de notificaciones en la app
+- [ ] Configuración de preferencias de usuario
 
-**Notification Types:**
+**Tipos de Notificación:**
 
 - [ ] Nueva lanzadera creada en grupo
 - [ ] Alguien solicita plaza en tu viaje
@@ -266,18 +271,18 @@
 - [ ] Recordatorio 30min antes del viaje
 - [ ] Cambios en horarios
 - [ ] Mensajes del chat específico
-- [ ] **Group invitation received** (invitación para ser miembro de un grupo)
+- [ ] **Invitación de grupo recibida** (invitación para ser miembro de un grupo)
 
-**Configuration:**
+**Configuración:**
 
 - [ ] Usuario puede desactivar tipos específicos
 - [ ] Push notifications con FCM
 
 ---
 
-### Screen 16: Detailed Chat System
+### Pantalla 16: Sistema de Chat Detallado
 
-**Priority: MEDIUM** | **Effort: 1-2 weeks** | **Assignee: TBD**
+**Prioridad: MEDIA** | **Esfuerzo: 1-2 semanas** | **Asignado a: Por Definir**
 
 **General Group Chat:**
 
@@ -293,32 +298,32 @@
 - [ ] Información contextual (hora, destino)
 - [ ] Participant list display
 
-**Message Features:**
+**Funcionalidades de Mensajes:**
 
 - [ ] Estados de mensajes (enviado, entregado, leído)
 - [ ] Indicador de "escribiendo"
-- [ ] Message timestamps
-- [ ] Offline message queue
+- [ ] Marcas de tiempo de mensajes
+- [ ] Cola de mensajes offline
 
 ---
 
-## 🎨 **UI/UX Improvements**
+## 🎨 **Mejoras de UI/UX**
 
-### Navigation & Header Improvements
+### Mejoras de Navegación y Encabezados
 
-**Priority: HIGH** | **Effort: 1-2 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 1-2 días** | **Asignado: POR DEFINIR**
 
-- [ ] **Add screen titles in upper left corner** (Groups, Shuttles, Schedules, Chat, etc.)
-- [ ] **Bottom navigation bar** for Groups, Shuttles, and Chat screens
-- [ ] **Add (+) button in shuttle screens** (bottom right corner)
-- [ ] **Add (+) button in groups screen** (top bar, center-left, before hamburger menu)
+- [ ] **Agregar títulos de pantalla en esquina superior izquierda** (Grupos, Lanzaderas, Horarios, Chat, etc.)
+- [ ] **Barra de navegación inferior** para pantallas de Grupos, Lanzaderas y Chat
+- [ ] **Agregar botón (+) en pantallas de lanzaderas** (esquina inferior derecha)
+- [ ] **Agregar botón (+) en pantalla de grupos** (barra superior, centro-izquierda, antes del menú hamburguesa)
 
-### Missing States & Error Handling
+### Estados Faltantes y Manejo de Errores
 
-- [ ] Offline state indicators
-- [ ] Loading states for all screens
-- [ ] Error messages and retry mechanisms
-- [ ] Empty states with helpful actions
+- [ ] Indicadores de estado sin conexión
+- [ ] Estados de carga para todas las pantallas
+- [ ] Mensajes de error y mecanismos de reintento
+- [ ] Estados vacíos con acciones útiles
 
 **HOME Screen States:**
 
@@ -332,133 +337,134 @@
 - [ ] **Sin horarios hoy:** Estado cuando no hay viajes programados para hoy
 - [ ] **Conflicto de horarios:** Qué pasa si hay overlapping entre viajes
 
-### Accessibility & Usability
+### Accesibilidad y Usabilidad
 
-- [ ] Screen reader support
-- [ ] Color contrast validation
-- [ ] Font size accessibility
-- [ ] Touch target minimum sizes
+- [ ] Soporte para lectores de pantalla
+- [ ] Validación de contraste de colores
+- [ ] Accesibilidad del tamaño de fuente
+- [ ] Tamaños mínimos de objetivos táctiles
 
 ---
 
-## ⚖️ **Business Rules & Conflict Resolution**
+## ⚖️ **Reglas de Negocio y Resolución de Conflictos**
 
-### Critical Business Logic Questions
+### Preguntas Críticas de Lógica de Negocio
 
-**Priority: HIGH** | **Effort: Research & Design** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: Investigación y Diseño** | **Asignado a: Por Definir**
 
 #### **¿Qué pasa si...?**
 
-- [ ] **Dos conductores** para la misma lanzadera/horario? → Define conflict resolution
-- [ ] **Usuario solicita plaza** pero ya hay conductor? → Validation logic
-- [ ] **Conductor cancela** el día del viaje? → Notification and rebooking system
-- [ ] **Más solicitudes** que plazas disponibles? → Waiting list or first-come-first-served
-- [ ] **Usuario abandona grupo** con lanzaderas activas? → Data cleanup and notifications
-- [ ] **Creador del grupo** elimina su cuenta? → Ownership transfer or group dissolution
-- [ ] **Lanzadera tiene reservas** pero se quiere eliminar? → Cancellation workflow
+- [ ] **Dos conductores** para la misma lanzadera/horario? → Definir resolución de conflictos
+- [ ] **Usuario solicita plaza** sin conductor asignado? → Informar que la lanzadera no sale sin conductor, usar chat para coordinar
+- [ ] **Conductor cancela** el día del viaje? → Sistema de notificación y re-reserva
+- [ ] **Más solicitudes** que plazas disponibles? → Lista de espera o por orden de llegada
+- [ ] **Usuario abandona grupo** con lanzaderas activas? → Limpieza de datos y notificaciones
+- [ ] **Creador del grupo** elimina su cuenta? → Transferencia de propiedad o disolución del grupo
+- [ ] **Lanzadera tiene reservas** pero se quiere eliminar? → Flujo de cancelación
 
-### Permission System Design
+### Diseño del Sistema de Permisos
 
-**Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
 
-- [ ] **Creador del grupo:** Puede todo
-- [ ] **Administrador:** Puede gestionar miembros y lanzaderas
-- [ ] **Miembro regular:** Solo puede crear lanzaderas y solicitar plazas
-- [ ] **Invitado:** Solo puede ver (futuro)
-
----
-
-## 🔧 **Backend & Infrastructure**
-
-### Database Optimizations
-
-- [ ] Firestore security rules
-- [ ] Data validation schemas
-- [ ] Backup and recovery procedures
-- [ ] Performance monitoring
-
-### Real-time Features
-
-- [ ] WebSocket connections for chat
-- [ ] Push notification service
-- [ ] Real-time seat availability
-- [ ] Location sharing (Phase 4)
+- [ ] **Creador del grupo:** Puede todo (permisos completos). También puede actuar como conductor
+- [ ] **Administrador:** Puede gestionar miembros, crear lanzaderas y aprobar solicitudes de creación de vehículos. También puede actuar como conductor
+- [ ] **Miembro estándar:** Solo puede solicitar plazas y gestionar sus propias solicitudes (anular, chat relacionado con su solicitud)
+- [ ] **Cualquier miembro como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir una lanzadera. Una vez aprobado, puede editar su vehículo sin autorización adicional. Sistema de trazabilidad registra modificaciones
 
 ---
 
-## 🆕 **New Features Added (2/10/25)**
+## 🔧 **Backend e Infraestructura**
 
-### Dynamic Role System
+### Optimizaciones de Base de Datos
 
-**Priority: HIGH** | **Effort: 2-3 days** | **Assignee: TBD**
+- [ ] Reglas de seguridad de Firestore
+- [ ] Esquemas de validación de datos
+- [ ] Procedimientos de respaldo y recuperación
+- [ ] Monitoreo de rendimiento
 
-- [ ] Implement flexible role selection per session
-- [ ] Add "preferred role" setting in user profile
-- [ ] Create role change interface in settings
-- [ ] Update role persistence logic per shuttle
+### Funcionalidades en Tiempo Real
 
-**Acceptance Criteria:**
-
-- Users can be both driver and passenger across different shuttles
-- Role selection happens when accessing shuttle details
-- Preferred role setting affects default selection
-- Settings screen includes "Change default role" option
-
-**Related Issues:** #19
+- [ ] Conexiones WebSocket para chat
+- [ ] Servicio de notificaciones push
+- [ ] Disponibilidad de plazas en tiempo real
+- [ ] Compartir ubicación (Fase 4)
 
 ---
 
-### Private/Public Groups
+## 🆕 **Nuevas Funcionalidades Agregadas (2/10/25)**
 
-**Priority: HIGH** | **Effort: 3-4 days** | **Assignee: TBD**
+### Sistema de Roles Dinámico
 
-- [ ] Add group visibility setting during creation
-- [ ] Implement public group discovery
-- [ ] Create join request/approval system
-- [ ] Update group management UI
+**Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
 
-**Acceptance Criteria:**
+- [ ] Implementar selección flexible de rol por sesión
+- [ ] Agregar configuración de "rol preferido" en perfil de usuario
+- [ ] Crear interfaz de cambio de rol en configuración
+- [ ] Actualizar lógica de persistencia de rol por lanzadera
 
-- Clear visibility selection during group creation
-- Private groups: invitation-only access
-- Public groups: appear in discovery list + require approval
-- Visibility can be changed after group creation
-- Join requests include optional message to admin
+**Criterios de Aceptación:**
 
-**Related Issues:** #20
+- Los usuarios pueden ser conductor y pasajero en diferentes lanzaderas
+- La selección de rol ocurre al acceder a los detalles de la lanzadera
+- La configuración de rol preferido afecta la selección por defecto
+- La pantalla de configuración incluye opción "Cambiar rol por defecto"
 
----
-
-### Enhanced Privacy System
-
-**Priority: MEDIUM** | **Effort: 2 days** | **Assignee: TBD**
-
-- [ ] Hide phone numbers by default
-- [ ] Implement in-app messaging only
-- [ ] Add privacy settings per user
-- [ ] Plan future direct calling integration
-
-**Acceptance Criteria:**
-
-- Phone numbers hidden from all user interfaces
-- Communication only through group chats
-- User profile setting: "Show phone number" (default: false)
-- Preparation for future in-app calling feature
-
-**Related Issues:** #21
+**Issues Relacionados:** #19
 
 ---
 
-### Vehicle Management System
+### Grupos Privados/Públicos
 
-**Priority: HIGH** | **Effort: 4-5 days** | **Assignee: TBD**
+**Prioridad: ALTA** | **Esfuerzo: 3-4 días** | **Asignado a: Por Definir**
 
-- [ ] Create Vehicle entity in Firestore
-- [ ] Implement role-based vehicle CRUD operations
-- [ ] Add vehicle selector + "create new" in shuttle booking
-- [ ] Group-specific vehicle management with permissions
+- [ ] Agregar configuración de visibilidad durante la creación del grupo
+- [ ] Implementar descubrimiento de grupos públicos
+- [ ] Crear sistema de solicitud/aprobación de ingreso
+- [ ] Actualizar interfaz de gestión de grupos
 
-**Database Schema:**
+**Criterios de Aceptación:**
+
+- Selección clara de visibilidad durante la creación del grupo
+- Grupos privados: acceso solo por invitación
+- Grupos públicos: aparecen en lista de descubrimiento + requieren aprobación
+- La visibilidad puede cambiarse después de crear el grupo
+- Las solicitudes de ingreso incluyen mensaje opcional al administrador
+
+**Issues Relacionados:** #20
+
+---
+
+### Sistema de Privacidad Mejorado
+
+**Prioridad: MEDIA** | **Esfuerzo: 2 días** | **Asignado a: Por Definir**
+
+- [ ] Ocultar números de teléfono por defecto
+- [ ] Implementar solo mensajería dentro de la app
+- [ ] Agregar configuración de privacidad por usuario
+- [ ] Planificar futura integración de llamadas directas
+
+**Criterios de Aceptación:**
+
+- Números de teléfono ocultos en todas las interfaces de usuario
+- Comunicación solo a través de chats grupales
+- Configuración en perfil de usuario: "Mostrar número de teléfono" (por defecto: falso)
+- Preparación para futura funcionalidad de llamadas dentro de la app
+
+**Issues Relacionados:** #21
+
+---
+
+### Sistema de Gestión de Vehículos
+
+**Prioridad: ALTA** | **Esfuerzo: 4-5 días** | **Asignado a: Por Definir**
+
+- [ ] Crear entidad Vehicle en Firestore
+- [ ] Implementar operaciones CRUD de vehículos basadas en roles
+- [ ] Agregar selector de vehículo + "crear nuevo" en reserva de lanzadera
+- [ ] Sistema de aprobación para solicitudes de vehículos de conductores
+- [ ] Gestión de vehículos específica por grupo con permisos
+
+**Esquema de Base de Datos:**
 
 ```
 Vehicle {
@@ -475,90 +481,99 @@ Vehicle {
 }
 ```
 
-**Acceptance Criteria:**
+**Criterios de Aceptación:**
 
-- Vehicles saved per group
-- **Create permissions:** Conductors, admins, and creators can add vehicles
-- **Edit/Delete permissions:** Only admins and creators can modify vehicles
-- Integration with shuttle booking flow (select existing + create new)
-- In-situ vehicle creation during conductor booking
-- Vehicle reusability across multiple shuttles
+- Vehículos guardados por grupo (únicos dentro de cada grupo)
+- **Permisos de creación:** Administradores y creadores agregan directamente. Conductores pueden solicitar creación con aprobación requerida de admin/creador
+- **Permisos de edición/eliminación:** Administradores, creadores del grupo Y el conductor que agregó ese vehículo específico pueden modificar vehículos
+- Integración con flujo de reserva de lanzadera (seleccionar existente + crear nuevo)
+- Solicitud de creación de vehículo in-situ durante reserva de conductor (con aprobación)
+- Sistema de notificaciones para aprobación de vehículos
+- Chat integrado para comunicación durante proceso de aprobación
+- Reutilización de vehículos en múltiples lanzaderas del mismo grupo
+- **Importante:** Las lanzaderas son únicas dentro de cada grupo y no pueden existir en otros grupos
 
-**Related Issues:** #22
-
----
-
-## 🧪 **Testing & Quality**
-
-### Unit Tests
-
-- [ ] Provider tests (Riverpod)
-- [ ] Model validation tests
-- [ ] Business logic tests
-
-### Integration Tests
-
-- [ ] Authentication flow
-- [ ] Group creation workflow
-- [ ] Booking system end-to-end
-
-### Performance
-
-- [ ] App startup time optimization
-- [ ] Memory usage profiling
-- [ ] Network request optimization
+**Issues Relacionados:** #22
 
 ---
 
-## 🎯 **Development Priorities**
+### 📌 **Nota sobre Issues Relacionados**
 
-### **HIGH Priority (MVP Core):**
+Los números de issues (#19, #20, #21, #22) son referencias tentativas para las nuevas funcionalidades agregadas el 2/10/25. Estos deberán crearse en GitHub Issues cuando se implemente el sistema de seguimiento.
 
-1. ✅ Screen 7: Role Selection (updated with dynamic system)
-2. ✅ Screen 8: Shuttle Request
-3. ✅ Screen 9: Basic Group Management (updated with private/public)
-4. ✅ Screen 10: Join Existing Group
-5. 🆕 Screen 11: User Profile
-6. 🆕 Screen 12: Vehicle Management
-7. 🆕 Screen 13: Account Recovery
-8. 🆕 Screen 14: Enhanced Onboarding
-9. 🆕 Dynamic Role System implementation
-10. 🆕 Private/Public Groups functionality
-11. 🆕 Vehicle Management System
-12. ✅ Business rules definition and conflict resolution
-13. ✅ Navigation & Header improvements
+---
 
-### **MEDIUM Priority:**
+## 🧪 **Pruebas y Calidad**
 
-14. Screen 15: Notifications Management
-15. Screen 16: Detailed Chat System
-16. 🆕 Enhanced Privacy System
-17. ⚠️ UI/UX improvements (error states, offline support)
+### Pruebas Unitarias
+
+- [ ] Pruebas de Provider (Riverpod)
+- [ ] Pruebas de validación de modelos
+- [ ] Pruebas de lógica de negocio
+
+### Pruebas de Integración
+
+- [ ] Flujo de autenticación
+- [ ] Flujo de creación de grupos
+- [ ] Sistema de reservas end-to-end
+
+### Rendimiento
+
+- [ ] Optimización de tiempo de arranque de la app
+- [ ] Perfilado de uso de memoria
+- [ ] Optimización de peticiones de red
+
+---
+
+## 🎯 **Prioridades de Desarrollo**
+
+### **Prioridad ALTA (Core MVP):**
+
+1. ✅ Pantalla 7: Selección de Rol (actualizada con sistema dinámico)
+2. ✅ Pantalla 8: Solicitud de Lanzadera
+3. ✅ Pantalla 9: Gestión Básica de Grupos (actualizada con privado/público)
+4. ✅ Pantalla 10: Unirse a Grupo Existente
+5. 🆕 Pantalla 11: Perfil de Usuario
+6. 🆕 Pantalla 12: Gestión de Vehículos
+7. 🆕 Pantalla 13: Recuperación de Cuenta
+8. 🆕 Pantalla 14: Onboarding Mejorado
+9. 🆕 Implementación de Sistema de Roles Dinámico
+10. 🆕 Funcionalidad de Grupos Privados/Públicos
+11. 🆕 Sistema de Gestión de Vehículos
+12. ✅ Definición de reglas de negocio y resolución de conflictos
+13. ✅ Mejoras de navegación y encabezados
+
+### **Prioridad MEDIA:**
+
+14. Pantalla 15: Gestión de Notificaciones
+15. Pantalla 16: Sistema de Chat Detallado
+16. 🆕 Sistema de Privacidad Mejorado
+17. ⚠️ Mejoras de UI/UX (estados de error, soporte offline)
 18. ⚠️ Estados de error y sin conexión
 19. ⚠️ Validaciones y reglas de negocio
 
-### **LOW Priority (Post-MVP):**
+### **Prioridad BAJA (Post-MVP):**
 
-12. 🔮 Advanced chat features (multimedia, mentions)
-13. 🔮 User statistics and rating system
-14. 🔮 Advanced group features (public discovery)
+12. 🔮 Funcionalidades avanzadas de chat (multimedia, menciones)
+13. 🔮 Sistema de estadísticas y calificación de usuarios
+14. 🔮 Funcionalidades avanzadas de grupos (descubrimiento público)
 15. 🔮 Sistema de calificaciones
 
 ---
 
-## 📋 **Definition of Done**
+## 📋 **Definición de Completado**
 
-For any feature to be considered complete:
+Para que cualquier funcionalidad se considere completa:
 
-- [ ] ✅ **Functionality** - All acceptance criteria met
-- [ ] 🎨 **UI/UX** - Matches approved wireframes
-- [ ] 📱 **Responsive** - Works on different screen sizes
-- [ ] 🧪 **Tested** - Unit tests and manual QA completed
-- [ ] 📖 **Documented** - Code comments and user docs updated
-- [ ] 🔒 **Security** - Data validation and access controls
-- [ ] ♿ **Accessible** - Screen readers and keyboard navigation
+- [ ] ✅ **Funcionalidad** - Todos los criterios de aceptación cumplidos
+- [ ] 🎨 **UI/UX** - Coincide con wireframes aprobados
+- [ ] 📱 **Responsivo** - Funciona en diferentes tamaños de pantalla
+- [ ] 🧪 **Probado** - Pruebas unitarias y QA manual completadas
+- [ ] 📖 **Documentado** - Comentarios de código y documentación de usuario actualizados
+- [ ] 🔒 **Seguridad** - Validación de datos y controles de acceso
+- [ ] ♿ **Accesible** - Lectores de pantalla y navegación por teclado
 
 ---
 
-_Last updated: October 2024_  
-_For live progress tracking, see our [GitHub Issues](https://github.com/marcosgarcialopez/shuttlebiz/issues)_
+_Última actualización: Octubre 2024_  
+_Para seguimiento en vivo del progreso, ver nuestros [GitHub Issues](https://github.com/marcosgarcialopez/shuttlebiz/issues)_

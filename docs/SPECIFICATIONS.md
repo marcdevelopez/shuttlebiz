@@ -491,13 +491,17 @@ Pantalla de gestión del perfil personal y configuración de la aplicación.
 
 Pantalla dedicada para gestionar vehículos frecuentes o guardados por grupo.
 
-- **Acceso para crear/agregar:** Creadores, administradores y conductores del grupo
-- **Acceso para editar/eliminar:** Solo creadores y administradores del grupo
+- **Acceso para crear/agregar:** 
+  - **Creadores y administradores:** Pueden agregar vehículos directamente (aprobados automáticamente)
+  - **Cualquier miembro actuando como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir
+- **Acceso para editar/eliminar:** 
+  - **Creadores y administradores:** Pueden editar/eliminar cualquier vehículo del grupo
+  - **Conductor que creó el vehículo:** Puede editar su propio vehículo sin autorización adicional
 - **Funcionalidades:**
-  - **Conductores:** Pueden agregar nuevos vehículos frecuentes cuando vayan a usarlos
-  - **Admins/Creadores:** Pueden crear, editar y eliminar vehículos existentes
-  - Corrección de datos erróneos ingresados por conductores
-  - Gestión de vehículos de conductores que ya no están en el grupo
+  - **Sistema de aprobación:** Solo las solicitudes de creación de nuevos vehículos requieren aprobación del creador/admin del grupo
+  - **Trazabilidad:** Se registra automáticamente quién hizo la última modificación en cada vehículo
+  - **Notificaciones:** Administradores y creadores reciben notificación de nuevas solicitudes de creación
+  - **Chat integrado:** Comunicación durante proceso de aprobación de nuevos vehículos
 - **Datos del vehículo:**
   - **Obligatorios:**
     - Número de matrícula
@@ -507,7 +511,8 @@ Pantalla dedicada para gestionar vehículos frecuentes o guardados por grupo.
     - Marca
     - Color
 - **Persistencia:** Los vehículos se guardan por grupo y pueden ser reutilizados por cualquier conductor del grupo
-- **Integración:** Al crear una lanzadera como conductor, se puede seleccionar de la lista de vehículos frecuentes o agregar uno nuevo in-situ
+- **Integración:** Al crear una lanzadera como conductor, se puede seleccionar de vehículos aprobados o solicitar agregar uno nuevo (con aprobación)
+- **Estados:** Los vehículos pueden estar en estado 'aprobado', 'pendiente' o 'rechazado'
 
 ---
 
@@ -707,10 +712,10 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 
 ### **Sistema de Permisos Detallado:**
 
-- **Creador del grupo:** Permisos completos sobre todas las funcionalidades
-- **Administrador:** Gestión de miembros y lanzaderas, sin poder eliminar el grupo
-- **Miembro regular:** Crear lanzaderas propias y solicitar plazas en otras
-- **Invitado/Visitante:** Solo visualización (funcionalidad futura)
+- **Creador del grupo:** Permisos completos sobre todas las funcionalidades. También puede actuar como conductor en cualquier lanzadera del grupo
+- **Administrador:** Gestión de miembros, creación de lanzaderas, aprobación de solicitudes de creación de nuevos vehículos, sin poder eliminar el grupo. También puede actuar como conductor en cualquier lanzadera del grupo
+- **Miembro estándar:** Solo puede solicitar plazas y gestionar sus propias solicitudes
+- **Cualquier miembro actuando como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir una lanzadera (requiere aprobación de admin/creador del grupo). Una vez aprobado, puede editar el vehículo que creó sin autorización adicional. Sistema de trazabilidad registra quién hizo la última modificación
 
 <br>
 

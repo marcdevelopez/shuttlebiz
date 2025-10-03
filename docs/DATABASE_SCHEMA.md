@@ -3,6 +3,7 @@
 ## 📋 Desarrollo - Orden Recomendado
 
 ### **Implementación Sugerida:**
+
 1. **Modelos básicos** (User, Group) con Freezed
 2. **Firebase setup** y autenticación
 3. **Providers básicos** con Riverpod
@@ -17,6 +18,7 @@
 ## 🔥 Firebase Firestore Structure
 
 ### 👥 USERS Collection
+
 ```javascript
 users: {
   [userId]: {
@@ -33,6 +35,7 @@ users: {
 ```
 
 ### 🏢 GROUPS Collection
+
 ```javascript
 groups: {
   [groupId]: {
@@ -52,6 +55,7 @@ groups: {
 ```
 
 ### 🚗 VEHICLES Collection
+
 ```javascript
 vehicles: {
   [vehicleId]: {
@@ -64,12 +68,40 @@ vehicles: {
     color?: string,                // 🆕 optional
     createdBy: string,             // 🆕 User ID
     createdAt: timestamp,          // 🆕
-    isActive: boolean              // 🆕
+    isActive: boolean,             // 🆕
+    status: string,                // 🆕 'approved' | 'pending' | 'rejected'
+    approvedBy?: string,           // 🆕 Admin/Creator who approved
+    approvedAt?: timestamp         // 🆕 When approved
   }
 }
 ```
 
-### 🚌 SHUTTLES Collection
+### � VEHICLE_REQUESTS Collection (🆕 for approval system)
+
+```javascript
+vehicleRequests: {
+  [requestId]: {
+    id: string,
+    vehicleData: {                 // 🆕 vehicle data being requested
+      licensePlate: string,
+      seats: number,
+      model?: string,
+      brand?: string,
+      color?: string
+    },
+    groupId: string,               // 🆕 target group
+    requestedBy: string,           // 🆕 conductor requesting
+    status: string,                // 🆕 'pending' | 'approved' | 'rejected'
+    reviewedBy?: string,           // 🆕 admin who reviewed
+    reviewMessage?: string,        // 🆕 optional message
+    createdAt: timestamp,
+    reviewedAt?: timestamp
+  }
+}
+```
+
+### �🚌 SHUTTLES Collection
+
 ```javascript
 shuttles: {
   [shuttleId]: {
@@ -81,24 +113,24 @@ shuttles: {
     destination: string,
     defaultSeats: number,
     comment?: string,
-    
+
     // Configuración de horario
     scheduleType: 'date' | 'frequency',
-    
+
     // Si es tipo 'date'
     specificDates?: {
       date: string,              // 'YYYY-MM-DD'
       times: string[]            // ['08:00', '17:30']
     }[],
-    
-    // Si es tipo 'frequency'  
+
+    // Si es tipo 'frequency'
     frequency?: {
       days: number[],            // [1,2,3,4,5] = L-V
       times: string[],
       startDate: string,
       endDate?: string
     },
-    
+
     isActive: boolean,
     createdAt: timestamp
   }
@@ -106,6 +138,7 @@ shuttles: {
 ```
 
 ### 🎫 BOOKINGS Collection
+
 ```javascript
 bookings: {
   [bookingId]: {
@@ -113,13 +146,13 @@ bookings: {
     shuttleId: string,
     userId: string,
     groupId: string,
-    
+
     // Detalles específicos del viaje
     date: string,                // 'YYYY-MM-DD'
     time: string,                // '08:00'
     role: 'driver' | 'passenger',
     vehicleId?: string,          // 🆕 if role = driver
-    
+
     // Estado
     status: 'requested' | 'confirmed' | 'cancelled',
     requestedAt: timestamp,
@@ -129,6 +162,7 @@ bookings: {
 ```
 
 ### 💬 MESSAGES Collection
+
 ```javascript
 messages: {
   [messageId]: {
@@ -138,7 +172,7 @@ messages: {
     userId: string,
     text: string,
     timestamp: timestamp,
-    
+
     // Para chat específico de viaje
     rideDate?: string,           // 'YYYY-MM-DD'
     rideTime?: string            // '08:00'
@@ -151,6 +185,7 @@ messages: {
 ## 🎯 Dart Models with Freezed
 
 ### 👤 User Model
+
 ```dart
 @freezed
 class User with _$User {
@@ -194,6 +229,7 @@ class User with _$User {
 ```
 
 ### 🏢 Group Model
+
 ```dart
 @freezed
 class Group with _$Group {
@@ -242,6 +278,7 @@ class Group with _$Group {
 ```
 
 ### 🚗 Vehicle Model
+
 ```dart
 @freezed
 class Vehicle with _$Vehicle {
@@ -256,6 +293,9 @@ class Vehicle with _$Vehicle {
     required String createdBy,
     required DateTime createdAt,
     @Default(true) bool isActive,
+    @Default('approved') String status,    // 🆕 'approved' | 'pending' | 'rejected'
+    String? approvedBy,                    // 🆕 Admin/Creator who approved
+    DateTime? approvedAt,                  // 🆕 When approved
   }) = _Vehicle;
 
   factory Vehicle.fromFirestore(DocumentSnapshot doc) {
@@ -271,6 +311,9 @@ class Vehicle with _$Vehicle {
       createdBy: data['createdBy'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       isActive: data['isActive'] ?? true,
+      status: data['status'] ?? 'approved',
+      approvedBy: data['approvedBy'],
+      approvedAt: data['approvedAt'] != null ? (data['approvedAt'] as Timestamp).toDate() : null,
     );
   }
 
@@ -285,12 +328,16 @@ class Vehicle with _$Vehicle {
       'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),
       'isActive': isActive,
+      'status': status,
+      'approvedBy': approvedBy,
+      'approvedAt': approvedAt != null ? Timestamp.fromDate(approvedAt!) : null,
     };
   }
 }
 ```
 
 ### 🚌 Shuttle Model
+
 ```dart
 @freezed
 class Shuttle with _$Shuttle {
@@ -409,6 +456,7 @@ class Frequency with _$Frequency {
 ```
 
 ### 🎫 Booking Model
+
 ```dart
 @freezed
 class Booking with _$Booking {
@@ -472,6 +520,7 @@ enum BookingStatus { requested, confirmed, cancelled }
 ```
 
 ### 💬 Message Model
+
 ```dart
 @freezed
 class Message with _$Message {
@@ -526,26 +575,35 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
+
     // Group members can read group data, admins can write
     match /groups/{groupId} {
-      allow read: if request.auth != null && 
+      allow read: if request.auth != null &&
         request.auth.uid in resource.data.members;
-      allow write: if request.auth != null && 
-        (request.auth.uid == resource.data.createdBy || 
+      allow write: if request.auth != null &&
+        (request.auth.uid == resource.data.createdBy ||
          request.auth.uid in resource.data.admins);
     }
-    
-    // Vehicle management: conductors can create, admins can edit/delete
+
+    // Vehicle management: conductors can create (pending approval), admins can approve/edit/delete
     match /vehicles/{vehicleId} {
-      allow read: if request.auth != null && 
+      allow read: if request.auth != null &&
         request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.members;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && 
+      allow create: if request.auth != null &&
+        request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.members;
+      allow update: if request.auth != null && (
+        // Admins/creators can always update
+        request.auth.uid == get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.createdBy ||
+        request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.admins ||
+        // Creator of vehicle can update their own vehicle
+        (request.auth.uid == resource.data.createdBy && resource.data.status == 'approved')
+      );
+      allow delete: if request.auth != null &&
         (request.auth.uid == get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.createdBy ||
-         request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.admins);
+         request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.admins ||
+         request.auth.uid == resource.data.createdBy);
     }
-    
+
     // Similar rules for shuttles, bookings, messages...
   }
 }
@@ -556,12 +614,14 @@ service cloud.firestore {
 ## 📊 Performance Optimization
 
 ### **Firestore Indexes Needed:**
+
 - `groups` → `visibility` ASC, `createdAt` DESC (for public group discovery)
 - `bookings` → `shuttleId` ASC, `date` ASC, `time` ASC
 - `messages` → `groupId` ASC, `timestamp` DESC
 - `vehicles` → `groupId` ASC, `isActive` ASC
 
 ### **Caching Strategy:**
+
 - User profile → Local cache with TTL
 - Active groups → Real-time listeners
 - Bookings → Real-time for active dates
