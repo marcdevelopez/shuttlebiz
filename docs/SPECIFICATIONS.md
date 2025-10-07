@@ -50,7 +50,6 @@
 - 🔄 Si el creador abandona:
   - El nuevo administrador será designado por él.
   - Si no hay designación, será el miembro más antiguo.
-- 👥 Si tiene permisos, un usuario **puede invitar a otros**, pero **no puede crear lanzaderas**.
 
 ---
 
@@ -166,6 +165,42 @@
   - Cuando alguien solicita una plaza (informándose de plazas restantes).
   - Cuando comienza un viaje (para los viajeros).
 - 🗺️ Visualización en tiempo real de la ubicación de conductor y viajeros _(no incluido en MVP)_.
+
+### **📍 Políticas de Geolocalización** _(para implementación con mapas)_
+
+- **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje
+  - Se activa automáticamente al confirmar salida de lanzadera
+  - Visible para todos los viajeros de esa lanzadera específica
+  - Necesaria para coordinación y seguridad del grupo
+  - **Consentimiento requerido**: Aceptar términos de conductor incluye localización
+- **🧑‍🤝‍🧑 Viajero**: Geolocalización **opcional**
+  - El usuario decide si mostrar su ubicación o no
+  - **Impacto en perfil**: No mostrar ubicación queda reflejado en perfil público
+  - Puede ser factor negativo para aceptación en futuros grupos
+  - Solo visible para el conductor y otros viajeros de la misma lanzadera
+  - **Consentimiento granular**: Preguntar en cada viaje o configuración general
+
+### **🔒 Privacidad y Retención de Datos GPS**
+
+- **Almacenamiento temporal**: Los datos GPS se almacenan solo durante el viaje activo
+- **Eliminación automática**: Al finalizar viaje, los datos de ubicación se eliminan en 24 horas
+- **Excepciones de retención** _(solo con consentimiento explícito)_:
+  - Estadísticas de rutas (datos anonimizados)
+  - Histórico de viajes para soporte técnico (máximo 30 días)
+- **Control del usuario**: Derecho a eliminación inmediata de cualquier dato de ubicación
+- **Transparencia**: Log de acceso a ubicación visible en configuración de privacidad
+
+### **⏰ Ventana de Activación del Tracking** _(para implementación con mapas)_
+
+- **Cuándo se activa la localización**:
+  - **Opción 1**: Tiempo fijo antes de la salida (ej: 30 minutos)
+  - **Opción 2**: Cuando el conductor activa "Iniciar viaje"
+  - **Opción 3**: Cuando el propio usuario decide mostrar ubicación
+- **Visibilidad de ubicaciones**:
+
+  - **Conductor puede ver**: Ubicación de todos los viajeros (si la han activado)
+  - **Viajeros pueden ver**: Solo ubicación del conductor + otros viajeros que lo permitan
+  - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad)
 
   ***
 
@@ -491,10 +526,10 @@ Pantalla de gestión del perfil personal y configuración de la aplicación.
 
 Pantalla dedicada para gestionar vehículos frecuentes o guardados por grupo.
 
-- **Acceso para crear/agregar:** 
+- **Acceso para crear/agregar:**
   - **Creadores y administradores:** Pueden agregar vehículos directamente (aprobados automáticamente)
   - **Cualquier miembro actuando como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir
-- **Acceso para editar/eliminar:** 
+- **Acceso para editar/eliminar:**
   - **Creadores y administradores:** Pueden editar/eliminar cualquier vehículo del grupo
   - **Conductor que creó el vehículo:** Puede editar su propio vehículo sin autorización adicional
 - **Funcionalidades:**
@@ -726,6 +761,7 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 > 📋 **Referencia completa:** Ver [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) para especificaciones detalladas de Firestore, modelos Dart con Freezed, reglas de seguridad y optimizaciones.
 
 ### **Entidades principales:**
+
 - **User**: Perfil, roles, configuración de privacidad
 - **Group**: Grupos públicos/privados con gestión de miembros
 - **Vehicle**: Vehículos frecuentes por grupo con permisos específicos
@@ -740,7 +776,7 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 ## **TECNOLOGÍAS:**
 
 - Flutter
-- State Management \- Bloc o Riverpod (manejar interacciones)
+- State Management - Riverpod (manejar interacciones)
 - Firebase Authentication (login)
 - Firebase Firestore (datos en tiempo real y chats)
 - Firebase Cloud Functions (automatizaciones: notificaciones, etc)
@@ -790,6 +826,17 @@ Comunicación completa entre usuarios con múltiples canales de chat.
   - Sugerencias automáticas de horarios y rutas
   - Optimización de ocupación de vehículos
   - Predicción de demanda por rutas
+
+- [ ] **Sistema de Ayuda Inteligente** _(tipo bot contextual)_:
+
+  - **Sugerencias contextuales**: En cada pantalla, el sistema sugiere próximas acciones posibles
+  - **Ejemplos de sugerencias**:
+    - Al crear grupo → "¿Quieres crear tu primera lanzadera?"
+    - Al configurar horario puntual → "¿Prefieres añadir frecuencia semanal?"
+    - En pantalla vacía → "¿Necesitas ayuda para empezar?"
+  - **Interfaz tipo chatbot**: Botón flotante que responde a consultas de usuario
+  - **Navegación inteligente**: "Llévame a crear vehículo" → dirige automáticamente
+  - **Aprendizaje de patrones**: Sugiere acciones basadas en comportamiento del usuario
 
 - [ ] **Sistema de comunicación avanzado**:
 

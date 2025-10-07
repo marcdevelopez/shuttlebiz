@@ -25,9 +25,10 @@ You can find the complete documentation and feature specifications at the link b
 ## Tech Stack
 
 - **Frontend**: Flutter (Dart)
-- **Backend**: Firebase (Authentication, Firestore, Messaging)
+- **Backend**: Firebase (Authentication, Firestore, Cloud Functions, Messaging)
 - **Location Services**: Google Maps API
-- **State Management**: *(To be defined: Provider, Riverpod, Bloc...)*
+- **State Management**: Riverpod
+- **Routing**: GoRouter
 - **Version Control**: Git + GitHub Projects
 
 ---
@@ -46,8 +47,8 @@ You can find the complete documentation and feature specifications at the link b
 
 Here are some early in-app screens and mockups from the ShuttleBiz development:
 
-| User Authentication | Create Shuttle | Shuttle List |
-|---------------------|----------------|--------------|
+| User Authentication              | Create Shuttle                               | Shuttle List                             |
+| -------------------------------- | -------------------------------------------- | ---------------------------------------- |
 | ![Auth](assets/screens/auth.png) | ![Create](assets/screens/create-shuttle.png) | ![List](assets/screens/shuttle-list.png) |
 
 > These screens reflect the current stage of development. More features and refinements are on the way.
@@ -99,5 +100,5 @@ For collaboration inquiries or commercial use requests, feel free to open a GitH
 
 ---
 
- Created by [Marcos García](https://github.com/marcdevelopez)  
+Created by [Marcos García](https://github.com/marcdevelopez)  
  Personal website coming soon: [marcdevelopez.com](https://marcdevelopez.com)

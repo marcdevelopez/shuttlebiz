@@ -76,7 +76,7 @@ vehicles: {
 }
 ```
 
-### � VEHICLE_REQUESTS Collection (🆕 for approval system)
+### 🚗 VEHICLE_REQUESTS Collection (🆕 for approval system)
 
 ```javascript
 vehicleRequests: {
