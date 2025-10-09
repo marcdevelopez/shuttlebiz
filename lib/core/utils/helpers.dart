@@ -64,7 +64,7 @@ class Helpers {
     final minutes = duration.inMinutes % 60;
 
     if (hours > 0) {
-      return '${hours}h ${minutes}m';
+      return '${hours}h ${minutes.toString().padLeft(2, '0')}m';
     } else {
       return '${minutes}m';
     }

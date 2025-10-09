@@ -802,6 +802,43 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 
 ---
 
+## 🧰 Helpers y Utilidades Globales
+
+Archivo principal: `lib/core/utils/helpers.dart`
+
+Centraliza funciones comunes que asisten a diferentes módulos de la app.  
+No implementa lógica de negocio, pero mejora la consistencia y reusabilidad en toda la arquitectura.
+
+### Categorías principales
+
+- **UI**  
+  - `showSnackBarSuccess()` y `showSnackBarError()` para mensajes visuales coherentes.  
+  - `dismissKeyboard()` para cerrar el teclado desde cualquier pantalla.  
+  - Detección automática de modo oscuro.
+
+- **Diálogos**  
+  - `showConfirmationDialog()` con título, mensaje y botones configurables.
+
+- **Validación**  
+  - `validateEmail()`, `validateLink()`, `validateEmpty()` usados en formularios de login, grupos y lanzaderas.
+
+- **Geolocalización básica**  
+  - `calculateDistance(lat1, lon1, lat2, lon2)` — cálculo aproximado de distancia (no sustituye el tracking GPS).
+
+- **Utilidades generales**  
+  - `generateInvitationCode()` — usado en flujos de invitación por código.  
+  - `formatDuration()` — formatea duración de viajes u operaciones.  
+  - `getFileSize()` — devuelve tamaño legible de archivos.
+
+- **Depuración (Debug)**  
+  - `debugLog()` — imprime logs solo en modo desarrollo, evitando ruido en producción.
+
+📘 *Estas funciones son auxiliares y se usarán a lo largo de las features definidas en las secciones anteriores (grupos, lanzaderas, chat, etc.) para mantener coherencia visual y lógica en toda la app.*
+
+<br>
+
+---
+
 ## **PASOS DEL PROYECTO**:
 
 1. MVP Minimal Viable Product: login, funcionalidad de grupo, lanzadera, chat? mapa?
