@@ -576,4 +576,4 @@ Para que cualquier funcionalidad se considere completa:
 ---
 
 _Última actualización: Octubre 2024_  
-_Para seguimiento en vivo del progreso, ver nuestros [GitHub Issues](https://github.com/marcosgarcialopez/shuttlebiz/issues)_
+_Para seguimiento en vivo del progreso, ver nuestros [GitHub Issues](https://github.com/marcdevelopez/shuttlebiz/issues)_
