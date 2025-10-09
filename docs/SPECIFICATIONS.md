@@ -1,7 +1,16 @@
-<div align="center">
-  <img src="assets/diagrams/hand-icon-light.png" width="70" alt="Hand Icon" style="margin: 0 20px;">
-  <img src="assets/diagrams/shuttlebiz-logo.png" width="85" alt="ShuttleBiz Logo" style="margin: 0 20px;">
-  <img src="assets/diagrams/hand-icon-strong.png" width="63" alt="Strong Hand Icon" style="margin: 0 20px;">
+<div align="center">## **1. Autenticación y Roles de Usuario**
+
+- 🔐 **Login por número de teléfono** con verificación SMS/OTP.
+- ✅ **Sesión persistente** tras## **6. Comunicación y Notificaciones**
+
+- 📢 Chat general por grupo y chat específico por viaje.
+- 🔐 **Privacidad de contacto**: el número de teléfono no será visible entre usuariosmer acceso.
+- 🔁 **Opción de recuperación** si el usua- **CHAT** (A todo el grupo, Chat general)
+  - Se distinguirá del otro chat de hora en concreto de una salida, en que aparecerá arriba muy visible el nombre: Chat general [nombre del grupo]
+- **MAPA** _(funcionalidad futura)_ cambia de número.
+- 👥 **Sistema de roles flexible**: cualquier usuario puede usar tanto el rol de conductor como de viajerog src="assets/diagrams/hand-icon-light.png" width="70" alt="Hand Icon" style="margin: 0 20px;">
+<img src="assets/diagrams/shuttlebiz-logo.png" width="85" alt="ShuttleBiz Logo" style="margin: 0 20px;">
+<img src="assets/diagrams/hand-icon-strong.png" width="63" alt="Strong Hand Icon" style="margin: 0 20px;">
 </div>
 
 <br>
@@ -164,7 +173,7 @@
   - Cuando un usuario se une a un grupo.
   - Cuando alguien solicita una plaza (informándose de plazas restantes).
   - Cuando comienza un viaje (para los viajeros).
-- 🗺️ Visualización en tiempo real de la ubicación de conductor y viajeros _(no incluido en MVP)_.
+- 🗺️ Visualización en tiempo real de la ubicación de conductor y viajeros _(funcionalidad futura, no incluida en MVP)_.
 
 ### **📍 Políticas de Geolocalización** _(para implementación con mapas)_
 
@@ -230,7 +239,7 @@
 ### **Comportamiento del selector de grupo:**
 
 - Si **no hay ningún grupo creado**, el texto mostrará: Agregar un Grupo, seguido de un icono \+.
-  - Al pulsarlo: se abre una pantalla o diálogo para crear un nuevo grupo.
+  - Al pulsarlo: navega a una pantalla de creación de grupo que incluye configuración obligatoria de **Visibilidad** (Privado/Público) además del nombre.
   - Este icono puede mantenerse visible o solo estar dentro del menú superior para evitar pulsaciones accidentales.
 - Si **ya hay uno o varios grupos creados**, el string mostrará el nombre del grupo activo.
 
@@ -283,8 +292,8 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
 
   - Si el usuario **no tiene grupo**, solo verá el encabezado y el botón Agregar grupo (+).
     - NUEVO GRUPO
-    - Al pulsar el botón \`Agregar Grupo (+)\`, se abre un **cuadro de diálogo** o pantalla modal.
-    - Se solicita al usuario que **ingrese el nombre del nuevo grupo**.
+    - Al pulsar el botón \`Agregar Grupo (+)\`, navega a una **pantalla de creación de grupo**.
+    - Se solicita al usuario **nombre del grupo** y **configuración de visibilidad** (Privado/Público).
     - Al confirmar, se **crea el grupo** y queda disponible en la barra superior y en la \`HOME\`.
     - A partir de ese momento, el usuario puede crear lanzaderas dentro del nuevo grupo.
     - Si el usuario **tiene grupo**, se mostrarán las lanzaderas del grupo activo.

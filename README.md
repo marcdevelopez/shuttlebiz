@@ -58,11 +58,13 @@ Here are some early in-app screens and mockups from the ShuttleBiz development:
 ## Roadmap
 
 - [x] Project planning and requirement gathering
-- [x] UI/UX wireframes (in progress)
-- [ ] Firebase setup and user authentication
+- [x] UI/UX wireframes and complete specifications
+- [x] Database schema design (Firestore structure)
+- [x] Authentication flow design (Phone + SMS verification)
+- [ ] Firebase implementation and environment setup
 - [ ] Basic navigation and routing
 - [ ] Chat module implementation
-- [ ] Real-time location sharing
+- [ ] Real-time location sharing _(post-MVP feature)_
 - [ ] Booking and seat availability
 - [ ] Notifications and reminders
 - [ ] MVP launch

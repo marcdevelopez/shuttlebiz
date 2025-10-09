@@ -154,7 +154,7 @@
 **Details:**
 
 - **Acceso crear:** Administradores y creadores agregan directamente. Cualquier miembro como conductor puede solicitar aprobación para crear nuevos vehículos
-- **Acceso editar:** Administradores y creadores pueden editar cualquier vehículo. Conductor que creó vehículo puede editarlo sin autorización
+- **Acceso editar/eliminar:** Administradores y creadores pueden editar/eliminar cualquier vehículo. Conductor que creó vehículo puede editarlo sin autorización
 - **Funcionalidades:** Sistema de aprobación solo para creación de nuevos vehículos, trazabilidad automática de modificaciones, chat disponible durante aprobación
 - **Datos obligatorios:** Matrícula, número de plazas
 - **Datos opcionales:** Modelo, marca, color
