@@ -1,16 +1,9 @@
-<div align="center">## **1. Autenticación y Roles de Usuario**
+<div align="center">
 
-- 🔐 **Login por número de teléfono** con verificación SMS/OTP.
-- ✅ **Sesión persistente** tras## **6. Comunicación y Notificaciones**
-
-- 📢 Chat general por grupo y chat específico por viaje.
-- 🔐 **Privacidad de contacto**: el número de teléfono no será visible entre usuariosmer acceso.
-- 🔁 **Opción de recuperación** si el usua- **CHAT** (A todo el grupo, Chat general)
-  - Se distinguirá del otro chat de hora en concreto de una salida, en que aparecerá arriba muy visible el nombre: Chat general [nombre del grupo]
-- **MAPA** _(funcionalidad futura)_ cambia de número.
-- 👥 **Sistema de roles flexible**: cualquier usuario puede usar tanto el rol de conductor como de viajerog src="assets/diagrams/hand-icon-light.png" width="70" alt="Hand Icon" style="margin: 0 20px;">
+<img src="assets/diagrams/hand-icon-light.png" width="70" alt="Hand Icon" style="margin: 0 20px;">
 <img src="assets/diagrams/shuttlebiz-logo.png" width="85" alt="ShuttleBiz Logo" style="margin: 0 20px;">
 <img src="assets/diagrams/hand-icon-strong.png" width="63" alt="Strong Hand Icon" style="margin: 0 20px;">
+
 </div>
 
 <br>
@@ -161,11 +154,9 @@
   - El botón de solicitud de plaza como viajero se bloquea si la lanzadera está completa.
   - Puede mostrarse como "estado completo".
 
-  ***
+---
 
-  ##
-
-  ## **5\. Reglas y Validaciones**
+## **5\. Reglas y Validaciones**
 
 - 🚫 **Solo puede haber un conductor por horario**.
 - 🔄 **Se puede anular una solicitud**.
@@ -174,9 +165,9 @@
 - 🧾 Cada solicitud se guarda con fecha, rol y grupo asociado.
 - 🧠 Validaciones para evitar solapamientos en la configuración de horarios.
 
-  ***
+---
 
-  ## **6\. Comunicación y Notificaciones**
+## **6\. Comunicación y Notificaciones**
 
 - 📢 Chat general por lanzadera _(no incluido en MVP)_.
 - 🔐 **Privacidad de contacto**: el número de teléfono no será visible entre usuarios
@@ -228,9 +219,9 @@
   - **Viajeros pueden ver**: Solo ubicación del conductor + otros viajeros que lo permitan
   - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad)
 
-  ***
+---
 
-  ## **7\. UX/UI Consideraciones**
+## **7\. UX/UI Consideraciones**
 
 - 🔀 Cambiar de grupo desde el nombre en la barra superior.
 - 🟢 Estado visual por lanzadera y horario.
