@@ -6,18 +6,21 @@
 
 1. **Modelos básicos** (User, Group) con Freezed
 2. **Firebase setup** y autenticación
-3. **Providers básicos** con Riverpod
-4. **CRUD de grupos** (crear, listar)
-5. **Modelos de Shuttle** y configuración
-6. **Sistema de reservas** (Booking)
-7. **Sistema de vehículos** (Vehicle)
-8. **Chat y notificaciones**
+3. **Sistema de respaldo** (Drive/iCloud integration)
+4. **Providers básicos** con Riverpod
+5. **CRUD de grupos** (crear, listar)
+6. **Modelos de Shuttle** y configuración
+7. **Sistema de reservas** (Booking)
+8. **Sistema de vehículos** (Vehicle)
+9. **Chat y notificaciones**
+10. **Mapas y geolocalización** (incluido en MVP)
+11. **Alertas de conductores** (Driver Alerts)
 
 ---
 
 ## 🔥 Firebase Firestore Structure
 
-### 👥 USERS Collection
+### 👥 USERS Collection (datos básicos para recuperación)
 
 ```javascript
 users: {
@@ -25,11 +28,28 @@ users: {
     id: string,
     phoneNumber: string,
     displayName?: string,
-    profileImage?: string,
-    preferredRole?: string,        // 🆕 conductor/viajero/none
-    showPhoneNumber: boolean,      // 🆕 privacy setting
+    profileImage?: string,          // URL opcional
+    preferredRole?: string,         // conductor/viajero/none
+    showPhoneNumber: boolean,       // privacy setting
     createdAt: timestamp,
-    groups: string[]               // IDs de grupos donde participa
+    groups: string[],               // IDs de grupos donde participa
+
+    // 🆕 Configuración de respaldo
+    backupSettings: {
+      driveEnabled: boolean,        // Google Drive backup (Android)
+      icloudEnabled: boolean,       // iCloud backup (iOS)
+      localBackupEnabled: boolean,  // Respaldo local como alternativa
+      lastBackup?: timestamp,       // Último respaldo realizado
+      autoBackup: boolean          // Respaldo automático
+    },
+
+    // 🆕 Estadísticas básicas (para reputación futura)
+    stats: {
+      totalTrips: number,           // Viajes completados
+      cancelledTrips: number,       // Viajes cancelados
+      timesAsDriver: number,        // Veces como conductor
+      driverCancellations: number   // Cancelaciones como conductor
+    }
   }
 }
 ```
@@ -41,37 +61,46 @@ groups: {
   [groupId]: {
     id: string,
     name: string,
-    description?: string,          // 🆕 optional description
-    createdBy: string,             // userId del creador
-    admins: string[],              // userIds con permisos admin
-    members: string[],             // todos los miembros
-    visibility: string,            // 🆕 'private' | 'public'
+    description?: string,
+    groupImage?: string,             // 🆕 Foto de perfil del grupo
+    createdBy: string,
+    admins: string[],
+    members: string[],
+    potentialDrivers: string[],      // 🆕 Conductores potenciales asignados por admins
+    visibility: string,              // 'private' | 'public'
     createdAt: timestamp,
     settings: {
-      autoApproval: boolean        // 🆕 for public groups
+      autoApproval: boolean,
+      autoCancel15MinRule: boolean,  // 🆕 Cancelar si no hay conductor 15min antes
+      allowMemberVehicles: boolean   // 🆕 Permitir que miembros agreguen vehículos
     }
   }
 }
 ```
 
-### 🚗 VEHICLES Collection
+### 🚗 VEHICLES Collection (por grupo)
 
 ```javascript
 vehicles: {
   [vehicleId]: {
     id: string,
-    groupId: string,               // 🆕 belongs to specific group
-    licensePlate: string,          // 🆕 required
-    seats: number,                 // 🆕 required
-    model?: string,                // 🆕 optional
-    brand?: string,                // 🆕 optional
-    color?: string,                // 🆕 optional
-    createdBy: string,             // 🆕 User ID
-    createdAt: timestamp,          // 🆕
-    isActive: boolean,             // 🆕
-    status: string,                // 🆕 'approved' | 'pending' | 'rejected'
-    approvedBy?: string,           // 🆕 Admin/Creator who approved
-    approvedAt?: timestamp         // 🆕 When approved
+    groupId: string,
+    licensePlate: string,
+    seats: number,
+    model?: string,
+    brand?: string,
+    color?: string,
+    vehicleImage?: string,           // 🆕 Foto del vehículo (iCloud/Drive URL)
+    createdBy: string,
+    createdAt: timestamp,
+    isActive: boolean,
+    status: string,                  // 'approved' | 'pending' | 'rejected'
+    approvedBy?: string,
+    approvedAt?: timestamp,
+
+    // 🆕 Información adicional
+    description?: string,            // Descripción adicional del vehículo
+    isFrequent: boolean             // Vehículo marcado como frecuente
   }
 }
 ```
@@ -109,10 +138,19 @@ shuttles: {
     name: string,
     groupId: string,
     createdBy: string,
-    origin: string,
-    destination: string,
+    origin: string,                  // Debe ser corto para UI
+    destination: string,             // Debe ser corto para UI
+    originCoords?: {                 // 🆕 Coordenadas para mapas
+      lat: number,
+      lng: number
+    },
+    destinationCoords?: {            // 🆕 Coordenadas para mapas
+      lat: number,
+      lng: number
+    },
     defaultSeats: number,
     comment?: string,
+    hasBothDirections: boolean,      // 🆕 Si tiene ida y vuelta
 
     // Configuración de horario
     scheduleType: 'date' | 'frequency',
@@ -146,17 +184,24 @@ bookings: {
     shuttleId: string,
     userId: string,
     groupId: string,
-
-    // Detalles específicos del viaje
-    date: string,                // 'YYYY-MM-DD'
-    time: string,                // '08:00'
+    date: string,                    // 'YYYY-MM-DD'
+    time: string,                    // '08:00'
+    direction: 'outbound' | 'return', // 🆕 Ida o vuelta
     role: 'driver' | 'passenger',
-    vehicleId?: string,          // 🆕 if role = driver
+    vehicleId?: string,
 
-    // Estado
-    status: 'requested' | 'confirmed' | 'cancelled',
+    // 🆕 Estado detallado
+    status: 'requested' | 'confirmed' | 'cancelled' | 'completed',
     requestedAt: timestamp,
-    confirmedAt?: timestamp
+    confirmedAt?: timestamp,
+    cancelledAt?: timestamp,
+    completedAt?: timestamp,
+    cancellationReason?: string,     // Si se cancela
+
+    // 🆕 Información del viaje real
+    actualDepartureTime?: string,    // Hora real de salida
+    delay?: number,                  // Retraso en minutos
+    completionNotes?: string         // Notas del viaje completado
   }
 }
 ```
@@ -175,7 +220,72 @@ messages: {
 
     // Para chat específico de viaje
     rideDate?: string,           // 'YYYY-MM-DD'
-    rideTime?: string            // '08:00'
+    rideTime?: string,           // '08:00'
+
+    // 🆕 Chat individual/privado
+    recipientId?: string,        // Para chats privados entre usuarios
+    isPrivate: boolean           // true para chats privados
+  }
+}
+```
+
+### 🚨 DRIVER_ALERTS Collection (🆕 para gestión de conductores)
+
+```javascript
+driverAlerts: {
+  [alertId]: {
+    id: string,
+    groupId: string,
+    shuttleId: string,
+    targetUserId: string,        // Usuario seleccionado como conductor potencial
+    createdBy: string,           // Admin/creador que envía la alerta
+    date: string,                // 'YYYY-MM-DD'
+    time: string,                // '08:00'
+    direction: 'outbound' | 'return',
+
+    status: 'pending' | 'accepted' | 'rejected',
+    message?: string,            // Mensaje del admin
+    response?: string,           // Respuesta del conductor
+    rejectionReason?: string,    // Si rechaza: motivo
+
+    createdAt: timestamp,
+    respondedAt?: timestamp
+  }
+}
+```
+
+### 📋 MY_REQUESTS Collection (🆕 Estado de Mis Solicitudes)
+
+```javascript
+myRequests: {
+  [userId]: {
+    futureRequests: [
+      {
+        bookingId: string,
+        shuttleId: string,
+        shuttleName: string,
+        groupName: string,
+        date: string,
+        time: string,
+        direction: string,
+        role: string,
+        status: string
+      }
+    ],
+    pastRequests: [
+      {
+        bookingId: string,
+        shuttleId: string,
+        shuttleName: string,
+        groupName: string,
+        date: string,
+        time: string,
+        direction: string,
+        role: string,
+        status: string,
+        completedAt?: timestamp
+      }
+    ]
   }
 }
 ```

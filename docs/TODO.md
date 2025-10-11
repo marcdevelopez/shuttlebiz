@@ -1,10 +1,10 @@
 # 📝 TODO Técnico y Funcionalidades Faltantes
 
-## 🚨 **Pantallas Críticas Faltantes**
+## 🚨 **Pantallas Principales - Nueva Numeración**
 
-> **⚠️ Nota Importante:** Las lanzaderas son únicas dentro de cada grupo y no pueden existir en otros grupos. Cada lanzadera pertenece exclusivamente al grupo donde fue creada.
+> **⚠️ Actualización:** Reorganización completa de pantallas para reflejar flujo: Grupos (4) → Grupo (5) → Lanzadera (6). Navegación con dos flechas consecutivas.
 
-### Pantalla 7: Selección de Rol
+### Pantalla 4: Pantalla de Grupos (HOME principal)
 
 **Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
 
@@ -161,6 +161,64 @@
 - **Persistencia:** Por grupo, reutilizable por cualquier conductor
 
 **Issues Relacionados:** #15, #16
+
+---
+
+### Pantalla: Estado de Mis Solicitudes
+
+**Prioridad: ALTA** | **Esfuerzo: 2-3 días** | **Asignado: POR DEFINIR**
+
+- [ ] Acceso permanente desde logo de la app (la mano)
+- [ ] Vista con dos listas: solicitudes futuras y pasadas
+- [ ] Cancelar solicitud desde esta pantalla
+- [ ] Información detallada: fecha, hora, grupo, lanzadera, rol, estado
+- [ ] Integración con respaldo Drive/iCloud
+
+**Criterios de Aceptación:**
+
+- Accesible desde cualquier pantalla via logo superior
+- Separación clara entre solicitudes futuras y pasadas
+- Funcionalidad de cancelación desde la lista
+- Datos sincronizados con respaldo en la nube
+
+---
+
+### Sistema de Respaldo Drive/iCloud
+
+**Prioridad: ALTA** | **Esfuerzo: 1-2 semanas** | **Asignado: POR DEFINIR**
+
+- [ ] Configuración de respaldo en Settings
+- [ ] Integración con Google Drive (Android)
+- [ ] Integración con iCloud (iOS)
+- [ ] Respaldo local como alternativa
+- [ ] Recuperación automática en reinstalación
+- [ ] Cambio de número manteniendo UID
+
+**Criterios de Aceptación:**
+
+- Respaldo automático configurable
+- Historial de chats y viajes en nube personal
+- Datos básicos en Firebase para recuperación
+- Flujo de cambio de número sin pérdida de datos
+
+---
+
+### Alertas de Conductores (Admin Management)
+
+**Prioridad: MEDIA** | **Esfuerzo: 3-4 días** | **Asignado: POR DEFINIR**
+
+- [ ] Sistema de asignación de conductores potenciales
+- [ ] Interfaz para admins: seleccionar y alertar usuarios
+- [ ] Notificación de "servicio de lanzadera como conductor"
+- [ ] Respuestas rápidas para rechazo
+- [ ] Tracking de respuestas y motivos
+
+**Criterios de Aceptación:**
+
+- Admins pueden asignar conductores potenciales
+- Usuario recibe alerta clara y específica
+- Opciones de respuesta: aceptar o rechazar con motivo
+- Historial de alertas y respuestas
 
 ---
 

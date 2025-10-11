@@ -29,9 +29,14 @@
 
 ## **1\. Autenticación y Roles de Usuario**
 
-- 🔐 **Login por número de teléfono** (usuario \+ contraseña).
+- 🔐 **Login por número de teléfono** con verificación SMS/OTP.
 - ✅ **Sesión persistente** tras primer acceso.
-- 🔁 **Opción de recuperación** si el usuario cambia de número.
+- 🔁 **Sistema de recuperación y respaldo:**
+  - **Recuperación por SMS**: Si se pierde el login, recuperable con el número registrado
+  - **Datos básicos en Firebase**: UID, número de teléfono y datos mínimos de perfil
+  - **Respaldo en la nube personal**: Chats e historial en Google Drive (Android) o iCloud (iOS)
+  - **Respaldo local**: Opción alternativa configurable desde Ajustes
+  - **Cambio de número**: Flujo en Configuración para actualizar número manteniendo UID
 - 👥 **Sistema de roles flexible**: cualquier usuario puede usar tanto el rol de conductor como de viajero
   - **Selección dinámica**: al entrar a una lanzadera, el usuario decide qué rol tendrá en esa ocasión
   - **Configuración permanente**: opción para mantener un rol preferido por defecto
@@ -59,6 +64,15 @@
 - 🔄 Si el creador abandona:
   - El nuevo administrador será designado por él.
   - Si no hay designación, será el miembro más antiguo.
+
+### **🚨 Alertas de Conductores (gestión por admins)**
+
+- 👨‍💼 **Asignación de conductores potenciales**: Creadores y administradores pueden asignar conductores potenciales para el grupo
+- 🔔 **Sistema de alertas**: El usuario seleccionado recibe un aviso de "servicio de lanzadera como conductor"
+- ✅ **Respuesta requerida**: Puede aceptar o rechazar la solicitud
+- 📝 **Motivo de rechazo**: Si rechaza, debe indicar motivo:
+  - Respuestas rápidas: "Imprevisto urgente", "No estoy asignado", "Otro usuario será el conductor"
+  - Opción de texto breve personalizado
 
 ---
 
@@ -173,7 +187,10 @@
   - Cuando un usuario se une a un grupo.
   - Cuando alguien solicita una plaza (informándose de plazas restantes).
   - Cuando comienza un viaje (para los viajeros).
-- 🗺️ Visualización en tiempo real de la ubicación de conductor y viajeros _(funcionalidad futura, no incluida en MVP)_.
+- 🗺️ **Visualización de mapas incluida en MVP**:
+  - **Pantalla de Grupo**: Mapas de todas las lanzaderas del grupo para consultar recorridos
+  - **Pantalla de Lanzadera**: Mapa específico con trayecto, origen, destino y ubicación del usuario
+  - **Funcionalidad futura**: Seguimiento en tiempo real del vehículo durante el viaje
 
 ### **📍 Políticas de Geolocalización** _(para implementación con mapas)_
 
@@ -285,20 +302,208 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
 
 ---
 
-### **4\. HOME**
+### **4\. PANTALLA DE GRUPOS** _(origen/home de la aplicación)_
 
-- Pantalla por defecto tras iniciar sesión.
-- Comportamiento:
+**Función**: Permite ver los grupos del usuario y crear nuevos grupos. Es la pantalla principal de la app.
 
-  - Si el usuario **no tiene grupo**, solo verá el encabezado y el botón Agregar grupo (+).
-    - NUEVO GRUPO
-    - Al pulsar el botón \`Agregar Grupo (+)\`, navega a una **pantalla de creación de grupo**.
-    - Se solicita al usuario **nombre del grupo** y **configuración de visibilidad** (Privado/Público).
-    - Al confirmar, se **crea el grupo** y queda disponible en la barra superior y en la \`HOME\`.
-    - A partir de ese momento, el usuario puede crear lanzaderas dentro del nuevo grupo.
-    - Si el usuario **tiene grupo**, se mostrarán las lanzaderas del grupo activo.
-    - Si el usuario es **creador del grupo seleccionado**, aparece un botón \+ abajo a la derecha:
-      - Al pulsarlo: abre la pantalla NewShuttleScreen para crear una lanzadera.
+**Contenido**:
+
+- **Lista de grupos**: Cada ítem representa un grupo con foto de perfil opcional
+- **Estados**:
+  - Si **no hay grupos**: Mostrar invitación a crear el primer grupo
+  - Si **hay grupos**: Lista de todos los grupos del usuario
+- **Acciones**:
+  - Al pulsar un grupo: abre la **Pantalla de Grupo (5)**
+  - Botón "+" para crear nuevo grupo
+  - **Ícono de búsqueda**: Para descubrir grupos públicos disponibles
+- **Búsqueda de grupos públicos**:
+  - Al pulsar ícono de búsqueda: abre modal de búsqueda
+  - Muestra grupos públicos ordenados por proximidad (si hay geolocalización)
+  - Permite buscar por nombre del grupo
+  - Cada resultado muestra: nombre, número de miembros, lanzaderas activas
+- **Acceso permanente**: Logo de la app (la mano) da acceso a "Estado de Mis Solicitudes"
+
+---
+
+### **5\. PANTALLA DE GRUPO** _(vista completa del grupo)_
+
+**Función**: Muestra todas las lanzaderas y funcionalidades de un grupo específico.
+
+**Estructura**: BottomNavigationBar + PageView con 3 secciones:
+
+#### **5.1 Horarios** _(sección principal)_
+
+- Lista de próximas salidas de todas las lanzaderas del grupo
+- Ordenadas por cercanía en tiempo
+- Cada ítem muestra:
+  - Nombre/identificación de la lanzadera
+  - Sentido (origen → destino)
+  - Hora de salida
+  - Plazas solicitadas
+- Al pulsar una salida: abre **Pantalla de Lanzadera**
+
+#### **5.2 Chat** _(general del grupo)_
+
+- Título visible: "Chat general [nombre del grupo]"
+- Chat que abarca a todos los usuarios del grupo
+- Más amplio que el chat de una lanzadera específica
+
+#### **5.3 Mapa** _(incluido en MVP)_
+
+- Visualización de mapas de todas las lanzaderas del grupo
+- Permite consultar recorridos de todas las lanzaderas
+- Vista panorámica de todos los trayectos del grupo
+
+**Navegación**: Flecha que regresa a **Pantalla de Grupos (4)**
+
+---
+
+### **5.4 NEW SHUTTLE** _(modal/diálogo desde Pantalla 5)_
+
+**Función**: Modal para crear una nueva lanzadera desde la Pantalla de Grupo.
+
+**Campos obligatorios**:
+
+- Nombre de la lanzadera (debe ser corto para UI)
+- Origen y destino (nombres cortos, se avisará de evitar nombres largos)
+- Plazas por defecto
+- Configuración de horario (fecha única o frecuencia)
+- **Coordenadas opcionales**: Para origen y destino (mapas)
+- **Doble sentido**: Checkbox para ida y vuelta
+
+**Subpantalla 5.4.1**: Comentario ampliado con área de texto expandida
+
+---
+
+### **6\. PANTALLA DE LANZADERA** _(vista específica de lanzadera)_
+
+**Función**: Vista detallada de una lanzadera específica accesible desde Pantalla de Grupo.
+
+**Estructura**: BottomNavigationBar + PageView con 3 secciones:
+
+#### **6.1 Horarios** _(sección central)_
+
+- Lista de salidas del día actual de esta lanzadera específica
+- **Encabezado**:
+  - Izquierda: "IDA" o "VUELTA" (sentido actual en grande)
+  - Derecha: Botón pequeño para cambiar sentido (si tiene doble sentido)
+- **Cada ítem muestra**:
+  - Sentido (origen → destino, truncado si es necesario)
+  - Hora de salida
+  - Plazas en formato [solicitadas]/[plazas del vehículo]
+- **Al pulsar un horario**: Abre **Detalle de Salida** con:
+  - Lista de usuarios (viajeros con plaza)
+  - Conductor en parte superior con descripción del vehículo
+  - Al pulsar usuario: chat individual/privado
+  - **Al pulsar imagen del usuario**: abre perfil con datos de reputación
+  - Foto del vehículo (almacenada en iCloud/Drive)
+
+#### **6.2 Chat** _(de la lanzadera)_
+
+- Chat específico de esta lanzadera
+- Solo usuarios solicitantes/viajeros de esta lanzadera
+- Más específico que el chat general del grupo
+
+#### **6.3 Mapa** _(incluido en MVP)_
+
+- Trayecto en línea azul
+- Punto de origen
+- Punto de destino
+- Punto donde está el usuario
+- **Futuras versiones**: Seguimiento del vehículo en tiempo real
+
+**Navegación**:
+
+- **Primera flecha**: Pantalla de Lanzadera → Pantalla de Grupo (5)
+- **Segunda flecha**: Pantalla de Grupo → Pantalla de Grupos (4)
+- **Total**: Dos flechas consecutivas para llegar al origen
+
+---
+
+### **7\. CONFIGURACIÓN (Settings)**
+
+**Función**: Configuración general de la aplicación.
+
+**Opciones**:
+
+- Idioma (si se plantea multilenguaje)
+- Tema claro/oscuro
+- Avisos/notificaciones
+- **Configuración de copia de seguridad** (Drive/iCloud)
+- **Cambiar número de teléfono** (mantiene UID)
+- Ayuda/contacto
+- **Eliminar cuenta** (flujo crítico)
+
+---
+
+### **8\. ESTADO DE MIS SOLICITUDES**
+
+**Función**: Vista permanente de todas las solicitudes del usuario.
+
+**Acceso**: Logo de la app (la mano) en barra superior
+
+**Contenido**:
+
+- **Solicitudes futuras**: Lista de próximas reservas
+- **Solicitudes pasadas**: Historial de viajes
+- **Acciones**: Cancelar solicitud desde esta pantalla
+- **Información detallada**: Fecha, hora, grupo, lanzadera, rol, estado
+
+---
+
+### **9\. PERFIL DE USUARIO**
+
+**Función**: Gestión del perfil personal y estadísticas.
+
+**Configuración disponible**:
+
+- Editar foto de perfil
+- Nombre/alias
+- País/número (número no editable directamente)
+- **Historial completo**: Solicitudes y viajes realizados
+- **Estadísticas visibles**:
+  - Viajes completados
+  - Viajes cancelados (importante para reputación futura)
+  - Veces como conductor
+  - Cancelaciones como conductor
+- **Sección opcional**: "Mis lanzaderas frecuentes"
+
+**Nota**: Datos del historial se guardan en iCloud/Drive del usuario
+
+---
+
+### **10\. GESTIÓN DE VEHÍCULOS** _(por grupo)_
+
+**Función**: Ver, agregar, editar y eliminar vehículos frecuentes del grupo.
+
+**Acceso**: Desde Ajustes del grupo (cada grupo maneja sus vehículos)
+
+**Interfaz**:
+
+- Lista de ítems: vehículo + miniatura circular
+- Al pulsar vehículo: editar datos
+
+**Para conductores**:
+
+- Ver lista de vehículos frecuentes del grupo
+- Al seleccionar uno: opciones "Elegir", "Editar", "Crear nuevo"
+- Al elegir: se asigna al viaje y usuario queda como conductor
+- **Foto del vehículo**: Almacenada en iCloud/Drive del usuario
+
+---
+
+### **11\. ESTADOS ESPECIALES DE LA APP**
+
+#### **11.1 Gestión automática de cancelaciones**
+
+- **15 minutos antes**: Si no hay conductor, aviso a creador y administradores
+- **Hora de salida pasada**: Cancelación automática y aviso a usuarios con plaza
+- **Conductor tardío**: Si aparece después, notificar salida tardía con tiempo de retraso
+
+#### **11.2 Estados de inicio**
+
+- **Sin grupos**: Invitación a crear primer grupo
+- **Con grupos**: Lista normal de grupos disponibles
 
   #### **Vista previa de cada lanzadera:**
 
@@ -811,29 +1016,34 @@ No implementa lógica de negocio, pero mejora la consistencia y reusabilidad en 
 
 ### Categorías principales
 
-- **UI**  
-  - `showSnackBarSuccess()` y `showSnackBarError()` para mensajes visuales coherentes.  
-  - `dismissKeyboard()` para cerrar el teclado desde cualquier pantalla.  
+- **UI**
+
+  - `showSnackBarSuccess()` y `showSnackBarError()` para mensajes visuales coherentes.
+  - `dismissKeyboard()` para cerrar el teclado desde cualquier pantalla.
   - Detección automática de modo oscuro.
 
-- **Diálogos**  
+- **Diálogos**
+
   - `showConfirmationDialog()` con título, mensaje y botones configurables.
 
-- **Validación**  
+- **Validación**
+
   - `validateEmail()`, `validateLink()`, `validateEmpty()` usados en formularios de login, grupos y lanzaderas.
 
-- **Geolocalización básica**  
+- **Geolocalización básica**
+
   - `calculateDistance(lat1, lon1, lat2, lon2)` — cálculo aproximado de distancia (no sustituye el tracking GPS).
 
-- **Utilidades generales**  
-  - `generateInvitationCode()` — usado en flujos de invitación por código.  
-  - `formatDuration()` — formatea duración de viajes u operaciones.  
+- **Utilidades generales**
+
+  - `generateInvitationCode()` — usado en flujos de invitación por código.
+  - `formatDuration()` — formatea duración de viajes u operaciones.
   - `getFileSize()` — devuelve tamaño legible de archivos.
 
-- **Depuración (Debug)**  
+- **Depuración (Debug)**
   - `debugLog()` — imprime logs solo en modo desarrollo, evitando ruido en producción.
 
-📘 *Estas funciones son auxiliares y se usarán a lo largo de las features definidas en las secciones anteriores (grupos, lanzaderas, chat, etc.) para mantener coherencia visual y lógica en toda la app.*
+📘 _Estas funciones son auxiliares y se usarán a lo largo de las features definidas en las secciones anteriores (grupos, lanzaderas, chat, etc.) para mantener coherencia visual y lógica en toda la app._
 
 <br>
 

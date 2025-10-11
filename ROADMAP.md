@@ -38,9 +38,9 @@
 
 ---
 
-### **Phase 2: Core Features (5-6 weeks)**
+### **Phase 2: Core Features (6-7 weeks)**
 
-**Goal:** Group and shuttle management system with enhanced functionality
+**Goal:** Group and shuttle management system with enhanced functionality and backup system
 
 **Key Deliverables:**
 
@@ -48,55 +48,80 @@
   - Group creation with visibility settings (private/public)
   - Public group discovery and join requests
   - Admin/creator permission system
+  - Driver alerts system for admin management
 - **Shuttle System:**
-  - Shuttle configuration system (NewShuttleScreen)
-  - Dynamic role selection mechanism (Screen 7)
-  - Vehicle management system with frequent vehicles (Screen 12)
+  - New shuttle modal (Screen 5.1) with GPS coordinates
+  - Groups screen (Screen 4) as main home
+  - Group screen (Screen 5) with BottomNavigationBar + PageView
+  - Vehicle management system with frequent vehicles and photos
+- **Backup & Recovery System:**
+  - Drive/iCloud integration for chat and trip history
+  - Account recovery maintaining UID
+  - Phone number change flow
+  - Local backup alternative
 - **User Experience:**
   - Enhanced onboarding flow (Screen 14)
   - Account recovery system (Screen 13)
-  - User profile management (Screen 11)
-  - Home screen with listings and empty states
+  - User profile with trip statistics (Screen 9)
+  - "My Requests Status" permanent access
 
-**Success Criteria:** Users can create public/private groups, manage vehicles, configure shuttles, and select roles dynamically
+**Success Criteria:** Users can create public/private groups, complete backup system working, shuttle creation with GPS, driver alerts functional
 
 ---
 
-### **Phase 3: Booking System (4-5 weeks)**
+### **Phase 3: Booking System & Maps (5-6 weeks)**
 
-**Goal:** Complete seat reservation workflow with privacy features
+**Goal:** Complete seat reservation workflow with maps integration
 
 **Key Deliverables:**
 
 - **Booking Flow:**
-  - Shuttle request and booking flow (Screen 8)
-  - Shuttle detail screen with tab navigation
-  - Real-time seat booking and availability
-  - Vehicle selection integration during booking (Screen 12)
-- **Privacy & Communication:**
-  - Enhanced privacy system (hidden phone numbers)
-  - In-app messaging foundation (Screen 16)
-  - Booking notifications and confirmations (Screen 15)
+  - Shuttle detail screen (Screen 6) with BottomNavigationBar
+  - Real-time seat booking with direction support (outbound/return)
+  - Vehicle selection integration with photos
+  - Trip completion tracking with delays and notes
+- **Maps Integration (MVP):**
+  - Group maps showing all shuttle routes (Screen 5.3)
+  - Individual shuttle maps with route, origin, destination (Screen 6.3)
+  - User location display
+  - GPS coordinates for shuttles
+- **Enhanced Communication:**
+  - Group general chat (Screen 5.2)
+  - Shuttle-specific chat (Screen 6.2)
+  - Private chat between users
+  - Booking notifications and confirmations
 - **System Management:**
+  - Automatic cancellation rules (15min before departure)
+  - Late departure notifications with delay tracking
   - Conflict resolution for concurrent bookings
-  - Vehicle management integration
 
-**Success Criteria:** End-to-end booking from request to ride completion with full privacy protection
+**Success Criteria:** End-to-end booking with maps, automatic cancellation system working, three-level chat system functional
 
 ---
 
-### **Phase 4: Communication (2-3 weeks)**
+### **Phase 4: Advanced Features & Polish (3-4 weeks)**
 
-**Goal:** Chat system for coordination
+**Goal:** Complete remaining features and prepare for production
 
 **Key Deliverables:**
 
-- General group chat functionality (Screen 16)
-- Ride-specific chat for booked passengers (Screen 16)
-- Push notifications integration (Screen 15)
-- Message persistence and history (Screen 16)
+- **Advanced User Management:**
+  - User statistics and reputation tracking
+  - Trip history with cancellation tracking
+  - Profile management with frequent shuttles
+  - Settings screen with all configurations
+- **Notification System:**
+  - Push notifications integration (FCM)
+  - Driver alert notifications
+  - Automatic cancellation notifications
+  - Late departure alerts with delay times
+- **Final Integrations:**
+  - Drive/iCloud sync testing
+  - Vehicle photo management
+  - Private chat polishing
+  - Two-arrow navigation system
 
-**Success Criteria:** Users can communicate effectively before and during rides
+**Success Criteria:** All features integrated and tested, reputation system tracking data, notification system fully functional
 
 ---
 
