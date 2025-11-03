@@ -1,3 +1,7 @@
+<style>
+.i { margin-left: 20px; }
+</style>
+
 <div align="center">
 
 <img src="assets/diagrams/hand-icon-light.png" width="70" alt="Hand Icon" style="margin: 0 20px;">
@@ -71,8 +75,7 @@
 
 ## **3\. Gestión de Lanzaderas**
 
-### **3.1. Creación**
-
+>### **3.1. Creación**
 - ➕ El creador de un grupo puede crear lanzaderas dentro de él.
 - 🛣️ Requiere definir:
   - **Nombre**
@@ -82,7 +85,7 @@
   - **Comentario** (opcional: normas, detalles de recogida)
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
 
-  ### **3.2. Configuración de horarios**
+>### **3.2. Configuración de horarios**
 
 - 🕒 Dos modos:
   - **Fecha única**: se elige mediante un calendario (DatePicker).
@@ -117,7 +120,7 @@
 
 ## **4\. Consulta y Solicitud de Lanzaderas**
 
-### **4.1. Vista en Home**
+>### **4.1. Vista en Home**
 
 - 🏡 Se muestran las **lanzaderas** del **grupo activo**.
 - Cada ítem incluye:
@@ -133,7 +136,7 @@
 
 - Se puede **cambiar de grupo** desde el nombre del grupo en la barra superior.
 
-  ### **4.2. Vista de Detalle LANZADERA**
+>### **4.2. Vista de Detalle LANZADERA**
 
 - Al **pulsar una lanzadera**:
 
@@ -165,6 +168,12 @@
 - 🧾 Cada solicitud se guarda con fecha, rol y grupo asociado.
 - 🧠 Validaciones para evitar solapamientos en la configuración de horarios.
 
+#### Gestión automática de cancelaciones\*\*
+
+- **15 minutos antes**: Si no hay conductor, aviso a creador y administradores
+- **Hora de salida pasada**: Cancelación automática y aviso a usuarios con plaza
+- **Conductor tardío**: Si aparece después, notificar salida tardía con tiempo de retraso
+
 ---
 
 ## **6\. Comunicación y Notificaciones**
@@ -183,7 +192,7 @@
   - **Pantalla de Lanzadera**: Mapa específico con trayecto, origen, destino y ubicación del usuario
   - **Funcionalidad futura**: Seguimiento en tiempo real del vehículo durante el viaje
 
-### **📍 Políticas de Geolocalización** _(para implementación con mapas)_
+>### **📍 Políticas de Geolocalización** _(para implementación con mapas)_
 
 - **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje
   - Se activa automáticamente al confirmar salida de lanzadera
@@ -197,7 +206,7 @@
   - Solo visible para el conductor y otros viajeros de la misma lanzadera
   - **Consentimiento granular**: Preguntar en cada viaje o configuración general
 
-### **🔒 Privacidad y Retención de Datos GPS**
+>### **🔒 Privacidad y Retención de Datos GPS**
 
 - **Almacenamiento temporal**: Los datos GPS se almacenan solo durante el viaje activo
 - **Eliminación automática**: Al finalizar viaje, los datos de ubicación se eliminan en 24 horas
@@ -207,17 +216,33 @@
 - **Control del usuario**: Derecho a eliminación inmediata de cualquier dato de ubicación
 - **Transparencia**: Log de acceso a ubicación visible en configuración de privacidad
 
-### **⏰ Ventana de Activación del Tracking** _(para implementación con mapas)_
+>### **⏰ Ventana de Activación del Tracking** _(para implementación con mapas)_
 
 - **Cuándo se activa la localización**:
   - **Opción 1**: Tiempo fijo antes de la salida (ej: 30 minutos)
   - **Opción 2**: Cuando el conductor activa "Iniciar viaje"
   - **Opción 3**: Cuando el propio usuario decide mostrar ubicación
-- **Visibilidad de ubicaciones**:
 
+- **Visibilidad de ubicaciones**:
   - **Conductor puede ver**: Ubicación de todos los viajeros (si la han activado)
   - **Viajeros pueden ver**: Solo ubicación del conductor + otros viajeros que lo permitan
   - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad)
+
+>### **GESTIÓN DE NOTIFICACIONES**
+
+Sistema completo de notificaciones push e in-app para mantener informados a los usuarios.
+
+- **Tipos de notificaciones:**
+  - Nueva lanzadera creada en grupo
+  - Alguien solicita plaza en tu viaje
+  - Plaza confirmada/rechazada
+  - Recordatorio 30min antes del viaje
+  - Cambios en horarios
+  - Mensajes del chat específico
+  - **Invitación recibida** para ser miembro de un grupo
+- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones
+- **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
+- **Centro de notificaciones:** Historial in-app de notificaciones recibidas
 
 ---
 
@@ -234,24 +259,15 @@
 
 <br>
 
-#
+---
 
-# **🚩 Navegación y Pantallas – ShuttleBiz**
+# **🚩 Navegación y Pantallas**
 
 ## **🔹 Barra Superior de Navegación**
 
 ### **Estructura:**
 
-\[ Nombre de la App (HOME) \] \[ Nombre del grupo \] \[ Menú \]
-
-### **Comportamiento del selector de grupo:**
-
-- Si **no hay ningún grupo creado**, el texto mostrará: Agregar un Grupo, seguido de un icono \+.
-  - Al pulsarlo: navega a una pantalla de creación de grupo que incluye configuración obligatoria de **Visibilidad** (Privado/Público) además del nombre.
-  - Este icono puede mantenerse visible o solo estar dentro del menú superior para evitar pulsaciones accidentales.
-- Si **ya hay uno o varios grupos creados**, el string mostrará el nombre del grupo activo.
-
-  - Al pulsarlo: se abre un diálogo con una lista desplegable para cambiar entre grupos.
+[ Nombre de la App ] [ Nombre de Pantalla ] [ Menú ]
 
 <br>
 
@@ -259,7 +275,7 @@
 
 # **📱 Pantallas**
 
-### **1\. LOGIN**
+>## 1\. Pantalla de LOGIN
 
 - Primera pantalla de la app.
 - Campos:
@@ -269,35 +285,92 @@
   - Enlaza con pantalla de **Registro con Código**.
 - Opcional: subir una imagen de usuario.
 
+>>### 1.1. Pantalla de RECUPERACIÓN DE CUENTA
+
+- Pantalla para casos de pérdida de móvil o cambio de número de teléfono.
+
+- **Acceso:** Enlace desde pantalla de login
+- **Métodos de recuperación:**
+  - Verificación con número de teléfono anterior (si está disponible)
+  - Verificación por email (si se configuró)
+  - Contacto con soporte (último recurso)
+- **Flujo de recuperación:**
+  - Ingreso del nuevo número de teléfono
+  - Verificación de identidad
+  - Transferencia de cuenta al nuevo número
+  - Confirmación y acceso restaurado
+- **Seguridad:** Proceso de verificación robusto para prevenir accesos no autorizados
+
 ---
 
-### **2\. REGISTRO CON CÓDIGO**
+>## 2. Pantalla de REGISTRO
 
 - Parte superior: texto indicando que se debe ingresar el código recibido por SMS.
 - Se muestra el número de teléfono al que se envió el código.
-
-  - Es editable tras pulsar "(editar)".
+- Los números se introducen sin necesidad de pulsar el espacio para el código, como es usual en las verificaciones por códogo SMS.
 
 ---
 
-### **3\. ONBOARDING**
+>## 3\. ONBOARDING
 
-Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (implementación detallada en Screen 14).
+Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
 
 **Activación:**
 
 - Automático para usuarios nuevos tras primer login
 - Manual desde menú de configuración: Ajustes > Ayuda > Ver tutorial
 
-**Referencia:** Ver Screen 14 para especificación completa
+**Contenido del tutorial:**
+
+- **Pantalla 1**: Bienvenida y presentación de ShuttleBiz
+  - Logo y mensaje de bienvenida
+  - Breve descripción: "Organiza viajes compartidos con tu comunidad"
+- **Pantalla 2**: Cómo funcionan los grupos
+  - Explicación de los "Biz" (grupos)
+  - Diferencia entre grupos públicos y privados
+  - Roles dentro de un grupo
+- **Pantalla 3**: Crear y gestionar lanzaderas
+  - Cómo crear una nueva lanzadera
+  - Configurar horarios y frecuencias
+  - Vista previa de lanzadera
+- **Pantalla 4**: Solicitar plazas y ser conductor
+  - Selección de rol (conductor/viajero)
+  - Proceso de solicitud de plaza
+  - Gestión de vehículos
+- **Pantalla 5**: Comunicación y notificaciones
+  - Sistema de chat por grupo
+  - Tipos de notificaciones
+  - Configuración de privacidad
+
+**Características técnicas:**
+
+- PageView con indicadores de progreso
+- Botones "Siguiente", "Saltar" y "Empezar"
+- Animaciones suaves entre pantallas
+- Disponible después como ayuda en el menú: Ajustes > Ayuda > Ver tutorial
+- Opción de cambiar todo esto por un simple video?? más sencillo y rápido.
 
 ---
 
-### **4\. PANTALLA DE GRUPOS** _(origen/home de la aplicación)_
+>## 4. PANTALLA DE GRUPOS** _(origen/home de la aplicación)_
 
-**Función**: Permite ver los grupos del usuario y crear nuevos grupos. Es la pantalla principal de la app.
+- **Función**: Permite ver los grupos del usuario y crear nuevos grupos. Es la pantalla primera, desde las que salen todas las demas.
 
-**Contenido**:
+### **Comportamiento del selector de grupo:**
+
+- Si **no hay ningún grupo creado**, el texto mostrará: Agregar un Grupo, seguido de un icono +.
+  - Al pulsarlo: navega a una pantalla de creación de grupo que incluye configuración obligatoria de **Visibilidad** (Privado/Público) además del nombre.
+  - Este icono estará abajo a la derecha, floatingbutton, y dentro del menú superior.
+- Si **ya hay uno o varios grupos creados**, se verá una lista de los grupos en el cuerpo de la pantalla.
+
+### **Estados de inicio**
+
+- **Sin grupos propios creados ni pertenencia a ninguno**:
+  - Invitación a crear primer grupo
+  - Vista de todos los grupos públicos a los que se podrá solicitar unirse.
+- **Ya incluido en grupo/s**: Lista normal de todos los grupos, en primer lugar los que se ya se pertenece, y luego el resto de grupos priorizando los mas cercanos en distancia.
+
+### **Contenido**:
 
 - **Lista de grupos**: Cada ítem representa un grupo con foto de perfil opcional
 - **Estados**:
@@ -314,15 +387,88 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
   - Cada resultado muestra: nombre, número de miembros, lanzaderas activas
 - **Acceso permanente**: Logo de la app (la mano) da acceso a "Estado de Mis Solicitudes"
 
+>>### 4.1. UNIRSE A GRUPO EXISTENTE
+
+Flujo para usuarios que quieren unirse a un grupo creado por otros.
+
+- **Métodos de acceso:**
+  - Código de invitación (6 dígitos)
+  - Enlace compartido
+  - Búsqueda por nombre (si es público)
+- **Pantalla de búsqueda:**
+  - Campo para código/nombre
+  - Lista de grupos públicos cercanos
+- **Vista previa del grupo:**
+  - Nombre, descripción
+  - Número de miembros
+  - Lanzaderas activas (preview)
+- **Solicitud:**
+  - Botón "Solicitar unirse"
+  - Mensaje opcional al administrador
+
 ---
 
-### **5\. PANTALLA DE GRUPO** _(vista completa del grupo)_
+>## 5\. Pantalla GRUPO _(vista completa del grupo)_
 
-**Función**: Muestra todas las lanzaderas y funcionalidades de un grupo específico.
+- **Función**: Muestra todas las lanzaderas y funcionalidades de un grupo específico.
+- Al pulsar sobre el nombre del grupo arriba se abre modal para cambiar a otro grupo al que pertenezca el usuario.
+- **Estructura**: BottomNavigationBar + PageView con 4 secciones:
 
-**Estructura**: BottomNavigationBar + PageView con 3 secciones:
+>>### 5.1 Pantalla NEW SHUTTLE
 
-#### **5.1 Horarios** _(sección principal)_
+- **Función**: Modal para crear una nueva lanzadera desde la Pantalla de Grupo.
+
+- **Campos obligatorios**:
+
+  - Nombre de la lanzadera (debe ser corto para UI)
+  - Origen y destino (nombres cortos, se avisará de evitar nombres largos)
+  - Plazas por defecto: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
+  - Configuración de horario (fecha única o frecuencia)
+  - **Coordenadas**: Para origen y destino (mapas). Es necessario para determinar el origen y destino de la Lanzadera. Será necesario crear pantallas para definir esos puntos, posiblemente con opciones como buscar dirección, o buscar en el mapa, o ambas, con ayudad de maps.
+  - Comentario de la Lanzadera: Comentario ampliado con área de texto expandida (Normas, instrucciones, etc). Es amplio, debajo de configuración de horario.
+- La creación de horarios se hara desde la pantalla Lanzadera en la pagina de "Horarios", editando uno de los ya creados y creando un horario nuevo desde el botón de añadri abajo a la derecha.
+
+># La eleción de fecha puntual o semanal (modo 1 y modo 2 a continuación) se hace de otra manera, hay que describirlo aqui, ya está descrito en el mockup de miro.com, de modo que hay que modificar lo siguiente:
+- ##### **Modo 1: Fecha puntual**
+
+  - Botón **Calendario**: abre un DatePicker para elegir la fecha del evento.
+  - Botón **Agregar horario**: abre un TimePicker para seleccionar horas de salida.
+  - Los **horarios** se listan con el sentido del viaje y se agrupan por día de **forma compacta**, optimizando el espacio visual. Por ejemplo: "Lunes a Viernes: 08:00, 10:00, 11:00". Esto permite al usuario tener una visión rápida y clara del horario completo sin necesidad de múltiples vistas.
+  - Botón paralelo: **Horario de vuelta** para agregar horarios de retorno en lista separada.
+  - Funciones adicionales:
+  - Pulsar una hora para **modificarla**.
+  - Pulsación larga para **eliminar** una o varias horas.
+    - La lanzadera podrá **reutilizarse** de dos formas:
+      - ✅ Volviendo a activar la opción Fecha: el usuario podrá seleccionar una **nueva fecha igual o posterior** a la fecha actual del dispositivo para repetir la misma configuración de horarios.
+      - 🔁 **Cambiando a la opción Frecuencia**: convierte la lanzadera en un trayecto recurrente semanal, permitiendo seleccionar múltiples días y replicar los horarios definidos.
+  - Al finalizar:
+    - Botones de finalización con dos opciones claras: Guardar o Cancelar:
+      - **Guardar**: los datos introducidos se almacenan y el usuario regresa a la vista de configuración general de la lanzadera, manteniéndose visibles los horarios añadidos.
+      - **Cancelar**: descarta todos los cambios realizados durante esa sesión de configuración y vuelve a la pantalla anterior sin guardar nada.
+    - **Regresa a la pantalla principal** de configuración de lanzadera (NewShuttleScreen), donde se visualizará la configuración generada. La frecuencia se visualizará en forma de grupo, con:
+      - Título: días seleccionados (ej. L,M,X,J,V)
+      - Sentido del viaje: origen → destino
+      - Listas de horarios: ida y vuelta
+  - Al pulsar cualquier lista de horarios se podrá volver a editar desde la misma pantalla de configuración.
+
+- ##### **Modo 2: Frecuencia semanal**
+
+  - Botón **Calendario**: seleccionar fecha de inicio de la frecuencia.
+  - Botón **Agregar días \+**: abre selector con CheckBoxListTile (lunes a domingo).
+  - Tras seleccionar uno o varios días:
+
+    - Botón **Agregar horario** (TimePicker): se listan horarios bajo cada grupo de días y sentido.
+    - Botón **Vuelta**: igual que en modo Fecha, para agregar horarios de retorno.
+
+  - #### **Finalización:**
+
+    - Botón Guardar o Cancelar
+      - **Guardar**: los datos introducidos se almacenan y el usuario regresa a la pantalla principal de configuración de lanzadera (NewShuttleScreen), donde podrá revisar y terminar de guardar todos los detalles de la nueva lanzadera. La frecuencia configurada se visualizará en forma de grupo.
+      - **Cancelar**: descarta todos los cambios realizados durante esa sesión de configuración y vuelve a la pantalla anterior sin guardar nada.
+
+---
+
+#### **5.2 Horarios**
 
 - Lista de próximas salidas de todas las lanzaderas del grupo
 - Ordenadas por cercanía en tiempo
@@ -332,14 +478,17 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
   - Hora de salida
   - Plazas solicitadas
 - Al pulsar una salida: abre **Pantalla de Lanzadera**
+- Estado visual:
+  - Verde claro: activa, con plazas disponibles.
+  - Rojo: sin plazas o fuera de horario.
 
-#### **5.2 Chat** _(general del grupo)_
+#### **5.3 Chat** _(general del grupo)_
 
 - Título visible: "Chat general [nombre del grupo]"
 - Chat que abarca a todos los usuarios del grupo
 - Más amplio que el chat de una lanzadera específica
 
-#### **5.3 Mapa** _(incluido en MVP)_
+#### **5.4 Mapa** _(incluido en MVP)_
 
 - Visualización de mapas de todas las lanzaderas del grupo
 - Permite consultar recorridos de todas las lanzaderas
@@ -349,20 +498,32 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
 
 ---
 
-### **5.4 NEW SHUTTLE** _(modal/diálogo desde Pantalla 5)_
+### **5.5. GESTIÓN DE GRUPO**
 
-**Función**: Modal para crear una nueva lanzadera desde la Pantalla de Grupo.
+Pantalla para administrar el grupo de la pantalla grupo (accesible desde menú superior).
 
-**Campos obligatorios**:
+#### **Para creadores/administradores:**
 
-- Nombre de la lanzadera (debe ser corto para UI)
-- Origen y destino (nombres cortos, se avisará de evitar nombres largos)
-- Plazas por defecto
-- Configuración de horario (fecha única o frecuencia)
-- **Coordenadas opcionales**: Para origen y destino (mapas)
-- **Doble sentido**: Checkbox para ida y vuelta
+- **Información del grupo:**
+  - Nombre (editable)
+  - Fecha de creación
+  - Número de miembros
+- **Gestión de miembros:**
+  - Lista de usuarios del grupo
+  - Promover a administrador
+  - Expulsar miembros
+- **Configuración:**
+  - Grupo público/privado
+  - Auto-aprobación de nuevos miembros
+- **Acciones:**
+  - Invitar nuevos miembros (código/enlace)
+  - Eliminar grupo (confirmación)
 
-**Subpantalla 5.4.1**: Comentario ampliado con área de texto expandida
+#### **Para miembros regulares:**
+
+- Ver información del grupo
+- Lista de miembros
+- Abandonar grupo
 
 ---
 
@@ -370,30 +531,69 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
 
 **Función**: Vista detallada de una lanzadera específica accesible desde Pantalla de Grupo.
 
+**Al pulsar sobre una lanzadera desde Home**, dentro de un grupo (pantalla 5): Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
+
 **Estructura**: BottomNavigationBar + PageView con 3 secciones:
 
 #### **6.1 Horarios** _(sección central)_
 
+(Esto es necesario modificarlo, esta es la página central del pagerview con una lista de ítems con los diferentes horarios ya creados, cada uno de los cuales contiene grupos de días con sus horas de salida de la lanzadera ...)
+
+- Aquí se organiza todo lo relacionado con la solicitud de plazas, es el centro de la app; sin esta parte, la app no tendría sentido.
+- Se lista las salidas del horario, del día actual, con el número de plazas solicitadas en cada salida y el conjunto de usuarios (tipo baraja de cartas o tarjetas juntas…) seguido del número total de plazas solicitadas en verde si aún quedan libres y en rojo si ya se completó que al pulsarlo abre un chat para solo los viajeros de esa salida, para poder preguntar algo a cada uno o hablar a todos los que hayan solicitado plaza. Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
+- Botón para solicitar plaza si se elige el rol de viajero.
 - Lista de salidas del día actual de esta lanzadera específica
-- **Encabezado**:
+- **HORARIOS**
+  - Editables si el usuario es el creador o administrador.
+  - Icono de lápiz solo visible si el usuario es creador o administrador del grupo: abre pantalla de configuración (NewShuttleScreen).
+  - Se muestran horarios filtrados según día y hora actuales.
+  - Botón adicional para ver todos los horarios futuros.
+- **Cabecera**:
   - Izquierda: "IDA" o "VUELTA" (sentido actual en grande)
   - Derecha: Botón pequeño para cambiar sentido (si tiene doble sentido)
 - **Cada ítem muestra**:
   - Sentido (origen → destino, truncado si es necesario)
   - Hora de salida
   - Plazas en formato [solicitadas]/[plazas del vehículo]
-- **Al pulsar un horario**: Abre **Detalle de Salida** con:
-  - Lista de usuarios (viajeros con plaza)
-  - Conductor en parte superior con descripción del vehículo
-  - Al pulsar usuario: chat individual/privado
-  - **Al pulsar imagen del usuario**: abre perfil con datos de reputación
-  - Foto del vehículo (almacenada en iCloud/Drive)
+- **Al pulsar una hora de salida**: Abre la pantalla **Detalle de hora de Salida** que basicamente será la misma que para crear un horario, con ligeras diferencias.
+
+#### **6.1.1 Pantalla de consulta/Horario**
+Se abre al pulsar sobre un horario ya creado en una lanzadera. 
+
+Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lapiz para editar arriba en la barra superior (o donde se decida para mas usabilidad), sin boton de añadir hora, sin posibilidad de modificar dias semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edicion de horario.
+
+#### **6.1.2 Detalle de hora de Salida**
+
+- Lista de usuarios (viajeros con plaza)
+- Conductor en parte superior con descripción del vehículo
+- Al pulsar usuario el icono situado a la izquierda del nombre del usuario en la lista de usuarios con plaza solicitada se abre chat individual/privado con dicho usuario.
+  - Dentro del chat: Al pulsar imagen del usuario: abre perfil con datos de reputación
+- Foto del vehículo (almacenada en iCloud/Drive)
+
+#### **6.1.3 Pantalla Creación/Edición Horario**
+ (o se modifica la pantalla 6.1.1)
+Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
+  1. Pulsando el botón de añadir (+) abajo a la derecha en la pantalla 6.1 Lanzadera; en este caso será creación de nuevo horario;
+  2. Pulsando el lápiz de edicion de horario en la pantalla 6.1.1 "Pantalla de consulta/Horario", que es la vista normal de horario.  
+
+En esta pantalla será posible:  
+  1. Seleccionar los días semanales pudiendo agregar o quitar días en este horario (siempre que no esté/n ya usados por otro horario de la lanzadera).
+  2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Inicio de repetición semanal” o “No se repite - Único día”, según si hay o no días semanales seleccionados (azules).
+  3. Agregar una hora nueva al horario (12:30 por ejemplo), pulsando el botón (+) en el cuadro de horas (bajo los botones (chips) de dias de la semana y fecha), lo que abrirá el modal de selección de hora.
+  4. Se podrán agregar horas de ida o vuelta sin cambiar de pantalla, pulsando los botones Ida (azul) o Vuelta (rojo). El botón del sentido activo se mostrará a la izquierda y con mayor tamaño para destacar, mientras que el inactivo permanecerá a la derecha y más pequeño.
+
+Los chips de horas serán azules cuando esté seleccionada la Ida y rojos cuando esté seleccionada la Vuelta, manteniendo coherencia con los colores de sus respectivos botones.  
+
+En la parte superior se mostrarán los lugares de recogida y destino correspondientes a cada vista de Ida o Vuelta, para evitar confusiones. Por ejemplo, si en la vista de ida los horarios indican salidas desde la Estación hacia la Nave, se mostrará arriba: “Salida desde: Estación · Destino: Nave”, y viceversa en la vista de vuelta.
+Además, el color del texto de cada lugar (tanto en “Salida desde” como en “Destino”) coincidirá con el color del sentido del viaje —azul para Ida y rojo para Vuelta— para facilitar su comprensión visual. Cada sentido mantendrá siempre su color asociado, aunque los lugares intercambien su posición como origen o destino según esté seleccionada la vista de Ida o de Vuelta en la sección de horas.  
+
+En esta pantalla no se mostrará “Ver comentario”, ya que no es editable y solo aparece en la pantalla 6.1.1 Consulta/Horario.
+
+El guardado de cambios se hará desde el boton de guardar abajo a la derecha en la misma pantalla (tambien estará el de cancelar a la izquierda). Si sale de la pantalla sin pulsar el botón de guardado se abre un modal que pide confirmación para guardar cambios (este estado hay que guardarlo para que esta parte se cumpla aunque se cierre la app).
 
 #### **6.2 Chat** _(de la lanzadera)_
 
-- Chat específico de esta lanzadera
-- Solo usuarios solicitantes/viajeros de esta lanzadera
-- Más específico que el chat general del grupo
+(Ver 11. Pantallas de Chat ).
 
 #### **6.3 Mapa** _(incluido en MVP)_
 
@@ -403,202 +603,18 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios (imp
 - Punto donde está el usuario
 - **Futuras versiones**: Seguimiento del vehículo en tiempo real
 
-**Navegación**:
+**Navegación (con flecha hacia la izquierda en lado izquierdo de la barra superior)**:
 
-- **Primera flecha**: Pantalla de Lanzadera → Pantalla de Grupo (5)
-- **Segunda flecha**: Pantalla de Grupo → Pantalla de Grupos (4)
-- **Total**: Dos flechas consecutivas para llegar al origen
+- **Primera flecha**: Pantalla de Lanzadera → Pantalla de Grupo 
+- **Segunda flecha**: Pantalla de Grupo → Pantalla de Grupos 
 
----
-
-### **7\. CONFIGURACIÓN (Settings)**
-
-**Función**: Configuración general de la aplicación.
-
-**Opciones**:
-
-- Idioma (si se plantea multilenguaje)
-- Tema claro/oscuro
-- Avisos/notificaciones
-- **Configuración de copia de seguridad** (Drive/iCloud)
-- **Cambiar número de teléfono** (mantiene UID)
-- Ayuda/contacto
-- **Eliminar cuenta** (flujo crítico)
+- Es necesario que en esta pantalla se haga comprobaciones de si el usuario que solicito la lanzadera está en dicha lanzadera durante el viaje para añadir a la lista de viajes realizados en su perfil.
 
 ---
 
-### **8\. ESTADO DE MIS SOLICITUDES**
+### **7. SELECCIÓN DE ROL - Role Selection**
 
-**Función**: Vista permanente de todas las solicitudes del usuario.
-
-**Acceso**: Logo de la app (la mano) en barra superior
-
-**Contenido**:
-
-- **Solicitudes futuras**: Lista de próximas reservas
-- **Solicitudes pasadas**: Historial de viajes
-- **Acciones**: Cancelar solicitud desde esta pantalla
-- **Información detallada**: Fecha, hora, grupo, lanzadera, rol, estado
-
----
-
-### **9\. PERFIL DE USUARIO**
-
-**Función**: Gestión del perfil personal y estadísticas.
-
-**Configuración disponible**:
-
-- Editar foto de perfil
-- Nombre/alias
-- País/número (número no editable directamente)
-- **Historial completo**: Solicitudes y viajes realizados
-- **Estadísticas visibles**:
-  - Viajes completados
-  - Viajes cancelados (importante para reputación futura)
-  - Veces como conductor
-  - Cancelaciones como conductor
-- **Sección opcional**: "Mis lanzaderas frecuentes"
-
-**Nota**: Datos del historial se guardan en iCloud/Drive del usuario
-
----
-
-### **10\. GESTIÓN DE VEHÍCULOS** _(por grupo)_
-
-**Función**: Ver, agregar, editar y eliminar vehículos frecuentes del grupo.
-
-**Acceso**: Desde Ajustes del grupo (cada grupo maneja sus vehículos)
-
-**Interfaz**:
-
-- Lista de ítems: vehículo + miniatura circular
-- Al pulsar vehículo: editar datos
-
-**Para conductores**:
-
-- Ver lista de vehículos frecuentes del grupo
-- Al seleccionar uno: opciones "Elegir", "Editar", "Crear nuevo"
-- Al elegir: se asigna al viaje y usuario queda como conductor
-- **Foto del vehículo**: Almacenada en iCloud/Drive del usuario
-
----
-
-### **11\. ESTADOS ESPECIALES DE LA APP**
-
-#### **11.1 Gestión automática de cancelaciones**
-
-- **15 minutos antes**: Si no hay conductor, aviso a creador y administradores
-- **Hora de salida pasada**: Cancelación automática y aviso a usuarios con plaza
-- **Conductor tardío**: Si aparece después, notificar salida tardía con tiempo de retraso
-
-#### **11.2 Estados de inicio**
-
-- **Sin grupos**: Invitación a crear primer grupo
-- **Con grupos**: Lista normal de grupos disponibles
-
-  #### **Vista previa de cada lanzadera:**
-
-- Nombre
-- Origen \- Destino
-- Plazas disponibles
-- Estado visual:
-
-  - Verde claro: activa, con plazas disponibles.
-  - Rojo: sin plazas o fuera de horario.
-
----
-
-### **5\. NEW SHUTTLE SCREEN**
-
-#### **Campos editables obligatorios:**
-
-- Nombre de la lanzadera
-- Origen y destino
-- Plazas por defecto:
-  - Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
-- Comentario (opcional):
-
-  - Normas, instrucciones, etc.
-
-#### **Configuración de horario:**
-
-- Dos modos excluyentes:
-
-  - Fecha ✅
-  - Frecuencia ✅
-  - Se seleccionan con radio button o similar.
-
-  ##### **Modo 1: Fecha puntual**
-
-- Botón **Calendario**: abre un DatePicker para elegir la fecha del evento.
-- Botón **Agregar horario**: abre un TimePicker para seleccionar horas de salida.
-  - Los **horarios** se listan con el sentido del viaje y se agrupan por día de **forma compacta**, optimizando el espacio visual. Por ejemplo: "Lunes a Viernes: 08:00, 10:00, 11:00". Esto permite al usuario tener una visión rápida y clara del horario completo sin necesidad de múltiples vistas.
-  - Botón paralelo: **Horario de vuelta** para agregar horarios de retorno en lista separada.
-- Funciones adicionales:
-  - Pulsar una hora para **modificarla**.
-  - Pulsación larga para **eliminar** una o varias horas.
-- La lanzadera podrá **reutilizarse** de dos formas:
-  - ✅ Volviendo a activar la opción Fecha: el usuario podrá seleccionar una **nueva fecha igual o posterior** a la fecha actual del dispositivo para repetir la misma configuración de horarios.
-  - 🔁 **Cambiando a la opción Frecuencia**: convierte la lanzadera en un trayecto recurrente semanal, permitiendo seleccionar múltiples días y replicar los horarios definidos.
-- Al finalizar:
-
-  - Botones de finalización con dos opciones claras: Guardar o Cancelar:
-    - **Guardar**: los datos introducidos se almacenan y el usuario regresa a la vista de configuración general de la lanzadera, manteniéndose visibles los horarios añadidos.
-    - **Cancelar**: descarta todos los cambios realizados durante esa sesión de configuración y vuelve a la pantalla anterior sin guardar nada.
-  - **Regresa a la pantalla principal** de configuración de lanzadera (NewShuttleScreen), donde se visualizará la configuración generada. La frecuencia se visualizará en forma de grupo, con:
-    - Título: días seleccionados (ej. L,M,X,J,V)
-    - Sentido del viaje: origen → destino
-    - Listas de horarios: ida y vuelta
-  - Al pulsar cualquier lista de horarios se podrá volver a editar desde la misma pantalla de configuración.
-
-  ##### **Modo 2: Frecuencia semanal**
-
-- Botón **Calendario**: seleccionar fecha de inicio de la frecuencia.
-- Botón **Agregar días \+**: abre selector con CheckBoxListTile (lunes a domingo).
-- Tras seleccionar uno o varios días:
-
-  - Botón **Agregar horario** (TimePicker): se listan horarios bajo cada grupo de días y sentido.
-  - Botón **Vuelta**: igual que en modo Fecha, para agregar horarios de retorno.
-
-  #### **Finalización:**
-
-- Botón Guardar o Cancelar
-  - **Guardar**: los datos introducidos se almacenan y el usuario regresa a la pantalla principal de configuración de lanzadera (NewShuttleScreen), donde podrá revisar y terminar de guardar todos los detalles de la nueva lanzadera. La frecuencia configurada se visualizará en forma de grupo.
-  - **Cancelar**: descarta todos los cambios realizados durante esa sesión de configuración y vuelve a la pantalla anterior sin guardar nada.
-- **Cada grupo**:
-
-  - Tiene un título con días
-  - Lista de ida y de vuelta (si existe)
-  - Editable al pulsar las listas
-
----
-
-### **6\. PANTALLA DE LANZADERA**
-
-###
-
-### Al pulsar sobre una lanzadera desde Home, dentro de un grupo:
-
-Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
-
-#### **Las Subpantallas navegables son:**
-
-- **PLAZAS** (por defecto)
-  - Aquí se organiza todo lo relacionado con la solicitud de plazas, es el centro de la app; sin esta parte, la app no tendría sentido.
-  - Se lista las salidas del horario, del día actual, con el número de plazas solicitadas en cada salida y el conjunto de usuarios (tipo baraja de cartas o tarjetas juntas…) seguido del número total de plazas solicitadas en verde si aún quedan libres y en rojo si ya se completó que al pulsarlo abre un chat para solo los viajeros de esa salida, para poder preguntar algo a cada uno o hablar a todos los que hayan solicitado plaza. Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
-  - Botón para solicitar plaza si se elige el rol de viajero.
-- **HORARIOS**
-  - Editables si el usuario es el creador o administrador.
-  - Icono de lápiz (solo visible si el usuario es creador o administrador del grupo: abre pantalla de configuración (NewShuttleScreen).
-  - Se muestran horarios filtrados según día y hora actuales.
-  - Botón adicional para ver todos los horarios futuros.
-- **CHAT** (A todo el grupo, Chat general)
-  - Se distinguirá del otro chat de hora en concreto de una salida, en que aparecerá arriba muy visible el nombre: Chat general \[nombre del grupo\]
-- **MAPA** (no MVP)
-
----
-
-### **7. SELECCIÓN DE ROL**
+(Modal dentro de pantalla 6 Lanzadera)
 
 Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para esa sesión.
 
@@ -611,10 +627,13 @@ Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para 
   - El conductor puede modificar plazas disponibles ese día
   - Los viajeros solo pueden solicitar plaza
 - **Persistencia:** Se recuerda la última elección por lanzadera
+- **Cambiar rol predeterminado**: Opción para establecer rol preferido (conductor/viajero)
 
 ---
 
-### **8. SOLICITUD DE LANZADERA**
+### **8. SOLICITUD DE LANZADERA - Request Shuttle**
+
+(Modal dentro de pantalla 6 Lanzadera, posterior a selección de rol)
 
 #### **🧹 Reglas Generales de Solicitud**
 
@@ -654,95 +673,74 @@ Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para 
 - Mensaje de éxito: "Plaza reservada correctamente"
 - Botón de cancelación visible si ya se tiene plaza.
 
----
+### **8.1\. ESTADO DE MIS SOLICITUDES**
 
-### **9. GESTIÓN DE GRUPOS**
+**Función**: Vista permanente de todas las solicitudes del usuario.
 
-Pantalla para administrar grupos existentes (accesible desde menú superior).
+**Acceso**: Logo de la app (la mano) en barra superior
 
-#### **Para creadores/administradores:**
+**Contenido**:
 
-- **Información del grupo:**
-  - Nombre (editable)
-  - Fecha de creación
-  - Número de miembros
-- **Gestión de miembros:**
-  - Lista de usuarios del grupo
-  - Promover a administrador
-  - Expulsar miembros
-- **Configuración:**
-  - Grupo público/privado
-  - Auto-aprobación de nuevos miembros
-- **Acciones:**
-  - Invitar nuevos miembros (código/enlace)
-  - Eliminar grupo (confirmación)
-
-#### **Para miembros regulares:**
-
-- Ver información del grupo
-- Lista de miembros
-- Abandonar grupo
+- **Solicitudes futuras**: Lista de próximas reservas
+- **Solicitudes pasadas**: Historial de viajes
+- **Acciones**: Cancelar solicitud desde esta pantalla
+- **Información detallada**: Fecha, hora, grupo, lanzadera, rol, estado
 
 ---
 
-### **10. UNIRSE A GRUPO EXISTENTE**
+### **9\. PERFIL DE USUARIO**
 
-Flujo para usuarios que quieren unirse a un grupo creado por otros.
+**Función**: Gestión del perfil personal y estadísticas.
 
-- **Métodos de acceso:**
-  - Código de invitación (6 dígitos)
-  - Enlace compartido
-  - Búsqueda por nombre (si es público)
-- **Pantalla de búsqueda:**
-  - Campo para código/nombre
-  - Lista de grupos públicos cercanos
-- **Vista previa del grupo:**
-  - Nombre, descripción
-  - Número de miembros
-  - Lanzaderas activas (preview)
-- **Solicitud:**
-  - Botón "Solicitar unirse"
-  - Mensaje opcional al administrador
-
----
-
-### **11. PERFIL DE USUARIO**
-
-Pantalla de gestión del perfil personal y configuración de la aplicación.
+**Configuración disponible**:
 
 - **Información personal:**
-  - Foto de perfil (opcional)
-  - Nombre de usuario
-  - Número de teléfono (no editable)
+  - Editar foto de perfil
+  - Nombre/alias
+  - País/número (número no editable directamente)
   - Fecha de registro
-- **Estadísticas:**
+  - Visibilidad del número de teléfono (privado o público)
+- **Historial completo**: Solicitudes y viajes realizados
+- **Estadísticas visibles**:
+
   - Viajes completados
+  - Viajes cancelados (importante para reputación futura)
   - Grupos activos
-  - Calificación como conductor/viajero (futuro)
-- **Configuración:**
-  - Notificaciones push
-  - Visibilidad del perfil
-  - Tema de la app
-  - **Cambiar rol predeterminado**: opción para establecer rol preferido (conductor/viajero)
+  - Veces como conductor
+  - Cancelaciones como conductor
+  - Calificación como conductor/viajero
+
+- **Sección opcional**: "Mis lanzaderas frecuentes"
+- **Cambiar rol predeterminado**: opción para establecer rol preferido (conductor/viajero)
+- Nota: La visivilidad del perfil no está configurada como modificable, en principio se podrá ver todos los datos salvo el del telefono (si el usuario lo dcide asi en esta pantalla)
+
+**Nota**: Datos del historial se guardan en iCloud/Drive del usuario
 
 ---
 
-### **12. GESTIÓN DE VEHÍCULOS**
+### **10\. GESTIÓN DE VEHÍCULOS** _(por grupo)_
 
-Pantalla dedicada para gestionar vehículos frecuentes o guardados por grupo.
+**Función**: Ver, agregar, editar y eliminar vehículos frecuentes del grupo.
 
-- **Acceso para crear/agregar:**
-  - **Creadores y administradores:** Pueden agregar vehículos directamente (aprobados automáticamente)
-  - **Cualquier miembro actuando como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir
-- **Acceso para editar/eliminar:**
-  - **Creadores y administradores:** Pueden editar/eliminar cualquier vehículo del grupo
-  - **Conductor que creó el vehículo:** Puede editar su propio vehículo sin autorización adicional
+**Acceso**: Desde Ajustes del grupo (cada grupo maneja sus vehículos)
+**Acceso para crear/agregar, editar o eliminar:**
+
+- **Creadores y administradores:** Pueden agregar vehículos directamente (aprobados automáticamente). Pueden editar/eliminar cualquier vehículo del grupo
+- **Cualquier miembro actuando como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir
+- **Conductor que creó el vehículo:** Puede editar su propio vehículo sin autorización adicional
 - **Funcionalidades:**
+
   - **Sistema de aprobación:** Solo las solicitudes de creación de nuevos vehículos requieren aprobación del creador/admin del grupo
   - **Trazabilidad:** Se registra automáticamente quién hizo la última modificación en cada vehículo
   - **Notificaciones:** Administradores y creadores reciben notificación de nuevas solicitudes de creación
   - **Chat integrado:** Comunicación durante proceso de aprobación de nuevos vehículos
+    **Interfaz**:
+
+- Lista de ítems: vehículo + miniatura circular
+- Al pulsar vehículo: editar datos
+
 - **Datos del vehículo:**
+
   - **Obligatorios:**
     - Número de matrícula
     - Número de plazas
@@ -750,112 +748,87 @@ Pantalla dedicada para gestionar vehículos frecuentes o guardados por grupo.
     - Modelo del vehículo
     - Marca
     - Color
-- **Persistencia:** Los vehículos se guardan por grupo y pueden ser reutilizados por cualquier conductor del grupo
+
 - **Integración:** Al crear una lanzadera como conductor, se puede seleccionar de vehículos aprobados o solicitar agregar uno nuevo (con aprobación)
+
+- **Persistencia:** Los vehículos se guardan por grupo y pueden ser reutilizados por cualquier conductor del grupo
+  **Para conductores**:
+
+- Ver lista de vehículos frecuentes del grupo
+- Al seleccionar uno: opciones "Elegir", "Editar", "Crear nuevo"
+- Al elegir: se asigna al viaje y usuario queda como conductor
+- **Foto del vehículo**: Almacenada en iCloud/Drive del usuario
+
 - **Estados:** Los vehículos pueden estar en estado 'aprobado', 'pendiente' o 'rechazado'
 
 ---
 
-### **13. RECUPERACIÓN DE CUENTA**
-
-Pantalla para casos de pérdida de móvil o cambio de número de teléfono.
-
-- **Acceso:** Enlace desde pantalla de login
-- **Métodos de recuperación:**
-  - Verificación con número de teléfono anterior (si está disponible)
-  - Verificación por email (si se configuró)
-  - Contacto con soporte (último recurso)
-- **Flujo de recuperación:**
-  - Ingreso del nuevo número de teléfono
-  - Verificación de identidad
-  - Transferencia de cuenta al nuevo número
-  - Confirmación y acceso restaurado
-- **Seguridad:** Proceso de verificación robusto para prevenir accesos no autorizados
-
----
-
-### **14. ONBOARDING MEJORADO**
-
-Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
-
-**Contenido del tutorial:**
-
-- **Pantalla 1**: Bienvenida y presentación de ShuttleBiz
-  - Logo y mensaje de bienvenida
-  - Breve descripción: "Organiza viajes compartidos con tu comunidad"
-- **Pantalla 2**: Cómo funcionan los grupos
-  - Explicación de los "Biz" (grupos)
-  - Diferencia entre grupos públicos y privados
-  - Roles dentro de un grupo
-- **Pantalla 3**: Crear y gestionar lanzaderas
-  - Cómo crear una nueva lanzadera
-  - Configurar horarios y frecuencias
-  - Vista previa de lanzadera
-- **Pantalla 4**: Solicitar plazas y ser conductor
-  - Selección de rol (conductor/viajero)
-  - Proceso de solicitud de plaza
-  - Gestión de vehículos
-- **Pantalla 5**: Comunicación y notificaciones
-  - Sistema de chat por grupo
-  - Tipos de notificaciones
-  - Configuración de privacidad
-
-**Características técnicas:**
-
-- PageView con indicadores de progreso
-- Botones "Siguiente", "Saltar" y "Empezar"
-- Animaciones suaves entre pantallas
-- Disponible después como ayuda en el menú: Ajustes > Ayuda > Ver tutorial
-
-**Activación:**
-
-- Automático para usuarios nuevos tras primer login
-- Manual desde menú de configuración
-
----
-
-### **15. GESTIÓN DE NOTIFICACIONES**
-
-Sistema completo de notificaciones push e in-app para mantener informados a los usuarios.
-
-- **Tipos de notificaciones:**
-  - Nueva lanzadera creada en grupo
-  - Alguien solicita plaza en tu viaje
-  - Plaza confirmada/rechazada
-  - Recordatorio 30min antes del viaje
-  - Cambios en horarios
-  - Mensajes del chat específico
-  - **Invitación recibida** para ser miembro de un grupo
-- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones
-- **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
-- **Centro de notificaciones:** Historial in-app de notificaciones recibidas
-
----
-
-### **16. SISTEMA DE CHAT DETALLADO**
+### **11. PANTALLAS DE CHAT**
 
 Comunicación completa entre usuarios con múltiples canales de chat.
 
-#### **Chat general del grupo:**
-
-- Historial persistente de mensajes
-- Mensajes multimedia (fotos, ubicación)
-- Menciones @usuario
-- Funcionalidad de búsqueda de mensajes
-
-#### **Chat específico de viaje:**
-
-- Solo visible para participantes de esa salida específica
-- Se archiva automáticamente después del viaje
-- Información contextual (hora, destino) siempre visible
-- Lista de participantes del viaje
-
-#### **Características de mensajes:**
+### Características generales de todos los chats:
 
 - Estados de mensajes (enviado, entregado, leído)
 - Indicador de "escribiendo..."
 - Timestamps de mensajes
 - Cola de mensajes offline
+- Historial persistente de mensajes
+- Mensajes multimedia (fotos, ubicación)
+- Funcionalidad de búsqueda de mensajes (en el menú superior derecho del chat de 3 puntos verticales)
+- Buscar dentro del chat por texto.
+
+Tendrá 4 canales de chat:
+
+### **Chats grupales:**
+
+Es posible menciones @usuario.
+En el menú superior derecho de 3 puntos verticales se podrá:
+  - Ver informacion de integrantes de ese chat, dependiendo de si se ve desde un grupo, desde una lanzadera o desde un viaje (salida de horario) en concreto.
+  - Silencia/desasctivar silencio de notificaciones del chat
+  - Al pulsar sobre la imagen de un usuario se abre chat privado.
+
+- #### **Chat general del grupo:**
+
+  - Persiste mientras exista el grupo
+  - Se podra hablar de todo lo relacionado con el grupo y se abrirá cuando desde la pantalla Grupo se use el chat.
+  - El chat no se eliminará (historico de mensajes) mientras exista el grupo.
+- #### **Chat específico de lanzadera:**
+  - Necesario para evitar confusión entre lanzaderas
+  - Se podra hablar de todo lo relacionado con la lanzadera y se abrirá cuando desde la pantalla lanzadera se use el chat
+  - El chat no se eliminará (historico de mensajes) mientras exista la lanzadera.
+- #### **Chat específico de viaje:**
+  - Chat especifico de una salida de lanzadera
+  - Solo visible para participantes de esa salida específica
+  - Será efimero, se archiva automáticamente después del viaje, solo para historico del viaje, sin interación de chat.
+  - Información contextual (hora, destino) siempre visible
+
+#### **Chats privados:**
+
+- Se abre al pulsar sobre un usuario dentro de una lanzadera.
+- Se prevee que tenga icono de llamada al lado izquierdo del menu superior izquierdo para llamada de voz.
+- Al pulsar sobre la imagen de usuario (superior izquierda) se abre el perfil del usuario, que es otra pantalla en la que se muestra: 
+  - Telefono (lo es publico)
+  - Usuario desde (fecha)
+  - Veces que uso lanzaderas
+  - Reputación (será un porcentage de 1 a 5 en el que se proporciona viajes solicitados con viajes realizados, viendose que tan confiable es para que use el servicio solicitado).
+
+
+---
+
+### **12\. CONFIGURACIÓN (Settings)**
+
+**Función**: Configuración general de la aplicación.
+
+**Opciones**:
+
+- Idioma (si se plantea multilenguaje)
+- Tema claro/oscuro
+- Avisos/notificaciones
+- **Configuración de copia de seguridad** (Drive/iCloud)
+- **Cambiar número de teléfono** (mantiene UID)
+- Ayuda/contacto
+- **Eliminar cuenta** (flujo crítico)
 
 <br>
 
@@ -1177,3 +1150,11 @@ Sería interesante organizar cada trabajo según estos roles, para mejor organiz
   - **Growth Hacker**: Analiza y optimiza métricas de adquisición y compromiso de usuarios.
   - **Community Manager**: Facilita la retroalimentación de los usuarios.
   - **Data Analyst**: Monitorea el uso de la aplicación.
+
+
+prueba de indentacion
+esto no es indentado
+<div style="margin-left:20px">
+    1 indentacion
+</div>
+
