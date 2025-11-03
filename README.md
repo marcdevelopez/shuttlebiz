@@ -47,11 +47,11 @@ You can find the complete documentation and feature specifications at the link b
 
 Here are some early in-app screens and mockups from the ShuttleBiz development:
 
-| User Authentication              | Create Shuttle                               | Shuttle List                             |
-| -------------------------------- | -------------------------------------------- | ---------------------------------------- |
-| ![Auth](assets/screens/auth.png) | ![Create](assets/screens/create-shuttle.png) | ![List](assets/screens/shuttle-list.png) |
+| User Authentication              | Shuttle schedule lookup & editing                          | Shuttle schedule                         |
+| -------------------------------- | ---------------------------------------------------------- | ---------------------------------------- |
+| ![Auth](assets/screens/auth.png) | ![Create](assets/screens/shuttle-schedule-lookup-edit.png) | ![List](assets/screens/shuttle-schedule.png) |
 
-> These screens reflect the current stage of development. More features and refinements are on the way.
+> These screens reflect the current stage of development (2025, october), using miro.com. More features and refinements are on the way.
 
 ---
 
