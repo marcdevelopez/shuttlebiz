@@ -259,6 +259,38 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Provider, Riverpod o Bloc para actualización reactiva.
   - ExpansionTile para mostrar horarios organizadamente.
 
+### 🧩 Patrones de Modales y Diálogos
+
+- Los **modales** se utilizarán para confirmar acciones, mostrar avisos importantes o solicitar decisiones rápidas al usuario.  
+  Ejemplo: Confirmar creación de lanzadera o agregar el primer horario.
+
+- **Estructura visual recomendada:**
+
+  - Fondo blanco con bordes suaves y ligera sombra.
+  - Texto principal en gris oscuro (#212121).
+  - Título o pregunta en negrita.
+  - Espaciado amplio para evitar toques accidentales.
+  - Línea divisoria superior a los botones de acción.
+
+- **Botones dentro del modal:**
+
+  - **Cancelar:** texto gris oscuro sin fondo (estilo “text button”).
+  - **Aceptar / Confirmar:** fondo rojo (#D32F2F) con texto blanco.
+  - Separación por línea gris (#E0E0E0) entre ambos botones.
+  - Los botones siempre alineados en horizontal, centrados o de borde a borde.
+
+- **Comportamiento:**
+
+  - El modal debe bloquear la interacción con el resto de la interfaz hasta cerrarse.
+  - Al pulsar fuera del modal no debe cerrarse automáticamente, excepto en modales informativos no críticos.
+  - Debe ser consistente en toda la app (mismo color, tipografía y espaciado).
+
+- **Ejemplo:**
+  “¿Desea agregar el primer horario?”  
+  [Cancelar] [ Aceptar ]
+
+🧠 **Objetivo:** Mantener coherencia visual, simplicidad y claridad en las confirmaciones sin distraer de la acción principal.
+
 <br>
 
 ---
@@ -427,74 +459,99 @@ Flujo para usuarios que quieren unirse a un grupo creado por otros.
 
 > > ### 5.1 Pantalla NEW SHUTTLE
 
-- **Función**: Modal para crear una nueva lanzadera desde la Pantalla de Grupo.
+- **Función**: Pantalla para crear una nueva lanzadera desde la Pantalla de Grupo.
 
 - **Campos obligatorios**:
 
   - Nombre de la lanzadera (debe ser corto para UI)
-  - Origen y destino (nombres cortos, se avisará de evitar nombres largos)
+  - Origen y destino (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán en la siguiente pantalla, para no sobrecargar esta pantalla. Al pulsar El botón "Seleccione el origen" o el de destino, se abre pantalla "Elección Origen/Destino" (5.1.1)
   - Plazas por defecto: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
-  - Configuración de horario (fecha única o frecuencia)
-  - **Coordenadas**: Para origen y destino (mapas). Es necessario para determinar el origen y destino de la Lanzadera. Será necesario crear pantallas para definir esos puntos, posiblemente con opciones como buscar dirección, o buscar en el mapa, o ambas, con ayudad de maps.
-  - Comentario de la Lanzadera: Comentario ampliado con área de texto expandida (Normas, instrucciones, etc). Es amplio, debajo de configuración de horario.
+  - Comentario de la Lanzadera: Normas, instrucciones, etc. Es amplio, debajo de "Plazas por defecto".
     Estos datos se podrán modificar desde la pantalla de la lanzadera, en el menú superior derecho de la barra de app (⋮).
 
-- La creación de horarios se hara desde la pantalla Lanzadera en la pagina de "Horarios", editando uno de los ya creados y creando un horario nuevo desde el botón de añadri abajo a la derecha.
+- La creación/edición de horarios se hara desde la pantalla Lanzadera en la pagina de "Horarios", editando uno de los ya creados o creando un horario nuevo desde el botón "añadir" (+) abajo a la derecha, aunque en la creación de la lanzadera, una vez configurados los datos básicos, al pulsar guardar se preguntará en un modal ("Horario desde NewShuttle") si desea agregar el primer horario, y en caso afirmativo se abrirá la pantalla 6.1.3 Creacion/Edición Horario, que es la misma que se usa para añadir o editar una vez ya está creada la lanzadera.
 
-> # La eleción de fecha puntual o semanal (modo 1 y modo 2 a continuación) se hace de otra manera, hay que describirlo aqui, ya está descrito en el mockup de miro.com, de modo que hay que modificar lo siguiente:
+> > ### 5.1.1 Pantalla ELECCIÓN ORIGEN/DESTINO
 
-- ##### **Modo 1: Fecha puntual**
+- **Función**:
+  Permitir al usuario definir el **nombre** y las **coordenadas geográficas** del punto de origen o destino de la lanzadera.
+  Esta pantalla se abre al pulsar los botones **“Seleccione el origen”** o **“Seleccione el destino”** desde la pantalla “NEW SHUTTLE” (5.1).
+- **Campos obligatorios**:
 
-  - Botón **Calendario**: abre un DatePicker para elegir la fecha del evento.
-  - Botón **Agregar horario**: abre un TimePicker para seleccionar horas de salida.
-  - Los **horarios** se listan con el sentido del viaje y se agrupan por día de **forma compacta**, optimizando el espacio visual. Por ejemplo: "Lunes a Viernes: 08:00, 10:00, 11:00". Esto permite al usuario tener una visión rápida y clara del horario completo sin necesidad de múltiples vistas.
-  - Botón paralelo: **Horario de vuelta** para agregar horarios de retorno en lista separada.
-  - Funciones adicionales:
-  - Pulsar una hora para **modificarla**.
-  - Pulsación larga para **eliminar** una o varias horas.
-    - La lanzadera podrá **reutilizarse** de dos formas:
-      - ✅ Volviendo a activar la opción Fecha: el usuario podrá seleccionar una **nueva fecha igual o posterior** a la fecha actual del dispositivo para repetir la misma configuración de horarios.
-      - 🔁 **Cambiando a la opción Frecuencia**: convierte la lanzadera en un trayecto recurrente semanal, permitiendo seleccionar múltiples días y replicar los horarios definidos.
-  - Al finalizar:
-    - Botones de finalización con dos opciones claras: Guardar o Cancelar:
-      - **Guardar**: los datos introducidos se almacenan y el usuario regresa a la vista de configuración general de la lanzadera, manteniéndose visibles los horarios añadidos.
-      - **Cancelar**: descarta todos los cambios realizados durante esa sesión de configuración y vuelve a la pantalla anterior sin guardar nada.
-    - **Regresa a la pantalla principal** de configuración de lanzadera (NewShuttleScreen), donde se visualizará la configuración generada. La frecuencia se visualizará en forma de grupo, con:
-      - Título: días seleccionados (ej. L,M,X,J,V)
-      - Sentido del viaje: origen → destino
-      - Listas de horarios: ida y vuelta
-  - Al pulsar cualquier lista de horarios se podrá volver a editar desde la misma pantalla de configuración.
+  - **Nombre del lugar**: Texto corto que identifica el punto (por ejemplo: “Aeropuerto”, “Centro Málaga”, “Campus UMA”).
+    El sistema avisará si el nombre es excesivamente largo para evitar problemas de UI.
+  - **Dirección o búsqueda en mapa**: Campo de texto con sugerencias de direcciones. Al introducir una dirección, se mostrará el marcador en el mapa.
+    Alternativamente, el usuario podrá mover manualmente el marcador en el mapa para seleccionar la ubicación exacta.
+    Por defecto, tendrá detección automática de ubicación actual.
 
-- ##### **Modo 2: Frecuencia semanal**
+- **Elementos interactivos**:
 
-  - Botón **Calendario**: seleccionar fecha de inicio de la frecuencia.
-  - Botón **Agregar días \+**: abre selector con CheckBoxListTile (lunes a domingo).
-  - Tras seleccionar uno o varios días:
+  - Campo de texto “Nombre del lugar” con icono de edición.
+  - Campo de búsqueda con autocompletado (basado en API de mapas).
+  - Mapa interactivo con marcador rojo movible.
+  - Botón **“Confirmar”**, que guarda el punto seleccionado y retorna a la pantalla anterior, actualizando el campo correspondiente (“Origen” o “Destino”).
 
-    - Botón **Agregar horario** (TimePicker): se listan horarios bajo cada grupo de días y sentido.
-    - Botón **Vuelta**: igual que en modo Fecha, para agregar horarios de retorno.
+- **Comportamiento**:
 
-  - #### **Finalización:**
+  - Al confirmar, se guardan las coordenadas (latitud y longitud) junto al nombre elegido.
+  - Si el usuario accede desde “Origen”, el título mostrará **“Selecciona el origen”**; si accede desde “Destino”, mostrará **“Selecciona el destino”**.
+  - El botón de confirmación se habilita solo cuando ambos campos (nombre y coordenadas) están completos.
 
-    - Botón Guardar o Cancelar
-      - **Guardar**: los datos introducidos se almacenan y el usuario regresa a la pantalla principal de configuración de lanzadera (NewShuttleScreen), donde podrá revisar y terminar de guardar todos los detalles de la nueva lanzadera. La frecuencia configurada se visualizará en forma de grupo.
-      - **Cancelar**: descarta todos los cambios realizados durante esa sesión de configuración y vuelve a la pantalla anterior sin guardar nada.
+- **Notas adicionales**:
+
+  - La pantalla debe mantener consistencia visual con “Configuración de Lanzadera” (5.1) y usar la misma paleta de colores y tipografía.
 
 ---
 
-#### **5.2 Horarios**
+LO SIGUIENTE HAY QUE MODIFICARLO, EN PRINCIPIO ERA PARA LAS PAGINAS DEL VIEWPAGER DE GRUPOS, PERO HAY QUE REVISAR POR SI HAY ALGUNA IDEA QUE SE PUEDA PASAR A ESAS PANTALLAS...
 
-- Lista de próximas salidas de todas las lanzaderas del grupo
-- Ordenadas por cercanía en tiempo
-- Cada ítem muestra:
-  - Nombre/identificación de la lanzadera
-  - Sentido (origen → destino)
-  - Hora de salida
-  - Plazas solicitadas
-- Al pulsar una salida: abre **Pantalla de Lanzadera**
-- Estado visual:
-  - Verde claro: activa, con plazas disponibles.
-  - Rojo: sin plazas o fuera de horario.
+#### **5.2 Página HORARIOS-LANZADERAS DEL GRUPO**
+
+**Función:**
+Mostrar de forma unificada todos los horarios próximos de las distintas lanzaderas pertenecientes al grupo actual, permitiendo al usuario consultar rápidamente las salidas sin tener que entrar en cada lanzadera individualmente.
+
+**Estructura general:**
+
+- Pantalla similar a la **6.1 Horarios** (vista de horarios de una lanzadera), pero ampliada a nivel de grupo.
+- Cada ítem corresponde a un grupo de horarios comunes (p. ej. L-V) específico dentro de una lanzadera.
+- Se presenta una **lista cronológica todos los horarios de lanzaderas** del grupo:
+  - Si un horario mostrado es el de lunes a viernes y otro es de fin de semana, y es viernes: se mostrará primero el de lunes a viernes y después el de fin de semana.
+  - Los ítems se ordenan solo por tiempo, no por la lanzadera a la que pertenezcan.
+  - Si no hay horarios próximos (no haya horarios semanales o aún no exista ninguna lanzadera con horario): se muestra un mensaje informativo “**No hay salidas próximas en el grupo**”.
+
+**Contenido de cada ítem:**
+
+- **Nombre de la lanzadera** (ej. “Nave ↔ Estación”) como encabezado destacado.
+- **Días y franja horaria** del horario (ej. _L, M, X, J, V de 7:00 a 12:30_).
+- **Secciones internas (idénticas al estilo de 6.1):**
+
+  - **Salida en curso:**
+
+    - Hora real de salida
+    - Lugar de partida
+    - Total de viajeros vs capacidad
+    - Icono o indicador en color rojo coral (`#FF6B6B`)
+
+  - **Próxima salida:**
+
+    - Fecha (o “hoy” / “mañana” si corresponde)
+    - Hora prevista y lugar de salida
+    - Plazas solicitadas / plazas totales
+    - Icono o indicador en verde (`#00C853`)
+
+- Bordes suaves y tarjetas con sombra ligera, enmarcadas como bloques independientes.
+
+**Interacciones:**
+
+- Al pulsar sobre un ítem, se abre la pantalla **6.1.1 Consulta/Horario** correspondiente a esa lanzadera y horario, desde la que se puede seleccionar una hora de salida para solicitar plaza.
+
+**Elementos visuales adicionales:**
+
+- Título superior: “Horarios del grupo [Nombre del grupo]”.
+- Color de encabezado y tipografía iguales a los de la pantalla 6.1 (consistencia visual).
+
+**Objetivo de UX:**
+Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido a qué lanzaderas tienen salidas próximas y en qué horarios, manteniendo coherencia total con el diseño visual de las pantallas de lanzadera.
 
 #### **5.3 Chat** _(general del grupo)_
 
@@ -541,17 +598,18 @@ Pantalla para administrar el grupo de la pantalla grupo (accesible desde menú s
 
 ---
 
-### **PANTALLA DE LANZADERA** _(vista específica de lanzadera)_
+### **6 PANTALLA DE LANZADERA** _(vista específica de lanzadera)_
 
 **Función**: Vista detallada de una lanzadera específica accesible desde Pantalla de Grupo.
 
 **Al pulsar sobre una lanzadera desde Home**, dentro de un grupo (pantalla 5): Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
 
-**Estructura**: BottomNavigationBar + PageView con 3 secciones: Horarios, Chat y Mapa.  
+**Estructura**: BottomNavigationBar + PageView con 3 secciones: Horarios, Chat y Mapa.
 
 Aquí se organiza todo lo relacionado con la solicitud de plazas, es el centro de la app; sin esta parte, la app no tendría sentido.
 
 Tiene un menu superior derecho común a las 3 paginas del pageview. Este contiene, de momento:
+
 - **Información de la lanzadera**: abre la información guardada en la pantalla 5.1 New Shuttle (Nombre, Origen y Destino, Comentario).  
   Si el usuario es **Creador/Admin del grupo**, podrá además modificar estos datos pulsando el icono para editar que se situará arriba, al lado izquierdo del menu:
   - Al ser pulsado se abre modal para confirmar cambio a modo edición
@@ -562,27 +620,48 @@ Tiene un menu superior derecho común a las 3 paginas del pageview. Este contien
 
 Esta es la página central del pagerview con una lista de ítems con los diferentes horarios ya creados, cada uno de los cuales contiene grupos de días con sus horas de salida de la lanzadera.  
 De arriba abajo:
-- String "Horarios de Lanzadera"
-- Lista de distintos horarios, cada horario es un grupo de dias semanales o fecha unica de lanzadera, y se ordenan de más próximo a más lejano en tiempo.
 
-LO SIGUIENTE HAY QUE SEGUIR EDITANDOLO:
-- **HORARIOS**
-  - Editables si el usuario es el creador o administrador.
-  - Icono de lápiz solo visible si el usuario es creador o administrador del grupo: abre pantalla de configuración (NewShuttleScreen).
-  - Se muestran horarios filtrados según día y hora actuales.
-  - Botón adicional para ver todos los horarios futuros.
-- **Cabecera**:
-  - Izquierda: "IDA" o "VUELTA" (sentido actual en grande)
-  - Derecha: Botón pequeño para cambiar sentido (si tiene doble sentido)
-- **Cada ítem muestra**:
-  - Sentido (origen → destino, truncado si es necesario)
-  - Hora de salida
-  - Plazas en formato [solicitadas]/[plazas del vehículo]
-- **Al pulsar una hora de salida**: Abre la pantalla **Detalle de hora de Salida** que basicamente será la misma que para crear un horario, con ligeras diferencias.
+- String "Horarios de Lanzadera"
+- Lista de distintos horarios, cada horario es un grupo de dias semanales o fecha unica de lanzadera, y se ordenan de más próximo a más lejano en tiempo. Cada ítem de horario tendrá:
+
+  - La **primera línea**: fecha y horas de comienzo y final de horario (a tipo título resumen del horario, ejemplo: L, M, X, J, V de 7:00 a 12:30)
+  - La **salida en curso**: tendrá icono de tonalidad roja, se muestra la hora de salida real, el lugar desde donde saliuó y el total de viajero que van en la lanzadera y el total de capacidad del vehiculo, ejemplo:
+
+  ```
+  Salida en curso:
+  Salió a las 11:33 desde Nave
+  Total viajeros: 4 / 4
+  ```
+
+  - La **próxima salida**: tendrá icono de tonalidad verde, se muestra la fecha (si es hoy o mañana se dira sin fecha), la hora prevista y el lugar de salida de la siguiente lanzadera, además de las plazas solicitadas/plazas vehículo, ejemplo:
+
+  ```
+  Próxima salida:
+  hoy a las 12:00 desde Nave
+  Total plazas solicitadas: 3 / 4
+  ```
+
+- Al pulsar sobre un ítem de horario se abre la pantalla de Consulta/Horario donde se ve con más detalle el horario.
+- Si Además se es Creador/Admin del Grupo al que pertenece la lanzadera, se muestra un botón para agregar un nuevo horario, abajo a la derecha (floating button). Al pulsarse se abre la pantalla 6.1.3 Creacion/Edición Horario, que solo se muestra a los Creadores/Admin del Grupo o Biz en esta app.
 
 #### **6.1.1 Pantalla de consulta/Horario**
 
-Se abre al pulsar sobre un horario ya creado en una lanzadera.
+Se accede a esta vista al pulsar sobre un horario existente de una lanzadera.
+
+En la parte superior se muestra el origen y el destino con el siguiente formato:
+
+```
+Salida:     Nave
+Destino:    Estación
+```
+
+El origen se destaca en azul (“Nave”) y el destino en rojo (“Estación”).
+
+Debajo de la cabecera del horario se muestran únicamente los días en los que ese horario está activo, para evitar confusiones. Cada día se resalta en azul o rojo según el sentido del trayecto: azul para la ida y rojo para la vuelta.
+
+Estos colores se asignan al crear la lanzadera: el lugar definido como origen recibe el color azul y el destino el color rojo, manteniéndose esta misma codificación en todas las pantallas.
+
+Los días activos del horario pueden modificarse en la pantalla 6.1.3 Creación/Edición de Horario.
 
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lapiz para editar arriba en la barra superior (o donde se decida para mas usabilidad), sin boton de añadir hora, sin posibilidad de modificar dias semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edicion de horario.
 
@@ -621,7 +700,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 #### **6.2 Chat** _(de la lanzadera)_
 
 (Ver 11. Pantallas de Chat ).
- Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
+Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
 
 #### **6.3 Mapa** _(incluido en MVP)_
 
@@ -642,7 +721,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 
 ### **7. SELECCIÓN DE ROL - Role Selection**
 
-(Modal dentro de pantalla 6 Lanzadera)
+(Modal dentro de pantalla 5 GRUPO, previa entrada en pantalla 6 LANZADERA)
 
 Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para esa sesión.
 
@@ -793,7 +872,10 @@ Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para 
 
 ### **11. PANTALLAS DE CHAT**
 
-Comunicación completa entre usuarios con múltiples canales de chat.
+Comunicación completa entre usuarios con 2 canales de chat: grupo y lanzadera. En la pagina de chat a nivel de grupos, solo será posible elegir entre grupo, y al pulsar se baja al nivel del grupo elegido en la pagina de chat.
+
+**Objetivo**:
+Crear un chat funcional y elegante, coherente con el diseño general de ShuttleBiz, que permita conversaciones entre los usuarios de una lanzadera específica.
 
 ### Características generales de todos los chats:
 
@@ -805,43 +887,110 @@ Comunicación completa entre usuarios con múltiples canales de chat.
 - Mensajes multimedia (fotos, ubicación)
 - Funcionalidad de búsqueda de mensajes (en el menú superior derecho del chat de 3 puntos verticales)
 - Buscar dentro del chat por texto.
-
-Tendrá 4 canales de chat:
-
-### **Chats grupales:**
-
-Es posible menciones @usuario.
-En el menú superior derecho de 3 puntos verticales se podrá:
-
-- Ver informacion de integrantes de ese chat, dependiendo de si se ve desde un grupo, desde una lanzadera o desde un viaje (salida de horario) en concreto.
-- Silencia/desasctivar silencio de notificaciones del chat
+- Es posible menciones @usuario.
+- Ver informacion de integrantes de ese chat.
+- Silencia/desactivar silencio de notificaciones del chat
 - Al pulsar sobre la imagen de un usuario se abre chat privado.
+- Pulsación larga sobre un mensaje da opción de:
+  - copiar contenido del mensaje
+  - responder
+  - reaccionar
+  - reenviar
+  - Detalle de mensaje
+  - Reportar mensaje a Creador/Admin (él puede expulsar usuario de grupo)
 
-- #### **Chat general del grupo:**
+Tendrá varios canales de chat:
 
-  - Persiste mientras exista el grupo
-  - Se podra hablar de todo lo relacionado con el grupo y se abrirá cuando desde la pantalla Grupo se use el chat.
-  - El chat no se eliminará (historico de mensajes) mientras exista el grupo.
+### **Chat de Grupo:**
 
-- #### **Chat específico de lanzadera:**
-  - Necesario para evitar confusión entre lanzaderas
-  - Se podra hablar de todo lo relacionado con la lanzadera y se abrirá cuando desde la pantalla lanzadera se use el chat
-  - El chat no se eliminará (historico de mensajes) mientras exista la lanzadera.
-- #### **Chat específico de viaje:**
-  - Chat especifico de una salida de lanzadera
-  - Solo visible para participantes de esa salida específica
-  - Será efimero, se archiva automáticamente después del viaje, solo para historico del viaje, sin interación de chat.
-  - Información contextual (hora, destino) siempre visible
+- Persiste mientras exista el grupo
+- Se podra hablar con todo el grupo sin salir del chat y se abrirá cuando el usuario se encuentre en el nivel de grupo
+- El chat no se eliminará (historico de mensajes) mientras exista el grupo.
 
-#### **Chats privados:**
+### **Chat de Lanzadera:**
 
-- Se abre al pulsar sobre un usuario dentro de una lanzadera.
-- Se prevee que tenga icono de llamada al lado izquierdo del menu superior izquierdo para llamada de voz.
-- Al pulsar sobre la imagen de usuario (superior izquierda) se abre el perfil del usuario, que es otra pantalla en la que se muestra:
-  - Telefono (lo es publico)
+- Necesario para evitar confusión entre distintas lanzaderas.
+- Se abre estando en el nivel de lanzadera (en la página de chat, desde un grupo, se pulsa una lanzadera, y se abre el chat de lanzadera; para entrar en el chat de otra lanzadera: flecha atras arriba a la derecha, se abre el nivel de grupo, y se pulsa otra lanzadera).
+- El chat no se eliminará (historico de mensajes) mientras exista la lanzadera.
+
+### **Chat privado:**
+
+- Se abre al pulsar de forma simple sobre un mensaje de chat de un usuario.
+- Tambien es posible entrar a chats privados anteriores pulsando en el icono de la barra superior al lado derecho del nombre del chat.
+- Seguirá teniendo la flecha atras arriba a izquierda, volviendo en este caso al inmediato superior es decir si se estaba en lanzadera se vuelve a chat lanzadera, y si se estaba en chat de grupo se vuelve a chat de grupo.
+- En la barra aparecerá el nombre del usuario en vez del nombre de la lanzadera o del grupo, mientras se esté en ese chat privado.
+
+- Al pulsar sobre la imagen de usuario (superior izquierda a la derecha de la flecha de subir nivel) se abre el perfil del usuario, que es otra pantalla en la que se muestra:
+
+  - Teléfono (lo es publico)
   - Usuario desde (fecha)
   - Veces que uso lanzaderas
   - Reputación (será un porcentage de 1 a 5 en el que se proporciona viajes solicitados con viajes realizados, viendose que tan confiable es para que use el servicio solicitado).
+
+- Se prevee para futuras versiones que tenga icono de llamada al lado izquierdo del menu superior izquierdo para llamada de voz.
+
+### 🧭 **Estructura general:**
+
+**Barra superior:**
+
+- Flecha atrás ⬅️ → vuelve a un nivel superior (de lanzadera a grupo y de grupo a grupos)
+- Título centrado: **Chat grupos o nombre de grupo - lanzadera** (ej. “Chat Nave ↔ Estación”).
+- Icono contextual (👤 / 👥) → permite cambiar entre vista de chats privados y chat grupal, según el contexto actual.
+- Icono de menú (⋮) en el lado derecho con opciones contextuales:  
+  - Ver integrantes del grupo, dependiendo de si se ve desde un grupo o desde una lanzadera.  
+  En esta opción es posible comenzar chat con cualquier usuario del grupo o lanzadera
+  - Silenciar / reactivar notificaciones del chat.
+  - Al pulsar sobre la imagen de un usuario se abre chat privado
+  - Buscar dentro del chat.
+
+**Cuerpo principal:**
+
+- Fondo gris claro o color suave con patrón discreto.
+- Burbuja azul (#0077B6) para mensajes propios.
+- Burbuja gris/blanca para mensajes de otros.
+- Nombre o alias sobre cada burbuja (solo si hay varios participantes).
+- Hora pequeña alineada a la derecha de cada mensaje.
+- Ícono ✓✓ azul para leído, recibido, no leído...
+- Soporte para texto, emojis y fotos (miniaturas).
+- Separadores automáticos por fecha: “Hoy”, “Ayer”.
+- Indicador inferior: “Usuario está escribiendo…” en gris tenue, o animación gif.
+
+**Zona inferior (input):**
+
+- Caja redondeada con sombra leve y fondo blanco.
+- Icono de emoji (😊) a la izquierda.
+- Campo de texto expandible (máx. 4 líneas).
+- Icono de cámara 📷 o clip 📎 para enviar imagen o ubicación.
+- Botón circular de envío ➤ en color azul intenso.
+
+### 📱 **Interacciones y comportamiento:**
+
+- El teclado desplaza el chat hacia arriba automáticamente.
+- Los mensajes nuevos se desplazan con animación suave desde abajo.
+- Deslizar hacia la izquierda un mensaje → responder (con preview en miniatura).
+- Pulsación larga → menú contextual (copiar, eliminar, reenviar).
+- Al pulsar sobre la foto o alias de un usuario → abre su **perfil (pantalla 9)**.
+- En el caso del conductor, puede tener un pequeño **badge 🚗** junto al nombre, mientras esté de conductor en una lanzadera, si termina el viaje, llegada al destino, se le quita el badge.
+
+#### 🔐 **Detalles funcionales del chat de lanzadera (según SPEC):**
+
+- El chat de lanzadera es visible para todos, aunque no hayan solicitado plaza, es una ayuda para conectar con los compañeros.
+- El número de teléfono no se muestra (privacidad).
+- Mensajes persistentes mientras la lanzadera exista.
+- Chat individualizable por cada lanzadera (no se mezclan mensajes de otras lanzaderas).
+- Indicadores en tiempo real: enviado, entregado, leído, escribiendo.
+- Sincronización con Firestore (modo offline incluido).
+
+#### 🧩 **Coherencia visual:**
+
+- Colores y tipografía igual que el resto de pantallas (Roboto / Inter).
+- Consistencia con el botón inferior del menú de navegación:
+
+  - Horarios
+  - Chat
+  - Mapa
+
+- Barra inferior tipo BottomNavigationBar con los tres iconos mencionados.
 
 ---
 
@@ -974,7 +1123,7 @@ En el menú superior derecho de 3 puntos verticales se podrá:
 - **Vehicle**: Vehículos frecuentes por grupo con permisos específicos
 - **Shuttle**: Lanzaderas con horarios únicos o recurrentes
 - **Booking**: Reservas de plazas con roles de conductor/viajero
-- **Message**: Chat general y específico por viaje
+- **Message**: Chat de grupo y específico de lanzadera.
 
 <br>
 
