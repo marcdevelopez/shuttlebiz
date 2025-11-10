@@ -86,15 +86,19 @@ If you'd like to collaborate:
 
 ---
 
-## License & Usage Terms
+## 🛡️ License & Collaboration Terms
 
-This project is open for learning purposes and public visibility. However:
+This project is publicly visible for portfolio and evaluation purposes.  
+All source code and materials are protected under the **Private Collaboration License – ShuttleBiz Team**.
 
-- **Commercial use requires explicit permission from the project owner.**
-- **All contributions must be approved before merging.**
-- **Unauthorized commercial redistribution is strictly prohibited.**
+- Collaboration or contributions require **prior written approval** from the ShuttleBiz Team.  
+- **Unauthorized copying, redistribution, or derivative use** of the code is strictly prohibited.  
+- For collaboration or partnership requests, contact **contact@marcdevelopez.com**.
+
+Learn more: [marcdevelopez.com/shuttlebiz-license](https://marcdevelopez.com/shuttlebiz-license)
 
 ---
+
 
 ## Contact
 
