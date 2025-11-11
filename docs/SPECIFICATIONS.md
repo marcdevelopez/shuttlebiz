@@ -505,7 +505,7 @@ Flujo para usuarios que quieren unirse a un grupo creado por otros.
 
 LO SIGUIENTE HAY QUE MODIFICARLO, EN PRINCIPIO ERA PARA LAS PAGINAS DEL VIEWPAGER DE GRUPOS, PERO HAY QUE REVISAR POR SI HAY ALGUNA IDEA QUE SE PUEDA PASAR A ESAS PANTALLAS...
 
-#### **5.2 Página HORARIOS-LANZADERAS DEL GRUPO**
+### **5.2 Página HORARIOS-LANZADERAS DEL GRUPO**
 
 **Función:**
 Mostrar de forma unificada todos los horarios próximos de las distintas lanzaderas pertenecientes al grupo actual, permitiendo al usuario consultar rápidamente las salidas sin tener que entrar en cada lanzadera individualmente.
@@ -569,11 +569,11 @@ Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido
 
 ---
 
-### **5.5. GESTIÓN DE GRUPO**
+## **5.5. GESTIÓN DE GRUPO**
 
 Pantalla para administrar el grupo de la pantalla grupo (accesible desde menú superior).
 
-#### **Para creadores/administradores:**
+### **Para creadores/administradores:**
 
 - **Información del grupo:**
   - Nombre (editable)
@@ -598,7 +598,7 @@ Pantalla para administrar el grupo de la pantalla grupo (accesible desde menú s
 
 ---
 
-### **6 PANTALLA DE LANZADERA** _(vista específica de lanzadera)_
+## **6 PANTALLA DE LANZADERA** _(vista específica de lanzadera)_
 
 **Función**: Vista detallada de una lanzadera específica accesible desde Pantalla de Grupo.
 
@@ -616,35 +616,46 @@ Tiene un menu superior derecho común a las 3 paginas del pageview. Este contien
   - Al confirmar la edición se verán todos los campos en modo edición y arriba "✔️ Confirmar", “✖️”.
   - Solo se abre el teclado al pulsar un campo, para que no moleste la vista y se puedan ver todos los campos.
 
-#### **6.1 Horarios** _(sección central)_
+### **6.1 Horarios** *(sección central)*
 
-Esta es la página central del pagerview con una lista de ítems con los diferentes horarios ya creados, cada uno de los cuales contiene grupos de días con sus horas de salida de la lanzadera.  
+Esta es la página central del **PageView**, con una lista de ítems que representan los diferentes horarios ya creados, cada uno de los cuales contiene grupos de días con sus horas de salida de la lanzadera.
 De arriba abajo:
 
-- String "Horarios de Lanzadera"
-- Lista de distintos horarios, cada horario es un grupo de dias semanales o fecha unica de lanzadera, y se ordenan de más próximo a más lejano en tiempo. Cada ítem de horario tendrá:
+* String **"Horarios de Lanzadera"**.
 
-  - La **primera línea**: fecha y horas de comienzo y final de horario (a tipo título resumen del horario, ejemplo: L, M, X, J, V de 7:00 a 12:30)
-  - La **salida en curso**: tendrá icono de tonalidad roja, se muestra la hora de salida real, el lugar desde donde saliuó y el total de viajero que van en la lanzadera y el total de capacidad del vehiculo, ejemplo:
+* Lista de distintos horarios; cada horario es un grupo de días semanales o una fecha única de lanzadera, y se ordenan de **más próximo a más lejano en el tiempo**.
+  Cada ítem de horario mostrará:
 
-  ```
-  Salida en curso:
-  Salió a las 11:33 desde Nave
-  Total viajeros: 4 / 4
-  ```
+  * La **primera línea**: fecha y horas de comienzo y final del horario (a modo de título resumen).
+    Ejemplo: `L, M, X, J, V de 7:00 a 12:30`
 
-  - La **próxima salida**: tendrá icono de tonalidad verde, se muestra la fecha (si es hoy o mañana se dira sin fecha), la hora prevista y el lugar de salida de la siguiente lanzadera, además de las plazas solicitadas/plazas vehículo, ejemplo:
+  * La **salida en curso**: se mostrará con un icono de tonalidad **roja**, indicando la hora de salida real, el lugar desde donde salió y el total de viajeros frente a la capacidad del vehículo.
+    Ejemplo:
 
-  ```
-  Próxima salida:
-  hoy a las 12:00 desde Nave
-  Total plazas solicitadas: 3 / 4
-  ```
+    ```
+    Salida en curso:
+    Salió a las 11:33 desde Nave
+    Total viajeros: 4 / 4
+    ```
 
-- Al pulsar sobre un ítem de horario se abre la pantalla de Consulta/Horario donde se ve con más detalle el horario.
-- Si Además se es Creador/Admin del Grupo al que pertenece la lanzadera, se muestra un botón para agregar un nuevo horario, abajo a la derecha (floating button). Al pulsarse se abre la pantalla 6.1.3 Creacion/Edición Horario, que solo se muestra a los Creadores/Admin del Grupo o Biz en esta app.
+  * La **próxima salida**: se mostrará con un icono de tonalidad **verde**, indicando la fecha (si es hoy o mañana se mostrará sin fecha explícita), la hora prevista y el lugar de salida, además del número de plazas solicitadas frente al total disponible.
+    Ejemplo:
 
-#### **6.1.1 Pantalla de consulta/Horario**
+    ```
+    Próxima salida:
+    hoy a las 12:00 desde Nave
+    Total plazas solicitadas: 3 / 4
+    ```
+
+* Al pulsar sobre un ítem de horario se abre la **pantalla 6.1.1 Consulta/Horario**, donde se muestra con más detalle la información del horario.
+
+* Si además se es **Creador/Admin del grupo** al que pertenece la lanzadera, se muestra un **botón flotante (+)** en la esquina inferior derecha para **agregar un nuevo horario**.
+  Al pulsarlo, se abre la **pantalla 6.1.3 Creación/Edición de Horario**, accesible solo para Creadores/Admin del grupo o del Biz en la app.
+
+* Adicionalmente, si se es **Creador/Admin**, una **pulsación larga sobre un horario existente** abrirá un **modal de confirmación** para **eliminar dicho horario**.
+  Este modal informará de forma clara que la acción es irreversible y requerirá introducir un **código de confirmación** antes de proceder, con las opciones **“Eliminar”** o **“Cancelar”**, para evitar eliminaciones accidentales.
+
+### **6.1.1 Pantalla de consulta/Horario**
 
 Se accede a esta vista al pulsar sobre un horario existente de una lanzadera.
 
@@ -663,19 +674,30 @@ Estos colores se asignan al crear la lanzadera: el lugar definido como origen re
 
 Los días activos del horario pueden modificarse en la pantalla 6.1.3 Creación/Edición de Horario.
 
-Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lapiz para editar arriba en la barra superior (o donde se decida para mas usabilidad), sin boton de añadir hora, sin posibilidad de modificar dias semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edicion de horario.
+Debajo se muestra la **fecha**.
+El texto cambia siguiendo esta norma: si hay seleccionado al menos un día de la semana, se establece como **“Inicio de repetición semanal”**; si no hay ningún día seleccionado, el texto será **“No se repite, único día”**.
+A la derecha se incluye un **text button** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha.
+
+Justo debajo de la fecha se mostrarán las **horas configuradas** en forma de **chips**, organizadas por sentido del trayecto (Ida/Vuelta) y con los colores correspondientes —**azul para la Ida** y **rojo para la Vuelta**—, manteniendo coherencia visual con la pantalla **6.1.3 Creación/Edición de Horario**.
+En esta vista, los chips se muestran únicamente en modo **visualización**, sin permitir edición ni eliminación, sirviendo para que el usuario identifique rápidamente los horarios disponibles dentro de ese grupo.
+El contenedor de estas horas mostrará al menos **3 filas y un máximo de 4 columnas**, dentro de un **scroll** para que no haya límite en la cantidad de horas visibles. Esta estructura será igual que en la pantalla **6.1.3**, con las horas ordenadas de forma ascendente.
+Para alternar entre los horarios de **ida** y **vuelta**, bastará con pulsar el botón correspondiente (“Ida” o “Vuelta”).
+El sentido **activo** se mostrará a la **izquierda** y con un **tamaño mayor**, mientras que el sentido **inactivo** permanecerá a la **derecha** y más pequeño.
+Al pulsarlo, se ejecutará una **animación suave** que intercambia sus posiciones, manteniendo siempre el **color (azul o rojo)** y el **texto** asociado al sentido del trayecto —**azul para la Ida** y **rojo para la Vuelta**—, a fin de evitar confusiones.
+Los colores de las horas coincidirán en color con la ida o vuelta (numeros en blanco).
+
+Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
 #### **6.1.2 Detalle de hora de Salida**
 
 - Lista de usuarios (viajeros con plaza)
 - Conductor en parte superior con descripción del vehículo
-- Al pulsar usuario el icono situado a la izquierda del nombre del usuario en la lista de usuarios con plaza solicitada se abre chat individual/privado con dicho usuario.
-  - Dentro del chat: Al pulsar imagen del usuario: abre perfil con datos de reputación
+- Al pulsar usuario el icono situado a la izquierda del nombre del usuario en la lista de usuarios con plaza solicitada se abre chat individual/privado con dicho usuario:
+  - Dentro del chat, al pulsar imagen del usuario: abre perfil con datos de reputación
 - Foto del vehículo (almacenada en iCloud/Drive)
 
 #### **6.1.3 Pantalla Creación/Edición Horario**
 
-(o se modifica la pantalla 6.1.1)
 Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
 
 1. Pulsando el botón de añadir (+) abajo a la derecha en la pantalla 6.1 Lanzadera; en este caso será creación de nuevo horario;
@@ -683,12 +705,34 @@ Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que perten
 
 En esta pantalla será posible:
 
-1. Seleccionar los días semanales pudiendo agregar o quitar días en este horario (siempre que no esté/n ya usados por otro horario de la lanzadera).
-2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Inicio de repetición semanal” o “No se repite - Único día”, según si hay o no días semanales seleccionados (azules).
+1. Seleccionar los días semanales, pudiendo agregar o quitar días en este horario, **siempre que no estén ya usados por otro horario de la lanzadera**.
+   En caso de intentar añadir un día que ya tenga un horario asignado, se abrirá un **modal informativo** indicando que no es posible añadirlo porque ya está ocupado, ofreciendo las siguientes opciones:
+
+   - **Fusionar ambos días**.
+   - **Establecer nuevas horas** para ese día (lo que eliminará las horas previamente configuradas en él).
+   - **Cancelar la elección de día**.
+   - **Ver las horas actuales de ese día** para comparar y decidir.
+
+   Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
+
+2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Inicio de repetición semanal” o “No se repite - Único día”, según si hay o no días semanales seleccionados (azules).  
+   En caso de ser fecha única, será obligatorio la hora de salida y fecha sean superiores a la actual (evidente pero es necesario codificarlo bien).
+   Si no se ha seleccionado ningún día de la semana, el horario se considerará de fecha única, siendo la fecha indicada obligatoria para definir la salida (sin repetición semanal).  
+    Por el contrario, si hay uno o varios días seleccionados, el horario se configurará como de frecuencia semanal, repitiéndose los días elegidos a partir de la fecha establecida.  
+    En ambos casos, deberá existir al menos una hora configurada (ya sea de ida o de vuelta) para poder guardar o finalizar la creación/edición del horario; de lo contrario, el sistema mostrará un aviso indicando que es necesario añadir al menos una hora antes de continuar.
 3. Agregar una hora nueva al horario (12:30 por ejemplo), pulsando el botón (+) en el cuadro de horas (bajo los botones (chips) de dias de la semana y fecha), lo que abrirá el modal de selección de hora.
 4. Se podrán agregar horas de ida o vuelta sin cambiar de pantalla, pulsando los botones Ida (azul) o Vuelta (rojo). El botón del sentido activo se mostrará a la izquierda y con mayor tamaño para destacar, mientras que el inactivo permanecerá a la derecha y más pequeño.
 
+**Interacción con chips de hora:**
+
+- **Pulsación corta** sobre un chip de hora: Edita esa hora específica (abre TimePicker)
+- **Pulsación larga** sobre un chip de hora: Elimina esa hora del horario (con confirmación modal)
+
 Los chips de horas serán azules cuando esté seleccionada la Ida y rojos cuando esté seleccionada la Vuelta, manteniendo coherencia con los colores de sus respectivos botones.
+
+Las horas configuradas mediante los chips quedarán automáticamente asignadas a todos los días de la semana seleccionados en la parte superior.  
+El color de fondo de los botones de día (L, M, X, J, V, S, D) reflejará también el sentido del trayecto activo: azul para la Ida y rojo para la Vuelta, garantizando coherencia visual y evitando confusiones.  
+De este modo, los horarios creados en un sentido se aplican a todos los días marcados con el mismo color en la configuración actual.
 
 En la parte superior se mostrarán los lugares de recogida y destino correspondientes a cada vista de Ida o Vuelta, para evitar confusiones. Por ejemplo, si en la vista de ida los horarios indican salidas desde la Estación hacia la Nave, se mostrará arriba: “Salida desde: Estación · Destino: Nave”, y viceversa en la vista de vuelta.
 Además, el color del texto de cada lugar (tanto en “Salida desde” como en “Destino”) coincidirá con el color del sentido del viaje —azul para Ida y rojo para Vuelta— para facilitar su comprensión visual. Cada sentido mantendrá siempre su color asociado, aunque los lugares intercambien su posición como origen o destino según esté seleccionada la vista de Ida o de Vuelta en la sección de horas.
@@ -936,9 +980,9 @@ Tendrá varios canales de chat:
 - Flecha atrás ⬅️ → vuelve a un nivel superior (de lanzadera a grupo y de grupo a grupos)
 - Título centrado: **Chat grupos o nombre de grupo - lanzadera** (ej. “Chat Nave ↔ Estación”).
 - Icono contextual (👤 / 👥) → permite cambiar entre vista de chats privados y chat grupal, según el contexto actual.
-- Icono de menú (⋮) en el lado derecho con opciones contextuales:  
+- Icono de menú (⋮) en el lado derecho con opciones contextuales:
   - Ver integrantes del grupo, dependiendo de si se ve desde un grupo o desde una lanzadera.  
-  En esta opción es posible comenzar chat con cualquier usuario del grupo o lanzadera
+    En esta opción es posible comenzar chat con cualquier usuario del grupo o lanzadera
   - Silenciar / reactivar notificaciones del chat.
   - Al pulsar sobre la imagen de un usuario se abre chat privado
   - Buscar dentro del chat.
