@@ -66,6 +66,40 @@ update: changes
 
 ---
 
+## 🧱 Formato Completo de Commit
+
+Cada commit debe incluir **un título (línea principal)** y **una descripción** separados por un salto de línea. Con esto nos adaptamos al formato de GitHub y unificamos formatos de commits.
+El formato estándar es:
+
+```bash
+git commit -m "tipo(scope): resumen corto en inglés" \
+            -m "descripción más detallada del cambio realizado"
+```
+
+### 🔹 Reglas del Título (línea 1)
+
+* Escribir en **inglés**, en **presente** (“add”, “fix”, “update”…)
+* Máximo **72 caracteres**
+* No empezar con mayúscula ni punto final
+* Seguir el formato: `tipo(scope): descripción breve`
+
+### 🔹 Reglas de la Descripción (línea 2 o más)
+
+* Explica **qué cambiaste y por qué**
+* Puede ocupar varias líneas
+* En inglés o español, según preferencia del repositorio
+* Ejemplo:
+  “Add modal behavior when deselecting a day in schedule edit screen (6.1.3)”
+
+### 🔹 Ejemplo completo
+
+```bash
+git commit -m "docs(specifications): screen 6.1.3 edition schedule" \
+            -m "add modal behavior when deselecting a day in schedule edit screen (6.1.3)"
+```
+
+---
+
 ## 🔄 Flujo Básico
 
 ```bash
