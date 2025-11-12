@@ -640,13 +640,14 @@ El origen se destaca en azul (“Nave”) y el destino en rojo (“Estación”)
 
 Debajo de la cabecera del horario se muestran únicamente los días en los que ese horario está activo, para evitar confusiones. Cada día se resalta en azul o rojo según el sentido del trayecto: azul para la ida y rojo para la vuelta.
 
-Estos colores se asignan al crear la lanzadera: el lugar definido como origen recibe el color azul y el destino el color rojo, manteniéndose esta misma codificación en todas las pantallas.
+Estos colores se asignan al crear la lanzadera: el lugar definido como origen recibe el color azul y el destino el color rojo, manteniéndose esta misma codificación en todas las pantallas.  
+El día actual se resaltará con un contorno especial, y al seleccionar otro día, el sistema mostrará un modal de confirmación informando del cambio de fecha, para que el usuario sea consciente del día elegido y evitar confusiones.
 
 Los días activos del horario pueden modificarse en la pantalla 6.1.3 Creación/Edición de Horario.
 
 Debajo se muestra la **fecha**.
-El texto cambia siguiendo esta norma: si hay seleccionado al menos un día de la semana, se establece como **“Inicio de repetición semanal”**; si no hay ningún día seleccionado, el texto será **“No se repite, único día”**.
-A la derecha se incluye un **text button** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha.
+El texto será "Fecha de salida", tanto si hay dias semanales seleccionado como si no.
+A la derecha se incluye un **text button con la fecha actual** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha para poder consultar lanzaderas en otro dia distinto al actual. Se abrirá un selector de calendario que mostrará únicamente los días habilitados según la configuración del horario (por ejemplo, si el horario es de lunes a viernes, solo esos días serán seleccionables).
 
 Justo debajo de la fecha se mostrarán las **horas configuradas** en forma de **chips**, organizadas por sentido del trayecto (Ida/Vuelta) y con los colores correspondientes —**azul para la Ida** y **rojo para la Vuelta**—, manteniendo coherencia visual con la pantalla **6.1.3 Creación/Edición de Horario**.
 En esta vista, los chips se muestran únicamente en modo **visualización**, sin permitir edición ni eliminación, sirviendo para que el usuario identifique rápidamente los horarios disponibles dentro de ese grupo.
