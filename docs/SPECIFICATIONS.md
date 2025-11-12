@@ -87,37 +87,7 @@
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
 
 > ### **3.2. Configuración de horarios**
-
-- 🕒 Dos modos:
-  - **Fecha única**: se elige mediante un calendario (DatePicker).
-  - **Frecuencia semanal**:
-    - Se seleccionan días de la semana (checkbox).
-    - Se configuran horarios de ida y vuelta (TimePicker).
-- 🔁 Lógica de **control de solapamientos y edición**:
-  - La app detecta **solapamientos automáticamente**.
-  - Al intentar modificar un día ya configurado, se mostrará una **alerta visual con dos opciones**:
-    - ⚠️ Este día ya tiene horarios configurados. ¿Qué deseas hacer?
-      - 🛠️ Editar grupo actual (modifica los horarios existentes).
-      - ➕ Crear nuevo grupo de frecuencia (mantiene el grupo original y genera uno nuevo solo para ese día).
-  - Mostrar horarios en ExpansionTile para mantener la vista limpia.
-- 🔍 Vista previa antes de confirmar cambios:
-  - Se muestra la frecuencia actual agrupada por días.  
-    Cada grupo (conjunto de días con mismo horario) muestra:
-    - 🗓️ Días incluidos.
-    - 🕐 Horarios ida y vuelta.
-    - 🧭 Sentido del trayecto.
-- 📚 Organización visual en UI:
-  - Los grupos de frecuencia se visualizan con ExpansionTile o tarjetas plegables.
-  - Cada horario puede editarse individualmente con pulsación corta.
-  - La pulsación larga permite eliminar uno o varios horarios del grupo.
-  - Las listas de horarios están ordenadas por día y por sentido del viaje (ida/vuelta).
-- 🛑 Botón "reset":
-  - Elimina todos los horarios del grupo seleccionado.
-  - Aparece junto al nombre del grupo o al final de la lista.
-- 🧾 Cada horario muestra de forma clara el día al que pertenece (etiqueta de fecha o subtítulo).
-- 🧑‍💻 Si el usuario tiene permisos de edición (creador o administrador), podrá acceder a la pantalla completa de configuración de horarios.
-- Para mayor usabilidad intentar implementar Copiar horarios con un botón "Copiar configuración a otro día".
-- Colores diferenciados en Horarios de ida y Horarios de vuelta. Usar estos colores ya que además enlazan con los del logo de la app: \#0077B6 (azul intenso), \#FF6B6B (rojo coral).
+(Integrado en las secciones 6.1 y 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios.)
 
 ## **4\. Consulta y Solicitud de Lanzaderas**
 
@@ -670,13 +640,14 @@ El origen se destaca en azul (“Nave”) y el destino en rojo (“Estación”)
 
 Debajo de la cabecera del horario se muestran únicamente los días en los que ese horario está activo, para evitar confusiones. Cada día se resalta en azul o rojo según el sentido del trayecto: azul para la ida y rojo para la vuelta.
 
-Estos colores se asignan al crear la lanzadera: el lugar definido como origen recibe el color azul y el destino el color rojo, manteniéndose esta misma codificación en todas las pantallas.
+Estos colores se asignan al crear la lanzadera: el lugar definido como origen recibe el color azul y el destino el color rojo, manteniéndose esta misma codificación en todas las pantallas.  
+El día actual se resaltará con un contorno especial, y al seleccionar otro día, el sistema mostrará un modal de confirmación informando del cambio de fecha, para que el usuario sea consciente del día elegido y evitar confusiones.
 
 Los días activos del horario pueden modificarse en la pantalla 6.1.3 Creación/Edición de Horario.
 
 Debajo se muestra la **fecha**.
-El texto cambia siguiendo esta norma: si hay seleccionado al menos un día de la semana, se establece como **“Inicio de repetición semanal”**; si no hay ningún día seleccionado, el texto será **“No se repite, único día”**.
-A la derecha se incluye un **text button** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha.
+El texto será "Fecha de salida", tanto si hay dias semanales seleccionado como si no.
+A la derecha se incluye un **text button con la fecha actual** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha para poder consultar lanzaderas en otro dia distinto al actual. Se abrirá un selector de calendario que mostrará únicamente los días habilitados según la configuración del horario (por ejemplo, si el horario es de lunes a viernes, solo esos días serán seleccionables).
 
 Justo debajo de la fecha se mostrarán las **horas configuradas** en forma de **chips**, organizadas por sentido del trayecto (Ida/Vuelta) y con los colores correspondientes —**azul para la Ida** y **rojo para la Vuelta**—, manteniendo coherencia visual con la pantalla **6.1.3 Creación/Edición de Horario**.
 En esta vista, los chips se muestran únicamente en modo **visualización**, sin permitir edición ni eliminación, sirviendo para que el usuario identifique rápidamente los horarios disponibles dentro de ese grupo.
@@ -688,7 +659,7 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
-#### **6.1.2 Detalle de hora de Salida**
+### **6.1.2 Detalle de hora de Salida**
 
 - Lista de usuarios (viajeros con plaza)
 - Conductor en parte superior con descripción del vehículo
@@ -696,7 +667,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
   - Dentro del chat, al pulsar imagen del usuario: abre perfil con datos de reputación
 - Foto del vehículo (almacenada en iCloud/Drive)
 
-#### **6.1.3 Pantalla Creación/Edición Horario**
+### **6.1.3 Pantalla Creación/Edición Horario**
 
 Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
 
@@ -713,13 +684,14 @@ En esta pantalla será posible:
    - **Cancelar la elección de día**.
    - **Ver las horas actuales de ese día** para comparar y decidir.
 
-   Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.  
+   Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
 
    En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
-   Este modal mostrará las siguientes opciones:  
-   - **Eliminar las horas** asociadas a ese día, retirándolo completamente del horario.  
+   Este modal mostrará las siguientes opciones:
+
+   - **Eliminar las horas** asociadas a ese día, retirándolo completamente del horario.
    - **Cancelar** la acción, manteniendo el día seleccionado y sus horas configuradas.  
-   Si el usuario cancela o cierra el modal, el día permanecerá seleccionado sin cambios.
+     Si el usuario cancela o cierra el modal, el día permanecerá seleccionado sin cambios.
 
 2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Inicio de repetición semanal” o “No se repite - Único día”, según si hay o no días semanales seleccionados (azules).  
    En caso de ser fecha única, será obligatorio la hora de salida y fecha sean superiores a la actual (evidente pero es necesario codificarlo bien).
