@@ -616,20 +616,20 @@ Tiene un menu superior derecho común a las 3 paginas del pageview. Este contien
   - Al confirmar la edición se verán todos los campos en modo edición y arriba "✔️ Confirmar", “✖️”.
   - Solo se abre el teclado al pulsar un campo, para que no moleste la vista y se puedan ver todos los campos.
 
-### **6.1 Horarios** *(sección central)*
+### **6.1 Horarios** _(sección central)_
 
 Esta es la página central del **PageView**, con una lista de ítems que representan los diferentes horarios ya creados, cada uno de los cuales contiene grupos de días con sus horas de salida de la lanzadera.
 De arriba abajo:
 
-* String **"Horarios de Lanzadera"**.
+- String **"Horarios de Lanzadera"**.
 
-* Lista de distintos horarios; cada horario es un grupo de días semanales o una fecha única de lanzadera, y se ordenan de **más próximo a más lejano en el tiempo**.
+- Lista de distintos horarios; cada horario es un grupo de días semanales o una fecha única de lanzadera, y se ordenan de **más próximo a más lejano en el tiempo**.
   Cada ítem de horario mostrará:
 
-  * La **primera línea**: fecha y horas de comienzo y final del horario (a modo de título resumen).
+  - La **primera línea**: fecha y horas de comienzo y final del horario (a modo de título resumen).
     Ejemplo: `L, M, X, J, V de 7:00 a 12:30`
 
-  * La **salida en curso**: se mostrará con un icono de tonalidad **roja**, indicando la hora de salida real, el lugar desde donde salió y el total de viajeros frente a la capacidad del vehículo.
+  - La **salida en curso**: se mostrará con un icono de tonalidad **roja**, indicando la hora de salida real, el lugar desde donde salió y el total de viajeros frente a la capacidad del vehículo.
     Ejemplo:
 
     ```
@@ -638,7 +638,7 @@ De arriba abajo:
     Total viajeros: 4 / 4
     ```
 
-  * La **próxima salida**: se mostrará con un icono de tonalidad **verde**, indicando la fecha (si es hoy o mañana se mostrará sin fecha explícita), la hora prevista y el lugar de salida, además del número de plazas solicitadas frente al total disponible.
+  - La **próxima salida**: se mostrará con un icono de tonalidad **verde**, indicando la fecha (si es hoy o mañana se mostrará sin fecha explícita), la hora prevista y el lugar de salida, además del número de plazas solicitadas frente al total disponible.
     Ejemplo:
 
     ```
@@ -647,12 +647,12 @@ De arriba abajo:
     Total plazas solicitadas: 3 / 4
     ```
 
-* Al pulsar sobre un ítem de horario se abre la **pantalla 6.1.1 Consulta/Horario**, donde se muestra con más detalle la información del horario.
+- Al pulsar sobre un ítem de horario se abre la **pantalla 6.1.1 Consulta/Horario**, donde se muestra con más detalle la información del horario.
 
-* Si además se es **Creador/Admin del grupo** al que pertenece la lanzadera, se muestra un **botón flotante (+)** en la esquina inferior derecha para **agregar un nuevo horario**.
+- Si además se es **Creador/Admin del grupo** al que pertenece la lanzadera, se muestra un **botón flotante (+)** en la esquina inferior derecha para **agregar un nuevo horario**.
   Al pulsarlo, se abre la **pantalla 6.1.3 Creación/Edición de Horario**, accesible solo para Creadores/Admin del grupo o del Biz en la app.
 
-* Adicionalmente, si se es **Creador/Admin**, una **pulsación larga sobre un horario existente** abrirá un **modal de confirmación** para **eliminar dicho horario**.
+- Adicionalmente, si se es **Creador/Admin**, una **pulsación larga sobre un horario existente** abrirá un **modal de confirmación** para **eliminar dicho horario**.
   Este modal informará de forma clara que la acción es irreversible y requerirá introducir un **código de confirmación** antes de proceder, con las opciones **“Eliminar”** o **“Cancelar”**, para evitar eliminaciones accidentales.
 
 ### **6.1.1 Pantalla de consulta/Horario**
@@ -713,7 +713,13 @@ En esta pantalla será posible:
    - **Cancelar la elección de día**.
    - **Ver las horas actuales de ese día** para comparar y decidir.
 
-   Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
+   Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.  
+
+   En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
+   Este modal mostrará las siguientes opciones:  
+   - **Eliminar las horas** asociadas a ese día, retirándolo completamente del horario.  
+   - **Cancelar** la acción, manteniendo el día seleccionado y sus horas configuradas.  
+   Si el usuario cancela o cierra el modal, el día permanecerá seleccionado sin cambios.
 
 2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Inicio de repetición semanal” o “No se repite - Único día”, según si hay o no días semanales seleccionados (azules).  
    En caso de ser fecha única, será obligatorio la hora de salida y fecha sean superiores a la actual (evidente pero es necesario codificarlo bien).
