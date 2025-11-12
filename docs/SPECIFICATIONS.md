@@ -659,13 +659,43 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
-### **6.1.2 Detalle de hora de Salida**
-
-- Lista de usuarios (viajeros con plaza)
-- Conductor en parte superior con descripción del vehículo
-- Al pulsar usuario el icono situado a la izquierda del nombre del usuario en la lista de usuarios con plaza solicitada se abre chat individual/privado con dicho usuario:
-  - Dentro del chat, al pulsar imagen del usuario: abre perfil con datos de reputación
-- Foto del vehículo (almacenada en iCloud/Drive)
+> ### **6.1.2 Detalle de hora de Salida**
+> Esta pantalla comienza con el texto superior:
+> **"Salida: [día], [hora]"**
+>
+> Debajo, de izquierda a derecha:
+>
+> * Icono del conductor con foto de perfil, mostrando **“Conductor: [nombre]”** o, si aún no está asignado, **“Sin conductor asignado”**.
+>   Al pulsar el nombre o icono, se abre su perfil, desde donde puede iniciarse un chat.
+> * Icono del vehículo con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**.
+>
+> Luego se muestra el bloque **“Solicitudes”**, con la lista de usuarios que han solicitado una plaza:
+>
+> * Icono de usuario + nombre.
+>   Al pulsar sobre un usuario se abre su perfil (desde donde también se puede chatear).
+>
+> En la parte inferior se muestran dos botones principales:
+>
+>  **[SER CONDUCTOR]**   **[SOLICITAR PLAZA]**
+>
+> Si un usuario pulsa **[SER CONDUCTOR]**:
+>
+> * Se enviará un **aviso automático al chat de la lanzadera** informando de la solicitud.
+> * Si ningún miembro confirma la designación, el **creador/admin del grupo** podrá aprobarla manualmente.
+> * Una vez confirmada, el aviso se eliminará automáticamente del chat.
+>
+> El **creador/admin del grupo** también podrá **asignar directamente** un conductor para uno o varios días.
+> El usuario asignado recibirá una notificación; si acepta, quedará establecido como conductor del viaje o del día completo.
+>
+> Si el usuario ya es conductor, los botones inferiores serán:
+> **[Ceder conducción]** **[Cancelar conducción]**
+>
+> Si el usuario tiene una plaza como viajero, la vista mostrará:
+> **[SER CONDUCTOR]** **[CANCELAR PLAZA]**
+> Puede cancelar su plaza sin asumir el rol de conductor.
+> Si decide ser conductor, su plaza se cancela automáticamente al confirmarse el nuevo rol.
+>
+> Si intenta ser conductor y ya existe uno asignado, se enviará un mensaje directo al conductor actual y al **creador/admin** solicitando el cambio de rol.
 
 ### **6.1.3 Pantalla Creación/Edición Horario**
 
@@ -738,25 +768,6 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 - **Segunda flecha**: Pantalla de Grupo → Pantalla de Grupos
 
 - Es necesario que en esta pantalla se haga comprobaciones de si el usuario que solicito la lanzadera está en dicha lanzadera durante el viaje para añadir a la lista de viajes realizados en su perfil.
-
----
-
-### **7. SELECCIÓN DE ROL - Role Selection**
-
-(Modal dentro de pantalla 5 GRUPO, previa entrada en pantalla 6 LANZADERA)
-
-Antes de acceder a la pantalla de lanzadera, el usuario debe elegir su rol para esa sesión.
-
-- **Cuándo aparece:** Al pulsar una lanzadera desde HOME
-- **Opciones:**
-  - 🚗 **Conductor** - Ofrece el vehículo y maneja la lanzadera
-  - 🧑‍🤝‍🧑 **Viajero** - Solicita plaza como pasajero
-- **Comportamiento:**
-  - La elección afecta qué puede hacer en la pantalla de lanzadera
-  - El conductor puede modificar plazas disponibles ese día
-  - Los viajeros solo pueden solicitar plaza
-- **Persistencia:** Se recuerda la última elección por lanzadera
-- **Cambiar rol predeterminado**: Opción para establecer rol preferido (conductor/viajero)
 
 ---
 
