@@ -700,6 +700,12 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >
 > - El usuario asignado recibirá una notificación; si acepta, quedará establecido como conductor del viaje o del día completo.
 >
+> En el momento de aprobación como conductor de una lanzadera a una hora en concreto o serie de horas, días etc, se le abrira aviso para que selecione vehículo:  
+> Se muestra modal con opciones:  
+> [Elegir ahora] → abre lista.
+> [Hacerlo más tarde].  
+> Como maximo, deberá de estar elegido el vehiculo 30 minutos antes de la salida de la lanzadera, este tiempo podrá ser modificado por el creador/admin del grupo, aunque la app aconsejará que no sea inferior a 30 minutos.
+> El creador/admin del grupo puede dejar seleccionado el vehículo para mayor comodidad del conductor, pero si le llega el aviso al conductor y en el aviso aparece que no tiene asignado vehículo, se le llevará a la pantalla 10. de gestión de vehiculos, donde podrá elegir o crear un nuevo vehiculo, entre otras opciones... (ver pantalla 10).
 > **Si el usuario ya es conductor**, los botones inferiores serán:
 > **[Solicitar plaza]** **[Cancelar conducción]**
 >
@@ -831,11 +837,6 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 
 ### **8. SOLICITUD DE LANZADERA - Request Shuttle**
 
-#### **✅ Confirmación**
-
-- Mensaje de éxito: "Plaza reservada correctamente"
-- Botón de cancelación visible si ya se tiene plaza.
-
 ### **8.1\. ESTADO DE MIS SOLICITUDES**
 
 **Función**: Vista permanente de todas las solicitudes del usuario.
@@ -881,46 +882,122 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 
 ---
 
-### **10\. GESTIÓN DE VEHÍCULOS** _(por grupo)_
+## **10. GESTIÓN DE VEHÍCULOS** _(por grupo)_
 
-**Función**: Ver, agregar, editar y eliminar vehículos frecuentes del grupo.
+**Función**: Ver, elegir como lanzadera, agregar, editar y eliminar vehículos frecuentes del grupo.  
+Al abrir la pantalla es una listview que en principio está vacía y se van agregando ítems de vehículos.
 
-**Acceso**: Desde Ajustes del grupo (cada grupo maneja sus vehículos)
+- **Ver:** pulsando ítem en la listview.
+- **Elegir:** pulsando sobre el ítem del vehículo y luego, dentro del vehículo, abajo botón **"elegir como lanzadera"**.
+- **Agregar:** abajo a la derecha, botón flotante (+).
+- **Editar y eliminar:** pulsación larga sobre el ítem del vehículo en la lista:
+  - Arriba la barra da a elegir entre eliminar o editar:
+    - **Eliminar:** abre modal, aceptar y bye.
+    - **Editar:** abre el vehículo en modo edición, pudiendo editar todos sus datos.
+
+**Acceso**:
+
+- Desde Ajustes del grupo (cada grupo maneja sus vehículos).
+- Desde aprobación como conductor, ya que es paso obligado.
+
 **Acceso para crear/agregar, editar o eliminar:**
 
-- **Creadores y administradores:** Pueden agregar vehículos directamente (aprobados automáticamente). Pueden editar/eliminar cualquier vehículo del grupo
-- **Cualquier miembro actuando como conductor:** Puede solicitar aprobación para crear nuevos vehículos cuando va a conducir
-- **Conductor que creó el vehículo:** Puede editar su propio vehículo sin autorización adicional
-- **Funcionalidades:**
+- **Creadores y administradores:** pueden agregar vehículos directamente (aprobados automáticamente). Pueden editar/eliminar cualquier vehículo del grupo.
+- **Cualquier miembro actuando como conductor:** puede solicitar aprobación para crear nuevos vehículos cuando va a conducir.
+- **Conductor que creó el vehículo:** puede editar su propio vehículo sin autorización adicional.
 
-  - **Sistema de aprobación:** Solo las solicitudes de creación de nuevos vehículos requieren aprobación del creador/admin del grupo
-  - **Trazabilidad:** Se registra automáticamente quién hizo la última modificación en cada vehículo
-  - **Notificaciones:** Administradores y creadores reciben notificación de nuevas solicitudes de creación
-  - **Chat integrado:** Comunicación durante proceso de aprobación de nuevos vehículos
-    **Interfaz**:
+**Funcionalidades:**
 
-- Lista de ítems: vehículo + miniatura circular
-- Al pulsar vehículo: editar datos
+- **Sistema de aprobación:** solo las solicitudes de creación de nuevos vehículos requieren aprobación del creador/admin del grupo.
+- **Trazabilidad:** se registra automáticamente quién hizo la última modificación en cada vehículo.
+- **Notificaciones:** administradores y creadores reciben notificación de nuevas solicitudes de creación.
+- **Chat integrado:** comunicación durante el proceso de aprobación de nuevos vehículos.  
+  Chat privado con creador/admin del grupo, integrado en la misma pantalla para más agilidad.
 
-- **Datos del vehículo:**
+### **Interfaz**
 
-  - **Obligatorios:**
-    - Número de matrícula
-    - Número de plazas
-  - **Opcionales:**
-    - Modelo del vehículo
-    - Marca
-    - Color
+> **Lista de ítems**
+> Cada item/vehículo se muestra con su miniatura circular y modelo matrícula.
+
+- **Foto del vehículo**: Almacenada en iCloud/Drive del usuario
+
+Al pulsar un ítem se abre la vista completa del vehículo:
+
+> > **Datos del vehículo**
+
+- **Obligatorios:**
+
+  - Marca / modelo
+  - Número de matrícula
+  - Número de plazas (sin contar al conductor)
+
+- **Opcionales:**
+  - Foto
+  - Color
+
+> > **Notas y advertencias adicionales**
+
+Este apartado contiene información útil relacionada con el uso real del vehículo (características, peculiaridades, trucos, averías, etc.).
+
+- Se muestra en un **container scrollable** con **ListView** de notas.
+- Cada nota mostrará:
+  - Fecha de creación
+  - Usuario que la registró
+  - Fecha de última confirmación/verificación
+- Las notas se clasifican en:
+  - **Característica**
+  - **Avería**
+- Si la nota es una **Avería**, aparecerá un icono de advertencia en:
+  - El ítem del vehículo en la lista
+  - La cabecera del vehículo dentro de su ficha
+- En la parte inferior derecha del listado habrá un **botón flotante (FAB)** para agregar nuevas notas.
+- **Permisos:**
+  - El **conductor actual del grupo** puede agregar nuevas notas.
+  - **Creadores y administradores** pueden editar o eliminar cualquier nota.
+  - Conductores pueden leer todas las notas existentes.
+
+> > **Asignación del vehículo a lanzadera (predeterminada)**
+
+- Cada vehículo puede asignarse como **vehículo predeterminado** para una o varias lanzaderas del grupo.
+- Esta asignación permite que, cuando un conductor sea aprobado, el sistema proponga automáticamente este vehículo si coincide con la lanzadera en cuestión.
+- Dentro de la ficha del vehículo, se incluirá una sección titulada:
+  - **“Asignación a lanzaderas”**
+
+**Contenido de esta sección:**
+
+- Lista de lanzaderas del grupo donde el vehículo está asignado como predeterminado.
+- Botón **“Asignar a lanzadera”** que abre un modal con todas las lanzaderas del grupo:
+  - Se elige una lanzadera
+  - Se guarda como “vehículo predeterminado para esta lanzadera”
+- Si el vehículo ya está asignado:
+  - Se muestra la lanzadera marcada con ✔️
+  - Al pulsarla, se puede:
+    - **Cambiar vehículo predeterminado**
+    - **Eliminar asignación**
+
+**Historial del vehículo**
+
+- El sistema mantendrá un historial ordenado de las últimas lanzaderas donde se utilizó el vehículo:
+  - Fecha
+  - Hora
+  - Conductor que lo usó
+  - Lanzadera correspondiente
+- Este historial aparece al final de la sección con formato de lista, permitiendo ver el último uso  
+  (ej.: “Usado por última vez en Lanzadera Nave ↔ Estación, 7:30 - 05/11/2025”).
+
+**Reglas y comportamiento**
+
+- Cuando un conductor sea aprobado para una lanzadera específica:
+  - Si esa lanzadera **tiene un vehículo predeterminado**, se sugiere automáticamente.
+  - Si no tiene vehículo asignado, se muestra la lista normal de vehículos.
+- Si faltan menos de **30 minutos** y aún no hay vehículo elegido:
+
+  - Se enviará notificación de urgencia al conductor.
+  - Si no responde, se notifica al creador/admin y al chat de la lanzadera.
 
 - **Integración:** Al crear una lanzadera como conductor, se puede seleccionar de vehículos aprobados o solicitar agregar uno nuevo (con aprobación)
 
 - **Persistencia:** Los vehículos se guardan por grupo y pueden ser reutilizados por cualquier conductor del grupo
-  **Para conductores**:
-
-- Ver lista de vehículos frecuentes del grupo
-- Al seleccionar uno: opciones "Elegir", "Editar", "Crear nuevo"
-- Al elegir: se asigna al viaje y usuario queda como conductor
-- **Foto del vehículo**: Almacenada en iCloud/Drive del usuario
 
 - **Estados:** Los vehículos pueden estar en estado 'aprobado', 'pendiente' o 'rechazado'
 
