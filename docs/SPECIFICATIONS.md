@@ -87,7 +87,8 @@
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
 
 > ### **3.2. Configuración de horarios**
-(Integrado en las secciones 6.1 y 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios.)
+>
+> (Integrado en las secciones 6.1 y 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios.)
 
 ## **4\. Consulta y Solicitud de Lanzaderas**
 
@@ -641,13 +642,13 @@ El origen se destaca en azul (“Nave”) y el destino en rojo (“Estación”)
 Debajo de la cabecera del horario se muestran únicamente los días en los que ese horario está activo, para evitar confusiones. Cada día se resalta en azul o rojo según el sentido del trayecto: azul para la ida y rojo para la vuelta.
 
 Estos colores se asignan al crear la lanzadera: el lugar definido como origen recibe el color azul y el destino el color rojo, manteniéndose esta misma codificación en todas las pantallas.  
-El día actual se resaltará con un contorno especial, y al seleccionar otro día, el sistema mostrará un modal de confirmación informando del cambio de fecha, para que el usuario sea consciente del día elegido y evitar confusiones.
+El día actual se resaltará con un contorno especial (linea negra por ejemplo), y al seleccionar otro día, el sistema mostrará un modal de confirmación informando del cambio de fecha, para que el usuario sea consciente del día elegido y evitar confusiones.
 
 Los días activos del horario pueden modificarse en la pantalla 6.1.3 Creación/Edición de Horario.
 
 Debajo se muestra la **fecha**.
 El texto será "Fecha de salida", tanto si hay dias semanales seleccionado como si no.
-A la derecha se incluye un **text button con la fecha actual** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha para poder consultar lanzaderas en otro dia distinto al actual. Se abrirá un selector de calendario que mostrará únicamente los días habilitados según la configuración del horario (por ejemplo, si el horario es de lunes a viernes, solo esos días serán seleccionables).
+A la derecha se incluye un **text button con la fecha actual** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha para poder consultar lanzaderas en otro dia distinto al actual. Se abrirá un selector de calendario que mostrará únicamente los días habilitados según la configuración del horario (por ejemplo, si el horario es de lunes a viernes, solo esos días serán seleccionables, y a partir del día actual inclusive).
 
 Justo debajo de la fecha se mostrarán las **horas configuradas** en forma de **chips**, organizadas por sentido del trayecto (Ida/Vuelta) y con los colores correspondientes —**azul para la Ida** y **rojo para la Vuelta**—, manteniendo coherencia visual con la pantalla **6.1.3 Creación/Edición de Horario**.
 En esta vista, los chips se muestran únicamente en modo **visualización**, sin permitir edición ni eliminación, sirviendo para que el usuario identifique rápidamente los horarios disponibles dentro de ese grupo.
@@ -660,42 +661,99 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
 > ### **6.1.2 Detalle de hora de Salida**
+>
+> Esta pantalla será la que se use para la solicitud de plazas, solicitud/asignacion de conductor, elección de vehiculo y cancelaciones.
 > Esta pantalla comienza con el texto superior:
 > **"Salida: [día], [hora]"**
 >
+> Debajo tendrá el total de plazas libres de esta manera:
+> [numero de plazas libres] disponibles.
+> Si ya no hay plazas libre se leera "Sin plazas libres" en rojo, y se deshabilitará el botónm de solicitar plaza.
+>
 > Debajo, de izquierda a derecha:
 >
-> * Icono del conductor con foto de perfil, mostrando **“Conductor: [nombre]”** o, si aún no está asignado, **“Sin conductor asignado”**.
+> - **Icono del conductor** con foto de perfil, mostrando **“Conductor: [nombre]”** o, si aún no está asignado, **“Sin conductor asignado”**.
 >   Al pulsar el nombre o icono, se abre su perfil, desde donde puede iniciarse un chat.
-> * Icono del vehículo con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**.
 >
-> Luego se muestra el bloque **“Solicitudes”**, con la lista de usuarios que han solicitado una plaza:
+> - **Icono del vehículo** con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**. y plazas del vehiculo [numero] asientos sin contar conductor.
+>   Si no está asignado vehículo para esa salida aparecerá "Sin vehículo" y si el susario es conductor y pulsa ese texto botón se abre la pantalla de vehiculos 10. GESTIÓN DE VEHÍCULOS.
 >
-> * Icono de usuario + nombre.
->   Al pulsar sobre un usuario se abre su perfil (desde donde también se puede chatear).
+> Luego se muestra el bloque **“Solicitudes”** con la lista de usuarios que han solicitado una plaza:
+>
+> - Icono de usuario + nombre.
+>   Al pulsar sobre un usuario se abre su perfil (desde donde también se puede abrir chat privado).
+>
+> ### FLUJO PARA SER CONDUCTOR O VIAJERO
 >
 > En la parte inferior se muestran dos botones principales:
 >
->  **[SER CONDUCTOR]**   **[SOLICITAR PLAZA]**
+> **[SER CONDUCTOR]** **[SOLICITAR PLAZA]**
 >
-> Si un usuario pulsa **[SER CONDUCTOR]**:
+> Si un usuario pulsa **[SER CONDUCTOR]** y no solicitó plaza:
+> Se procede a confirmar su rol de conductor ya que no es automático si no cualquiera sería conductor:
 >
-> * Se enviará un **aviso automático al chat de la lanzadera** informando de la solicitud.
-> * Si ningún miembro confirma la designación, el **creador/admin del grupo** podrá aprobarla manualmente.
-> * Una vez confirmada, el aviso se eliminará automáticamente del chat.
+> - Se enviará un **aviso automático al chat de la lanzadera** informando de la solicitud, y tambien al chat privado de creador/admin con la solicitud de ser conductor, con 2 opciones: aprobar o rechazar.
+> - Si ningún miembro aprueba la designación, el **creador/admin del grupo** podrá aprobarla manualmente.
+> - Una vez apruebe alguien, el aviso se eliminará automáticamente del chat, y se enviará otro aviso al chat de la lanzadera de conductor de lanzadera de x hora de salida.
 >
-> El **creador/admin del grupo** también podrá **asignar directamente** un conductor para uno o varios días.
-> El usuario asignado recibirá una notificación; si acepta, quedará establecido como conductor del viaje o del día completo.
+> El **creador/admin del grupo** también podrá **asignar directamente** un conductor para uno o varios días:
 >
-> Si el usuario ya es conductor, los botones inferiores serán:
-> **[Ceder conducción]** **[Cancelar conducción]**
+> - El usuario asignado recibirá una notificación; si acepta, quedará establecido como conductor del viaje o del día completo.
 >
-> Si el usuario tiene una plaza como viajero, la vista mostrará:
+> **Si el usuario ya es conductor**, los botones inferiores serán:
+> **[Solicitar plaza]** **[Cancelar conducción]**
+>
+> - Si solicita plaza abre modal, avisa de que dejará de ser conductor de la salida x de x lanzadera y se le mostrará numero de plazas libres, con botones de solicitar plaza o cancelar.
+> - Si pulsa cancelar conducción abre modal donde se avisa que dejará de ser conductor... se podría dar opcion a ceder condución y abrir lista de usarios, de esa manera pasa a dasrse aviso a ese otro usuario para que sea conductor.
+>
+> **Flujo al pulsar [SOLICITAR PLAZA]**
+>
+> **Validaciones previas:**
+>
+> - Deben quedar **plazas disponibles** (capacidad > solicitadas).
+> - El usuario no debe tener ya una plaza activa en esta salida.
+> - Si el usuario es **conductor** en este horario, se le pedirá **ceder conducción** antes de solicitar plaza, y en este caso se le abre una lista de usuarios del grupo para ceder la conducción.- Si pulsa Ceder conducción: abrirá lista de usuarios del grupo, y si algun usuario le ha solicitado ser conductor aparecerá arriba de la lista con un icono o texto de "conduccion solicitada".
+>
+> **Modal de confirmación:**
+>
+> - Título: **“Confirmar solicitud de plaza”**
+> - Contenido: \_Hora, origen/destino, plazas restantes.
+> - Botones: **[Cancelar]** **[Confirmar]**
+>
+>   **Al confirmar:**
+>
+> - Se **crea la solicitud** y se **incrementa** el contador de plazas solicitadas.
+> - Se muestra **snackbar de éxito**: “Plaza reservada correctamente”.
+> - Se envía **notificación** a los miembros relevantes según la configuración (ver sección Notificaciones).
+> - En el chat de la lanzadera se publica un **aviso automático** con:
+>
+>   - Nueva plaza reservada:
+>   - Nombre del solicitante.
+>   - Hora del viaje.
+>   - Estado actualizado de plazas (p. ej.: _3/4_).
+>
+> - **Modo offline**: si no hay conexión, la solicitud queda en **cola** y se sincroniza al recuperar red.
+>
+> **Estados y botones tras solicitar plaza:**
+> Los botones abajo serán:
 > **[SER CONDUCTOR]** **[CANCELAR PLAZA]**
-> Puede cancelar su plaza sin asumir el rol de conductor.
-> Si decide ser conductor, su plaza se cancela automáticamente al confirmarse el nuevo rol.
 >
-> Si intenta ser conductor y ya existe uno asignado, se enviará un mensaje directo al conductor actual y al **creador/admin** solicitando el cambio de rol.
+> - Si el usuario pulsa **[SER CONDUCTOR]** teniendo plaza de viajero:
+>   - Se muestra aviso: _“Ser conductor cancelará tu plaza como viajero. ¿Continuar?”_
+>   - Al confirmar, se **asigna como conductor** (si no hay) tras seguir el flujo de aprobación de conductor descrito antes, y se **libera su plaza** de viajero.
+> - Si intenta ser conductor y ya existe uno asignado, se enviará un mensaje directo al conductor actual y al **creador/admin** solicitando el cambio de rol. El primero que confirme que acepta el cambio, hará efectivo el cambio de conductor y será enviado al chat el cambio, y una notificación a todos los afectados (viajeros y ex-conductor).
+> - Si pulsa **[CANCELAR PLAZA]**:
+>   - Modal: **¿Desea abandonar su plaza en la salida x de la lanzadera x?**  
+>     **[No] [Sí, cancelar]**
+>   - Pulsa [Sí, cancelar] ->
+>     - Decrementa el contador,
+>     - Muestra snackbar de confirmación
+>     - Envía aviso de nuevo numero de plazas al chat (opcional) y notificaciones según configuración.
+>
+> **Errores y casos límite:**
+>
+> - Si el horario **ya ha pasado**, se deshabiltará el botón solicitar plaza y si es pulsado lanza snak o notificacion "esta salida ya no acepta solicitudes".
+> - Si existe **conductor tardío** o cambios de última hora, el sistema mantiene la coherencia y notifica a afectados (ver 5. Reglas y Validaciones).
 
 ### **6.1.3 Pantalla Creación/Edición Horario**
 
@@ -772,41 +830,6 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 ---
 
 ### **8. SOLICITUD DE LANZADERA - Request Shuttle**
-
-(Modal dentro de pantalla 6 Lanzadera, posterior a selección de rol)
-
-#### **🧹 Reglas Generales de Solicitud**
-
-- Solo se pueden solicitar lanzaderas en horarios del día actual (no pasados).
-- El usuario debe elegir su rol antes de abrir la pantalla de detalle de Lanzaderar: `Viajero` o `Conductor`.
-
-##### **🚗 Si elige Viajero:**
-
-- Se muestra el número de plazas disponibles.
-- Puede aceptar o cancelar.
-- Al aceptar:
-  - Se reserva una plaza.
-  - Se actualiza el contador de plazas.
-  - Se envía una notificación al resto de miembros del grupo indicando:
-    - Nombre del solicitante
-    - Hora de la lanzadera
-    - Estado actualizado de plazas
-
-##### **🚌 Si elige Conductor:**
-
-- Solo puede haber un conductor por horario.
-- Si ya hay uno:
-  - Se notifica y se desactiva la opción.
-- Si no hay:
-  - Formulario:
-    - Selector de vehículo frecuente o ingreso de nueva matrícula
-    - Si el vehículo no está registrado:
-      - Preguntar número de plazas
-      - Opcionar guardar como "vehículo frecuente"
-  - Al confirmar:
-    - Se asigna como conductor
-    - Se actualiza el estado de la lanzadera
-    - Se envía una notificación al grupo indicando que hay conductor asignado
 
 #### **✅ Confirmación**
 
