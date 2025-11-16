@@ -426,7 +426,11 @@ Flujo para usuarios que quieren unirse a un grupo creado por otros.
 
 - **Función**: Muestra todas las lanzaderas y funcionalidades de un grupo específico.
 - Al pulsar sobre el nombre del grupo arriba se abre modal para cambiar a otro grupo al que pertenezca el usuario.
-- **Estructura**: BottomNavigationBar + PageView con 4 secciones:
+  > MENÚ SUPERIOR DERECHO 3 PUNTOS (AJUSTES QUE APARECEN EN TODAS LAS PAGINAS DEL NIVEL GRUPO)
+  >
+  > - Gestión de vehículos: abre la pantalla 10 de gestión de vehículos.
+
+> - **Estructura**: BottomNavigationBar + PageView con 4 secciones:
 
 > > ### 5.1 Pantalla NEW SHUTTLE
 
@@ -676,6 +680,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >   Al pulsar el nombre o icono, se abre su perfil, desde donde puede iniciarse un chat.
 >
 > - **Icono del vehículo** con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**. y plazas del vehiculo [numero] asientos sin contar conductor.
+>   Si esta lanzadera tiene asociado un vehículo predeterminado (en la pantalla 10 se diescribe como se asocia un vehículo a una lanzadera), aparecerá de forma automática, pudiendose modificar si se necesita otro vehículo pulsando sobre el vechículo.
 >   Si no está asignado vehículo para esa salida aparecerá "Sin vehículo" y si el susario es conductor y pulsa ese texto botón se abre la pantalla de vehiculos 10. GESTIÓN DE VEHÍCULOS.
 >
 > Luego se muestra el bloque **“Solicitudes”** con la lista de usuarios que han solicitado una plaza:
@@ -835,9 +840,14 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 
 ---
 
-### **8. SOLICITUD DE LANZADERA - Request Shuttle**
+### **8\. ESTADO DE MIS SOLICITUDES**
 
-### **8.1\. ESTADO DE MIS SOLICITUDES**
+> > TODO: ESTA PANTALLA HAY QUE DESARROLLARLA AUN Y MEJORARLA
+> > **Mis solicitudes**:  
+> > Debe de estar a la vista accesible fácil en cualquier pantalla:
+
+- Abre todas las solicitudes pasadas y futuras (futuras con sobresaltado verde) y al pulsar se abre el 6,1,2 detalle de hora de salida (da igual si fue pasada... seria como histórico todo en uno) en forma de lista, desde donde poder manejar la solicitud.
+- Si es pasada solo aparecen datos, pero desaparecen los botones de solicitud.
 
 **Función**: Vista permanente de todas las solicitudes del usuario.
 
@@ -882,25 +892,33 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 
 ---
 
-## **10. GESTIÓN DE VEHÍCULOS** _(por grupo)_
+## **10\. GESTIÓN DE VEHÍCULOS** _(por grupo)_
 
 **Función**: Ver, elegir como lanzadera, agregar, editar y eliminar vehículos frecuentes del grupo.  
 Al abrir la pantalla es una listview que en principio está vacía y se van agregando ítems de vehículos.
+**Persistencia:** Los vehículos son visibles dentro del ámbito de cada grupo y pueden ser reutilizados por cualquier conductor del grupo.
+**Reglas y comportamiento**
 
-- **Ver:** pulsando ítem en la listview.
-- **Elegir:** pulsando sobre el ítem del vehículo y luego, dentro del vehículo, abajo botón **"elegir como lanzadera"**.
-- **Agregar:** abajo a la derecha, botón flotante (+).
+- Si faltan menos de **30 minutos** y aún no hay vehículo elegido:
+  - Se enviará notificación de urgencia al conductor.
+  - Si no responde en 5 minutos, se notifica al creador/admin y al chat de la lanzadera.
+
+**Acceso a las funciones**:
+
+- **Ver:** pulsando ítem/vehículo en la listview.
+- **Elegir:** pulsando ítem/vehículo y luego, dentro del vehículo, arriba botón **"elegir como lanzadera"**.
+- **Agregar:** En la listview de items/vehículos, abajo a la derecha, botón flotante (+).
 - **Editar y eliminar:** pulsación larga sobre el ítem del vehículo en la lista:
   - Arriba la barra da a elegir entre eliminar o editar:
     - **Eliminar:** abre modal, aceptar y bye.
     - **Editar:** abre el vehículo en modo edición, pudiendo editar todos sus datos.
 
-**Acceso**:
+**Acceso a la pantalla Gestión de vehículos**:
 
 - Desde Ajustes del grupo (cada grupo maneja sus vehículos).
-- Desde aprobación como conductor, ya que es paso obligado.
+- Cuando se apruebe como conductor a un usuario, ya que asignar un vehículo es paso obligado para poder usar una lanzadera.
 
-**Acceso para crear/agregar, editar o eliminar:**
+**Permiso de acceso para crear/agregar, editar o eliminar vehículos:**
 
 - **Creadores y administradores:** pueden agregar vehículos directamente (aprobados automáticamente). Pueden editar/eliminar cualquier vehículo del grupo.
 - **Cualquier miembro actuando como conductor:** puede solicitar aprobación para crear nuevos vehículos cuando va a conducir.
@@ -914,16 +932,47 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
 - **Chat integrado:** comunicación durante el proceso de aprobación de nuevos vehículos.  
   Chat privado con creador/admin del grupo, integrado en la misma pantalla para más agilidad.
 
-### **Interfaz**
+> ### **Interfaz**
+>
+> **Lista de vehículos**
+>
+> - **ítem/vehículo**:
+>   - **miniatura circular** (foto del vehículo almacenada en iCloud/Drive del usuario, necesario buena compresión del archivo),
+>   - Marca/modelo
+>   - Matrícula.  
+>     Si un vehículo tiene como predeterminado la lanzadera en la que se encuentra el usuario, este vehículo aparece el primero de la lista, arriba, con la marca "predeterminado" y rodeado de un sobresaltado (por ejemplo una linea verde).
+>   - Al pulsar un ítem/vehículo se abre la **pantalla 10.2 Vista de vehículo**
+>
+> **ElevateButton para agregar vehículo**:
+>
+> - Situado abajo a la derecha.
+> - Si el usuario no es Creador/Admnin del grupo, será necesario permiso de uno de ellos:  
+>   Los vehículos pueden estar en estado 'aprobado', 'pendiente' o 'rechazado', según el estado de la respuesta del Creador/Admin.
+> - Al pulsarse abre la pantalla **10.1 Editor de vehículos**.
 
-> **Lista de ítems**
-> Cada item/vehículo se muestra con su miniatura circular y modelo matrícula.
+- **Permisos:**
+  - El conductor o el Creador/Admin pueden agregar, editar o eliminar notas.
 
-- **Foto del vehículo**: Almacenada en iCloud/Drive del usuario
+---
 
-Al pulsar un ítem se abre la vista completa del vehículo:
+### 10.1 Pantalla CREACION/EDICIÓN DE VEHÍCULO
 
-> > **Datos del vehículo**
+Arriba a la izquierda flecha atras para volver.  
+En esta pantalla se puede modificar de un vehículo:
+
+- **Foto** (se puede agregar desde cámara o galeria)
+  - EditText para:
+    - marca,
+    - matrícula,
+    - plazas.
+- **Lanzadera predetermninada**: En una lista de las lanzaderas del grupo se puede elegir la que se usará por defecto (si se abre la pantalla de gestion de vehiculos desde una lanzadera por un conductor, aparece preseleccionada la lanzadera)
+- **Sección de Notas y advertencias**: posibilidad de agregar la primera nota sobre este vehiculo, que luego aparecerá como un ítem es esta sección.
+
+---
+
+### 10.2 Pantalla VISTA DE VEHÍCULO
+
+> **Datos del vehículo**
 
 - **Obligatorios:**
 
@@ -933,73 +982,53 @@ Al pulsar un ítem se abre la vista completa del vehículo:
 
 - **Opcionales:**
   - Foto
-  - Color
 
-> > **Notas y advertencias adicionales**
+> **Asignación del vehículo a lanzadera (predeterminada)**
 
-Este apartado contiene información útil relacionada con el uso real del vehículo (características, peculiaridades, trucos, averías, etc.).
-
-- Se muestra en un **container scrollable** con **ListView** de notas.
-- Cada nota mostrará:
-  - Fecha de creación
-  - Usuario que la registró
-  - Fecha de última confirmación/verificación
-- Las notas se clasifican en:
-  - **Característica**
-  - **Avería**
-- Si la nota es una **Avería**, aparecerá un icono de advertencia en:
-  - El ítem del vehículo en la lista
-  - La cabecera del vehículo dentro de su ficha
-- En la parte inferior derecha del listado habrá un **botón flotante (FAB)** para agregar nuevas notas.
-- **Permisos:**
-  - El **conductor actual del grupo** puede agregar nuevas notas.
-  - **Creadores y administradores** pueden editar o eliminar cualquier nota.
-  - Conductores pueden leer todas las notas existentes.
-
-> > **Asignación del vehículo a lanzadera (predeterminada)**
+**Función**:
 
 - Cada vehículo puede asignarse como **vehículo predeterminado** para una o varias lanzaderas del grupo.
-- Esta asignación permite que, cuando un conductor sea aprobado, el sistema proponga automáticamente este vehículo si coincide con la lanzadera en cuestión.
-- Dentro de la ficha del vehículo, se incluirá una sección titulada:
-  - **“Asignación a lanzaderas”**
-
-**Contenido de esta sección:**
-
-- Lista de lanzaderas del grupo donde el vehículo está asignado como predeterminado.
-- Botón **“Asignar a lanzadera”** que abre un modal con todas las lanzaderas del grupo:
-  - Se elige una lanzadera
-  - Se guarda como “vehículo predeterminado para esta lanzadera”
+- El sistema propone automáticamente este vehículo si coincide con la lanzadera en cuestión.
+  **Interfaz**:
+- Botón **“Asignar a lanzadera”** que abre un modal con una lista de todas las lanzaderas del grupo:
+  - Se elige una lanzadera,
+  - Aparece Snackbar sin cerrar el modal, mostrando “Vehículo asignado a la lanzadera X”,
+  - Se guarda como “vehículo predeterminado para esta lanzadera”.
+  - El vehículo solo puede estar asignado a una lanzadera
 - Si el vehículo ya está asignado:
-  - Se muestra la lanzadera marcada con ✔️
-  - Al pulsarla, se puede:
-    - **Cambiar vehículo predeterminado**
-    - **Eliminar asignación**
+  - Se muestra la lanzadera marcada con ✔️ en la lista del modal como la predeterminada
 
-**Historial del vehículo**
+> **Historial del vehículo**
 
 - El sistema mantendrá un historial ordenado de las últimas lanzaderas donde se utilizó el vehículo:
   - Fecha
   - Hora
   - Conductor que lo usó
   - Lanzadera correspondiente
-- Este historial aparece al final de la sección con formato de lista, permitiendo ver el último uso  
-  (ej.: “Usado por última vez en Lanzadera Nave ↔ Estación, 7:30 - 05/11/2025”).
+    **Interfaz del historial**:
+- Debajo de un titulo "Historial de Vehículo" hay un container con listview, con items de cada uso que ha tenido el vehículo:
+  - ej.: “Última vez: Lanzadera Nave ↔ Estación, 7:30 - 05/11/2025”.
+  - En varias lineas si es necesario, bien organizado y limpio.
 
-**Reglas y comportamiento**
+> **Notas y advertencias adicionales** > > **Función**:
+> Este apartado contiene información útil relacionada con el uso real del vehículo (características, peculiaridades, trucos, averías, etc.).
 
-- Cuando un conductor sea aprobado para una lanzadera específica:
-  - Si esa lanzadera **tiene un vehículo predeterminado**, se sugiere automáticamente.
-  - Si no tiene vehículo asignado, se muestra la lista normal de vehículos.
-- Si faltan menos de **30 minutos** y aún no hay vehículo elegido:
+- Se muestra en un **container scrollable** con **ListView** de notas.
+- Cada nota mostrará:
 
-  - Se enviará notificación de urgencia al conductor.
-  - Si no responde, se notifica al creador/admin y al chat de la lanzadera.
+  - Fecha de creación
+  - Fecha de última confirmación/verificación de que nota sigue activa y útil.
+  - Usuario que la registró
+  - Mensaje de la nota.
 
-- **Integración:** Al crear una lanzadera como conductor, se puede seleccionar de vehículos aprobados o solicitar agregar uno nuevo (con aprobación)
-
-- **Persistencia:** Los vehículos se guardan por grupo y pueden ser reutilizados por cualquier conductor del grupo
-
-- **Estados:** Los vehículos pueden estar en estado 'aprobado', 'pendiente' o 'rechazado'
+- Las notas se clasifican en:
+  - **Característica**
+  - **Avería**
+- Si la nota es una **Avería**, aparecerá un icono de advertencia en:
+  - El ítem del vehículo en la lista
+  - La cabecera del vehículo dentro de su ficha
+- En la parte inferior derecha del listado habrá un **botón flotante (FAB)** para agregar nuevas notas:
+  - Al pulsarse: por defecto cada nota será una carcteristica del vehiculo, abrá que pulsar el icono averia para advertir que la nota es una avería. Debajo estará el espacio para el texto de la nota.
 
 ---
 
