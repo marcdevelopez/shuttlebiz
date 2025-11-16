@@ -911,7 +911,7 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
 - **Editar y eliminar:** pulsación larga sobre el ítem del vehículo en la lista:
   - Arriba la barra da a elegir entre eliminar o editar:
     - **Eliminar:** abre modal, aceptar y bye.
-    - **Editar:** abre el vehículo en modo edición, pudiendo editar todos sus datos.
+    - **Editar:** abre el vehículo en modo edición, pudiendo editar todos sus datos (pantalla 10.1).
 
 **Acceso a la pantalla Gestión de vehículos**:
 
@@ -950,9 +950,6 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
 >   Los vehículos pueden estar en estado 'aprobado', 'pendiente' o 'rechazado', según el estado de la respuesta del Creador/Admin.
 > - Al pulsarse abre la pantalla **10.1 Editor de vehículos**.
 
-- **Permisos:**
-  - El conductor o el Creador/Admin pueden agregar, editar o eliminar notas.
-
 ---
 
 ### 10.1 Pantalla CREACION/EDICIÓN DE VEHÍCULO
@@ -966,7 +963,7 @@ En esta pantalla se puede modificar de un vehículo:
     - matrícula,
     - plazas.
 - **Lanzadera predetermninada**: En una lista de las lanzaderas del grupo se puede elegir la que se usará por defecto (si se abre la pantalla de gestion de vehiculos desde una lanzadera por un conductor, aparece preseleccionada la lanzadera)
-- **Sección de Notas y advertencias**: posibilidad de agregar la primera nota sobre este vehiculo, que luego aparecerá como un ítem es esta sección.
+- **Sección de Notas y advertencias**: si se está creando el vehículo: posibilidad de agregar la primera nota sobre este vehiculo, que luego aparecerá como un ítem es esta sección.
 
 ---
 
@@ -1028,7 +1025,10 @@ En esta pantalla se puede modificar de un vehículo:
   - El ítem del vehículo en la lista
   - La cabecera del vehículo dentro de su ficha
 - En la parte inferior derecha del listado habrá un **botón flotante (FAB)** para agregar nuevas notas:
-  - Al pulsarse: por defecto cada nota será una carcteristica del vehiculo, abrá que pulsar el icono averia para advertir que la nota es una avería. Debajo estará el espacio para el texto de la nota.
+  - Al pulsarse: abre modal:
+    - Por defecto cada nota será una carcteristica del vehiculo, abrá que pulsar el icono averia (dentro del modal) para advertir que la nota es una avería. 
+    - Debajo estará el espacio para el texto de la nota.
+    - Botónes de cancelar y añadir nota.
 
 ---
 
