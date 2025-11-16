@@ -146,6 +146,70 @@
 - **Hora de salida pasada**: Cancelación automática y aviso a usuarios con plaza
 - **Conductor tardío**: Si aparece después, notificar salida tardía con tiempo de retraso
 
+## **5.1 Persistencia y continuidad del rol de conductor**
+
+El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera. Solo existen dos modalidades claras de funcionamiento.
+
+## **1. Modos de asignación del conductor**
+
+### **1.1 Conductor por salida única (con continuidad opcional)**
+
+- El conductor se asigna únicamente para la **salida concreta** seleccionada.
+- Tras completar el viaje (cuando marque “Llegada” o el sistema detecte la llegada) y siempre que haya mas salidas ese día con esa misma lanzadera, se mostrará un modal:
+
+**“¿Deseas continuar como conductor en la siguiente salida?”**
+
+Opciones:
+
+- **[Sí, continuar]** → El usuario seguirá siendo conductor en la siguiente salida disponible, si aún no hay conductor asignado.
+- **[No]** → El rol de conductor finalizará tras esta salida.
+  Este modo se usa siempre que el conductor no tenga una asignación especial de rango.
+
+- Si el conductor no responde al modal de continuidad:
+
+  - A los **5 minutos**, los administradores reciben una notificación push indicando que se necesita conductor.
+  - A los **15 minutos antes de la siguiente salida**, si aún no hay conductor, se envía un aviso de urgencia al chat del grupo.
+
+- Si otro usuario solicita ser conductor:
+
+  - La solicitud se envía al conductor actual y al creador/admin.
+  - Si el conductor anterior respondió “No”, se puede aprobar automáticamente.
+  - Si el conductor no ha respondido aún, el creador/admin tiene autoridad para decidir.
+
+- Si el conductor eligió **“Sí, continuar”** pero no tiene vehículo asignado:
+
+  - Se abrirá el selector de vehículo (según 6.1.2).
+
+Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea continuar, se mostrará:
+
+> **“Ya hay un conductor asignado para esta salida.”**
+
+### **1.2 Conductor asignado por rango temporal (día completo o bloque de horarios)**
+
+- Solo puede asignarlo un Creador/Admin).
+- El conductor puede ser asignado para
+  - **todas las salidas del día**
+  - **conjunto de horarios específicos**.
+- El conductor recibe una notificación y debe aceptarla para que la asignación sea efectiva.
+- En este modo **no se requiere confirmación individual por cada salida**.
+- Una vez aceptado:
+  - Es conductor automáticamente para todas las salidas incluidas en el rango.
+  - No aparece el modal de continuidad.
+
+## **2. Reglas de continuidad entre salidas consecutivas**
+
+- El conductor **no continúa automáticamente**, salvo que:
+
+  - Haya aceptado la continuidad opcional (1.1),
+  - Esté asignado bajo rango temporal (1.2).
+
+## **3. Restricciones generales**
+
+- Solo puede haber **un conductor por salida**.
+- No se puede asignar conductor una vez que la salida ya ocurrió.
+- No se permite continuar como conductor si no se completó la salida anterior.
+- El creador/admin siempre tiene la última palabra en conflictos.
+
 ---
 
 ## **6\. Comunicación y Notificaciones**
@@ -752,7 +816,10 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 > - Si el usuario pulsa **[SER CONDUCTOR]** teniendo plaza de viajero:
 >   - Se muestra aviso: _“Ser conductor cancelará tu plaza como viajero. ¿Continuar?”_
 >   - Al confirmar, se **asigna como conductor** (si no hay) tras seguir el flujo de aprobación de conductor descrito antes, y se **libera su plaza** de viajero.
-> - Si intenta ser conductor y ya existe uno asignado, se enviará un mensaje directo al conductor actual y al **creador/admin** solicitando el cambio de rol. El primero que confirme que acepta el cambio, hará efectivo el cambio de conductor y será enviado al chat el cambio, y una notificación a todos los afectados (viajeros y ex-conductor).
+> - Si intenta ser conductor y ya existe uno asignado:
+>   - Será solo posible si aun no ha salido la lanzadera.
+>   - Se enviará un mensaje directo al conductor actual y al **creador/admin** solicitando el cambio de rol.
+>   - El primero que confirme que acepta el cambio, hará efectivo el cambio de conductor y será enviado al chat el cambio, y una notificación a todos los afectados (viajeros y ex-conductor).
 > - Si pulsa **[CANCELAR PLAZA]**:
 >   - Modal: **¿Desea abandonar su plaza en la salida x de la lanzadera x?**  
 >     **[No] [Sí, cancelar]**
@@ -1026,7 +1093,7 @@ En esta pantalla se puede modificar de un vehículo:
   - La cabecera del vehículo dentro de su ficha
 - En la parte inferior derecha del listado habrá un **botón flotante (FAB)** para agregar nuevas notas:
   - Al pulsarse: abre modal:
-    - Por defecto cada nota será una carcteristica del vehiculo, abrá que pulsar el icono averia (dentro del modal) para advertir que la nota es una avería. 
+    - Por defecto cada nota será una carcteristica del vehiculo, abrá que pulsar el icono averia (dentro del modal) para advertir que la nota es una avería.
     - Debajo estará el espacio para el texto de la nota.
     - Botónes de cancelar y añadir nota.
 
