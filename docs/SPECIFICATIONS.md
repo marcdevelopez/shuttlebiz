@@ -24,6 +24,14 @@
 
 ---
 
+<br>
+
+# **`Reglas de Negocio (Business Rules)`**
+
+En estas reglas se dan las funcionalidades básicas y reglas básicas de la app. En la sección de IU se describen las pantallas más importantes para implementar estas funcionalidades.
+
+<br>
+
 ## **1\. Autenticación y Roles de Usuario**
 
 - 🔐 **Login por número de teléfono** con verificación SMS/OTP.
@@ -35,39 +43,42 @@
   - **Respaldo local**: Opción alternativa configurable desde Ajustes
   - **Cambio de número**: Flujo en Configuración para actualizar número manteniendo UID
 - 👥 **Sistema de roles flexible**: cualquier usuario puede usar tanto el rol de conductor como de viajero
-  - **Selección dinámica**: al entrar a una lanzadera, el usuario decide qué rol tendrá en esa ocasión
+  - **Selección dinámica**: al entrar a una lanzadera, el usuario decide qué rol tendrá en esa ocasión, solicitando ser conductor o tener una plaza.
   - **Configuración permanente**: opción para mantener un rol preferido por defecto
-  - **Cambio de rol**: pantalla de ajustes con opción "Cambiar rol predeterminado" para modificar la preferencia
 
 ---
 
 ## **2\. Gestión de Grupos ("Biz")**
 
-- 📦 Los usuarios pueden **crear un grupo** (biz) para organizar lanzaderas.
+- Los usuarios pueden **crear un grupo** (biz) para organizar lanzaderas.
 - 👤 Solo el **creador del grupo** puede:
   - Crear o modificar lanzaderas.
   - Expulsar usuarios.
-  - Asignar otro administrador.
-- 🔒 **Visibilidad del grupo** configurable al crearlo:
+  - Asignar administradores de grupo.
+- **Visibilidad del grupo** configurable al crearlo:
   - **Privado**: solo accesible por invitación directa del creador/admin
   - **Público**: aparece en la lista de grupos disponibles y permite solicitar acceso
-  - 🔄 **Modificable**: la visibilidad puede cambiarse después de crear el grupo
+  - **Modificable**: la visibilidad puede cambiarse después de crear el grupo
 - 👥 **Acceso según visibilidad**:
   - **Grupos privados**: solo invitación del creador/administrador
   - **Grupos públicos**: solicitud desde lista pública + aprobación del creador/admin
-- 🏠 Los usuarios agregados verán automáticamente ese grupo en su pantalla Home.
-- 📅 El sistema guarda internamente la **fecha/hora de incorporación al grupo**.
-- 🚪 Cualquier usuario puede **salir del grupo** en cualquier momento.
-- 🔄 Si el creador abandona:
-  - El nuevo administrador será designado por él.
+- Los usuarios agregados verán automáticamente ese grupo en su pantalla de grupos.
+- El sistema guarda internamente la **fecha/hora de incorporación al grupo**.
+- Cualquier usuario puede **salir del grupo** en cualquier momento.
+- Si el creador abandona:
+  - Continuarán los administradoes haciendo las tareas de su rol.
   - Si no hay designación, será el miembro más antiguo.
+- Un administrador puede hacer todo lo que hace un creador de grupo, salvo echar del grupo al creador o a otro administrador.
+- El creador de grupo puede:
+  - echar del grupo a cualquier usuario.
+  - deshacer la acción de un admin: cuando un admin realice cualquier accion que requiera permisos, el creador puede deshacer, y será informado de esa funcionalidad cada vez que un admin haga algo con permisos de admin.
 
-### **🚨 Alertas de Conductores (gestión por admins)**
+### **Alertas de Conductores (gestión por admins)**
 
-- 👨‍💼 **Asignación de conductores potenciales**: Creadores y administradores pueden asignar conductores potenciales para el grupo
-- 🔔 **Sistema de alertas**: El usuario seleccionado recibe un aviso de "servicio de lanzadera como conductor"
-- ✅ **Respuesta requerida**: Puede aceptar o rechazar la solicitud
-- 📝 **Motivo de rechazo**: Si rechaza, debe indicar motivo:
+- **Asignación de conductores**: Creadores y administradores pueden asignar conductores predeterminados para ciertas lanzaderas, o días, o rango de tiempo (desde una hora de salida hasta otra hora de salida dentro de un día), previa aceptación del usuario.
+- **Sistema de alertas**: El usuario seleccionado recibe un aviso de "servicio de lanzadera como conductor"
+- **Respuesta requerida**: Puede aceptar o rechazar la solicitud
+- **Motivo de rechazo**: Si rechaza, debe indicar motivo:
   - Respuestas rápidas: "Imprevisto urgente", "No estoy asignado", "Otro usuario será el conductor"
   - Opción de texto breve personalizado
 
@@ -75,10 +86,10 @@
 
 ## **3\. Gestión de Lanzaderas**
 
-> ### **3.1. Creación**
+### **3.1. Creación**
 
-- ➕ El creador de un grupo puede crear lanzaderas dentro de él.
-- 🛣️ Requiere definir:
+- El creador de un grupo puede crear lanzaderas y sus horarios dentro de su grupo.
+- Requiere definir:
   - **Nombre**
   - **Origen** y **destino**
   - **Periodicidad**: puntual (fecha única) o frecuencia semanal
@@ -86,65 +97,31 @@
   - **Comentario** (opcional: normas, detalles de recogida)
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
 
-> ### **3.2. Configuración de horarios**
->
-> (Integrado en las secciones 6.1 y 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios.)
+### **3.2. Configuración de horarios**
 
-## **4\. Consulta y Solicitud de Lanzaderas**
+(Integrado en las secciones 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios)
 
-> ### **4.1. Vista en Home**
+## **4\. Consulta de horario y Solicitud de Lanzadera**
 
-- 🏡 Se muestran las **lanzaderas** del **grupo activo**.
-- Cada ítem incluye:
-
-  - Nombre
-  - Origen → destino
-  - Plazas disponibles
-  - Próximos horarios disponibles ese día
-  - Estado visual con colores:
-    - 🟢 Verde: disponible
-    - 🔴 Rojo: fuera de horario o completa
-    - ⚪ Gris: no disponible
-
-- Se puede **cambiar de grupo** desde el nombre del grupo en la barra superior.
-
-> ### **4.2. Vista de Detalle LANZADERA**
-
-- Al **pulsar una lanzadera**:
-
-  - Se muestra el nombre de Lanzadera, origen y destino.
-  - Se muestra lista de horarios del día actual (diferenciando los aún disponibles).
-  - Cada horario incluye (una vez pulsado, en nueva ventana):
-    - Cantidad de viajeros
-    - Nombre del conductor (si existe)
-    - Botones:
-      - "Solicitar plaza"
-      - "Ser conductor"
-      - "Cancelar solicitud"
-      - "Ver viajeros"
-    - Indicador del próximo horario.
-  - Al seleccionar "conductor":
-    - Si ya hay uno: se envía **notificación al ya existente para aprobar/rechazar**.
-    - Si está libre: se solicita matrícula y plazas. Puede haber la posibilidad de tener una base de datos con las plazas de cada vehículo por defecto.
-  - El botón de solicitud de plaza como viajero se bloquea si la lanzadera está completa.
-  - Puede mostrarse como "estado completo".
+La idea es mostrar una salida en concreto, con los datos de conductor, vehiculo, solicitudes y opción de solicitar tanto conducción como plaza, y cancelaciones, todo en la misma pantalla (ver pantalla **_6.1.2 "Hora Salida: Detalle y Solicitud_**")
 
 ---
 
 ## **5\. Reglas y Validaciones**
 
-- 🚫 **Solo puede haber un conductor por horario**.
-- 🔄 **Se puede anular una solicitud**.
-- ✅ **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
-- 🛑 **No se puede solicitar plaza** si está completa.
-- 🧾 Cada solicitud se guarda con fecha, rol y grupo asociado.
-- 🧠 Validaciones para evitar solapamientos en la configuración de horarios.
+- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones.
+- **Solo puede haber un conductor por horario**.
+- **Se puede anular una solicitud**.
+- **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
+- **No se puede solicitar plaza** si está completa.
+- Cada solicitud se guarda con fecha, rol y grupo asociado, en "Mis Solicitudes", resaltando en primer lugar la/s que está/n activas en ese momento.
+- Validaciones para evitar solapamientos en la configuración de horarios (cubierto en sistema de **_Creación/Edición Horario pantalla 6.1.3_**)
 
-#### Gestión automática de cancelaciones\*\*
+### Gestión automática de cancelaciones\*\*
 
-- **15 minutos antes**: Si no hay conductor, aviso a creador y administradores
-- **Hora de salida pasada**: Cancelación automática y aviso a usuarios con plaza
-- **Conductor tardío**: Si aparece después, notificar salida tardía con tiempo de retraso
+- **40 minutos antes**: Si no hay conductor, aviso a creador y administradores (este tiempo debería de ser modificable a cada grupo para necesidades concretas).
+- **Conductor tardío**: Aunque está previsto evitar que una lanzadera se quede sin conductor con la anterior regla, es posible, una vez pasada la hora de la salida, recuperar esa salida, de forma tardía, y requiere de avisos a usuarios mediante chat en grupo/lanzadera y notificación, además de volver a activarse la hora de salida, junto a las demás horas de salida, pero con icono con [+ x min] de tal manera que sea intuitivo entender que sale pero tarde (cambiando el tono del chip a un tono mas fuerte o cambiar su forma).
+- **Hora de salida pasada**: El chip de hora de salida desaparece si la salida ya salió, o no tuvo conductor (esto es posible, ya que los chips de salida corresponden con la fecha seleccionada y si la hora pasa ya no es posible solicitarla si no es cambiando a una fecha posterior, desde el dia de la semana arriba, o desde la fecha directamente). Si está completa, se puede acceder al detalle, pero no se podrá solicitar plaza
 
 ## **5.1 Persistencia y continuidad del rol de conductor**
 
@@ -163,138 +140,119 @@ Opciones:
 
 - **[Sí, continuar]** → El usuario seguirá siendo conductor en la siguiente salida disponible, si aún no hay conductor asignado.
 - **[No]** → El rol de conductor finalizará tras esta salida.
-  Este modo se usa siempre que el conductor no tenga una asignación especial de rango.
+  Este modo se usa siempre que el conductor no tenga una asignación de conducción de días o rango de tiempo.
 
 - Si el conductor no responde al modal de continuidad:
 
-  - A los **5 minutos**, los administradores reciben una notificación push indicando que se necesita conductor.
-  - A los **15 minutos antes de la siguiente salida**, si aún no hay conductor, se envía un aviso de urgencia al chat del grupo.
+  - A los **5 minutos**, los administradores reciben una notificación push indicando que se necesita conductor. Ellos pueden asignar la conducción a otro usuario.
+  - A los **40 minutos antes de la siguiente salida**, si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
+  - Si otro usuario solicita ser conductor:
+    - Si el conductor anterior respondió “No” a la pregunta de continuar, se aprueba automáticamente la solicitud nueva de conductor.
+    - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuantra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante.
 
-- Si otro usuario solicita ser conductor:
-
-  - La solicitud se envía al conductor actual y al creador/admin.
-  - Si el conductor anterior respondió “No”, se puede aprobar automáticamente.
-  - Si el conductor no ha respondido aún, el creador/admin tiene autoridad para decidir.
-
-- Si el conductor eligió **“Sí, continuar”** pero no tiene vehículo asignado:
+- Si el conductor eligió **“Sí, continuar”** pero no tiene vehículo asignado (o vehiculo predeterminado para esa lanzadera):
 
   - Se abrirá el selector de vehículo (según 6.1.2).
 
 Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea continuar, se mostrará:
 
-> **“Ya hay un conductor asignado para esta salida.”**
+**“Ya hay un conductor asignado para esta salida.”**
 
 ### **1.2 Conductor asignado por rango temporal (día completo o bloque de horarios)**
 
-- Solo puede asignarlo un Creador/Admin).
-- El conductor puede ser asignado para
-  - **todas las salidas del día**
-  - **conjunto de horarios específicos**.
+- Solo puede asignarlo un Creador/Admin.
+- El conductor puede ser asignado para:
+  - **Todas las salidas del día**
+  - **Conjunto de horarios específicos**.
 - El conductor recibe una notificación y debe aceptarla para que la asignación sea efectiva.
 - En este modo **no se requiere confirmación individual por cada salida**.
 - Una vez aceptado:
   - Es conductor automáticamente para todas las salidas incluidas en el rango.
   - No aparece el modal de continuidad.
 
-## **2. Reglas de continuidad entre salidas consecutivas**
-
-- El conductor **no continúa automáticamente**, salvo que:
-
-  - Haya aceptado la continuidad opcional (1.1),
-  - Esté asignado bajo rango temporal (1.2).
-
-## **3. Restricciones generales**
+### **2. Restricciones generales**
 
 - Solo puede haber **un conductor por salida**.
 - No se puede asignar conductor una vez que la salida ya ocurrió.
-- No se permite continuar como conductor si no se completó la salida anterior.
-- El creador/admin siempre tiene la última palabra en conflictos.
 
 ---
 
 ## **6\. Comunicación y Notificaciones**
 
-- 📢 Chat general por lanzadera _(no incluido en MVP)_.
-- 🔐 **Privacidad de contacto**: el número de teléfono no será visible entre usuarios
-  - Comunicación exclusivamente a través de mensajes dentro del grupo
-  - **Versiones futuras**: llamada directa integrada en la app
-  - **Opción personal**: cada usuario podrá configurar si mostrar su número de teléfono en su perfil
-- 🔔 Notificaciones push:
+### 6.1 **GESTIÓN DE COMUNICACIONES**
+
+- Está previsto Chat desde la Mínima Versión Publicable, ya que es básico para la comunicación entre los usuarios y no sería eficiente sin los chats.
+- El chat será a nivel de Grupo y de Lanzadera, además de chats privados y unos específico para comunicación entre creador/admins y conductor para eleccón de vehiculos o problemas durante el viaje.
+- **Privacidad de contacto**: el número de teléfono por defecto no será visible entre usuarios, aunque se puede hacer visible desde ajustes. Cada usuario podrá configurar así si mostrar su número de teléfono en su perfil.
+  - **Versiones futuras**: llamada de voz integrada en la app.
+- Notificaciones push:
   - Cuando un usuario se une a un grupo.
   - Cuando alguien solicita una plaza (informándose de plazas restantes).
-  - Cuando comienza un viaje (para los viajeros).
-- 🗺️ **Visualización de mapas incluida en MVP**:
-  - **Pantalla de Grupo**: Mapas de todas las lanzaderas del grupo para consultar recorridos
-  - **Pantalla de Lanzadera**: Mapa específico con trayecto, origen, destino y ubicación del usuario
-  - **Funcionalidad futura**: Seguimiento en tiempo real del vehículo durante el viaje
+  - Aviso previo de salida, y cuando salga la lanzadera del origen (para los solicitantes de la lanzadera).
+- **Visualización de mapas incluida en MVP**:
+  - **Pantalla de Grupo**: Mapas de todas las lanzaderas del grupo para consultar recorridos.
+  - **Pantalla de Lanzadera**: Mapa específico con trayecto, origen, destino y ubicación del usuario.
+  - **Seguimiento del vehículo (_Real-time Vehicle Tracking_)**: Seguimiento en tiempo real del vehículo durante el viaje.
 
-> ### **📍 Políticas de Geolocalización** _(para implementación con mapas)_
+### **Políticas de Geolocalización** _(para implementación con mapas)_
 
 - **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje
-  - Se activa automáticamente al confirmar salida de lanzadera
-  - Visible para todos los viajeros de esa lanzadera específica
-  - Necesaria para coordinación y seguridad del grupo
-  - **Consentimiento requerido**: Aceptar términos de conductor incluye localización
+  - Se activa automáticamente 40 minutos antes de la salida (o configuración distinta en ajustes).
+  - Visible para todos los viajeros de esa lanzadera específica.
+  - Necesaria para coordinación y seguridad del grupo.
+  - **Consentimiento requerido**: Aceptar términos de conductor incluye localización.
 - **🧑‍🤝‍🧑 Viajero**: Geolocalización **opcional**
-  - El usuario decide si mostrar su ubicación o no
-  - **Impacto en perfil**: No mostrar ubicación queda reflejado en perfil público
-  - Puede ser factor negativo para aceptación en futuros grupos
-  - Solo visible para el conductor y otros viajeros de la misma lanzadera
-  - **Consentimiento granular**: Preguntar en cada viaje o configuración general
+  - El usuario decide si mostrar su ubicación o no.
+  - **Impacto en perfil**: No mostrar ubicación queda reflejado en perfil público.
+  - Puede ser factor negativo para aceptación en futuros grupos.
+  - Solo visible para el conductor y usuarios con plaza en la lanzadera.
+  - **Consentimiento granular**: Preguntar en cada viaje o establecer siempre geolocalizado duarnte viajes (esta opción aparecerá en preferencias del perfil).
 
-> ### **🔒 Privacidad y Retención de Datos GPS**
+### **🔒 Privacidad y Retención de Datos GPS**
 
-- **Almacenamiento temporal**: Los datos GPS se almacenan solo durante el viaje activo
-- **Eliminación automática**: Al finalizar viaje, los datos de ubicación se eliminan en 24 horas
-- **Excepciones de retención** _(solo con consentimiento explícito)_:
-  - Estadísticas de rutas (datos anonimizados)
-  - Histórico de viajes para soporte técnico (máximo 30 días)
-- **Control del usuario**: Derecho a eliminación inmediata de cualquier dato de ubicación
-- **Transparencia**: Log de acceso a ubicación visible en configuración de privacidad
+- Los datos de GPS son solo usados para la localización puntual para el tiempo de lanzadera.
+- No se almacenan datos de geolocalización
+- Solo es usada la gelocalización para confirmación de posición del vehículo (conductor) y de los usarios que así lo deseen, para facilitar el uso de la lanzadera en grupo.
 
-> ### **⏰ Ventana de Activación del Tracking** _(para implementación con mapas)_
+### ** Activación del Tracking** _(para implementación con mapas)_
 
 - **Cuándo se activa la localización**:
 
-  - **Opción 1**: Tiempo fijo antes de la salida (ej: 30 minutos)
-  - **Opción 2**: Cuando el conductor activa "Iniciar viaje"
-  - **Opción 3**: Cuando el propio usuario decide mostrar ubicación
+  - **Caso 1**: conductor: Tiempo fijo antes de la salida (40 minutos, configurable)
+  - **Caso 2**: viajero: Cuando decide mostrar ubicación, si no la establece como predeterminada en preferencias de su perfil.
 
 - **Visibilidad de ubicaciones**:
-  - **Conductor puede ver**: Ubicación de todos los viajeros (si la han activado)
-  - **Viajeros pueden ver**: Solo ubicación del conductor + otros viajeros que lo permitan
-  - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad)
+  - **Conductor puede ver**: Ubicación de todos los viajeros de la lanzadera (si la han activado).
+  - **Viajeros pueden ver**: Ubicación del conductor + otros viajeros que lo permitan.
+  - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad), si no tienen activada la localización, y si se ven será solo durante el tiempo de la lanzadera (previo 40 minutos y hasta el fin del viaje).
 
-> ### **GESTIÓN DE NOTIFICACIONES**
+### 6.2 **GESTIÓN DE NOTIFICACIONES**
 
 Sistema completo de notificaciones push e in-app para mantener informados a los usuarios.
 
 - **Tipos de notificaciones:**
   - Nueva lanzadera creada en grupo
-  - Alguien solicita plaza en tu viaje
+  - Alguien solicita plaza
   - Plaza confirmada/rechazada
-  - Recordatorio 30min antes del viaje
+  - Recordatorio 40 min antes del viaje
   - Cambios en horarios
-  - Mensajes del chat específico
+  - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
 - **Configuración:** Usuario puede desactivar tipos específicos de notificaciones
 - **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
-- **Centro de notificaciones:** Historial in-app de notificaciones recibidas
+- **Centro de notificaciones:** Historial in-app de notificaciones recibidas. Almacena el historial de notificaciones recibidas por el usuario, permitiéndole consultarlas posteriormente. Debe mostrar notificaciones leídas/no leídas, fecha/hora y permitir acciones como abrir, archivar o eliminar 🔔.
 
 ---
 
 ## **7\. UX/UI Consideraciones**
 
-- 🔀 Cambiar de grupo desde el nombre en la barra superior.
-- 🟢 Estado visual por lanzadera y horario.
-- 📅 Días sin lanzaderas muestran etiqueta "sin lanzadera".
-- 📊 Colores y etiquetas para horarios de ida y vuelta.
-- 📚 Implementación recomendada:
+- Cambiar de grupo: desde pantalla de Grupo o lanzadera, volviendo en la pila de pantallas atras con la flecha hasta el nivel Grupos.
+- Días sin lanzaderas sencillamente no se muestran en la pantalla "Consulta/Horario 6.1.1".
+- Colores y botones para horarios de ida y vuelta (ver pantalla)
+- Implementación recomendada:
+  - Riverpod para actualización reactiva.
 
-  - Provider, Riverpod o Bloc para actualización reactiva.
-  - ExpansionTile para mostrar horarios organizadamente.
-
-### 🧩 Patrones de Modales y Diálogos
+### Patrones de Modales y Diálogos
 
 - Los **modales** se utilizarán para confirmar acciones, mostrar avisos importantes o solicitar decisiones rápidas al usuario.  
   Ejemplo: Confirmar creación de lanzadera o agregar el primer horario.
@@ -324,36 +282,87 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   “¿Desea agregar el primer horario?”  
   [Cancelar] [ Aceptar ]
 
-🧠 **Objetivo:** Mantener coherencia visual, simplicidad y claridad en las confirmaciones sin distraer de la acción principal.
+**Objetivo:** Mantener coherencia visual, simplicidad y claridad en las confirmaciones sin distraer de la acción principal.
 
 <br>
 
 ---
 
-# **🚩 Navegación y Pantallas**
+# **`Navegación y Pantallas`**
 
-## **🔹 Barra Superior de Navegación**
+## **🔹 Barra Superior de navegación**
 
 ### **Estructura:**
 
-[ Nombre de la App ] [ Nombre de Pantalla ] [ Menú ]
+[ ← volver nivel ] [ Logo / Nombre ] [ Nombre de pantalla ] [ Icono Mis Solicitudes ] [ ⋮ Menú ]
 
-> ### **Patrón de Menús y Acciones Superiores**
+### **Patrón de Menús y Acciones Superiores**
 
 - El **menú de tres puntos verticales (⋮)** en la esquina superior derecha se utilizará para **acciones y ajustes del contexto actual** de la pantalla (modificar datos, configuración, opciones avanzadas).
 - El **menú hamburguesa (≡)** **no se usará** en la app, ya que la navegación principal se realiza con **BottomNavigationBar** y encabezados.
-- Nunca deben coexistir ambos menús en la misma vista.
-- Acceso a navegación y secciones principales siempre desde bottom bar o iconos visibles, no desde menús ocultos.
+- Nunca existirán ambos menús en la misma vista.
+- Acceso a navegación y secciones principales (de izquierda a derecha):
+  - (1) home de grupos, grupo o lanzadera,
+  - (2) chat,
+  - (3) horario y
+  - (4) mapa (siempre desde bottom bar o iconos visibles, no desde menús ocultos).
 
 **Objetivo:** Mantener claridad, evitar confusión del usuario y seguir las pautas de Material/Flutter modernas.
+
+### **Navegación anidada con PageView**
+
+Navegación entre 3 niveles:
+
+La aplicación permite navegar hacia abajo y hacia arriba entre estos tres niveles jerárquicos:
+
+### **1. Nivel Grupos**
+
+Aquí se muestran todos los grupos en una ListView:
+
+- Se pueden crear grupos o solicitar formar parte de uno.
+- Al pulsar un grupo en la ListView, se accede al **Nivel Grupo**.
+
+### **2. Nivel Grupo**
+
+- Desde este nivel se pueden crear lanzaderas.
+- Las lanzaderas del grupo se muestran en una ListView.
+- Al pulsar una lanzadera en la lista, se accede al **Nivel Lanzadera**.
+
+### **3. Nivel Lanzadera**
+
+- Se muestran los datos detallados de la lanzadera y el comentario asociado.
+- También aparece un resumen con las últimas novedades de la lanzadera, a modo de muro.
+
+### **Estructura común de navegación**
+
+Cada nivel dispone de **4 páginas**, y los elementos de la primera página (ListView) sirven para cambiar de nivel:
+
+- En el **Nivel Grupos**, un ítem de la ListView lleva al Nivel Grupo.
+- En el **Nivel Grupo**, un ítem de la ListView lleva al Nivel Lanzadera.
+- En el **Nivel Lanzadera** ya no existen ítems para navegar hacia abajo, porque es el último nivel. Desde aquí solo se puede subir con la flecha de atrás.
+
+### **Reglas de navegación entre niveles**
+
+- Para retroceder, debe existir una **flecha de atrás** en cada pantalla del _Home_ correspondiente.
+- La navegación superior (flecha atrás arriba a la izquierda) permite subir niveles:
+
+  - De **Lanzadera → Grupo**
+  - De **Grupo → Grupos**
+
+### **PageView en toda la aplicación**
+
+Toda la app se basa en un PageView que organiza las secciones principales:
+**Home, Chats, Horarios y Mapa.**
+
+Es muy importante que, en cada nivel, la parte superior de la pantalla muestre claramente en qué nivel está el usuario (**Grupos / Grupo / Lanzadera**) para evitar confusiones.
 
 <br>
 
 ---
 
-# **📱 Pantallas**
+# **📱 PANTALLAS**
 
-> ## 1\. Pantalla de LOGIN
+## 1\. Pantalla de LOGIN
 
 - Primera pantalla de la app.
 - Campos:
@@ -363,7 +372,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Enlaza con pantalla de **Registro con Código**.
 - Opcional: subir una imagen de usuario.
 
-> > ### 1.1. Pantalla de RECUPERACIÓN DE CUENTA
+### 1.1. Pantalla de RECUPERACIÓN DE CUENTA
 
 - Pantalla para casos de pérdida de móvil o cambio de número de teléfono.
 
@@ -381,7 +390,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 ---
 
-> ## 2. Pantalla de REGISTRO
+## 2. Pantalla de REGISTRO
 
 - Parte superior: texto indicando que se debe ingresar el código recibido por SMS.
 - Se muestra el número de teléfono al que se envió el código.
@@ -389,7 +398,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 ---
 
-> ## 3\. ONBOARDING
+## 3\. ONBOARDING
 
 Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
 
@@ -419,6 +428,9 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
   - Sistema de chat por grupo
   - Tipos de notificaciones
   - Configuración de privacidad
+- **Pantalla 6**: Mapas
+  - Ver mapas de Lanzaderas
+  - Entrar al mapa de una lanzadera y ver como se mueve el vehículo
 
 **Características técnicas:**
 
@@ -426,46 +438,73 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
 - Botones "Siguiente", "Saltar" y "Empezar"
 - Animaciones suaves entre pantallas
 - Disponible después como ayuda en el menú: Ajustes > Ayuda > Ver tutorial
-- Opción de cambiar todo esto por un simple video?? más sencillo y rápido.
+- Opción de cambiar todo esto por un simple video: más sencillo y rápido.
 
 ---
 
-> ## 4. PANTALLA DE GRUPOS\*\* _(origen/home de la aplicación)_
+## 4. **NIVEL GRUPOS** _(origen/home de la aplicación)_
 
-- **Función**: Permite ver los grupos del usuario y crear nuevos grupos. Es la pantalla primera, desde las que salen todas las demas.
+- **Función**:
+  - Permite ver los grupos del usuario y crear nuevos grupos. Es la pantalla primera, desde las que salen todas las demas. Es el nivel mas alto (Grupos -> Grupo -> Lanzadera).
+  - Este nivel (como los otros dos: Grupo y Lanzadera) tiene 3 páginas:
 
-### **Comportamiento del selector de grupo:**
+Aquí tienes el texto **sin eliminar nada de información**, pero **sin redundancias**, **más claro**, **mejor organizado** y **coherente para specs profesionales**.
+No añadí contenido nuevo, solo reorganicé y limpié.
 
-- Si **no hay ningún grupo creado**, el texto mostrará: Agregar un Grupo, seguido de un icono +.
-  - Al pulsarlo: navega a una pantalla de creación de grupo que incluye configuración obligatoria de **Visibilidad** (Privado/Público) además del nombre.
-  - Este icono estará abajo a la derecha, floatingbutton, y dentro del menú superior.
-- Si **ya hay uno o varios grupos creados**, se verá una lista de los grupos en el cuerpo de la pantalla.
+---
 
-### **Estados de inicio**
+# 4.1 **PANTALLA GRUPOS HOME**
 
-- **Sin grupos propios creados ni pertenencia a ninguno**:
-  - Invitación a crear primer grupo
-  - Vista de todos los grupos públicos a los que se podrá solicitar unirse.
-- **Ya incluido en grupo/s**: Lista normal de todos los grupos, en primer lugar los que se ya se pertenece, y luego el resto de grupos priorizando los mas cercanos en distancia.
+### **Estados iniciales**
 
-### **Contenido**:
+La pantalla puede mostrar dos situaciones:
 
-- **Lista de grupos**: Cada ítem representa un grupo con foto de perfil opcional
-- **Estados**:
-  - Si **no hay grupos**: Mostrar invitación a crear el primer grupo
-  - Si **hay grupos**: Lista de todos los grupos del usuario
-- **Acciones**:
-  - Al pulsar un grupo: abre la **Pantalla de Grupo (5)**
-  - Botón "+" para crear nuevo grupo
-  - **Ícono de búsqueda**: Para descubrir grupos públicos disponibles
-- **Búsqueda de grupos públicos**:
-  - Al pulsar ícono de búsqueda: abre modal de búsqueda
-  - Muestra grupos públicos ordenados por proximidad (si hay geolocalización)
-  - Permite buscar por nombre del grupo
-  - Cada resultado muestra: nombre, número de miembros, lanzaderas activas
-- **Acceso permanente**: Logo de la app (la mano) da acceso a "Estado de Mis Solicitudes"
+1. **Sin grupos propios ni pertenencia a ninguno**
 
-> > ### 4.1. UNIRSE A GRUPO EXISTENTE
+   - Mensaje de invitación:
+
+     ```
+     Aquí se añadirán tus Grupos
+
+     ¿Quieres agregar tu primer Grupo?
+     Créalo pulsando el botón (+) abajo
+
+     ¿Quieres buscar un Grupo público?
+     Búscalo arriba pulsando el ícono de búsqueda.
+     ```
+
+2. **Con uno o varios grupos creados o con membresía**
+
+   - Lista normal con todos los grupos.
+   - Orden:
+
+     1. En primer lugar, los grupos a los que el usuario pertenece.
+     2. Luego, otros grupos públicos, priorizados por cercanía, tomando en cuenta la localización de sus rutas.
+
+### **Contenido de la pantalla**
+
+- **Lista de grupos** (cada ítem con nombre, foto opcional y datos básicos):
+  - **Tocar un grupo** → abre la **Pantalla de Grupo** correspondiente.
+- **Elemento persistente**: Logo de la app (mano) en la appbar, que abre pantalla _Estado de Mis Solicitudes_.
+- **Botón flotante (FAB) “+”**:
+  - Ubicado abajo a la derecha.
+  - Crea un nuevo grupo → navega a **Pantalla 4.1.1 (Crear Grupo)**.
+- **Opción adicional para crear grupo** en el menú del appbar.
+- **Icono de búsqueda** para descubrir grupos públicos. El icono de búsqueda abre un **modal** con:
+  - Campo de búsqueda por nombre
+  - Lista de grupos pspecsúblicos ordenados por proximidad (si hay geoloc.)
+  - Datos mostrados por grupo: nombre, número de miembros, lanzaderas activas.
+
+---
+
+### **Pantalla 4.1.1 Creación de Grupo**
+
+- Imagen para el grupo
+- Caja de texto para el nombre del grupo
+- Configuración obligatoria de **Visibilidad** (Privado/Público).
+- botones de Guardar y Cancelar
+
+> > ### 4.5. UNIRSE A GRUPO EXISTENTE
 
 Flujo para usuarios que quieren unirse a un grupo creado por otros.
 
@@ -728,7 +767,7 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
-> ### **6.1.2 Detalle de hora de Salida**
+> ### **6.1.2 Hora Salida: Detalle y Solicitud**
 >
 > Esta pantalla será la que se use para la solicitud de plazas, solicitud/asignacion de conductor, elección de vehiculo y cancelaciones.
 > Esta pantalla comienza con el texto superior:
@@ -909,7 +948,6 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 
 ### **8\. ESTADO DE MIS SOLICITUDES**
 
-> > TODO: ESTA PANTALLA HAY QUE DESARROLLARLA AUN Y MEJORARLA
 > > **Mis solicitudes**:  
 > > Debe de estar a la vista accesible fácil en cualquier pantalla:
 
