@@ -449,7 +449,7 @@ No añadí contenido nuevo, solo reorganicé y limpié.
 
 ---
 
-# 4.1 **PANTALLA GRUPOS HOME**
+## 4.1 **PANTALLA GRUPOS HOME**
 
 ### **Estados iniciales**
 
@@ -547,6 +547,51 @@ Flujo para usuarios que quieren unirse a un grupo creado por otros.
   - Código de invitación (6 dígitos). Se envía al usuario mediante número de teléfono (será necesario dar el numero de móvil para recibir la invitación): Un usuario desea que su conocido pertenezca al grupo, en ajustes del grupo hay la opción "enviar invitación de grupo", y en la opción "numero de móvil" se le pide el número del usuario, se envía la invitación al usuario. Si no existe ningún usuario con ese número de teléfono se avisa de que no existe el usuario. Si existe: al usuario le llega una invitación a notificaciones, donde al abrirla podrá aceptar la invitación y tendrá en su lista de grupos el grupo nuevo, añadiendose al usuario como miembro del grupo.
   - Enlace compartido: en ajustes del grupo hay la opción "enviar invitación de grupo", y en la opción "compartir con enlace", se podrá compartir como texto un enlace que abrirá la app de la misma manera que si recibe invitacion por numero de móvil, pudiendo aceptar y ser parte del grupo.
   - Búsqueda por nombre (si es público) en la pantalla 4.1.2.
+
+---
+
+## **4.2 Pantalla Grupos Chat**
+
+Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encuentra en el **nivel superior (Grupos)**.
+
+### **Características principales**
+
+- Es el nivel raíz del módulo de chat, por lo que **no muestra flecha atrás**.
+- Permite ver todos los **chats generales de los grupos** a los que pertenece el usuario.
+- Su única función es **redirigir al chat del grupo seleccionado**, sin mezclar todavía chats de lanzaderas.
+
+### **AppBar (izquierda → derecha)**
+
+- **“Grupos”** (título del módulo)
+- **Icono de búsqueda** → permite buscar entre los chats generales de los grupos del usuario.
+- **Icono Mis Solicitudes** → acceso rápido a la Pantalla 8.
+- **Menú (⋮)**:
+
+  - Ajustes generales del chat
+  - Acceso a chats privados recientes
+  - Otras opciones de contexto
+
+### **Contenido**
+
+Lista con un ítem por cada grupo:
+
+- Foto del grupo o inicial
+- Nombre del grupo
+- Último mensaje y hora
+- Indicador de mensajes no leídos
+- Al tocar un ítem → se abre el **chat del grupo** dentro del **nivel de Grupo**, en la pestaña de Chat correspondiente.
+
+### **Navegación**
+
+- Esta pantalla no tiene flecha atrás (es el nivel más alto del módulo Chat).
+- Al pulsar un grupo, el sistema baja un nivel de forma vertical hacia el Nivel Grupo, manteniéndose siempre dentro de la pestaña Chat.
+- En el nivel Grupo se muestra:
+  - El chat general del grupo (pantalla superior de ese nivel).
+  - La lista de chats de las lanzaderas pertenecientes al grupo.
+- Desde ese punto el usuario puede seguir bajando verticalmente de nivel para entrar al chat de una lanzadera concreta.
+
+**Objetivo UX:**
+Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertical, sin cambiar de pestaña (la pestaña Chat permanece activa en todos los niveles).
 
 ---
 
