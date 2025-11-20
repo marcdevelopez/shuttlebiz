@@ -595,6 +595,88 @@ Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertica
 
 ---
 
+## **Pantalla 4.3 — Horarios (Nivel Grupos)**
+
+_(Versión final refinada y coherente)_
+
+Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom tab-bar junto a **Grupos**, **Chat** y **Mapa**.
+Su función es ofrecer una **vista global** de las próximas salidas en todas las lanzaderas de todos los grupos del usuario.
+
+## **AppBar**
+
+- Título centrado: **“Horarios · Mis Grupos”**
+- Lado derecho:
+  - 🔍 **Buscar** (filtra entre horarios y lanzaderas)
+  - 🧭 Filtro
+  - ✋ **Mis Solicitudes** (historial)
+  - **⋮ Menú**
+- Sin flecha de atrás → **es nivel superior**.
+
+## **Contenido principal**
+
+La pantalla muestra una **lista vertical de grupos**, y dentro de cada grupo, sus **lanzaderas**, cada una con su **próxima salida**.
+
+- Si un grupo **no tiene ninguna lanzadera con horario**: **no aparece** en esta pantalla.
+- Si **ningún grupo** tiene horarios → mensaje:
+
+```
+Aún no tienes horarios de lanzaderas en tus grupos.
+```
+
+- Si el usuario no pertenece a ningún grupo → mensaje:
+
+```
+Únete a un grupo o crea uno para ver horarios aquí.
+```
+
+seguido de botones que redirigen la pantalla de busqueda de grupos, o creación de grupo:
+
+- **Buscar grupos**
+- **Crear nuevo grupo**
+
+## **Estructura por nivel**
+
+### ⭐ **NIVEL GRUPOS — Cada ítem es un grupo**
+
+Cada grupo muestra:
+
+```
+Nombre de Grupo
+   └── Nombre Lanzadera: `Origen → Destino`
+          🟢 próxima salida disponible → hh:mm (o fecha/hora si no es hoy)
+          o
+          🔴 en curso / sin plazas
+          Resumen: "Hasta las hh:mm"
+   └── Nombre Lanzadera 2: ...
+```
+
+👉 **Al pulsar el grupo completo**, se baja de nivel a la **Pantalla 5.x (Nivel Grupo)** en la pestaña **Horarios**, donde ya se ven todas sus lanzaderas con más detalle.
+
+## **Filtros, orden y búsqueda**
+
+### **Orden por defecto**
+- **Próxima salida más cercana en el tiempo** (prioriza utilidad real).
+
+### **Orden alternativo (icono filtro)**
+- Por próxima salida
+- Por distancia al origen del usuario
+- Por nombre de grupo
+
+### **Filtros**
+- Solo lanzaderas activas
+- Solo lanzaderas con plazas disponibles
+
+### **Búsqueda (🔍)**
+El buscador filtra **grupos y lanzaderas** por:
+- nombre de grupo
+- nombre de lanzadera
+- día (“viernes”)
+- hora (“7:30”)
+- sentido (“ida”, “vuelta”)
+Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
+
+---
+
 > ## 5\. Pantalla GRUPO _(vista completa del grupo)_
 
 - **Función**: Muestra todas las lanzaderas y funcionalidades de un grupo específico.
