@@ -1,7 +1,3 @@
-<style>
-.i { margin-left: 20px; }
-</style>
-
 <div align="center">
 
 <img src="assets/diagrams/hand-icon-light.png" width="70" alt="Hand Icon" style="margin: 0 20px;">
@@ -478,50 +474,79 @@ La pantalla puede mostrar dos situaciones:
    - Lista normal con todos los grupos.
    - Orden:
 
-     1. En primer lugar, los grupos a los que el usuario pertenece.
-     2. Luego, otros grupos públicos, priorizados por cercanía, tomando en cuenta la localización de sus rutas.
+     1. En primer lugar, los grupos que el usuario ha creado (si ha creado alguno).
+     2. Luego, los demás grupos a los que se pertenezca, priorizando los que estén mas cerca el origen o destino de alguna de sus lanzaderas.
 
 ### **Contenido de la pantalla**
 
 - **Lista de grupos** (cada ítem con nombre, foto opcional y datos básicos):
-  - **Tocar un grupo** → abre la **Pantalla de Grupo** correspondiente.
+  - **Tocar un grupo** → abre la **Pantalla de Grupo** correspondiente, bajando al nivel de "Grupo".
+- **Icono de búsqueda** para descubrir grupos públicos. El icono de búsqueda abre la pantalla **Busqueda de grupos** 4.1.2.
 - **Elemento persistente**: Logo de la app (mano) en la appbar, que abre pantalla _Estado de Mis Solicitudes_.
+- **Opción adicional para crear grupo** en el menú del appbar.
 - **Botón flotante (FAB) “+”**:
   - Ubicado abajo a la derecha.
   - Crea un nuevo grupo → navega a **Pantalla 4.1.1 (Crear Grupo)**.
-- **Opción adicional para crear grupo** en el menú del appbar.
-- **Icono de búsqueda** para descubrir grupos públicos. El icono de búsqueda abre un **modal** con:
-  - Campo de búsqueda por nombre
-  - Lista de grupos pspecsúblicos ordenados por proximidad (si hay geoloc.)
-  - Datos mostrados por grupo: nombre, número de miembros, lanzaderas activas.
 
 ---
 
 ### **Pantalla 4.1.1 Creación de Grupo**
 
-- Imagen para el grupo
-- Caja de texto para el nombre del grupo
-- Configuración obligatoria de **Visibilidad** (Privado/Público).
-- botones de Guardar y Cancelar
+- Se abre desde menú de appbar, o desde botón flotante (FAB).
+- Contiene:
+  - Imagen para el grupo
+  - Caja de texto para el nombre del grupo
+  - Configuración obligatoria de **Visibilidad** (Privado/Público).
+  - botones de Guardar y Cancelar
 
-> > ### 4.5. UNIRSE A GRUPO EXISTENTE
+---
+
+### **Pantalla 4.1.2 Búsqueda de grupos**
+
+- Se abre desde el icono de búsqueda de la pantalla 4.1 **GRUPOS HOME**.
+- Contendrá:
+
+  - **Campo de búsqueda por nombre del grupo**.
+  - **Botón “Pegar enlace de invitación”**
+
+    - Útil para procesar enlaces de invitación generados desde:
+      _Ajustes del grupo → Enviar invitación → Compartir enlace_.
+    - Al pulsarlo, la app leerá el contenido del portapapeles:
+
+      - **Si contiene un enlace válido de invitación ShuttleBiz**, la app abrirá directamente la pantalla **4.1.3 Detalle de grupo público**, mostrando la información del grupo e incluyendo el botón **“Solicitar unirse”**.
+      - **Si el enlace no es válido**, se mostrará un modal indicando:
+        **“El enlace copiado no corresponde a una invitación válida.”**
+
+  - **Lista de grupos públicos**, ordenados por:
+
+    1. Proximidad (si tienen lanzaderas activas),
+    2. Luego los que no tienen lanzaderas,
+    3. Y finalmente por fecha de creación o número de usuarios (criterio configurable).
+
+  - **Datos mostrados por grupo**:
+
+    - nombre,
+    - número de miembros,
+    - lanzaderas activas.
+
+  - Al pulsar un grupo se abre la pantalla **4.1.3 Detalle de Grupo público**, donde se muestran sus datos y se da opción a solicitar membresía.
+
+### **Pantalla 4.1.3 Detalle de Grupo público**
+
+- Sirve para ver datos del grupo / solicitar ser parte del grupo:
+  - Nombre del grupo
+  - lista de usuarios
+  - lista de lanzaderas
+  - Solicitar unirse (se podrá agregar un mensaje al admin/creador del grupo)
+
+### UNIRSE A GRUPO EXISTENTE
 
 Flujo para usuarios que quieren unirse a un grupo creado por otros.
 
 - **Métodos de acceso:**
-  - Código de invitación (6 dígitos)
-  - Enlace compartido
-  - Búsqueda por nombre (si es público)
-- **Pantalla de búsqueda:**
-  - Campo para código/nombre
-  - Lista de grupos públicos cercanos
-- **Vista previa del grupo:**
-  - Nombre, descripción
-  - Número de miembros
-  - Lanzaderas activas (preview)
-- **Solicitud:**
-  - Botón "Solicitar unirse"
-  - Mensaje opcional al administrador
+  - Código de invitación (6 dígitos). Se envía al usuario mediante número de teléfono (será necesario dar el numero de móvil para recibir la invitación): Un usuario desea que su conocido pertenezca al grupo, en ajustes del grupo hay la opción "enviar invitación de grupo", y en la opción "numero de móvil" se le pide el número del usuario, se envía la invitación al usuario. Si no existe ningún usuario con ese número de teléfono se avisa de que no existe el usuario. Si existe: al usuario le llega una invitación a notificaciones, donde al abrirla podrá aceptar la invitación y tendrá en su lista de grupos el grupo nuevo, añadiendose al usuario como miembro del grupo.
+  - Enlace compartido: en ajustes del grupo hay la opción "enviar invitación de grupo", y en la opción "compartir con enlace", se podrá compartir como texto un enlace que abrirá la app de la misma manera que si recibe invitacion por numero de móvil, pudiendo aceptar y ser parte del grupo.
+  - Búsqueda por nombre (si es público) en la pantalla 4.1.2.
 
 ---
 
@@ -1595,10 +1620,3 @@ Sería interesante organizar cada trabajo según estos roles, para mejor organiz
   - **Growth Hacker**: Analiza y optimiza métricas de adquisición y compromiso de usuarios.
   - **Community Manager**: Facilita la retroalimentación de los usuarios.
   - **Data Analyst**: Monitorea el uso de la aplicación.
-
-prueba de indentacion
-esto no es indentado
-
-<div style="margin-left:20px">
-    1 indentacion
-</div>
