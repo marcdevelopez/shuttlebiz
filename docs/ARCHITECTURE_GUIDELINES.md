@@ -81,7 +81,7 @@ lib/
 ### Escalabilidad prevista
 
 - Se diseña desde el MVP pensando en futuras fases (ver [ROADMAP.md](ROADMAP.md))
-- Las entidades y modelos ya incluyen campos necesarios para roles dinámicos, chat y notificaciones (ver [DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md))
+- Las entidades y modelos ya incluyen campos necesarios para roles dinámicos, chat y notificaciones (ver [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md))
 
 ### Código declarativo y limpio
 
@@ -92,14 +92,14 @@ lib/
 ## 📐 4. Modelos y Datos
 
 - Todos los modelos Dart usan **Freezed** + `fromFirestore` / `toFirestore` para consistencia
-- La estructura sigue exactamente la definida en [DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)
+- La estructura sigue exactamente la definida en [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md)
 - **No se deben crear colecciones o campos arbitrarios** sin actualizar primero este esquema
 
 ## 🔄 5. Flujo de Desarrollo
 
 1. Crear rama `feature/` para cada nueva funcionalidad
-2. Seguir los pasos definidos en [ROADMAP.md](ROADMAP.md) y [TODO.md](docs/TODO.md)
-3. Para convenciones de Git, commits y PRs, consultar [GIT_COMMIT_GUIDE.md](docs/GIT_COMMIT_GUIDE.md)
+2. Seguir los pasos definidos en [ROADMAP.md](ROADMAP.md).
+3. Para convenciones de Git, commits y PRs, consultar [GIT_GUIDE.md](GIT_GUIDE.md)
 
 ## 🧪 6. Pruebas y Calidad
 
@@ -111,7 +111,7 @@ lib/
 
 ### Estilo visual coherente
 
-Colores definidos en [SPECIFICATIONS.md](docs/SPECIFICATIONS.md):
+Colores definidos en [SPECS.md](SPECS.md)
 
 - **Azul intenso**: `#0077B6`
 - **Rojo coral**: `#FF6B6B`
@@ -145,11 +145,10 @@ Este proyecto está diseñado para crecer en fases:
 
 ## 📎 10. Referencias internas
 
-- 📄 [SPECIFICATIONS.md](docs/SPECIFICATIONS.md) → Requerimientos funcionales completos
-- 📋 [TODO.md](docs/TODO.md) → Lista técnica de tareas
-- 🗄️ [DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) → Estructura de datos oficial
+- 📄 [SPECS.md](SPECS.md) → Requerimientos funcionales completos
+- 🗄️ [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) → Estructura de datos oficial
 - 🧭 [ROADMAP.md](ROADMAP.md) → Fases de desarrollo y objetivos
-- 📖 [README.md](README.md) → Presentación del proyecto
+- 📖 [README.md](../README.md) → Presentación del proyecto
 
 ---
 
