@@ -14,13 +14,13 @@ Sirve para:
 # 📍 Estado actual
 
 Fase activa: **1 — Configuración inicial / Arquitectura**
-Última actualización: _(rellenar)_
+Última actualización: 2025-11-24
 
 ---
 
 # 📅 Diario de desarrollo
 
-## 🗓️ Día 1 — _(fecha)_
+## 🗓️ Día 1 — 2025-11-20
 
 ### ✔ Trabajo realizado:
 
@@ -36,33 +36,37 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 
 ### ⚠️ Problemas encontrados:
 
-- _(rellenar)_
+- Ninguno
 
 ### 🎯 Próximos pasos:
 
-- Crear proyecto Flutter + packages base
-- Configurar Firebase (Auth/Firestore/FCM)
-- Definir modelos iniciales (User, Group, Shuttle, Schedule, Booking, Vehicle, Message)
+- Completar la sección de interfaz del Nivel Grupo en `SPECS.md`.
+- Ajustar `ROADMAP.md` para reflejar la fase de cierre de especificaciones.
+- Bosquejar guía visual básica (tipografía, paleta, patrones de modales/chips).
 
 ---
 
-## 🗓️ Día 2 — _(fecha)_
+## 🗓️ Día 2 — 2025-11-24
 
 ### ✔ Trabajo realizado:
 
-- _(rellenar)_
+- Se completó la sección 5 (Nivel Grupo) de la interfaz gráfica en `SPECS.md`.
+- Se detalló el flujo de creación/edición de lanzaderas y accesos a ajustes (menú ⋮) en nivel grupo.
 
 ### 🧠 Decisiones tomadas:
 
-- _(rellenar)_
+- Mantener patrón BottomNavigationBar + PageView para el nivel grupo y exponer ajustes en el menú ⋮.
+- Posponer el cierre del resto de secciones de SPECS y la guía visual básica a una fase dedicada en el roadmap.
 
 ### ⚠️ Problemas encontrados:
 
-- _(rellenar)_
+- Falta una fase explícita en el roadmap para cerrar SPECS y definir guías visuales básicas.
 
 ### 🎯 Próximos pasos:
 
-- _(rellenar)_
+- Completar el resto de SPECS (niveles grupo/lanzadera, pantallas 6.x+).
+- Definir el aspecto básico de las pantallas (tipografía, colores, componentes principales) como guía de desarrollo.
+- Actualizar el roadmap con la fase de cierre de especificaciones y guía visual.
 
 ---
 
