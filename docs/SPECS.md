@@ -655,60 +655,181 @@ Nombre de Grupo
 ## **Filtros, orden y búsqueda**
 
 ### **Orden por defecto**
+
 - **Próxima salida más cercana en el tiempo** (prioriza utilidad real).
 
 ### **Orden alternativo (icono filtro)**
+
 - Por próxima salida
 - Por distancia al origen del usuario
 - Por nombre de grupo
 
 ### **Filtros**
+
 - Solo lanzaderas activas
 - Solo lanzaderas con plazas disponibles
 
 ### **Búsqueda (🔍)**
+
 El buscador filtra **grupos y lanzaderas** por:
+
 - nombre de grupo
 - nombre de lanzadera
 - día (“viernes”)
 - hora (“7:30”)
 - sentido (“ida”, “vuelta”)
-Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
+  Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
 
 ---
 
-> ## 5\. Pantalla GRUPO _(vista completa del grupo)_
+## **Pantalla 4.4 — Mapa (Nivel Grupos)**
 
-- **Función**: Muestra todas las lanzaderas y funcionalidades de un grupo específico.
-- Al pulsar sobre el nombre del grupo arriba se abre modal para cambiar a otro grupo al que pertenezca el usuario.
-  > MENÚ SUPERIOR DERECHO 3 PUNTOS (AJUSTES QUE APARECEN EN TODAS LAS PAGINAS DEL NIVEL GRUPO)
-  >
-  > - Gestión de vehículos: abre la pantalla 10 de gestión de vehículos.
+Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom tab-bar junto a **Grupos Home**, **Chat** y **Horarios**.
 
-> - **Estructura**: BottomNavigationBar + PageView con 4 secciones:
+### **AppBar**
 
-> > ### 5.1 Pantalla NEW SHUTTLE
+- Título centrado: **"Mapa · Mis Grupos"**
+- Lado derecho:
+  - 🔍 **Buscar** (filtra grupos visibles)
+  - ✋ **Mis Solicitudes** (icono de mano)
+  - **⋮ Menú** (opciones de visualización: tipo de mapa, leyenda, etc.)
+- Sin flecha de atrás → **es nivel superior**.
 
-- **Función**: Pantalla para crear una nueva lanzadera desde la Pantalla de Grupo.
+### **Contenido principal**
+
+Lista vertical donde **cada ítem es un grupo**.
+
+Cada ítem de grupo muestra:
+
+- **Nombre del grupo** (encabezado)
+- **Mapa del grupo** con:
+
+  - Todas las rutas de lanzadera del grupo **superpuestas** en el mismo mapa
+  - Cada ruta con un color distinto
+  - Marcadores de origen (azul) y destino (rojo) de cada lanzadera
+  - **Posición del usuario** (opcional, si no afecta rendimiento UI)
+
+- **Leyenda bajo el mapa**:
+  - Lista horizontal o vertical compacta con:
+    - Nombre de cada lanzadera
+    - Color de la ruta correspondiente
+  - **Al pulsar el nombre de una lanzadera**:
+    - Toggle para **mostrar/ocultar** su recorrido en el mapa. resalta la lanzadera y muestra información básica.
+    - El nombre se resalta o tacha según visibilidad
+
+**Al pulsar sobre el mapa del grupo** → abre **Pantalla 5.4 (Mapa · Nivel Grupo)**, bajando un nivel.
+
+### **Estados especiales**
+
+- Si un grupo **no tiene lanzaderas**:
+
+  - Muestra solo el nombre del grupo
+  - Mensaje: _"Sin lanzaderas configuradas"_
+  - No muestra mapa
+
+- Si el usuario **no pertenece a ningún grupo**:
+  - Mensaje centrado:
+    ```
+    Únete a un grupo o crea uno para ver mapas de lanzaderas.
+    ```
+  - Botones:
+    - **Buscar grupos**
+    - **Crear nuevo grupo**
+
+---
+
+## **5. NIVEL GRUPO** _(vista completa del grupo)_
+
+- **Función**:
+  - Permite ver las lanzaderas del grupo y crear nuevas lanzaderas. Es el segundo nivel de la jerarquía (Grupos → Grupo → Lanzadera).
+  - Este nivel (como los otros dos: Grupos y Lanzadera) tiene 4 páginas en el PageView.
+
+---
+
+## **5.1 PANTALLA GRUPO HOME**
+
+### **Estados iniciales**
+
+La pantalla puede mostrar dos situaciones:
+
+1. **Sin lanzaderas creadas en el grupo**
+
+   - Mensaje de invitación:
+
+     ```
+     Aquí se añadirán las Lanzaderas del grupo
+
+     ¿Quieres agregar la primera Lanzadera?
+     Créala pulsando el botón (+) abajo
+
+     Las lanzaderas permiten organizar viajes compartidos
+     con los miembros de este grupo.
+     ```
+
+2. **Con una o varias lanzaderas creadas**
+
+   - Lista normal con todas las lanzaderas.
+   - Orden:
+
+     1. En primer lugar, las lanzaderas con próxima salida más cercana.
+     2. Luego, las lanzaderas ordenadas por proximidad del origen al usuario.
+     3. Finalmente, lanzaderas sin horarios configurados.
+
+### **Contenido de la pantalla**
+
+- **Lista de lanzaderas** (cada ítem con nombre, origen → destino, foto opcional y datos básicos):
+  - **Tocar una lanzadera** → abre la **Pantalla de Lanzadera** correspondiente, bajando al nivel de "Lanzadera".
+- **Elemento persistente**: Logo de la app (mano) en la appbar, que abre pantalla _Estado de Mis Solicitudes_.
+- **Flecha atrás** (←) en la esquina superior izquierda → regresa al **Nivel Grupos (4.1)**.
+- **Nombre del grupo** visible en el AppBar. Al pulsarlo, se abre un modal para cambiar rápidamente a otro grupo del usuario.
+- **Menú (⋮)** en esquina superior derecha con opciones:
+  - Gestión del grupo → abre **Pantalla 5.5**
+  - Gestión de vehículos → abre **Pantalla 10**
+  - Configuración del grupo
+  - Invitar miembros
+- **Botón flotante (FAB) "+"** (solo visible para Creadores/Admins):
+  - Ubicado abajo a la derecha.
+  - Crea una nueva lanzadera → navega a **Pantalla 5.1.1 (Creación de Lanzadera)**.
+
+---
+
+### **Pantalla 5.1.1 Creación de Lanzadera (NEW SHUTTLE)**
+
+- **Función**: Pantalla para crear una nueva lanzadera desde el Home de Grupo.
+
+- Se abre desde el botón flotante (FAB) en **Pantalla 5.1**.
 
 - **Campos obligatorios**:
 
-  - Nombre de la lanzadera (debe ser corto para UI)
-  - Origen y destino (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán en la siguiente pantalla, para no sobrecargar esta pantalla. Al pulsar El botón "Seleccione el origen" o el de destino, se abre pantalla "Elección Origen/Destino" (5.1.1)
-  - Plazas por defecto: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
-  - Comentario de la Lanzadera: Normas, instrucciones, etc. Es amplio, debajo de "Plazas por defecto".
-    Estos datos se podrán modificar desde la pantalla de la lanzadera, en el menú superior derecho de la barra de app (⋮).
+  - **Nombre de la lanzadera** (debe ser corto para UI; se avisará si es excesivamente largo)
+  - **Origen y destino** (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
+  - **Plazas por defecto**: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
+  - **Comentario de la Lanzadera**: Normas, instrucciones, etc. Campo amplio, debajo de "Plazas por defecto".
 
-- La creación/edición de horarios se hara desde la pantalla Lanzadera en la pagina de "Horarios", editando uno de los ya creados o creando un horario nuevo desde el botón "añadir" (+) abajo a la derecha, aunque en la creación de la lanzadera, una vez configurados los datos básicos, al pulsar guardar se preguntará en un modal ("Horario desde NewShuttle") si desea agregar el primer horario, y en caso afirmativo se abrirá la pantalla 6.1.3 Creacion/Edición Horario, que es la misma que se usa para añadir o editar una vez ya está creada la lanzadera.
+- **Botones**:
 
-> > ### 5.1.1 Pantalla ELECCIÓN ORIGEN/DESTINO
+  - **Guardar**: Crea la lanzadera y pregunta en un modal si desea agregar el primer horario.
+  - **Cancelar**: Descarta los cambios y vuelve a **Pantalla 5.1**.
+
+- **Modal tras guardar ("Horario desde NewShuttle")**:
+  - Pregunta: _"¿Desea agregar el primer horario a esta lanzadera?"_
+  - Opciones:
+    - **[Cancelar]**: Vuelve a **Pantalla 5.1** con la lanzadera creada pero sin horarios.
+    - **[Aceptar]**: Abre **Pantalla 6.3.3 Creación/Edición Horario** para configurar el primer horario.
+
+**Nota**: La creación/edición de horarios se hará principalmente desde el **Nivel Lanzadera** en la página de "Horarios" (6.3), editando uno de los ya creados o creando un horario nuevo desde el botón "añadir" (+) abajo a la derecha.
+
+---
+
+### **Pantalla 5.1.2 Elección Origen/Destino**
 
 - **Función**:
   Permitir al usuario definir el **nombre** y las **coordenadas geográficas** del punto de origen o destino de la lanzadera.
-  Esta pantalla se abre al pulsar los botones **“Seleccione el origen”** o **“Seleccione el destino”** desde la pantalla “NEW SHUTTLE” (5.1).
+- Esta pantalla se abre al pulsar los botones **"Seleccione el origen"** o **"Seleccione el destino"** desde la **Pantalla 5.1.1 (NEW SHUTTLE)**.
+
 - **Campos obligatorios**:
 
-  - **Nombre del lugar**: Texto corto que identifica el punto (por ejemplo: “Aeropuerto”, “Centro Málaga”, “Campus UMA”).
+  - **Nombre del lugar**: Texto corto que identifica el punto (por ejemplo: "Aeropuerto", "Centro Málaga", "Campus UMA").
     El sistema avisará si el nombre es excesivamente largo para evitar problemas de UI.
   - **Dirección o búsqueda en mapa**: Campo de texto con sugerencias de direcciones. Al introducir una dirección, se mostrará el marcador en el mapa.
     Alternativamente, el usuario podrá mover manualmente el marcador en el mapa para seleccionar la ubicación exacta.
@@ -716,137 +837,379 @@ Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
 
 - **Elementos interactivos**:
 
-  - Campo de texto “Nombre del lugar” con icono de edición.
+  - Campo de texto "Nombre del lugar" con icono de edición.
   - Campo de búsqueda con autocompletado (basado en API de mapas).
   - Mapa interactivo con marcador rojo movible.
-  - Botón **“Confirmar”**, que guarda el punto seleccionado y retorna a la pantalla anterior, actualizando el campo correspondiente (“Origen” o “Destino”).
+  - Botón **"Confirmar"**, que guarda el punto seleccionado y retorna a la pantalla anterior, actualizando el campo correspondiente ("Origen" o "Destino").
 
 - **Comportamiento**:
 
   - Al confirmar, se guardan las coordenadas (latitud y longitud) junto al nombre elegido.
-  - Si el usuario accede desde “Origen”, el título mostrará **“Selecciona el origen”**; si accede desde “Destino”, mostrará **“Selecciona el destino”**.
+  - Si el usuario accede desde "Origen", el título mostrará **"Selecciona el origen"**; si accede desde "Destino", mostrará **"Selecciona el destino"**.
   - El botón de confirmación se habilita solo cuando ambos campos (nombre y coordenadas) están completos.
 
 - **Notas adicionales**:
 
-  - La pantalla debe mantener consistencia visual con “Configuración de Lanzadera” (5.1) y usar la misma paleta de colores y tipografía.
+  - La pantalla debe mantener consistencia visual con **Pantalla 5.1.1 (NEW SHUTTLE)** y usar la misma paleta de colores y tipografía.
 
 ---
 
-LO SIGUIENTE HAY QUE MODIFICARLO, EN PRINCIPIO ERA PARA LAS PAGINAS DEL VIEWPAGER DE GRUPOS, PERO HAY QUE REVISAR POR SI HAY ALGUNA IDEA QUE SE PUEDA PASAR A ESAS PANTALLAS...
+## **5.2 Pantalla Chat (Nivel Grupo)**
 
-### **5.2 Página HORARIOS-LANZADERAS DEL GRUPO**
+Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encuentra en el **Nivel Grupo**.
 
-**Función:**
-Mostrar de forma unificada todos los horarios próximos de las distintas lanzaderas pertenecientes al grupo actual, permitiendo al usuario consultar rápidamente las salidas sin tener que entrar en cada lanzadera individualmente.
+### **Características principales**
 
-**Estructura general:**
+- Es el segundo nivel del módulo de chat, accesible desde **Pantalla 4.2 (Grupos Chat)**.
+- Muestra el **chat general del grupo** y una **lista de chats de las lanzaderas** del grupo.
+- Permite conversar con todos los miembros del grupo y acceder a chats específicos de cada lanzadera.
 
-- Pantalla similar a la **6.1 Horarios** (vista de horarios de una lanzadera), pero ampliada a nivel de grupo.
-- Cada ítem corresponde a un grupo de horarios comunes (p. ej. L-V) específico dentro de una lanzadera.
-- Se presenta una **lista cronológica todos los horarios de lanzaderas** del grupo:
-  - Si un horario mostrado es el de lunes a viernes y otro es de fin de semana, y es viernes: se mostrará primero el de lunes a viernes y después el de fin de semana.
-  - Los ítems se ordenan solo por tiempo, no por la lanzadera a la que pertenezcan.
-  - Si no hay horarios próximos (no haya horarios semanales o aún no exista ninguna lanzadera con horario): se muestra un mensaje informativo “**No hay salidas próximas en el grupo**”.
+### **AppBar (izquierda → derecha)**
 
-**Contenido de cada ítem:**
+- **Flecha atrás** (←): regresa a **Pantalla 4.2 (Grupos Chat)**, subiendo un nivel en la jerarquía de chats.
+- **Nombre del grupo** (título centrado)
+- **Icono de búsqueda** → permite buscar mensajes dentro del chat general del grupo.
+- **Icono Mis Solicitudes** → acceso rápido a la Pantalla 8.
+- **Menú (⋮)**:
 
-- **Nombre de la lanzadera** (ej. “Nave ↔ Estación”) como encabezado destacado.
-- **Días y franja horaria** del horario (ej. _L, M, X, J, V de 7:00 a 12:30_).
-- **Secciones internas (idénticas al estilo de 6.1):**
+  - Ver miembros del grupo
+  - Silenciar/activar notificaciones del chat
+  - Configuración del chat
+  - Otras opciones de contexto
 
-  - **Salida en curso:**
+### **Contenido**
 
-    - Hora real de salida
-    - Lugar de partida
-    - Total de viajeros vs capacidad
-    - Icono o indicador en color rojo coral (`#FF6B6B`)
+La pantalla se divide en dos secciones:
 
-  - **Próxima salida:**
+1. **Chat general del grupo** (parte superior o sección principal):
 
-    - Fecha (o “hoy” / “mañana” si corresponde)
-    - Hora prevista y lugar de salida
-    - Plazas solicitadas / plazas totales
-    - Icono o indicador en verde (`#00C853`)
+   - Interfaz de chat completa (ver **Pantalla 11** para detalles de diseño de chat)
+   - Título visible: "Chat general · [Nombre del grupo]"
+   - Todos los miembros pueden participar
+   - Historial persistente mientras exista el grupo
+   - **Flecha atrás (←)**: Al pulsar sobre el chat general del grupo para abrirlo en pantalla completa,
+     incluye una flecha atrás para regresar a la vista principal donde se ven tanto el chat general
+     como la lista de chats de lanzaderas. Esto permite una navegación coherente: vista de lista de chats ↔ chat individual abierto.
 
-- Bordes suaves y tarjetas con sombra ligera, enmarcadas como bloques independientes.
+2. **Lista de chats de lanzaderas** (sección inferior o accesible mediante pestaña/toggle):
+   - Lista con un ítem por cada lanzadera del grupo:
+     - Nombre de la lanzadera
+     - Origen → Destino
+     - Último mensaje y hora
+     - Indicador de mensajes no leídos
+   - Al tocar un ítem de lanzadera → se abre el **chat de esa lanzadera** dentro del **Nivel Lanzadera**, en la pestaña de Chat correspondiente; En este caso, se vuelve a esta pantalla 5.2 de nivel de grupo con flecha atras (Navigation.pop)
 
-**Interacciones:**
+### **Navegación**
 
-- Al pulsar sobre un ítem, se abre la pantalla **6.1.1 Consulta/Horario** correspondiente a esa lanzadera y horario, desde la que se puede seleccionar una hora de salida para solicitar plaza.
+- **Flecha atrás**: Regresa a **Pantalla 4.2 (Grupos Chat)**, manteniendo activa la pestaña Chat.
+- Al pulsar una lanzadera de la lista, el sistema baja un nivel de forma vertical hacia el **Nivel Lanzadera**, manteniéndose siempre dentro de la pestaña Chat.
+- En el nivel Lanzadera se muestra el chat específico de esa lanzadera.
+- Desde ese punto el usuario puede volver con la flecha atrás al chat del grupo.
 
-**Elementos visuales adicionales:**
+**Objetivo UX:**
+Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertical, sin cambiar de pestaña (la pestaña Chat permanece activa en todos los niveles). El chat general del grupo es accesible y visible, separado de los chats específicos de lanzaderas.
 
-- Título superior: “Horarios del grupo [Nombre del grupo]”.
-- Color de encabezado y tipografía iguales a los de la pantalla 6.1 (consistencia visual).
+---
+
+## **5.3 Pantalla Horarios (Nivel Grupo)**
+
+Esta pantalla forma parte del **PageView del nivel GRUPO**, dentro del bottom tab-bar junto a **Grupo Home**, **Chat** y **Mapa**.
+Su función es ofrecer una **vista consolidada** de los horarios de todas las lanzaderas del grupo actual.
+
+### **AppBar**
+
+- **Flecha atrás** (←) → regresa a **Pantalla 4.3 (Horarios · Mis Grupos)**, subiendo un nivel.
+- Título centrado: **"Horarios · [Nombre del Grupo]"**
+- Lado derecho:
+  - 🔍 **Buscar** (filtra entre horarios y lanzaderas del grupo)
+  - 🧭 **Filtro**
+  - ✋ **Mis Solicitudes** (historial)
+  - **⋮ Menú** (opciones de ordenamiento y configuración)
+
+### **Contenido principal**
+
+La pantalla muestra una **lista vertical de lanzaderas del grupo**, cada una con sus horarios y próximas salidas.
+
+- Si el grupo **no tiene ninguna lanzadera con horario**: **mensaje informativo**:
+
+```
+No hay salidas programadas en este grupo.
+```
+
+Seguido de botones contextuales (solo visibles para Creadores/Admins):
+
+**Caso 1: No existen lanzaderas en el grupo**
+
+- Botón: **"Crear primera lanzadera"**
+  - Navega a **Pantalla 5.1.1 (Creación de Lanzadera)**
+  - Tras guardar, ofrece modal para agregar primer horario o volver a 5.3
+
+**Caso 2: Existen lanzaderas pero ninguna tiene horarios**
+
+- Botón: **"Configurar primer horario"**
+
+  - Muestra selector para elegir la lanzadera
+  - Navega a **Pantalla 6.3.3 (Creación/Edición de Horario)**
+  - Tras guardar, regresa automáticamente a esta pantalla (5.3).
+
+- Si el grupo **tiene lanzaderas pero sin horarios configurados**: mensaje:
+
+```
+Las lanzaderas de este grupo aún no tienen horarios.
+Configura horarios para ver las próximas salidas.
+```
+
+### **Estructura de cada ítem**
+
+Cada ítem corresponde con cada una de las lanzaderas del grupo (ítem == lanzadera).
+
+Cada lanzadera (ítem de lista) una **tarjeta compacta** con:
+
+```
+**Encabezado:**
+- Nombre Lanzadera + `Origen → Destino`
+
+**Bloque de estado actual** (solo el más relevante):
+
+- **SI hay salida en curso:**
+  - 🔴 `En curso · Salió 11:33 · 4/4 viajeros`
+
+- **SI NO hay salida en curso, mostrar próxima:**
+  - 🟢 `Próxima: hoy 12:00 · 3/4 plazas · Conductor: Juan M.`
+  - o
+  - ⚠️ `Próxima: hoy 12:00 · 3/4 plazas · Sin conductor`
+
+**Resumen compacto de horarios:**
+- `L-V: 7:00, 8:30, 14:00, 18:00`
+- `S-D: 9:00, 20:00`
+```
+
+**Diseño visual:**
+
+- Tarjeta con bordes suaves y sombra ligera
+- Colores: 🔴 rojo para en curso, 🟢 verde para próxima disponible
+
+(\*) Nota: Una vez que un conductor acepta y se confirma como conductor en una lanzadera, este aparece como conductor en la lanzadera en esta vista general, sin tener que entrar a la salida en particular de la lanzadera. Esto proporciona visibilidad inmediata del estado de cada lanzadera.
+
+👉 **Al pulsar una lanzadera completa**, se baja de nivel a la **Pantalla 6.3 (Horarios de Lanzadera)** en el **Nivel Lanzadera**, donde se ven todos los horarios configurados con más detalle. En esa pantalla cada ítem es un horario de la lanzadera. Al pulsar un horario en concreto se abre la pantalla donde ya se puede elegir una salida en concreto. **Al pulsar una hora específica**, se abre directamente la **Pantalla Hora Salida: Detalle y Solicitud** para solicitar plaza en esa salida.... (ver nivel de lanzadera)
+
+### **Filtros, orden y búsqueda**
+
+#### **Orden por defecto**
+
+- **Próxima salida más cercana en el tiempo** de cada lanzadera.
+
+#### **Orden alternativo (icono filtro)**
+
+- Por próxima salida (por defecto)
+- Por distancia al origen del usuario
+- Por nombre de lanzadera
+- Alfabético
+
+#### **Filtros**
+
+- Solo lanzaderas con salidas hoy
+- Solo lanzaderas con plazas disponibles
+- Por sentido (ida/vuelta)
+- Por rango de horas
+
+#### **Búsqueda (🔍)**
+
+El buscador filtra **lanzaderas y horarios** por:
+
+- nombre de lanzadera
+- origen o destino
+- día ("lunes", "sábado")
+- hora ("7:30", "14:00")
+
+Solo se muestran lanzaderas que tengan **al menos una coincidencia relevante**.
 
 **Objetivo de UX:**
 Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido a qué lanzaderas tienen salidas próximas y en qué horarios, manteniendo coherencia total con el diseño visual de las pantallas de lanzadera.
 
-#### **5.3 Chat** _(general del grupo)_
+---
 
-- Título visible: "Chat general [nombre del grupo]"
-- Chat que abarca a todos los usuarios del grupo
-- Más amplio que el chat de una lanzadera específica
+## **5.4 Pantalla Mapa (Nivel Grupo)** _(incluido en MVP)_
 
-#### **5.4 Mapa** _(incluido en MVP)_
+Esta pantalla forma parte del **PageView del nivel GRUPO**, dentro del bottom tab-bar junto a **Grupo Home**, **Chat** y **Horarios**.
 
-- Visualización de mapas de todas las lanzaderas del grupo
-- Permite consultar recorridos de todas las lanzaderas
-- Vista panorámica de todos los trayectos del grupo
+### **Función**
 
-**Navegación**: Flecha que regresa a **Pantalla de Grupos (4)**
+- Visualización de mapas de **cada lanzaderas del grupo**con mas detalles.
+- Vista de todos los trayectos de cada lanzadera del grupo. Un ítem es un mapa de lanzadera.
+
+### **AppBar**
+
+- **Flecha atrás** (←) → regresa a **Pantalla 4.4 (Mapa · Mis Grupos)**, subiendo un nivel y manteniéndose en la pestaña Mapa.
+- Título centrado: **"Mapa · [Nombre del Grupo]"**
+- Lado derecho:
+  - 🔍 **Buscar** (filtra lanzaderas visibles)
+  - ✋ **Mis Solicitudes** (icono de mano)
+  - **⋮ Menú** (opciones de visualización)
+
+### **Contenido principal**
+
+Lista vertical donde **cada ítem es una lanzadera**.
+
+Cada ítem de lanzadera muestra:
+
+- **Encabezado**:
+
+  - Nombre de la lanzadera
+  - `Origen → Destino`
+
+- **Mapa del recorrido de la lanzadera**:
+  - Trayecto completo visible
+  - Marcador azul en origen
+  - Marcador rojo en destino
+- **Indicador en el punto de origen** (solo si hay próxima salida):
+
+  - **Marcador con número de viajeros**:
+
+    - 🟢 `3/4` (fondo verde si hay plazas libres)
+    - 🔴 `4/4` (fondo rojo si está completa)
+
+  - **Globo informativo sobre el marcador**:
+    - **Si faltan menos de 60 minutos**: `Sale en 15 min`
+    - **Si faltan más de 60 minutos**: `Sale a las 12:00`
+    - **Si ya salió**: el marcador desaparece o muestra posición en tiempo real del vehículo
+
+**Al pulsar sobre el ítem del mapa de la lanzadera** → abre **Pantalla 6.4 (Mapa · Nivel Lanzadera)**, bajando un nivel con más detalles y opciones.
+
+### **Estados especiales**
+
+- Si el grupo **no tiene lanzaderas**:
+
+  - Mensaje centrado:
+    ```
+    Este grupo aún no tiene lanzaderas.
+    ```
+  - Botón (solo para Creadores/Admins):
+    - **Crear primera lanzadera** → navega a **Pantalla 5.1.1**
+
+- Si una lanzadera **no tiene próxima salida**:
+  - El mapa se muestra sin marcador de viajeros ni globo
+  - Solo ruta visible con origen y destino
+
+### **Navegación**
+
+- **Flecha atrás**: Regresa a **Pantalla de Mapas Grupos (4.4)**.
+
+**Objetivo UX:**
+Poder elegir entre cada mapa de lanzadera con las detalle de viajeros y salida que en el nivel de grupos.
 
 ---
 
-## **5.5. GESTIÓN DE GRUPO**
+## **5.5 Pantalla de GESTIÓN DE GRUPO**
 
-Pantalla para administrar el grupo de la pantalla grupo (accesible desde menú superior).
+Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualquier página del **Nivel Grupo**.
+
+### **Acceso**
+
+- Desde menú superior derecho (⋮) en cualquier pantalla del Nivel Grupo
+- Opción: **"Gestión del grupo"** o **"Configuración del grupo"**
 
 ### **Para creadores/administradores:**
 
-- **Información del grupo:**
-  - Nombre (editable)
-  - Fecha de creación
-  - Número de miembros
-- **Gestión de miembros:**
-  - Lista de usuarios del grupo
-  - Promover a administrador
-  - Expulsar miembros
-- **Configuración:**
-  - Grupo público/privado
-  - Auto-aprobación de nuevos miembros
-- **Acciones:**
-  - Invitar nuevos miembros (código/enlace)
-  - Eliminar grupo (confirmación)
+#### **Información del grupo**
 
-#### **Para miembros regulares:**
+- Nombre (editable)
+- Foto/imagen del grupo (editable)
+- Descripción (opcional)
+- Fecha de creación (solo lectura)
+- Número de miembros (solo lectura)
+- Número de lanzaderas (solo lectura)
+
+#### **Gestión de miembros**
+
+- **Lista de usuarios del grupo** con roles visibles:
+  - Icono de perfil
+  - Nombre
+  - Rol: Creador / Admin / Miembro
+  - Fecha de incorporación
+  - En pulsación larga sobre un usuario se abre modal con opciones:
+    - **Acciones por miembro**:
+    - Promover a administrador (solo Creador)
+    - Quitar rol de administrador (solo Creador)
+    - Expulsar del grupo (Creador y Admins, excepto entre ellos)
+    - Ver perfil del usuario
+
+#### **Configuración**
+
+- **Visibilidad del grupo**:
+  - Privado / Público (editable)
+  - Explicación de diferencias a modo de info.
+- **Gestión de solicitudes**:
+  - Auto-aprobación de nuevos miembros (toggle)
+  - Lista de solicitudes pendientes (si auto-aprobación está desactivada)
+- **Configuración de lanzaderas**:
+  - Tiempo mínimo para selección de vehículo (por defecto 30 minutos, editable)
+  - Tiempo de aviso de conductor sin ubicación (por defecto 40 minutos, editable)
+
+#### **Acciones**
+
+- **Invitar nuevos miembros**:
+  - Por número de móvil → envía invitación por SMS ??
+  - Compartir enlace → genera enlace único de invitación
+  - Código de invitación → genera código de 6 dígitos
+- **Gestión de vehículos** → abre **Pantalla 10**
+- **Eliminar grupo** (solo Creador):
+  - Requiere confirmación con modal
+  - Advierte sobre lanzaderas activas y solicitudes pendientes
+  - Solicita confirmación escribiendo el nombre del grupo
+
+### **Para miembros regulares:**
+
+#### **Vista de solo lectura**
 
 - Ver información del grupo
-- Lista de miembros
-- Abandonar grupo
+- Lista de miembros (sin opciones de gestión)
+- Estadísticas básicas del grupo
+- Lanzaderas activas
+
+#### **Acciones disponibles**
+
+- **Abandonar grupo**:
+  - Requiere confirmación con modal
+  - Advierte si tiene solicitudes activas en lanzaderas del grupo
+  - Opciones: [Cancelar] [Confirmar salida]
+
+### **Navegación**
+
+- **Flecha atrás** (←): Regresa a la pantalla del Nivel Grupo desde donde se abrió.
+- Los cambios se guardan automáticamente o con botón **"Guardar"** según el campo editado.
 
 ---
 
-## **6 PANTALLA DE LANZADERA** _(vista específica de lanzadera)_
+## **6 NIVEL DE LANZADERA** _(vista específica de lanzadera)_
 
-**Función**: Vista detallada de una lanzadera específica accesible desde Pantalla de Grupo.
+En este nivel se maneja una lanzadera de un grupo:
 
-**Al pulsar sobre una lanzadera desde Home**, dentro de un grupo (pantalla 5): Se abre la pantalla de Lanzadera, que es un **BottomNavigationBar \+ PageView.**
+**Estructura**: BottomNavigationBar + PageView con 4 secciones: HOME de Lanzadera, Chat, horario y Mapa.
 
-**Estructura**: BottomNavigationBar + PageView con 3 secciones: Horarios, Chat y Mapa.
+### **6.1 Pantalla Home de Lanzadera**
 
-Aquí se organiza todo lo relacionado con la solicitud de plazas, es el centro de la app; sin esta parte, la app no tendría sentido.
+**Función**: Vista detallada de una lanzadera específica accesible desde Pantalla Home de Grupo.
 
-Tiene un menu superior derecho común a las 3 paginas del pageview. Este contiene, de momento:
+**Al pulsar sobre una lanzadera desde Home de Grupo**: Se abre la pantalla de Home de Lanzadera, que es también **BottomNavigationBar \+ PageView.**
 
-- **Información de la lanzadera**: abre la información guardada en la pantalla 5.1 New Shuttle (Nombre, Origen y Destino, Comentario).  
-  Si el usuario es **Creador/Admin del grupo**, podrá además modificar estos datos pulsando el icono para editar que se situará arriba, al lado izquierdo del menu:
-  - Al ser pulsado se abre modal para confirmar cambio a modo edición
-  - Al confirmar la edición se verán todos los campos en modo edición y arriba "✔️ Confirmar", “✖️”.
-  - Solo se abre el teclado al pulsar un campo, para que no moleste la vista y se puedan ver todos los campos.
+Esta página contiene:
 
-### **6.1 Horarios** _(sección central)_
+- **Información de la lanzadera**: abre la información guardada en la pantalla 5.1 New Shuttle (Nombre, Origen y Destino, plazas por defecto y Comentario).  
+  Si el usuario es **Creador/Admin del grupo**, podrá además modificar estos datos pulsando:
+  - el icono para editar que se situará arriba, al lado izquierdo del menu, que al ser pulsado:
+    - abre modal para confirmar cambio a modo edición
+    - Al confirmar la edición se verán todos los campos en modo edición y arriba "✔️ Confirmar", “✖️”.
+    - Solo se abre el teclado al pulsar un campo, para que no moleste la vista y se puedan ver todos los campos.
+
+Tiene un menu derecho en el appbar, al igual que el resto de paginas de cada pestaña (chat, horario y mapa)
+
+#### **6.2 Chat** _(de la lanzadera)_
+
+(Ver 11. Pantallas de Chat ).
+Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
+
+### **6.3 Horarios** _(sección central)_
 
 Esta es la página central del **PageView**, con una lista de ítems que representan los diferentes horarios ya creados, cada uno de los cuales contiene grupos de días con sus horas de salida de la lanzadera.
 De arriba abajo:
@@ -885,7 +1248,7 @@ De arriba abajo:
 - Adicionalmente, si se es **Creador/Admin**, una **pulsación larga sobre un horario existente** abrirá un **modal de confirmación** para **eliminar dicho horario**.
   Este modal informará de forma clara que la acción es irreversible y requerirá introducir un **código de confirmación** antes de proceder, con las opciones **“Eliminar”** o **“Cancelar”**, para evitar eliminaciones accidentales.
 
-### **6.1.1 Pantalla de consulta/Horario**
+### **6.3.1 Pantalla de consulta/Horario**
 
 Se accede a esta vista al pulsar sobre un horario existente de una lanzadera.
 
@@ -919,7 +1282,7 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
-> ### **6.1.2 Hora Salida: Detalle y Solicitud**
+> ### **6.3.2 Hora Salida: Detalle y Solicitud**
 >
 > Esta pantalla será la que se use para la solicitud de plazas, solicitud/asignacion de conductor, elección de vehiculo y cancelaciones.
 > Esta pantalla comienza con el texto superior:
@@ -1024,7 +1387,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 > - Si el horario **ya ha pasado**, se deshabiltará el botón solicitar plaza y si es pulsado lanza snak o notificacion "esta salida ya no acepta solicitudes".
 > - Si existe **conductor tardío** o cambios de última hora, el sistema mantiene la coherencia y notifica a afectados (ver 5. Reglas y Validaciones).
 
-### **6.1.3 Pantalla Creación/Edición Horario**
+### **6.3.3 Pantalla Creación/Edición Horario**
 
 Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
 
@@ -1076,12 +1439,7 @@ En esta pantalla no se mostrará “Ver comentario”, ya que no es editable y s
 
 El guardado de cambios se hará desde el boton de guardar abajo a la derecha en la misma pantalla (tambien estará el de cancelar a la izquierda). Si sale de la pantalla sin pulsar el botón de guardado se abre un modal que pide confirmación para guardar cambios (este estado hay que guardarlo para que esta parte se cumpla aunque se cierre la app).
 
-#### **6.2 Chat** _(de la lanzadera)_
-
-(Ver 11. Pantallas de Chat ).
-Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
-
-#### **6.3 Mapa** _(incluido en MVP)_
+#### **6.4 Mapa** _(incluido en MVP)_
 
 - Trayecto en línea azul
 - Punto de origen
