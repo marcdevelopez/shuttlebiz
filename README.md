@@ -17,6 +17,7 @@ Puedes ver la documentación completa y las especificaciones funcionales aquí:
 - [Roadmap](docs/ROADMAP.md)
 - [Dev log diario](docs/dev_log.md)
 - [Modelo de datos](docs/DATABASE_SCHEMA.md)
+- [Glosario de términos](docs/GLOSSARY.md)
 
 ---
 
