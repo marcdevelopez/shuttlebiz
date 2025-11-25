@@ -78,7 +78,8 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 - Se creó `docs/GLOSSARY.md` y se enlazó desde specs/README; términos CTA/Salida/Badge referenciados.
 - Se completó la especificación de **Navegación y Menús Superiores Contextuales** (breadcrumb, stack PageView por nivel, menús ⋮ por pantalla, botón atrás del sistema, transiciones).
 - Se cerró el **Flujo de Horarios y Gestión Modular**: separación edición lanzadera vs. horarios, flujo de creación sin horarios + modal, detalle de salida (solicitar/anular), chips Ida/Vuelta y comentario único por lanzadera.
-- `ROADMAP.md` actualizado: prioridad alta ítem 3 marcado como completado (especificación cerrada).
+- Se cerró el **Sistema de Conflictos de Días en Horarios**: días ocupados visibles en gris, modal con tarjetas comparativas (horas actuales/fusionar/nuevas) y confirmación, y guía visual de estados de día.
+- `ROADMAP.md` actualizado: prioridad alta ítem 4 marcado como completado (especificación cerrada).
 
 ### 🧠 Decisiones tomadas:
 

@@ -1481,12 +1481,18 @@ En esta pantalla será posible:
 1. Seleccionar los días semanales, pudiendo agregar o quitar días en este horario, **siempre que no estén ya usados por otro horario de la lanzadera**.
    En caso de intentar añadir un día que ya tenga un horario asignado, se abrirá un **modal informativo** indicando que no es posible añadirlo porque ya está ocupado, ofreciendo las siguientes opciones:
 
-   - **Fusionar ambos días**.
-   - **Establecer nuevas horas** para ese día (lo que eliminará las horas previamente configuradas en él).
-   - **Cancelar la elección de día**.
-   - **Ver las horas actuales de ese día** para comparar y decidir.
+   - **[Cancelar]**
+   - **[Ver horas actuales]**
 
-   Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
+   Si se pulsa **Ver horas actuales**, se muestran **tres tarjetas comparativas** con el resultado final de las horas para ese día, para elegir **una sola opción**:
+
+   - **Horas actuales**: mantiene exactamente las horas que ya tiene el día.
+   - **Fusionar horas**: mezcla horas actuales + nuevas sin duplicados (mostrar lista resultante).
+   - **Horas nuevas**: sustituye las horas actuales por las nuevas seleccionadas.
+
+   Tras elegir una tarjeta:  
+   - aparece un botón **[Confirmar]** para aplicar la opción. 
+   - Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
 
    En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
    Este modal mostrará las siguientes opciones:
@@ -1518,6 +1524,14 @@ En la parte superior se mostrarán los lugares de recogida y destino correspondi
 Además, el color del texto de cada lugar (tanto en “Salida desde” como en “Destino”) coincidirá con el color del sentido del viaje —azul para Ida y rojo para Vuelta— para facilitar su comprensión visual. Cada sentido mantendrá siempre su color asociado, aunque los lugares intercambien su posición como origen o destino según esté seleccionada la vista de Ida o de Vuelta en la sección de horas.
 
 El guardado de cambios se hará desde el boton de guardar abajo a la derecha en la misma pantalla (tambien estará el de cancelar a la izquierda). Si sale de la pantalla sin pulsar el botón de guardado se abre un modal que pide confirmación para guardar cambios (este estado hay que guardarlo para que esta parte se cumpla aunque se cierre la app).
+
+**Estados visuales de días (selector semanal en 6.3.3):**
+
+- **Disponible (no seleccionado):** fondo blanco, borde gris claro.
+- **Seleccionado (horario actual):** fondo azul (Ida) o rojo (Vuelta), texto blanco.
+- **Ocupado por otro horario:** fondo gris medio (#BDBDBD), texto gris oscuro; se ve así al cargar la pantalla. Solo abre el modal al pulsar.
+
+**Leyenda/ayuda breve:** “Gris = ocupado por otro horario; Azul/Rojo = seleccionado; Blanco = disponible.”
 
 #### **6.4 Mapa** _(incluido en MVP)_
 

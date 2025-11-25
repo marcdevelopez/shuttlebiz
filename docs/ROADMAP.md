@@ -18,12 +18,14 @@
 #### 🔴 Prioridad Alta (Crítico para MVP)
 
 **1. Pantalla 8 — Estado de Mis Solicitudes** ✅ _Especificación completada en `SPECS.md` (acceso ✋ y vistas viajero/conductor)_
+
 - Completar especificación detallada de P8 con vista completa para **viajero** y **conductor** _(listo)_
 - Definir interfaz de usuario: layout de lista (futuras vs. pasadas), diseño de cada ítem, acciones disponibles _(listo)_
 - Documentar todos los estados: Pendiente de conductor, Confirmada, En curso, Completada, Cancelada (por usuario/falta conductor/administrador) _(listo)_
 - Aclarar si es pantalla independiente o modal dentro de 6.1 _(listo: pantalla independiente con acceso desde icono ✋)_
 
 **2. Navegación y Menús Superiores Contextuales** ✅ _Especificación cerrada en `SPECS.md`_
+
 - Definir **stack/nested navigation** completo (Grupos → Grupo → Lanzadera con PageView) _(listo)_
 - Especificar menús contextuales (⋮) por tipo de pantalla (Home/Chat/Horarios/Mapa) en cada nivel _(listo)_
 - Cambio de nivel solo desde Home/ítems + flecha atrás, manteniendo pestaña activa del PageView _(listo)_
@@ -32,6 +34,7 @@
 - Gestión de stack y botón atrás del sistema documentada _(listo)_
 
 **3. Flujo de Horarios y Gestión Modular** ✅ _Especificación cerrada en `SPECS.md`_
+
 - Separar completamente edición de lanzadera vs. horarios:
   - **Pantalla edición lanzadera**: Solo nombre, origen/destino, comentario general, plazas por defecto (NO horarios) _(listo)_
   - **Pantalla dedicada horarios**: Crear, editar, eliminar horarios (accesible desde pestaña Horarios en nivel Lanzadera) _(listo)_
@@ -40,14 +43,14 @@
 - Implementar chips de Ida/Vuelta + resumen compacto de horarios _(listo)_
 - Aclarar comentario único por lanzadera (no por horario) _(listo)_
 
-**4. Sistema de Conflictos de Días en Horarios**
-- Especificar validación de solapamiento al seleccionar día ya ocupado:
-  - Mostrar días ocupados en gris
-  - Modal de confirmación: [Cancelar] [Confirmar fusión]
-- Definir modal de advertencia al deseleccionar días con confirmación explícita
-- Documentar interfaz visual: días disponibles (azul/rojo), días ocupados (gris), días en edición (resaltado)
+**4. Sistema de Conflictos de Días en Horarios** ✅ _Especificación cerrada en `SPECS.md`_
+
+- Validación de solapamiento al seleccionar día ocupado: días ocupados visibles en gris; modal con opciones [Cancelar]/[Ver horas actuales] + tarjetas (horas actuales / fusionar / nuevas) y confirmación.
+- Modal al deseleccionar día con confirmación explícita (eliminar horas / cancelar).
+- Interfaz visual documentada: días disponibles (blanco/borde gris), seleccionados (azul/rojo), ocupados (gris).
 
 **5. Chats Privados entre Usuarios**
+
 - Definir punto de acceso exacto: ¿icono específico/menú contextual/botón en perfil?
 - Resolver conflicto: pulsar avatar/nombre abre perfil → especificar acceso alternativo a chat privado
 - Documentar lista de chats privados activos: ubicación, organización, indicadores de no leídos
@@ -56,12 +59,14 @@
 #### 🟡 Prioridad Media (Post-MVP)
 
 **6. Centro de Notificaciones (6.2)**
+
 - Especificar pantalla completa: acceso desde menú principal, diseño de lista, categorización, filtros
 - Definir tipos de notificaciones y acciones asociadas:
   - Nuevas lanzaderas, solicitudes aprobadas, conductor asignado, cambios en horarios, invitaciones, mensajes chat, alertas conductor sin ubicación
 - Documentar gestión: marcar leída, archivar, eliminar, marcar todas como leídas
 
 **7. Terminología y Contenido por Nivel**
+
 - Unificar terminología: "**Frecuencia semanal**" vs. "**Fecha única**" en todo el documento
 - Definir etiqueta dinámica del campo fecha (cambia según selección de días)
 - Especificar comportamiento DatePicker en modo frecuencia
@@ -71,11 +76,13 @@
   - **Mapa**: Grupos (elegir grupo), Grupo (lista mapas), Lanzadera (mapa + posición/flecha)
 
 **8. Historial de Reputación**
+
 - Definir cálculo: fórmula (viajes solicitados vs. realizados), escala 1-5
 - Documentar factores que afectan: cancelaciones (viajero/conductor), viajes completados, puntualidad, reportes
 - Especificar visibilidad: perfil público (puntuación), perfil privado (desglose), lista viajeros (indicador rápido)
 
 **9. Otras Funcionalidades**
+
 - **Conductor visible en listado**: Mostrar "Conductor: Nombre" o "Sin conductor" en ítems de 5.3
 - **Rol predeterminado**: Checkbox en selección de rol + opción en ajustes de lanzadera para cambiar; rol visible en UI
 - **Gestión de vehículos**: Enlace explícito desde ajustes de grupo (5.5)
@@ -85,6 +92,7 @@
 #### 🟢 Prioridad Baja (Versiones Futuras - Documentar para Roadmap)
 
 **10. Backlog Futuro**
+
 - OCR para horarios: agregar lanzadera desde imagen con sugerencia IA
 - Crear `CHANGELOG.md` en raíz del proyecto con formato estándar
 
