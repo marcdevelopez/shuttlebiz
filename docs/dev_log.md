@@ -76,9 +76,9 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 
 - Se definió la **Pantalla 8 — Mis Solicitudes** en `SPECS.md`, con acceso desde el icono ✋ en Home/Chat/Horarios/Mapa de los 3 niveles y sin icono en pantallas secundarias.
 - Se creó `docs/GLOSSARY.md` y se enlazó desde specs/README; términos CTA/Salida/Badge referenciados.
-- `ROADMAP.md` actualizado: prioridad alta ítem 1 marcado como completado (especificación cerrada).
 - Se completó la especificación de **Navegación y Menús Superiores Contextuales** (breadcrumb, stack PageView por nivel, menús ⋮ por pantalla, botón atrás del sistema, transiciones).
-- `ROADMAP.md` actualizado: prioridad alta ítem 2 marcado como completado (especificación cerrada).
+- Se cerró el **Flujo de Horarios y Gestión Modular**: separación edición lanzadera vs. horarios, flujo de creación sin horarios + modal, detalle de salida (solicitar/anular), chips Ida/Vuelta y comentario único por lanzadera.
+- `ROADMAP.md` actualizado: prioridad alta ítem 3 marcado como completado (especificación cerrada).
 
 ### 🧠 Decisiones tomadas:
 
