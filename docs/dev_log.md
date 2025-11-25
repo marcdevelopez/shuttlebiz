@@ -70,6 +70,26 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 
 ---
 
+## 🗓️ Día 3 — 2025-11-25
+
+### ✔ Trabajo realizado:
+
+- Se definió la **Pantalla 8 — Mis Solicitudes** en `SPECS.md`, con acceso desde el icono ✋ en Home/Chat/Horarios/Mapa de los 3 niveles y sin icono en pantallas secundarias.
+- Se creó `docs/GLOSSARY.md` y se enlazó desde specs/README; términos CTA/Salida/Badge referenciados.
+- `ROADMAP.md` actualizado: prioridad alta ítem 1 marcado como completado (especificación cerrada).
+
+### 🧠 Decisiones tomadas:
+
+- Pantalla 8 es pantalla independiente, no modal; enlaces de acceso solo desde AppBars principales.
+- Claridad de AppBars: se documentó explícitamente dónde se muestra/oculta el icono ✋ para evitar ambigüedades.
+
+### 🎯 Próximos pasos:
+
+- Continuar con prioridades altas pendientes de Fase 0 (navegación/menús contextuales, flujo de horarios, sistema de conflictos, chats privados).
+- Refinar guía visual básica (tipografía, paleta, patrones de modales/chips) en `SPECS.md`.
+
+---
+
 # 🧾 Notas generales
 
 - Actualiza al final de cada sesión
