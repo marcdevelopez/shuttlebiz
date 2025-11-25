@@ -17,11 +17,11 @@
 
 #### 🔴 Prioridad Alta (Crítico para MVP)
 
-**1. Pantalla 8 — Estado de Mis Solicitudes** ✅ _Especificación completada en `SPECS.md` (acceso ✋ y vistas viajero/conductor)_
-- Completar especificación detallada de P8 con vista completa para **viajero** y **conductor** _(listo)_
-- Definir interfaz de usuario: layout de lista (futuras vs. pasadas), diseño de cada ítem, acciones disponibles _(listo)_
-- Documentar todos los estados: Pendiente de conductor, Confirmada, En curso, Completada, Cancelada (por usuario/falta conductor/administrador) _(listo)_
-- Aclarar si es pantalla independiente o modal dentro de 6.1 _(listo: pantalla independiente con acceso desde icono ✋)_
+**1. Pantalla 8 — Estado de Mis Solicitudes**
+- Completar especificación detallada de P8 con vista completa para **viajero** y **conductor**
+- Definir interfaz de usuario: layout de lista (futuras vs. pasadas), diseño de cada ítem, acciones disponibles
+- Documentar todos los estados: Pendiente de conductor, Confirmada, En curso, Completada, Cancelada (por usuario/falta conductor/administrador)
+- Aclarar si es pantalla independiente o modal dentro de 6.1
 
 **2. Navegación y Menús Superiores Contextuales**
 - Definir **stack/nested navigation** completo (Grupos → Grupo → Lanzadera con PageView)
