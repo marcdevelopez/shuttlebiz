@@ -18,6 +18,20 @@
 
 </div>
 
+<br>
+
+---
+
+<br>
+
+# `Glosario de términos y abreviaturas`
+
+El glosario se mantiene en [`GLOSSARY.md`](GLOSSARY.md) para
+centralizar las definiciones que se usan en estas especificaciones. Si introduces
+un término nuevo (CTA, badge, salida, etc.) enlázalo allí y añade la definición
+antes de usarlo en pantallas o flujos. Accesos rápidos: [CTA](GLOSSARY.md#cta-call-to-action),
+[Salida](GLOSSARY.md#salida), [Badge](GLOSSARY.md#badge).
+
 ---
 
 <br>
@@ -99,7 +113,7 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
 
 ## **4\. Consulta de horario y Solicitud de Lanzadera**
 
-La idea es mostrar una salida en concreto, con los datos de conductor, vehiculo, solicitudes y opción de solicitar tanto conducción como plaza, y cancelaciones, todo en la misma pantalla (ver pantalla **_6.1.2 "Hora Salida: Detalle y Solicitud_**")
+La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos de conductor, vehiculo, solicitudes y opción de solicitar tanto conducción como plaza, y cancelaciones, todo en la misma pantalla (ver pantalla **_6.1.2 "Hora Salida: Detalle y Solicitud_**")
 
 ---
 
@@ -302,6 +316,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - (2) chat,
   - (3) horario y
   - (4) mapa (siempre desde bottom bar o iconos visibles, no desde menús ocultos).
+- El icono de mano ✋ abre siempre la **Pantalla 8: Mis Solicitudes** desde las AppBar de **Home, Chat, Horario y Mapa** en los tres niveles (Grupos, Grupo, Lanzadera). **No se muestra en pantallas secundarias** (formularios, detalles internos) salvo que la lógica del flujo requiera ese acceso contextual.
 
 **Objetivo:** Mantener claridad, evitar confusión del usuario y seguir las pautas de Material/Flutter modernas.
 
@@ -482,7 +497,7 @@ La pantalla puede mostrar dos situaciones:
 - **Lista de grupos** (cada ítem con nombre, foto opcional y datos básicos):
   - **Tocar un grupo** → abre la **Pantalla de Grupo** correspondiente, bajando al nivel de "Grupo".
 - **Icono de búsqueda** para descubrir grupos públicos. El icono de búsqueda abre la pantalla **Busqueda de grupos** 4.1.2.
-- **Elemento persistente**: Logo de la app (mano) en la appbar, que abre pantalla _Estado de Mis Solicitudes_.
+- **Icono ✋ Mis Solicitudes** en la AppBar → abre la **Pantalla 8 (Estado de Mis Solicitudes)**. Este icono aparece en las vistas de Home/Chat/Horarios/Mapa del nivel Grupos; no en formularios u otras pantallas secundarias.
 - **Opción adicional para crear grupo** en el menú del appbar.
 - **Botón flotante (FAB) “+”**:
   - Ubicado abajo a la derecha.
@@ -493,6 +508,7 @@ La pantalla puede mostrar dos situaciones:
 ### **Pantalla 4.1.1 Creación de Grupo**
 
 - Se abre desde menú de appbar, o desde botón flotante (FAB).
+- AppBar sin icono ✋ (solo flecha atrás y título); es una pantalla secundaria.
 - Contiene:
   - Imagen para el grupo
   - Caja de texto para el nombre del grupo
@@ -504,6 +520,7 @@ La pantalla puede mostrar dos situaciones:
 ### **Pantalla 4.1.2 Búsqueda de grupos**
 
 - Se abre desde el icono de búsqueda de la pantalla 4.1 **GRUPOS HOME**.
+- AppBar sin icono ✋ (pantalla secundaria de búsqueda).
 - Contendrá:
 
   - **Campo de búsqueda por nombre del grupo**.
@@ -538,6 +555,7 @@ La pantalla puede mostrar dos situaciones:
   - lista de usuarios
   - lista de lanzaderas
   - Solicitar unirse (se podrá agregar un mensaje al admin/creador del grupo)
+- AppBar sin icono ✋ (pantalla secundaria de detalle).
 
 ### UNIRSE A GRUPO EXISTENTE
 
@@ -564,7 +582,7 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 
 - **“Grupos”** (título del módulo)
 - **Icono de búsqueda** → permite buscar entre los chats generales de los grupos del usuario.
-- **Icono Mis Solicitudes** → acceso rápido a la Pantalla 8.
+- **Icono Mis Solicitudes (✋)** → acceso rápido a la **Pantalla 8**; se mantiene en las AppBar de Home/Chat/Horarios/Mapa de este nivel.
 - **Menú (⋮)**:
 
   - Ajustes generales del chat
@@ -608,7 +626,7 @@ Su función es ofrecer una **vista global** de las próximas salidas en todas la
 - Lado derecho:
   - 🔍 **Buscar** (filtra entre horarios y lanzaderas)
   - 🧭 Filtro
-  - ✋ **Mis Solicitudes** (historial)
+  - ✋ **Mis Solicitudes** (historial) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa de este nivel)
   - **⋮ Menú**
 - Sin flecha de atrás → **es nivel superior**.
 
@@ -691,7 +709,7 @@ Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom t
 - Título centrado: **"Mapa · Mis Grupos"**
 - Lado derecho:
   - 🔍 **Buscar** (filtra grupos visibles)
-  - ✋ **Mis Solicitudes** (icono de mano)
+  - ✋ **Mis Solicitudes** (icono de mano) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa de este nivel)
   - **⋮ Menú** (opciones de visualización: tipo de mapa, leyenda, etc.)
 - Sin flecha de atrás → **es nivel superior**.
 
@@ -779,7 +797,7 @@ La pantalla puede mostrar dos situaciones:
 
 - **Lista de lanzaderas** (cada ítem con nombre, origen → destino, foto opcional y datos básicos):
   - **Tocar una lanzadera** → abre la **Pantalla de Lanzadera** correspondiente, bajando al nivel de "Lanzadera".
-- **Elemento persistente**: Logo de la app (mano) en la appbar, que abre pantalla _Estado de Mis Solicitudes_.
+- **Icono ✋ Mis Solicitudes** en la AppBar → abre la **Pantalla 8 (Estado de Mis Solicitudes)**. Este icono aparece en las vistas de Home/Chat/Horarios/Mapa del nivel Grupo; no en formularios u otras pantallas secundarias.
 - **Flecha atrás** (←) en la esquina superior izquierda → regresa al **Nivel Grupos (4.1)**.
 - **Nombre del grupo** visible en el AppBar. Al pulsarlo, se abre un modal para cambiar rápidamente a otro grupo del usuario.
 - **Menú (⋮)** en esquina superior derecha con opciones:
@@ -798,6 +816,7 @@ La pantalla puede mostrar dos situaciones:
 - **Función**: Pantalla para crear una nueva lanzadera desde el Home de Grupo.
 
 - Se abre desde el botón flotante (FAB) en **Pantalla 5.1**.
+- AppBar sin icono ✋ (pantalla secundaria de creación/edición).
 
 - **Campos obligatorios**:
 
@@ -826,6 +845,7 @@ La pantalla puede mostrar dos situaciones:
 - **Función**:
   Permitir al usuario definir el **nombre** y las **coordenadas geográficas** del punto de origen o destino de la lanzadera.
 - Esta pantalla se abre al pulsar los botones **"Seleccione el origen"** o **"Seleccione el destino"** desde la **Pantalla 5.1.1 (NEW SHUTTLE)**.
+- AppBar sin icono ✋ (pantalla secundaria auxiliar).
 
 - **Campos obligatorios**:
 
@@ -869,7 +889,7 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 - **Flecha atrás** (←): regresa a **Pantalla 4.2 (Grupos Chat)**, subiendo un nivel en la jerarquía de chats.
 - **Nombre del grupo** (título centrado)
 - **Icono de búsqueda** → permite buscar mensajes dentro del chat general del grupo.
-- **Icono Mis Solicitudes** → acceso rápido a la Pantalla 8.
+- **Icono Mis Solicitudes (✋)** → acceso rápido a la **Pantalla 8**; se mantiene en las AppBar de Home/Chat/Horarios/Mapa del nivel Grupo.
 - **Menú (⋮)**:
 
   - Ver miembros del grupo
@@ -923,7 +943,7 @@ Su función es ofrecer una **vista consolidada** de los horarios de todas las la
 - Lado derecho:
   - 🔍 **Buscar** (filtra entre horarios y lanzaderas del grupo)
   - 🧭 **Filtro**
-  - ✋ **Mis Solicitudes** (historial)
+  - ✋ **Mis Solicitudes** (historial) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa del nivel Grupo)
   - **⋮ Menú** (opciones de ordenamiento y configuración)
 
 ### **Contenido principal**
@@ -1044,7 +1064,7 @@ Esta pantalla forma parte del **PageView del nivel GRUPO**, dentro del bottom ta
 - Título centrado: **"Mapa · [Nombre del Grupo]"**
 - Lado derecho:
   - 🔍 **Buscar** (filtra lanzaderas visibles)
-  - ✋ **Mis Solicitudes** (icono de mano)
+  - ✋ **Mis Solicitudes** (icono de mano) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa del nivel Grupo)
   - **⋮ Menú** (opciones de visualización)
 
 ### **Contenido principal**
@@ -1103,6 +1123,8 @@ Poder elegir entre cada mapa de lanzadera con las detalle de viajeros y salida q
 ## **5.5 Pantalla de GESTIÓN DE GRUPO**
 
 Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualquier página del **Nivel Grupo**.
+
+- AppBar sin icono ✋ (pantalla secundaria de gestión).
 
 ### **Acceso**
 
@@ -1203,11 +1225,27 @@ Esta página contiene:
     - Solo se abre el teclado al pulsar un campo, para que no moleste la vista y se puedan ver todos los campos.
 
 Tiene un menu derecho en el appbar, al igual que el resto de paginas de cada pestaña (chat, horario y mapa)
+Las vistas principales del **nivel Lanzadera** (Home, Chat, Horarios, Mapa) comparten la AppBar con el icono ✋ que abre la **Pantalla 8 (Mis Solicitudes)**; las pantallas secundarias/auxiliares de este nivel (formularios, detalle profundo) no muestran el icono salvo que se requiera por contexto específico.
+
+#### **AppBar (izquierda → derecha)**
+
+- **Flecha atrás** (←) → regresa al **Nivel Grupo** (manteniendo la pestaña actual).
+- **Título**: Nombre de la lanzadera.
+- **Icono ✋ Mis Solicitudes** → abre la **Pantalla 8** (presente en Home/Chat/Horarios/Mapa del nivel Lanzadera).
+- **Menú (⋮)** → opciones de ajustes de lanzadera.
 
 #### **6.2 Chat** _(de la lanzadera)_
 
 (Ver 11. Pantallas de Chat ).
 Este chat es distinto al Chat General del grupo. Se consigue así ser más específico a la hora de conversar para que no cause confusión al resto. Deberá de verse de forma clara arriba que este chat lo vean solamente los usuarios que han solicitado plaza en esa salida.
+
+**AppBar (izquierda → derecha)**:
+
+- **Flecha atrás** (←): regresa al chat del **Nivel Grupo**.
+- **Título**: "Chat · [Nombre Lanzadera]".
+- **Icono de búsqueda** → buscar mensajes en este chat.
+- **Icono Mis Solicitudes (✋)** → abre la **Pantalla 8** (presente en las vistas principales del nivel Lanzadera).
+- **Menú (⋮)** → ajustes del chat.
 
 ### **6.3 Horarios** _(sección central)_
 
@@ -1248,9 +1286,18 @@ De arriba abajo:
 - Adicionalmente, si se es **Creador/Admin**, una **pulsación larga sobre un horario existente** abrirá un **modal de confirmación** para **eliminar dicho horario**.
   Este modal informará de forma clara que la acción es irreversible y requerirá introducir un **código de confirmación** antes de proceder, con las opciones **“Eliminar”** o **“Cancelar”**, para evitar eliminaciones accidentales.
 
+#### **AppBar (izquierda → derecha)**
+
+- **Flecha atrás** (←) → regresa a la pestaña Horarios del **Nivel Grupo**.
+- **Título**: "Horarios · [Nombre Lanzadera]".
+- **Icono ✋ Mis Solicitudes** → abre la **Pantalla 8** (presente en las vistas principales del nivel Lanzadera).
+- **Menú (⋮)** → filtros/orden y acciones de horario.
+
 ### **6.3.1 Pantalla de consulta/Horario**
 
 Se accede a esta vista al pulsar sobre un horario existente de una lanzadera.
+
+- AppBar sin icono ✋ (pantalla secundaria de detalle).
 
 En la parte superior se muestra el origen y el destino con el siguiente formato:
 
@@ -1283,6 +1330,8 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
 > ### **6.3.2 Hora Salida: Detalle y Solicitud**
+>
+> AppBar sin icono ✋ (pantalla secundaria de detalle/solicitud).
 >
 > Esta pantalla será la que se use para la solicitud de plazas, solicitud/asignacion de conductor, elección de vehiculo y cancelaciones.
 > Esta pantalla comienza con el texto superior:
@@ -1394,6 +1443,8 @@ Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que perten
 1. Pulsando el botón de añadir (+) abajo a la derecha en la pantalla 6.1 Lanzadera; en este caso será creación de nuevo horario;
 2. Pulsando el lápiz de edicion de horario en la pantalla 6.1.1 "Pantalla de consulta/Horario", que es la vista normal de horario.
 
+AppBar sin icono ✋ (pantalla secundaria de creación/edición).
+
 En esta pantalla será posible:
 
 1. Seleccionar los días semanales, pudiendo agregar o quitar días en este horario, **siempre que no estén ya usados por otro horario de la lanzadera**.
@@ -1452,28 +1503,178 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 - **Primera flecha**: Pantalla de Lanzadera → Pantalla de Grupo
 - **Segunda flecha**: Pantalla de Grupo → Pantalla de Grupos
 
+**AppBar (izquierda → derecha)**:
+
+- **Flecha atrás** (←) → regresa al **Nivel Grupo**.
+- **Título**: "Mapa · [Nombre Lanzadera]".
+- **Icono ✋ Mis Solicitudes** → abre la **Pantalla 8** (presente en Home/Chat/Horarios/Mapa del nivel Lanzadera).
+- **Menú (⋮)** → opciones de visualización.
+
 - Es necesario que en esta pantalla se haga comprobaciones de si el usuario que solicito la lanzadera está en dicha lanzadera durante el viaje para añadir a la lista de viajes realizados en su perfil.
 
 ---
 
-### **8\. ESTADO DE MIS SOLICITUDES**
+## **8. PANTALLA “MIS SOLICITUDES”**
 
-> > **Mis solicitudes**:  
-> > Debe de estar a la vista accesible fácil en cualquier pantalla:
+_(Acceso universal desde el icono ✋ en todas las AppBars de la app)_
 
-- Abre todas las solicitudes pasadas y futuras (futuras con sobresaltado verde) y al pulsar se abre el 6,1,2 detalle de hora de salida (da igual si fue pasada... seria como histórico todo en uno) en forma de lista, desde donde poder manejar la solicitud.
-- Si es pasada solo aparecen datos, pero desaparecen los botones de solicitud.
+### **Función**
 
-**Función**: Vista permanente de todas las solicitudes del usuario.
+Pantalla independiente donde el usuario ve **todas sus solicitudes activas e históricas**, incluyendo:
 
-**Acceso**: Logo de la app (la mano) en barra superior
+- Solicitudes de **plaza**
+- Solicitudes de **conducción**
+- Estados de viajes (pendiente / confirmada / en curso / completada / cancelada)
+- Acciones rápidas según rol (viajero o conductor)
 
-**Contenido**:
+### **AppBar**
 
-- **Solicitudes futuras**: Lista de próximas reservas
-- **Solicitudes pasadas**: Historial de viajes
-- **Acciones**: Cancelar solicitud desde esta pantalla
-- **Información detallada**: Fecha, hora, grupo, lanzadera, rol, estado
+- Título centrado: **“Mis Solicitudes”**
+- Iconos:
+
+  - 🔍 Buscar
+  - 🧭 Filtros
+  - ⋮ Menú contextual (exportar historial CSV/PDF en futuro)
+
+- Flecha atrás solo si el usuario entra desde una pantalla profunda (como 6.1.2).
+
+### **Estructura General**
+
+Vista segmentada en dos pestañas o segmentos:
+
+### **1. Activas**
+
+- Pendientes
+- Confirmadas
+- En curso  
+  Orden: En curso → Confirmadas → Pendientes  
+  Orden cronológico ascendente.
+
+### **2. Historial**
+
+- Completadas
+- Canceladas (usuario, conductor o admin).  
+  Orden: más reciente primero (desc).
+
+### **Contenido de Cada Ítem (card compacta)**
+
+Cada solicitud se muestra como una **tarjeta** con:
+
+- [Grupo] · [Lanzadera]
+- Origen → Destino
+- [Fecha] [Hora] · [Rol: Plaza / Conductor]
+- [Badge de Estado](GLOSSARY.md#badge)
+- Plazas: X/Y · Conductor: [nombre] o “Sin conductor”
+- [CTA principal contextual](GLOSSARY.md#cta-call-to-action)
+
+### **Badges sugeridos**
+
+- Gris → Pendiente
+- Azul → Confirmada
+- Amarillo → En curso
+- Verde → Completada
+- Rojo → Cancelada
+
+### **CTAs según estado y rol**
+
+| Rol           | Estado               | Acción principal                            |
+| ------------- | -------------------- | ------------------------------------------- |
+| Viajero       | Pendiente            | Cancelar solicitud                          |
+| Viajero       | Confirmada           | Cancelar (si permitido)                     |
+| Viajero       | En curso             | Solicitar cancelación (no cancelar directo) |
+| Conductor     | Pendiente asignación | Aceptar conducción                          |
+| Conductor     | Confirmado           | Renunciar / Ceder conducción                |
+| Conductor     | En curso             | Marcar llegada / Completar viaje            |
+| Cualquier rol | Completada           | Ver detalle                                 |
+| Cualquier rol | Cancelada            | Ver motivo                                  |
+
+### **Flujos de Estado**
+
+### **PENDIENTE**
+
+- Usuario ve:
+
+  - Rol solicitado
+  - [CTA](GLOSSARY.md#cta-call-to-action): **Cancelar solicitud**
+  - Si es solicitud de conducción, aparece **“Pendiente de aprobación del admin”**
+
+### **CONFIRMADA**
+
+- Viajero:
+
+  - Mostrar plazas confirmadas
+  - Botón: **Cancelar** (si estás antes del límite configurado)
+
+- Conductor:
+
+  - Acción: **Renunciar** (si está en ventana permitida)
+  - Si está fuera de hora → modal con warning
+
+### **EN CURSO**
+
+- Viajero:
+
+  - Cancelación deshabilitada
+  - Acción alternativa: **Solicitar cancelación** (notifica al conductor/admin)
+
+- Conductor:
+
+  - Acciones: **Marcar salida / llegada / completar viaje**
+
+### **COMPLETADA**
+
+- Solo lectura.
+- Datos extra:
+
+  - Hora real de salida / llegada
+  - Conductor final
+  - Vehículo utilizado
+
+### **CANCELADA**
+
+- Motivo en rojo:
+
+  - “Cancelada por usuario”
+  - “Cancelada por falta de conductor”
+  - “Cancelada por administrador”
+
+### **Filtros Avanzados**
+
+- Rol: Viajero / Conductor
+- Estado: Pendiente / Confirmada / En curso / Completada / Cancelada
+- Grupo o Lanzadera
+- Rango de fechas
+- Búsqueda:
+
+  - Nombre de lanzadera
+  - Grupo
+  - Fecha
+  - Estado
+
+### **Navegación**
+
+- Al pulsar un ítem → **Pantalla 6.1.2 (Detalle de la salida)** con contexto.
+- Backstack mantiene jerarquía correcta Grupos → Grupo → Lanzadera.
+
+### **Estados Vacíos / Errores**
+
+**Sin solicitudes activas**
+
+```
+No tienes solicitudes activas.
+Solicita una plaza o conducción desde Horarios.
+```
+
+**Sin historial**
+
+```
+Aún no hay historial de viajes completados.
+```
+
+**Error de red**
+
+- Componente inline “Reintentar”
+- El contenido que debería de haber cambiado aparece integrado ("inline") dentro del contenido, sin oscurecer, bloquear ni reemplazar toda la pantalla.
 
 ---
 
