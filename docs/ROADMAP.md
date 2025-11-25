@@ -31,14 +31,14 @@
 - Indicador visual de nivel (breadcrumb en AppBar: `Grupos > Grupo > Lanzadera`) _(listo)_
 - Gestión de stack y botón atrás del sistema documentada _(listo)_
 
-**3. Flujo de Horarios y Gestión Modular**
+**3. Flujo de Horarios y Gestión Modular** ✅ _Especificación cerrada en `SPECS.md`_
 - Separar completamente edición de lanzadera vs. horarios:
-  - **Pantalla edición lanzadera**: Solo nombre, origen/destino, comentario general, plazas por defecto (NO horarios)
-  - **Pantalla dedicada horarios**: Crear, editar, eliminar horarios (accesible desde pestaña Horarios en nivel Lanzadera)
-- Especificar flujo de creación: lanzadera sin horarios inicialmente + modal post-creación "¿Agregar primer horario?"
-- Definir pantalla de detalle de salida (hora concreta) con solicitar/anular plaza, rol/conductor visible
-- Implementar chips de Ida/Vuelta + resumen compacto de horarios
-- Aclarar comentario único por lanzadera (no por horario)
+  - **Pantalla edición lanzadera**: Solo nombre, origen/destino, comentario general, plazas por defecto (NO horarios) _(listo)_
+  - **Pantalla dedicada horarios**: Crear, editar, eliminar horarios (accesible desde pestaña Horarios en nivel Lanzadera) _(listo)_
+- Especificar flujo de creación: lanzadera sin horarios inicialmente + modal post-creación "¿Agregar primer horario?" _(listo)_
+- Definir pantalla de detalle de salida (hora concreta) con solicitar/anular plaza, rol/conductor visible _(listo)_
+- Implementar chips de Ida/Vuelta + resumen compacto de horarios _(listo)_
+- Aclarar comentario único por lanzadera (no por horario) _(listo)_
 
 **4. Sistema de Conflictos de Días en Horarios**
 - Especificar validación de solapamiento al seleccionar día ya ocupado:

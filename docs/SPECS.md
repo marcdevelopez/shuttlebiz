@@ -1517,8 +1517,6 @@ De este modo, los horarios creados en un sentido se aplican a todos los días ma
 En la parte superior se mostrarán los lugares de recogida y destino correspondientes a cada vista de Ida o Vuelta, para evitar confusiones. Por ejemplo, si en la vista de ida los horarios indican salidas desde la Estación hacia la Nave, se mostrará arriba: “Salida desde: Estación · Destino: Nave”, y viceversa en la vista de vuelta.
 Además, el color del texto de cada lugar (tanto en “Salida desde” como en “Destino”) coincidirá con el color del sentido del viaje —azul para Ida y rojo para Vuelta— para facilitar su comprensión visual. Cada sentido mantendrá siempre su color asociado, aunque los lugares intercambien su posición como origen o destino según esté seleccionada la vista de Ida o de Vuelta en la sección de horas.
 
-En esta pantalla no se mostrará “Ver comentario”, ya que no es editable y solo aparece en la pantalla 6.1.1 Consulta/Horario.
-
 El guardado de cambios se hará desde el boton de guardar abajo a la derecha en la misma pantalla (tambien estará el de cancelar a la izquierda). Si sale de la pantalla sin pulsar el botón de guardado se abre un modal que pide confirmación para guardar cambios (este estado hay que guardarlo para que esta parte se cumpla aunque se cierre la app).
 
 #### **6.4 Mapa** _(incluido en MVP)_
