@@ -317,6 +317,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - (3) horario y
   - (4) mapa (siempre desde bottom bar o iconos visibles, no desde menús ocultos).
 - El icono de mano ✋ abre siempre la **Pantalla 8: Mis Solicitudes** desde las AppBar de **Home, Chat, Horario y Mapa** en los tres niveles (Grupos, Grupo, Lanzadera). **No se muestra en pantallas secundarias** (formularios, detalles internos) salvo que la lógica del flujo requiera ese acceso contextual.
+- **Breadcrumb en AppBar**: indicar nivel actual arriba (ej. `Grupos > Trabajo > Nave-Estación`). En Nivel Grupos se muestra solo `Grupos`; en Nivel Grupo `Grupos > [Grupo]`; en Nivel Lanzadera `Grupos > [Grupo] > [Lanzadera]`. Si el espacio es limitado, usar truncado con elipsis en los nombres de grupo/lanzadera.
 
 **Objetivo:** Mantener claridad, evitar confusión del usuario y seguir las pautas de Material/Flutter modernas.
 
@@ -360,12 +361,39 @@ Cada nivel dispone de **4 páginas**, y los elementos de la primera página (Lis
   - De **Lanzadera → Grupo**
   - De **Grupo → Grupos**
 
+- El **botón atrás del sistema** respeta la jerarquía: primero cierra modales/toasts, luego sube un nivel (Lanzadera → Grupo → Grupos) manteniendo la pestaña actual del PageView; en el nivel raíz (Grupos) cierra la app si no hay overlays.
+- **Transiciones entre niveles**: animación vertical (slide up/down) con fade ligero, 150–200 ms, al bajar o subir de nivel. Cambio de pestaña dentro de un nivel usa el PageView nativo (swipe/handoff sin animación extra).
+
 ### **PageView en toda la aplicación**
 
 Toda la app se basa en un PageView que organiza las secciones principales:
 **Home, Chats, Horarios y Mapa.**
 
 Es muy importante que, en cada nivel, la parte superior de la pantalla muestre claramente en qué nivel está el usuario (**Grupos / Grupo / Lanzadera**) para evitar confusiones.
+
+Reglas de PageView y stack:
+
+- Al **bajar de nivel** desde cualquier pestaña (ej. Chat en Grupo → Chat en Lanzadera), se mantiene la pestaña activa del PageView.
+- Al **subir de nivel** con la flecha atrás o botón del sistema, se regresa al nivel superior conservando la pestaña activa.
+- Cada nivel tiene su propio PageView (4 pestañas); el estado de scroll en cada pestaña se conserva al navegar entre pestañas del mismo nivel, pero se reinicia al cambiar de nivel.
+
+Menús contextuales (⋮) por nivel y pestaña:
+
+- Nivel Grupos:
+  - Home: crear grupo, ajustes personales rápidos.
+  - Chat: ajustes generales de chat, accesos a chats privados recientes.
+  - Horarios: ordenar/filtros globales de horarios, exportar (futuro).
+  - Mapa: tipo de mapa, mostrar/ocultar tráfico y leyenda, centrar ubicación, configuración de capas.
+- Nivel Grupo:
+  - Home: gestión del grupo (5.5), gestión de vehículos (10), invitar miembros, configuración del grupo.
+  - Chat: ver miembros, silenciar/activar notificaciones, configuración del chat.
+  - Horarios: ordenar/filtros de horarios del grupo, configuración de vista.
+  - Mapa: tipo de mapa, leyenda, mostrar/ocultar lanzaderas.
+- Nivel Lanzadera:
+  - Home: ajustes de lanzadera (nombre/origen/destino/plazas por defecto/comentario).
+  - Chat: ajustes del chat de lanzadera.
+  - Horarios: filtros/orden de horarios, acceso a creación/edición (según rol).
+  - Mapa: opciones de visualización del trayecto y capas.
 
 <br>
 
