@@ -1251,6 +1251,9 @@ Esta página contiene:
     - abre modal para confirmar cambio a modo edición
     - Al confirmar la edición se verán todos los campos en modo edición y arriba "✔️ Confirmar", “✖️”.
     - Solo se abre el teclado al pulsar un campo, para que no moleste la vista y se puedan ver todos los campos.
+  - La edición reutiliza la pantalla **5.1.1 (New Shuttle)** en modo edición, con campos precargados y botones ✔️/✖️; al confirmar, vuelve a Home de Lanzadera.
+  - **Origen/Destino con horarios existentes**: si la lanzadera tiene horarios activos, no se permite cambiar origen/destino. Modal: _“Para cambiar origen/destino debes eliminar los horarios existentes (6.3.3)”_. Botones: **[Ver horarios]** (abre 6.3) / **[Cancelar]**.
+  - **Plazas por defecto con reservas**: solo se permite reducir plazas si el nuevo valor es ≥ al máximo de plazas reservadas en cualquier horario/salida. Si es menor, modal: _“No puedes reducir plazas por defecto a menos de las reservas actuales (X). Ajusta reservas o reduce después.”_. Subir plazas siempre permitido.
 
 Tiene un menu derecho en el appbar, al igual que el resto de paginas de cada pestaña (chat, horario y mapa)
 Las vistas principales del **nivel Lanzadera** (Home, Chat, Horarios, Mapa) comparten la AppBar con el icono ✋ que abre la **Pantalla 8 (Mis Solicitudes)**; las pantallas secundarias/auxiliares de este nivel (formularios, detalle profundo) no muestran el icono salvo que se requiera por contexto específico.
