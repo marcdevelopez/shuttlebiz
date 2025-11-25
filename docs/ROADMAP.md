@@ -23,17 +23,13 @@
 - Documentar todos los estados: Pendiente de conductor, Confirmada, En curso, Completada, Cancelada (por usuario/falta conductor/administrador) _(listo)_
 - Aclarar si es pantalla independiente o modal dentro de 6.1 _(listo: pantalla independiente con acceso desde icono ✋)_
 
-**2. Navegación y Menús Superiores Contextuales**
-- Definir **stack/nested navigation** completo (Grupos → Grupo → Lanzadera con PageView)
-- Especificar menús contextuales (⋮) por tipo de pantalla:
-  - **MAPA**: Tipo de mapa, mostrar/ocultar tráfico, centrar ubicación, leyenda, configuración
-  - **HORARIOS**: Ordenar por (proximidad/distancia), filtros (plazas/hoy/sentido), vista compacta/expandida, exportar
-  - **HOME**: Ordenar grupos/lanzaderas, filtros activos, vista lista/cuadrícula
-  - **CHAT**: Ya definido en P11
-- Aclarar que cambio de nivel solo ocurre desde Home/ítems + flecha atrás
-- Documentar animaciones de transición entre niveles (deslizamiento vertical/fade 150-200ms)
-- Definir indicador visual de nivel actual (breadcrumb en AppBar: `Grupos > Trabajo > Nave-Estación`)
-- Especificar gestión de stack de navegación y comportamiento del botón atrás del sistema
+**2. Navegación y Menús Superiores Contextuales** ✅ _Especificación cerrada en `SPECS.md`_
+- Definir **stack/nested navigation** completo (Grupos → Grupo → Lanzadera con PageView) _(listo)_
+- Especificar menús contextuales (⋮) por tipo de pantalla (Home/Chat/Horarios/Mapa) en cada nivel _(listo)_
+- Cambio de nivel solo desde Home/ítems + flecha atrás, manteniendo pestaña activa del PageView _(listo)_
+- Animaciones de transición (slide vertical + fade 150–200ms) _(listo)_
+- Indicador visual de nivel (breadcrumb en AppBar: `Grupos > Grupo > Lanzadera`) _(listo)_
+- Gestión de stack y botón atrás del sistema documentada _(listo)_
 
 **3. Flujo de Horarios y Gestión Modular**
 - Separar completamente edición de lanzadera vs. horarios:
