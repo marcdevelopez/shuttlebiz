@@ -80,6 +80,23 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 - Se cerró el **Flujo de Horarios y Gestión Modular**: separación edición lanzadera vs. horarios, flujo de creación sin horarios + modal, detalle de salida (solicitar/anular), chips Ida/Vuelta y comentario único por lanzadera.
 - Se cerró el **Sistema de Conflictos de Días en Horarios**: días ocupados visibles en gris, modal con tarjetas comparativas (horas actuales/fusionar/nuevas) y confirmación, y guía visual de estados de día.
 - Se cerró **Chats Privados entre Usuarios**: pestaña para cambiar entre chat grupal y lista de privados por nivel, botón de mensaje en perfil, y chat conductor↔creador/admin como panel fijo en gestión de vehículos.
+
+---
+
+## 🗓️ Día 4 — 2025-11-26
+
+### ✔ Trabajo realizado:
+
+- Se definió el **Centro de Notificaciones** (Pantalla 7): icono 🔔 con badge, tabs (no leídas, leídas, solicitudes, cambios, chats), filtros grupo/lanzadera, acciones (aceptar/rechazar invitaciones, abrir chat, eliminar) y alertas urgentes (ej. conductor sin ubicación con badge 📍).
+
+### 🧠 Decisiones tomadas:
+
+- Invitaciones visibles tanto en notificaciones como en chat privado del invitante con botones inline; aceptar en cualquiera desbloquea el chat.
+- Pestaña `Solicitudes` resaltada si requiere respuesta urgente; badge 📍 en icono 🔔 si el conductor debe activar ubicación.
+
+### 🎯 Próximos pasos:
+
+- Completar fase 0 pendientes (terminología por nivel, guías visuales básicas).
 - `ROADMAP.md` actualizado: prioridad alta ítem 4 marcado como completado (especificación cerrada).
 
 ### 🧠 Decisiones tomadas:

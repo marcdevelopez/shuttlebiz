@@ -58,12 +58,13 @@
 
 #### 🟡 Prioridad Media (Post-MVP)
 
-**6. Centro de Notificaciones (6.2)**
+**6. Centro de Notificaciones (6.2)** ✅ _Especificación cerrada en `SPECS.md`_
 
-- Especificar pantalla completa: acceso desde menú principal, diseño de lista, categorización, filtros
-- Definir tipos de notificaciones y acciones asociadas:
-  - Nuevas lanzaderas, solicitudes aprobadas, conductor asignado, cambios en horarios, invitaciones, mensajes chat, alertas conductor sin ubicación
-- Documentar gestión: marcar leída, archivar, eliminar, marcar todas como leídas
+- Icono 🔔 con badge numérico (solo si hay no leídas) en AppBars principales; abre Pantalla 7.
+- Tabs: No leídas, Leídas, Solicitudes, Cambios en horarios/lanzaderas, Chats.
+- Acciones: aceptar/rechazar invitaciones (también inline en chat privado del invitante), ver cambios, abrir chat, eliminar, marcar todas como leídas.
+- Filtros por grupo/lanzadera con checkboxes y limpiar filtros.
+- Alertas urgentes (ej. conductor sin ubicación) resaltan pestaña/ícono; badge 📍 si aplica al conductor.
 
 **7. Terminología y Contenido por Nivel**
 
