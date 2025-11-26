@@ -76,16 +76,15 @@
   - **Horario**: Grupos (elegir grupo), Grupo (lista lanzaderas con horarios), Lanzadera (horarios de esa lanzadera)
   - **Mapa**: Grupos (elegir grupo), Grupo (lista mapas), Lanzadera (mapa + posición/flecha)
 
-**8. Historial de Reputación**
+**8. Historial de Reputación** ✅ _Especificación cerrada en `SPECS.md` (26/11/2025)_
 
-- Definir cálculo: fórmula (viajes solicitados vs. realizados), escala 1-5
+- Definir cálculo: fórmula (viajes solicitados vs. realizados), escala 0.0-5.0
 - Documentar factores que afectan: cancelaciones (viajero/conductor), viajes completados, puntualidad, reportes
-- Especificar visibilidad: perfil público (puntuación), perfil privado (desglose), lista viajeros (indicador rápido)
+- Especificar visibilidad: perfil público (⭐ + desglose), perfil privado (estadísticas completas), lista de solicitudes por salida (puntuación rápida)
 
 **9. Otras Funcionalidades**
 
 - **Conductor visible en listado**: Mostrar "Conductor: Nombre" o "Sin conductor" en ítems de 5.3
-- **Rol predeterminado**: Checkbox en selección de rol + opción en ajustes de lanzadera para cambiar; rol visible en UI
 - **Gestión de vehículos**: Enlace explícito desde ajustes de grupo (5.5)
 - **Cerrar secciones pendientes**: Completar pantallas 6.x+ y reglas UI pendientes en `docs/SPECS.md`
 - **Guías visuales básicas**: Tipografía, paleta, layout por nivel (Grupos/Grupo/Lanzadera), patrones de modales y chips de horarios

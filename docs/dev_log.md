@@ -13,7 +13,7 @@ Sirve para:
 
 # 📍 Estado actual
 
-Fase activa: **0 — Cierre de especificaciones y guía visual (en progreso)**
+Fase activa: **0 — cierre de punto 8 completo**
 Última actualización: 2025-11-26
 
 ---
@@ -119,11 +119,19 @@ Fase activa: **0 — Cierre de especificaciones y guía visual (en progreso)**
 - Se cerró el punto **7. Terminología y Contenido por Nivel** de la Fase 0 en `SPECS.md` (terminología frecuencia/fecha única, etiquetas de fecha, comportamiento DatePicker y contenido de Chat/Horario/Mapa por nivel).
 - Se elevó a MVP el **seguimiento básico en tiempo real** en el mapa de lanzadera (6.4) con refresco 5–10 s y alertas si falta ubicación, conectado a la regla de ubicación previa de conductores.
 - Se actualizó `ROADMAP.md` marcando el ítem 7 como completado.
+- Se añadió configuración de **ubicación de preparación/garaje** y **margen de preparación** en creación/edición de lanzadera, integrada en validaciones y tracking.
+- Se completó el ítem **8. Historial de Reputación**: modal de valoración 1–5, categorías (puntualidad, fiabilidad, trato con peso 2), fórmula y visualización en perfil.
+- Se aclaró que no hay logout ya que solo hay eliminación de cuenta o cambio de número
+- Se añadió el extra de 12.1 para configuración de notificaciones.
+- Creación de pantalla de edición de perfil de usuario.
 
 ### 🧠 Decisiones tomadas:
 
 - Mantener tracking en vivo desde T-40 min configurable hasta llegada, priorizando refresco 5–10 s (máx. 15 s si se optimiza batería/datos).
 - Alertas de falta de ubicación se reflejan tanto en mapa como en notificaciones (badge/⚠️).
+- La reputación pondera trato x2 y puntualidad/fiabilidad x1, solo con viajes completados y valoración por viaje; valoraciones caducan a las 24 h.
+- La app no tiene logout
+- Eliminación de rol de conductor o viajero, se decide en la pantalla de horarios antes de usar una lanzadera.
 
 ### 🎯 Próximos pasos:
 
