@@ -46,6 +46,7 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
 
 - 🔐 **Login por número de teléfono** con verificación SMS/OTP.
 - ✅ **Sesión persistente** tras primer acceso.
+- 🚪 **Sin cierre de sesión manual**: el usuario permanece logueado; solo puede cambiar de número (manteniendo UID) o eliminar la cuenta.
 - 🔁 **Sistema de recuperación y respaldo:**
   - **Recuperación por SMS**: Si se pierde el login, recuperable con el número registrado
   - **Datos básicos en Firebase**: UID, número de teléfono y datos mínimos de perfil
@@ -54,7 +55,6 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
   - **Cambio de número**: Flujo en Configuración para actualizar número manteniendo UID
 - 👥 **Sistema de roles flexible**: cualquier usuario puede usar tanto el rol de conductor como de viajero
   - **Selección dinámica**: al entrar a una lanzadera, el usuario decide qué rol tendrá en esa ocasión, solicitando ser conductor o tener una plaza.
-  - **Configuración permanente**: opción para mantener un rol preferido por defecto
 
 ---
 
@@ -102,10 +102,13 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
 - Requiere definir:
   - **Nombre**
   - **Origen** y **destino**
+  - **Ubicación de preparación/garaje** (punto donde se toma el vehículo antes de salir) y **tiempo de preparación** hasta el Origen (puede ser automático/calculado o configurado por creador/admin; si se usa el mismo punto que Origen, no se descuenta tiempo)
   - **Periodicidad**: puntual (fecha única) o frecuencia semanal
   - **Plazas por defecto**
   - **Comentario** (opcional: normas, detalles de recogida)
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
+
+El tiempo de preparación se resta a la hora de salida en Origen para validar si el conductor está a tiempo en el punto de garaje. El creador/admin puede optar por usar automáticamente el cálculo sugerido por el sistema o definir manualmente ese margen. Si el garaje = Origen, el tiempo de preparación es 0.
 
 ### **3.2. Configuración de horarios**
 
@@ -142,7 +145,7 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ## **5\. Reglas y Validaciones**
 
-- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
+- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La validación usa el **punto de preparación/garaje** y su **tiempo de preparación**: se descuenta este margen a la hora de salida en Origen para exigir que el conductor esté en el garaje a tiempo (si garaje = Origen, margen 0). La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
 - **Solo puede haber un conductor por horario**.
 - **Se puede anular una solicitud**.
 - **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
@@ -158,11 +161,11 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ## **5.1 Persistencia y continuidad del rol de conductor**
 
-El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera. Solo existen dos modalidades claras de funcionamiento.
+El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera. Solo existen dos modalidades claras de funcionamiento:
 
-## **1. Modos de asignación del conductor**
+### **1. Modos de asignación del conductor**
 
-### **1.1 Conductor por salida única (con continuidad opcional)**
+#### **1.1 Conductor por salida única (con continuidad opcional)**
 
 - El conductor se asigna únicamente para la **salida concreta** seleccionada.
 - Tras completar el viaje (cuando marque “Llegada” o el sistema detecte la llegada) y siempre que haya mas salidas ese día con esa misma lanzadera, se mostrará un modal:
@@ -191,7 +194,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
 
 **“Ya hay un conductor asignado para esta salida.”**
 
-### **1.2 Conductor asignado por rango temporal (día completo o bloque de horarios)**
+#### **1.2 Conductor asignado por rango temporal (día completo o bloque de horarios)**
 
 - Solo puede asignarlo un Creador/Admin.
 - El conductor puede ser asignado para:
@@ -207,6 +210,40 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
 
 - Solo puede haber **un conductor por salida**.
 - No se puede asignar conductor una vez que la salida ya ocurrió.
+
+## **5.2 Reputación y valoraciones**
+
+### **5.2.1 Categorías y cálculo**
+
+- Cada viaje solo admite **una valoración por rol y trayecto** (1 por conductor, 1 por cada viajero que completó).
+- Escala 0.0–5.0 con un decimal.
+- Categorías internas:
+  1. **Puntualidad** (auto): requiere ubicación activa.
+     - Viajero: ≥5 min antes de la hora de salida en Origen → 5; 1–4 min antes → proporcional 1–4; tarde/no llega → 0.
+     - Conductor: usa **punto de preparación/garaje** y su **margen**; si garaje=Origen, se evalúa sobre Origen. ≥ margen (o ≥5 min en Origen) → 5; justo a tiempo → 0; intermedio → proporcional 0–5.
+  2. **Fiabilidad (Imprevisibilidad)** (auto): penaliza cancelaciones (0 si cancela; 5 si no cancela, media por viajes).
+  3. **Trato/compañerismo** (pública): valoración 0–5 del usuario.
+- **Peso**: categorías 1 y 2 peso 1; categoría 3 peso 2. Reputación = (cat1 + cat2 + 2·cat3) / 4. Si no hay datos de una categoría, no se promedia esa parte.
+- Se recalcula en cada viaje completado o cancelado.
+
+### **5.2.2 Reglas adicionales**
+
+- No se pueden enviar valoraciones pasadas **24 h** del viaje.
+- Solo se puede valorar si el viaje fue **completado**.
+- Máximo **una valoración por trayecto** y usuario/rol.
+- Se almacena: fecha/hora, rol, grupo, lanzadera, salida, categoría afectada.
+- Si el usuario no comparte ubicación no puede ser conductor; para viajeros la puntualidad solo se calcula si hubo ubicación.
+- **UI del modal (ver 13)**: control 0–5 estrellas, texto opcional (máx. 120 caracteres), checkbox de reporte y botones **Enviar** / **Omitir**.
+
+### **5.2.3 Recálculo automático de reputación**
+
+La reputación se recalcula en tiempo real cuando:
+
+1. ✅ Se completa un viaje (se aplican puntualidad + valoración pública)
+2. ❌ Se cancela una solicitud (se actualiza fiabilidad)
+3. 📢 Se verifica un reporte por admin (se penaliza -1 en trato)
+
+El cálculo es inmediato y visible en el perfil del usuario al instante.
 
 ---
 
@@ -271,7 +308,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Cambios en horarios
   - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
-- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones: lo que se puede hacer es que no salga el aviso es decir que no quede en icono arriba en la appbar, ni suene, pero si se entra en ajustes/notificaciones, se podran ver todas ellas, y borrar todas a la vez si se desean. Se marcaran como vistas al abrir la pantalla de notificaciones, y arriba al pulsar icono de "eliminar todas": se eliminan (requiere confirmación).
+- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones (sin perder el historial en el Centro de Notificaciones). Se gestiona en **Pantalla 12 (Configuración) > Notificaciones**: permite desactivar sonido/banner/badge por tipo, activar silencio programado, y forzar que solo lleguen como in-app (sin push). Las críticas (ej. conductor sin ubicación) no se pueden silenciar por completo.
 - **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
 
 - **Centro de notificaciones:** Historial in-app de notificaciones recibidas en forma de ítems en una lista. Almacena el historial de notificaciones recibidas por el usuario, permitiéndole consultarlas posteriormente.
@@ -894,6 +931,9 @@ La pantalla puede mostrar dos situaciones:
   - **Origen y destino** (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
   - **Plazas por defecto**: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
   - **Comentario de la Lanzadera**: Normas, instrucciones, etc. Campo amplio, debajo de "Plazas por defecto".
+  - **Ubicación de preparación/garaje y tiempo de preparación**: punto donde se toma/prepara el vehículo antes de salir y margen de tiempo hasta el Origen. El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
+    ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema
+    asumirá que el garaje es el mismo punto de Origen (margen = 0).
 
 - **Botones**:
 
@@ -910,7 +950,7 @@ La pantalla puede mostrar dos situaciones:
 
 ---
 
-### **Pantalla 5.1.2 Elección Origen/Destino**
+### **Pantalla 5.1.2a Elección Origen/Destino**
 
 - **Función**:
   Permitir al usuario definir el **nombre** y las **coordenadas geográficas** del punto de origen o destino de la lanzadera.
@@ -941,6 +981,37 @@ La pantalla puede mostrar dos situaciones:
 - **Notas adicionales**:
 
   - La pantalla debe mantener consistencia visual con **Pantalla 5.1.1 (NEW SHUTTLE)** y usar la misma paleta de colores y tipografía.
+
+---
+
+### **Pantalla 5.1.2b Elección de Ubicación de Garaje/Preparación**
+
+- **Función**:
+  Permitir al creador/admin definir el **punto de garaje o preparación**
+  del vehículo y el **tiempo estimado** hasta el Origen.
+
+- Se abre al pulsar **"Seleccione ubicación de garaje"** en **Pantalla 5.1.1**.
+- AppBar sin icono ✋ (pantalla secundaria auxiliar).
+
+- **Campos:**
+
+  - **Nombre del lugar**: ej. "Garaje Centro", "Casa del conductor"
+  - **Mapa interactivo** con marcador para ubicación exacta
+  - **Tiempo de preparación**:
+    - Opción 1: **Automático** (calculado por sistema vía API de rutas)
+    - Opción 2: **Manual** (creador/admin ingresa minutos)
+    - Opción 3: **Checkbox "Usar mismo punto que Origen"** → margen = 0
+
+- **Texto**:
+
+```
+Aviso informativo
+ℹ️ Este tiempo se restará a la hora de salida para validar que el
+conductor esté en el garaje con suficiente antelación. Si seleccionas
+"mismo punto que Origen", no se restará tiempo adicional.
+```
+
+- **Botón Confirmar**: guarda ubicación y tiempo, vuelve a 5.1.1
 
 ---
 
@@ -1297,6 +1368,16 @@ Esta página contiene:
   - **Origen/Destino con horarios existentes**: si la lanzadera tiene horarios activos, no se permite cambiar origen/destino. Modal: _“Para cambiar origen/destino debes eliminar los horarios existentes (6.3.3)”_. Botones: **[Ver horarios]** (abre 6.3) / **[Cancelar]**.
   - **Plazas por defecto con reservas**: solo se permite reducir plazas si el nuevo valor es ≥ al máximo de plazas reservadas en cualquier horario/salida. Si es menor, modal: _“No puedes reducir plazas por defecto a menos de las reservas actuales (X). Ajusta reservas o reduce después.”_. Subir plazas siempre permitido.
 
+**Campos editables adicionales** (solo Creador/Admin):
+
+- **Ubicación de garaje/preparación**: puede editarse en cualquier momento.
+  Al pulsar, abre **Pantalla 5.1.2b** (Elección de Garaje) donde se puede:
+  - Cambiar la ubicación del garaje
+  - Ajustar el tiempo de preparación (automático o manual)
+  - Marcar "Usar mismo punto que Origen" (margen = 0)
+- **Nota**: Cambiar la ubicación de garaje o el tiempo de preparación afecta
+  la validación de puntualidad del conductor en las próximas salidas.
+
 Tiene un menu derecho en el appbar, al igual que el resto de paginas de cada pestaña (chat, horario y mapa)
 Las vistas principales del **nivel Lanzadera** (Home, Chat, Horarios, Mapa) comparten la AppBar con el icono ✋ que abre la **Pantalla 8 (Mis Solicitudes)**; las pantallas secundarias/auxiliares de este nivel (formularios, detalle profundo) no muestran el icono salvo que se requiera por contexto específico.
 
@@ -1590,7 +1671,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 - Punto de origen
 - Punto de destino
 - Punto donde está el usuario
-- **Seguimiento básico en tiempo real (MVP)**: si hay conductor, mostrar su posición desde **T-40 min** antes de la salida (o el tiempo configurado en ajustes) hasta marcar llegada o cualquier otro algoritmo que detecte fin del recorrido. Actualizar posición cada 5-10 s (máximo 15 s si se prioriza batería/datos) y mostrar el icono del vehículo moviéndose sobre la ruta. Si no se recibe ubicación en el intervalo esperado, mostrar badge/alerta en el mapa y disparar la alerta especial de notificaciones.
+- **Seguimiento básico en tiempo real (MVP)**: si hay conductor, mostrar su posición desde **T-40 min** antes de la salida (o el tiempo configurado en ajustes, incluyendo margen de preparación desde garaje) hasta marcar llegada o cualquier otro algoritmo que detecte fin del recorrido. Actualizar posición cada 5-10 s (máximo 15 s si se prioriza batería/datos) y mostrar el icono del vehículo moviéndose sobre la ruta. Si no se recibe ubicación en el intervalo esperado, mostrar badge/alerta en el mapa y disparar la alerta especial de notificaciones.
 
 **Navegación (con flecha hacia la izquierda en lado izquierdo de la barra superior)**:
 
@@ -1674,8 +1755,8 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
 ### **Generación de no leídas**
 
 - Nuevas lanzaderas, nuevos horarios o modificaciones → generan no leída automáticamente.
-- Invitaciones a grupos → generan no leída y entrada en pestaña `Invitaciones`.
-  Solicitudes y respuestas (peticiones de conducción, creación de vehículo, asignaciones) → aparecen en `Solicitudes`; si requieren respuesta urgente, la pestaña se marca en rojo/alerta y el icono 🔔 añade indicador de ubicación si la alerta es por conductor sin ubicación cerca de la salida (si el usuario es el conductor aludido).
+- Invitaciones a grupos → generan no leída y entrada en pestaña `Solicitudes/Invitaciones`.
+  Solicitudes y respuestas (peticiones de conducción, creación de vehículo, asignaciones) → aparecen en `Solicitudes/invitaciones`; si requieren respuesta urgente, la pestaña se marca en rojo/alerta y el icono 🔔 añade indicador de ubicación si la alerta es por conductor sin ubicación cerca de la salida (si el usuario es el conductor aludido).
 
 ---
 
@@ -1843,34 +1924,279 @@ Aún no hay historial de viajes completados.
 
 ---
 
-### **9\. PERFIL DE USUARIO**
+## **9\. Pantalla PERFIL DE USUARIO**
 
 **Función**: Gestión del perfil personal y estadísticas.
 
 **Configuración disponible**:
 
 - **Información personal:**
-  - Editar foto de perfil
+  - Perfil público (siempre)
+  - Avatar: si no hay foto, usar inicial con color según reputación (ej.: 5 dorado, 4 verde, 3 azul, 2 naranja, 1 rojo/morado, 0 gris).
+  - Si hay foto, prevalece la foto.
   - Nombre/alias
   - País/número (número no editable directamente)
   - Fecha de registro
-  - Visibilidad del número de teléfono (privado o público)
-- **Historial completo**: Solicitudes y viajes realizados
+  - Visibilidad del número de teléfono (privado o público); el número de teléfono permanece privado (oculto) por defecto.
 - **Estadísticas visibles**:
+  - Mostrar:
+  - **Media global** y medias por rol:
+    - ⭐ Calificación media como conductor
+    - ⭐ Calificación media como viajero
+    - Indicadores internos simplificados:
+      - Puntualidad: Excelente/Buena/Irregular/Mala (según media 0–5)
+      - Fiabilidad: Muy fiable/Fiable/Variable (según media 0–5)
+      - Trato/compañerismo: media de valoraciones (peso 2 en la reputación)
   - Viajes completados
   - Viajes cancelados (importante para reputación futura)
+  - veces conductor completado (y cancelaciones)
+  - veces viajero completado (y cancelaciones)
 - Grupos activos
-- Veces como conductor
-- Cancelaciones como conductor
 - Calificación como conductor/viajero
 
 - **Enviar mensaje**: Botón visible en el perfil (icono globo de mensaje junto al nombre/encabezado o como CTA principal bajo los datos). Abre chat privado con ese usuario.
 
 - **Sección opcional**: "Mis lanzaderas frecuentes"
-- **Cambiar rol predeterminado**: opción para establecer rol preferido (conductor/viajero)
 - Nota: La visivilidad del perfil no está configurada como modificable, en principio se podrá ver todos los datos salvo el del telefono (si el usuario lo dcide asi en esta pantalla)
 
 **Nota**: Datos del historial se guardan en iCloud/Drive del usuario
+
+---
+
+## **9.1 Pantalla EDICIÓN DE PERFIL (Mi Perfil)**
+
+**Función**: Permitir al usuario editar su información personal y configurar preferencias de privacidad y comportamiento en la app.
+
+**Acceso**:
+
+- Desde el **menú principal** (hamburguesa o perfil en AppBar superior)
+- Opción: **"Mi Perfil"** o **"Editar Perfil"**
+- También accesible desde **Pantalla 12 (Configuración)** → "Perfil de usuario"
+
+**AppBar**:
+
+- **Flecha atrás** (←) → vuelve a la pantalla anterior
+- **Título**: "Mi Perfil" o "Editar Perfil"
+- **Botón Guardar** (texto o icono ✓) → guarda cambios y vuelve atrás
+
+### **Secciones de la pantalla**
+
+#### **1. Información Personal** _(Editable)_
+
+**Avatar/Foto de perfil:**
+
+- Círculo grande con foto actual o inicial con color de reputación
+- Al pulsar → abre opciones:
+  - **[Tomar foto]** → abre cámara
+  - **[Elegir de galería]** → abre selector de imágenes
+  - **[Eliminar foto]** → vuelve a mostrar inicial con color
+  - **[Cancelar]**
+- Compresión automática de imagen para optimizar almacenamiento
+- Previsualización antes de guardar
+
+**Nombre/Alias:**
+
+- Campo de texto editable
+- Validación: mínimo 2 caracteres, máximo 30
+- Aviso si contiene caracteres especiales no permitidos
+- Texto de ayuda: _"Este nombre se mostrará a otros usuarios"_
+
+**País:**
+
+- Selector de país (dropdown o pantalla de búsqueda)
+- Muestra bandera + nombre del país
+- Por defecto: país detectado por código de teléfono
+
+**Número de teléfono:**
+
+- **Solo lectura** (no editable directamente desde aquí)
+- Mostrado con formato internacional: +XX XXX XXX XXX
+- Enlace/botón: **"Cambiar número"** → redirige a **Pantalla 12 (Configuración)**
+  donde está el flujo completo de cambio de número
+
+**Fecha de registro:**
+
+- **Solo lectura**
+- Formato: "Miembro desde DD/MM/YYYY"
+
+#### **2. Privacidad y Visibilidad**
+
+**Visibilidad del número de teléfono:**
+
+- Toggle switch (ON/OFF)
+- **OFF (por defecto)**: Número privado, no visible para otros usuarios
+- **ON**: Número visible en perfil público
+- Texto explicativo debajo:
+  ```
+  ℹ️ Si desactivas esta opción, otros usuarios no verán tu número
+  de teléfono. Podrán contactarte mediante chat en la app.
+  ```
+  **Visibilidad de ubicación en viajes:**
+- Toggle switch (ON/OFF)
+- **OFF (por defecto)**: Preguntar en cada viaje si compartir ubicación
+- **ON**: Compartir ubicación automáticamente en todos los viajes
+- Texto explicativo:
+
+  ```
+  ℹ️ Si activas esta opción, tu ubicación se compartirá
+  automáticamente con el conductor y otros viajeros durante los
+  viajes. Puedes desactivarla en cualquier momento.
+
+  ⚠️ Nota: Para ser conductor es obligatorio compartir ubicación.
+  ```
+
+#### **3. Estadísticas y Reputación** _(Solo lectura - Informativo)_
+
+**Resumen visual de reputación:**
+
+- ⭐ **Reputación global**: X.X / 5.0
+- Separador visual o tarjetas diferenciadas:
+  - 🚗 **Como conductor**: X.X / 5.0
+  - 👤 **Como viajero**: X.X / 5.0
+
+**Indicadores simplificados:**
+
+- **Puntualidad**: [Barra de progreso] Excelente/Buena/Irregular/Mala
+- **Fiabilidad**: [Barra de progreso] Muy fiable/Fiable/Variable
+- **Trato**: [Estrellas visuales] X.X / 5.0
+
+**Contador de actividad:**
+
+- 📊 **Viajes completados**: XX
+- ❌ **Viajes cancelados**: XX
+- 🚗 **Como conductor**: XX viajes (XX cancelaciones)
+- 👤 **Como viajero**: XX viajes (XX cancelaciones)
+- 👥 **Grupos activos**: XX
+
+**Enlace al historial completo:**
+
+- Botón o enlace: **"Ver historial detallado"** → abre **Pantalla 8 (Mis Solicitudes)**
+  en la pestaña "Historial"
+
+#### **4. Configuración de Notificaciones** _(Acceso rápido)_
+
+Enlace directo a configuración detallada:
+
+- 🔔 **"Gestionar notificaciones"** → abre **Pantalla 12 (Configuración)**
+  sección de notificaciones
+
+**Eliminar cuenta:**
+
+**Cambiar de número**
+
+### **Validaciones y Comportamiento**
+
+**Al cambiar datos:**
+
+1. Los cambios NO se guardan automáticamente
+2. Si el usuario pulsa "atrás" sin guardar → modal:
+
+   ```
+   Tienes cambios sin guardar
+
+   [Descartar]  [Guardar]  [Cancelar]
+   ```
+
+**Al guardar:**
+
+1. Validar todos los campos editables
+2. Mostrar loader/spinner durante guardado
+3. Al completar con éxito:
+   - Toast/Snackbar: "Perfil actualizado correctamente"
+   - Volver a pantalla anterior
+4. Si hay error:
+   - Toast/Snackbar: "Error al actualizar perfil. Intenta de nuevo"
+   - Mantener en pantalla de edición con datos actuales
+
+**Límites y restricciones:**
+
+- **Foto**: máx. 5 MB, formatos JPG/PNG
+- **Nombre**: 2-30 caracteres, sin emojis
+- **Cambio de datos**: sin límite de veces
+
+### **Estados de Error**
+
+**Sin conexión:**
+
+- Deshabilitar botón "Guardar"
+- Mostrar banner: "Sin conexión. Conecta para guardar cambios"
+
+**Error de carga:**
+
+- Mostrar mensaje: "No se pudo cargar tu perfil"
+- Botón: **"Reintentar"**
+
+### **Diseño Visual (UI Guidelines)**
+
+**Layout:**
+
+- ScrollView vertical con padding 16px
+- Separadores sutiles entre secciones
+- Campos de texto con Material Design estilo outlined
+- Toggle switches alineados a la derecha
+
+**Colores:**
+
+- Fondo: blanco o gris muy claro (#F5F5F5)
+- Texto principal: gris oscuro (#212121)
+- Texto secundario: gris medio (#757575)
+- Elementos editables: azul (#0077B6)
+- Solo lectura: gris (#9E9E9E)
+
+**Tipografía:**
+
+- Títulos de sección: 16sp, Semi-Bold
+- Campos: 14sp, Regular
+- Ayuda/descripción: 12sp, Regular, gris medio
+
+### **Accesibilidad**
+
+- Labels descriptivos en todos los campos
+- Hints/placeholders informativos
+- Contraste mínimo 4.5:1 en todos los textos
+- Tamaño mínimo de touch: 48x48dp
+- Soporte para lectores de pantalla
+
+### **Ejemplo de Flujo Completo**
+
+1. Usuario abre **"Mi Perfil"** desde menú principal
+2. Ve su información actual precargada
+3. Pulsa en avatar → elige nueva foto de galería
+4. Cambia nombre de "Juan" a "Juan Martínez"
+5. Activa toggle "Mostrar número de teléfono"
+6. Pulsa **"Guardar"**
+7. Sistema valida y guarda cambios
+8. Toast: "Perfil actualizado correctamente"
+9. Vuelve a pantalla anterior
+10. Cambios visibles en perfil público inmediatamente
+
+### **Relación con otras pantallas**
+
+| Desde 9.1 se puede ir a:         | Acción                            |
+| -------------------------------- | --------------------------------- |
+| **Pantalla 12** (Config)         | Cambiar número / Notificaciones   |
+| **Pantalla 8** (Mis Solicitudes) | Ver historial completo            |
+| **Pantalla 9** (Perfil público)  | Vista previa de cómo te ven otros |
+
+### **Notas de Implementación**
+
+**Backend/Firebase:**
+
+- Actualizar colección `users/{userId}` en Firestore
+- Subir foto a Firebase Storage: `profile_images/{userId}.jpg`
+- Mantener caché local de foto para rendimiento
+
+**Seguridad:**
+
+- Validar tamaño de imagen en cliente Y servidor
+- Sanitizar inputs de texto
+- Verificar autenticación antes de permitir cambios
+
+**Performance:**
+
+- Comprimir imagen antes de subir (max 800x800px, calidad 80%)
+- Debounce en campos de texto (300ms)
+- Guardar solo campos modificados (no todo el perfil)
 
 ---
 
@@ -1934,7 +2260,7 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
 
 ---
 
-### 10.1 Pantalla CREACION/EDICIÓN DE VEHÍCULO
+## 10.1 Pantalla CREACION/EDICIÓN DE VEHÍCULO
 
 Arriba a la izquierda flecha atras para volver.  
 En esta pantalla se puede modificar de un vehículo:
@@ -2014,7 +2340,7 @@ En esta pantalla se puede modificar de un vehículo:
 
 ---
 
-### **11. PANTALLAS DE CHAT**
+## **11. PANTALLAS DE CHAT**
 
 Comunicación completa entre usuarios con 2 canales de chat: grupo y lanzadera. En la pagina de chat a nivel de grupos, solo será posible elegir entre grupo, y al pulsar se baja al nivel del grupo elegido en la pagina de chat.
 
@@ -2144,7 +2470,7 @@ Tendrá varios canales de chat:
 
 ---
 
-### **12\. CONFIGURACIÓN (Settings)**
+## **12\. Pantalla CONFIGURACIÓN (Settings)**
 
 **Función**: Configuración general de la aplicación.
 
@@ -2157,6 +2483,45 @@ Tendrá varios canales de chat:
 - **Cambiar número de teléfono** (mantiene UID)
 - Ayuda/contacto
 - **Eliminar cuenta** (flujo crítico)
+- No hay opción de cerrar sesión manual; la sesión permanece activa.
+
+### **12.1 Notificaciones**
+
+- **Modo global**:
+  - Toggle principal: Activar/desactivar notificaciones push (in-app sigue mostrando historial).
+  - Silencio programado: rango horario en el que no se muestran banners/sonidos (las notificaciones quedan en el Centro de Notificaciones).
+- **Por tipo** (toggles independientes; todas ON por defecto):
+  - Invitaciones a grupos
+  - Cambios en horarios/lanzaderas
+  - Solicitudes (plazas, conductor)
+  - Chat (grupos/lanzaderas/privados) — permite “solo in-app, sin push”
+  - Alertas de ubicación de conductor (críticas, no silenciables; solo se puede bajar a modo “solo in-app”)
+  - Recordatorios de viaje (T-40 min o el configurado)
+- **Canales de entrega**:
+  - Sonido/vibración on/off
+  - Badge en icono 🔔 on/off (si se desactiva, sigue apareciendo en la pantalla de notificaciones)
+- **Acciones rápidas**:
+  - Botón “Eliminar todas” (requiere confirmación, afecta solo al historial local)
+  - Botón “Restablecer a valores por defecto” (todas ON, sonido/badge activados, sin silencio programado)
+
+---
+
+### **13. Modal de valoración al finalizar el viaje**
+
+(\*) Nota: Ver 5.2 para reglas y cálculo de reputación.
+
+- Al marcar llegada (o al detectar el fin del trayecto) se muestra un **modal de valoración 0–5 estrellas**:
+  - Si el usuario fue **conductor**, valora a cada viajero.
+  - Si el usuario fue **viajero**, valora al conductor.
+- Es opcional pero prioritario; se puede cerrar manualmente.
+- Interfaz:
+  - Título: “Valora tu experiencia”
+  - Pregunta según rol (conductor → viajero; viajero → conductor)
+  - Control 0–5 estrellas
+  - Texto opcional (máx. 120 caracteres) y checkbox para **reportar**; si se marca, llega aviso a creador/admin y, si se confirma, penaliza 1 estrella al usuario reportado.
+  - Botones: **Enviar** / **Omitir**.
+
+---
 
 <br>
 
