@@ -381,7 +381,7 @@ Menús contextuales (⋮) por nivel y pestaña:
 
 - Nivel Grupos:
   - Home: crear grupo, ajustes personales rápidos.
-  - Chat: ajustes generales de chat, accesos a chats privados recientes.
+  - Chat: ajustes generales de chat, ver chats de grupo silenciados.
   - Horarios: ordenar/filtros globales de horarios, exportar (futuro).
   - Mapa: tipo de mapa, mostrar/ocultar tráfico y leyenda, centrar ubicación, configuración de capas.
 - Nivel Grupo:
@@ -614,8 +614,7 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 - **Menú (⋮)**:
 
   - Ajustes generales del chat
-  - Acceso a chats privados recientes
-  - Otras opciones de contexto
+  - Ver chats de grupo silenciado
 
 ### **Contenido**
 
@@ -1490,8 +1489,9 @@ En esta pantalla será posible:
    - **Fusionar horas**: mezcla horas actuales + nuevas sin duplicados (mostrar lista resultante).
    - **Horas nuevas**: sustituye las horas actuales por las nuevas seleccionadas.
 
-   Tras elegir una tarjeta:  
-   - aparece un botón **[Confirmar]** para aplicar la opción. 
+   Tras elegir una tarjeta:
+
+   - aparece un botón **[Confirmar]** para aplicar la opción.
    - Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
 
    En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
@@ -1735,13 +1735,14 @@ Aún no hay historial de viajes completados.
   - Visibilidad del número de teléfono (privado o público)
 - **Historial completo**: Solicitudes y viajes realizados
 - **Estadísticas visibles**:
-
   - Viajes completados
   - Viajes cancelados (importante para reputación futura)
-  - Grupos activos
-  - Veces como conductor
-  - Cancelaciones como conductor
-  - Calificación como conductor/viajero
+- Grupos activos
+- Veces como conductor
+- Cancelaciones como conductor
+- Calificación como conductor/viajero
+
+- **Enviar mensaje**: Botón visible en el perfil (icono globo de mensaje junto al nombre/encabezado o como CTA principal bajo los datos). Abre chat privado con ese usuario.
 
 - **Sección opcional**: "Mis lanzaderas frecuentes"
 - **Cambiar rol predeterminado**: opción para establecer rol preferido (conductor/viajero)
@@ -1789,7 +1790,7 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
 - **Trazabilidad:** se registra automáticamente quién hizo la última modificación en cada vehículo.
 - **Notificaciones:** administradores y creadores reciben notificación de nuevas solicitudes de creación.
 - **Chat integrado:** comunicación durante el proceso de aprobación de nuevos vehículos.  
-  Chat privado con creador/admin del grupo, integrado en la misma pantalla para más agilidad.
+  Chat privado con creador/admin del grupo, integrado en la misma pantalla para más agilidad: panel fijo en la parte inferior de la pantalla de gestión de vehículos, con altura reducida, siempre visible al hacer scroll. Muestra claramente con quién se conversa (creador/admin) y permite escribir/leer sin salir de la pantalla. El creador/admin recibe notificación y, al abrirla, accede a la misma vista con el panel de chat abierto para coordinar en tiempo real.
 
 > ### **Interfaz**
 >
@@ -1911,7 +1912,7 @@ Crear un chat funcional y elegante, coherente con el diseño general de ShuttleB
 - Es posible menciones @usuario.
 - Ver informacion de integrantes de ese chat.
 - Silencia/desactivar silencio de notificaciones del chat
-- Al pulsar sobre la imagen de un usuario se abre chat privado.
+- Al pulsar sobre la imagen del usuaro arribe en el chat, se abre el perfil del usuario, donde abrá la opcion de enviar mensaje privado y comenzar chat.
 - Pulsación larga sobre un mensaje da opción de:
   - copiar contenido del mensaje
   - responder
@@ -1940,6 +1941,11 @@ Tendrá varios canales de chat:
 - Tambien es posible entrar a chats privados anteriores pulsando en el icono de la barra superior al lado derecho del nombre del chat.
 - Seguirá teniendo la flecha atras arriba a izquierda, volviendo en este caso al inmediato superior es decir si se estaba en lanzadera se vuelve a chat lanzadera, y si se estaba en chat de grupo se vuelve a chat de grupo.
 - En la barra aparecerá el nombre del usuario en vez del nombre de la lanzadera o del grupo, mientras se esté en ese chat privado.
+- En todos los niveles de chat (Grupo y Lanzadera) hay un **selector superior (dos pestañas/segmented control bajo el AppBar)** con:
+  - **Chat grupal** (pestaña activa por defecto).
+  - **Chats privados** (lista de privados iniciados en ese contexto: miembros del grupo o de la lanzadera).
+- Desde **Chat grupal**, al tocar la pestaña **Chats privados** se muestra la lista de privados activos (nombre, foto, último mensaje, no leídos). Al tocar uno → abre el chat privado. El selector permanece para volver a Chat grupal.
+- Desde **Chat privado**, el selector permite volver a **Chat grupal** del mismo nivel con un toque. La flecha atrás sigue subiendo de nivel (Lanzadera → Grupo → Grupos) manteniendo la pestaña Chat activa.
 
 - Al pulsar sobre la imagen de usuario (superior izquierda a la derecha de la flecha de subir nivel) se abre el perfil del usuario, que es otra pantalla en la que se muestra:
 
@@ -1956,10 +1962,10 @@ Tendrá varios canales de chat:
 
 - Flecha atrás ⬅️ → vuelve a un nivel superior (de lanzadera a grupo y de grupo a grupos)
 - Título centrado: **Chat grupos o nombre de grupo - lanzadera** (ej. “Chat Nave ↔ Estación”).
-- Icono contextual (👤 / 👥) → permite cambiar entre vista de chats privados y chat grupal, según el contexto actual.
+- Icono contextual (👤 / 👥) → permite cambiar entre vista de chats privados y chat grupal, según el contexto actual. Es decir, si se está en el chat grupal (de grupo o de lanzadera) abra un icono en barra superior que al pulsar cambie para ver la lista de chats privados. y si se está en un chat privado, existirá un icono similar que indique el cambio a chat de grupo del nivel en el que se encuentre el usuario.
 - Icono de menú (⋮) en el lado derecho con opciones contextuales:
   - Ver integrantes del grupo, dependiendo de si se ve desde un grupo o desde una lanzadera.  
-    En esta opción es posible comenzar chat con cualquier usuario del grupo o lanzadera
+    En esta opción es posible comenzar chat con cualquier usuario del grupo o lanzadera, ya que al pulsar sobre un integrante se abre el perfil y dentro del perfil está la opción de enviar mensaje directo en chat privado.
   - Silenciar / reactivar notificaciones del chat.
   - Al pulsar sobre la imagen de un usuario se abre chat privado
   - Buscar dentro del chat.
