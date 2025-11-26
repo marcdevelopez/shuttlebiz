@@ -79,6 +79,7 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 - Se completó la especificación de **Navegación y Menús Superiores Contextuales** (breadcrumb, stack PageView por nivel, menús ⋮ por pantalla, botón atrás del sistema, transiciones).
 - Se cerró el **Flujo de Horarios y Gestión Modular**: separación edición lanzadera vs. horarios, flujo de creación sin horarios + modal, detalle de salida (solicitar/anular), chips Ida/Vuelta y comentario único por lanzadera.
 - Se cerró el **Sistema de Conflictos de Días en Horarios**: días ocupados visibles en gris, modal con tarjetas comparativas (horas actuales/fusionar/nuevas) y confirmación, y guía visual de estados de día.
+- Se cerró **Chats Privados entre Usuarios**: pestaña para cambiar entre chat grupal y lista de privados por nivel, botón de mensaje en perfil, y chat conductor↔creador/admin como panel fijo en gestión de vehículos.
 - `ROADMAP.md` actualizado: prioridad alta ítem 4 marcado como completado (especificación cerrada).
 
 ### 🧠 Decisiones tomadas:

@@ -49,12 +49,12 @@
 - Modal al deseleccionar día con confirmación explícita (eliminar horas / cancelar).
 - Interfaz visual documentada: días disponibles (blanco/borde gris), seleccionados (azul/rojo), ocupados (gris).
 
-**5. Chats Privados entre Usuarios**
+**5. Chats Privados entre Usuarios** ✅ _Especificación cerrada en `SPECS.md`_
 
-- Definir punto de acceso exacto: ¿icono específico/menú contextual/botón en perfil?
-- Resolver conflicto: pulsar avatar/nombre abre perfil → especificar acceso alternativo a chat privado
-- Documentar lista de chats privados activos: ubicación, organización, indicadores de no leídos
-- Especificar chat privado conductor↔creador/admin para gestión de vehículos
+- Puntos de acceso: selector superior (pestaña) en chat grupal para ver lista de chats privados activos y abrirlos (nivel Grupo/Lanzadera); botón “Enviar mensaje” en perfil (globo) para abrir privado.
+- Conflicto avatar/perfil: pulsar avatar abre perfil; el privado se inicia desde el botón de mensaje en perfil o la pestaña de chats privados.
+- Lista de chats privados: en pestaña “Chats privados” (nombre, foto, último mensaje, no leídos); el mismo selector permite volver al chat grupal.
+- Chat privado conductor↔creador/admin para gestión de vehículos: panel fijo inferior, siempre visible en la pantalla de vehículos; notificación abre la misma vista en el otro lado con el panel activo.
 
 #### 🟡 Prioridad Media (Post-MVP)
 
