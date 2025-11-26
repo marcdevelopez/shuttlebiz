@@ -109,7 +109,30 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
 
 ### **3.2. Configuración de horarios**
 
-(Integrado en las secciones 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios)
+Integrado en las secciones 6.1.3, donde se describe en detalle el flujo de creación y edición de horarios.
+
+### **Notas sobre Diferencia entre Frecuencia Semanal y Fecha Única**
+
+**Frecuencia semanal:**
+
+- Se seleccionan uno o más días de la semana (L, M, X, J, V, S, D)
+- Las horas configuradas se repiten cada semana en esos días
+- Requiere fecha de inicio (y opcionalmente fecha de fin)
+- El DatePicker muestra solo los días que coinciden con los seleccionados
+- Etiqueta UI: "Se repite desde: [fecha]"
+
+**Fecha única:**
+
+- No se selecciona ningún día de la semana
+- Las horas configuradas aplican solo a UNA fecha específica
+- No se repite
+- El DatePicker muestra todos los días >= hoy
+- Etiqueta UI: "Fecha única: [fecha]"
+
+**Transición entre modos:**
+
+- Al **seleccionar el primer día semanal**: el modo cambia de "fecha única" a "frecuencia semanal" automáticamente
+- Al **deseleccionar el último día**: el modo cambia de "frecuencia semanal" a "fecha única" automáticamente.
 
 ## **4\. Consulta de horario y Solicitud de Lanzadera**
 
@@ -119,7 +142,7 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ## **5\. Reglas y Validaciones**
 
-- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones.
+- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
 - **Solo puede haber un conductor por horario**.
 - **Se puede anular una solicitud**.
 - **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
@@ -1365,9 +1388,14 @@ El día actual se resaltará con un contorno especial (linea negra por ejemplo),
 
 Los días activos del horario pueden modificarse en la pantalla 6.1.3 Creación/Edición de Horario.
 
-Debajo se muestra la **fecha**.
-El texto será "Fecha de salida", tanto si hay dias semanales seleccionado como si no.
-A la derecha se incluye un **text button con la fecha actual** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha para poder consultar lanzaderas en otro dia distinto al actual. Se abrirá un selector de calendario que mostrará únicamente los días habilitados según la configuración del horario (por ejemplo, si el horario es de lunes a viernes, solo esos días serán seleccionables, y a partir del día actual inclusive).
+Debajo se muestra la **fecha**:  
+Tanto en edición como en consulta:
+
+- Si NO hay días semanales seleccionados: "Salida el día: [fecha]"
+- Si HAY >= 1 día semanal seleccionado: "Salidas desde el: [fecha]  
+  A la derecha se incluye un **text button con la fecha actual** que, al pulsarse, abre un **DatePicker** que permite seleccionar una fecha posterior a la actual:
+- Si es **frecuencia semanal**: el DatePicker debe deshabilitar días que NO coincidan con los días activos.
+- Si es **fecha única**: el DatePicker muestra todos los días >= hoy.
 
 Justo debajo de la fecha se mostrarán las **horas configuradas** en forma de **chips**, organizadas por sentido del trayecto (Ida/Vuelta) y con los colores correspondientes —**azul para la Ida** y **rojo para la Vuelta**—, manteniendo coherencia visual con la pantalla **6.1.3 Creación/Edición de Horario**.
 En esta vista, los chips se muestran únicamente en modo **visualización**, sin permitir edición ni eliminación, sirviendo para que el usuario identifique rápidamente los horarios disponibles dentro de ese grupo.
@@ -1500,32 +1528,35 @@ En esta pantalla será posible:
 1. Seleccionar los días semanales, pudiendo agregar o quitar días en este horario, **siempre que no estén ya usados por otro horario de la lanzadera**.
    En caso de intentar añadir un día que ya tenga un horario asignado, se abrirá un **modal informativo** indicando que no es posible añadirlo porque ya está ocupado, ofreciendo las siguientes opciones:
 
-   - **[Cancelar]**
-   - **[Ver horas actuales]**
+- **[Cancelar]**
+- **[Ver horas actuales]**
 
-   Si se pulsa **Ver horas actuales**, se muestran **tres tarjetas comparativas** con el resultado final de las horas para ese día, para elegir **una sola opción**:
+Si se pulsa **Ver horas actuales**, se muestran **tres tarjetas comparativas** con el resultado final de las horas para ese día, para elegir **una sola opción**:
 
-   - **Horas actuales**: mantiene exactamente las horas que ya tiene el día.
-   - **Fusionar horas**: mezcla horas actuales + nuevas sin duplicados (mostrar lista resultante).
-   - **Horas nuevas**: sustituye las horas actuales por las nuevas seleccionadas.
+- **Horas actuales**: mantiene exactamente las horas que ya tiene el día.
+- **Fusionar horas**: mezcla horas actuales + nuevas sin duplicados (mostrar lista resultante).
+- **Horas nuevas**: sustituye las horas actuales por las nuevas seleccionadas.
 
-   Tras elegir una tarjeta:
+Tras elegir una tarjeta:
 
-   - aparece un botón **[Confirmar]** para aplicar la opción.
-   - Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
+- aparece un botón **[Confirmar]** para aplicar la opción.
+- Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
 
-   En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
-   Este modal mostrará las siguientes opciones:
+En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
+Este modal mostrará las siguientes opciones:
 
-   - **Eliminar las horas** asociadas a ese día, retirándolo completamente del horario.
-   - **Cancelar** la acción, manteniendo el día seleccionado y sus horas configuradas.  
-     Si el usuario cancela o cierra el modal, el día permanecerá seleccionado sin cambios.
+- **Eliminar las horas** asociadas a ese día, retirándolo completamente del horario.
+- **Cancelar** la acción, manteniendo el día seleccionado y sus horas configuradas.  
+  Si el usuario cancela o cierra el modal, el día permanecerá seleccionado sin cambios.
 
-2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Inicio de repetición semanal” o “No se repite - Único día”, según si hay o no días semanales seleccionados (azules).  
-   En caso de ser fecha única, será obligatorio la hora de salida y fecha sean superiores a la actual (evidente pero es necesario codificarlo bien).
-   Si no se ha seleccionado ningún día de la semana, el horario se considerará de fecha única, siendo la fecha indicada obligatoria para definir la salida (sin repetición semanal).  
-    Por el contrario, si hay uno o varios días seleccionados, el horario se configurará como de frecuencia semanal, repitiéndose los días elegidos a partir de la fecha establecida.  
-    En ambos casos, deberá existir al menos una hora configurada (ya sea de ida o de vuelta) para poder guardar o finalizar la creación/edición del horario; de lo contrario, el sistema mostrará un aviso indicando que es necesario añadir al menos una hora antes de continuar.
+2. Seleccionar la fecha pulsando el texto FECHA (si se está creando el horario) o la fecha mostrada junto a “Salidas desde el: ” (hay días seleccionados) o “salida el día: ” (no hay nungún día seleccionado) (La etiqueta debe cambiar dinámicamente según si hay días seleccionados).  
+   En caso de ser fecha de salida de un solo día no semanal, será obligatorio que la hora de salida y fecha sean superiores a la actual (evidente ya que no tiene sentido programar una lanzadera para el pasado, pero es necesario codificarlo bien).  
+   Lógica para establecer fecha única o frecuencia semanal:
+
+- Si no se ha seleccionado ningún día de la semana, el horario se considerará de fecha única.
+- Si hay al menos un día seleccionado, el horario se configurará como de frecuencia semanal, repitiéndose los días elegidos a partir de la fecha establecida.  
+  En ambos casos, deberá existir al menos una hora configurada (ya sea de ida o de vuelta) para poder guardar o finalizar la creación/edición del horario; de lo contrario, el sistema mostrará un aviso indicando que es necesario añadir al menos una hora antes de continuar.
+
 3. Agregar una hora nueva al horario (12:30 por ejemplo), pulsando el botón (+) en el cuadro de horas (bajo los botones (chips) de dias de la semana y fecha), lo que abrirá el modal de selección de hora.
 4. Se podrán agregar horas de ida o vuelta sin cambiar de pantalla, pulsando los botones Ida (azul) o Vuelta (rojo). El botón del sentido activo se mostrará a la izquierda y con mayor tamaño para destacar, mientras que el inactivo permanecerá a la derecha y más pequeño.
 
@@ -1559,7 +1590,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 - Punto de origen
 - Punto de destino
 - Punto donde está el usuario
-- **Futuras versiones**: Seguimiento del vehículo en tiempo real
+- **Seguimiento básico en tiempo real (MVP)**: si hay conductor, mostrar su posición desde **T-40 min** antes de la salida (o el tiempo configurado en ajustes) hasta marcar llegada o cualquier otro algoritmo que detecte fin del recorrido. Actualizar posición cada 5-10 s (máximo 15 s si se prioriza batería/datos) y mostrar el icono del vehículo moviéndose sobre la ruta. Si no se recibe ubicación en el intervalo esperado, mostrar badge/alerta en el mapa y disparar la alerta especial de notificaciones.
 
 **Navegación (con flecha hacia la izquierda en lado izquierdo de la barra superior)**:
 

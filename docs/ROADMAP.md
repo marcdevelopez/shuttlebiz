@@ -66,10 +66,10 @@
 - Filtros por grupo/lanzadera con checkboxes y limpiar filtros.
 - Alertas urgentes (ej. conductor sin ubicación) resaltan pestaña/ícono; badge 📍 si aplica al conductor.
 
-**7. Terminología y Contenido por Nivel**
+**7. Terminología y Contenido por Nivel** ✅ _Especificación cerrada en `SPECS.md` (26/11/2025)_
 
 - Unificar terminología: "**Frecuencia semanal**" vs. "**Fecha única**" en todo el documento
-- Definir etiqueta dinámica del campo fecha (cambia según selección de días)
+- Campo de fecha y string anterior a fecha deben de estar claros y unificados en las specs.
 - Especificar comportamiento DatePicker en modo frecuencia
 - Definir contenido exacto de Chat/Horario/Mapa en cada nivel:
   - **Chat**: Grupos (selector), Grupo (chat del grupo), Lanzadera (chat de lanzadera)

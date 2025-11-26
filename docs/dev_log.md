@@ -13,8 +13,8 @@ Sirve para:
 
 # 📍 Estado actual
 
-Fase activa: **1 — Configuración inicial / Arquitectura**
-Última actualización: 2025-11-24
+Fase activa: **0 — Cierre de especificaciones y guía visual (en progreso)**
+Última actualización: 2025-11-26
 
 ---
 
@@ -109,6 +109,26 @@ Fase activa: **1 — Configuración inicial / Arquitectura**
 
 - Continuar con prioridades altas pendientes de Fase 0 (navegación/menús contextuales, flujo de horarios, sistema de conflictos, chats privados).
 - Refinar guía visual básica (tipografía, paleta, patrones de modales/chips) en `SPECS.md`.
+
+---
+
+## 🗓️ Día 5 — 2025-11-26
+
+### ✔ Trabajo realizado:
+
+- Se cerró el punto **7. Terminología y Contenido por Nivel** de la Fase 0 en `SPECS.md` (terminología frecuencia/fecha única, etiquetas de fecha, comportamiento DatePicker y contenido de Chat/Horario/Mapa por nivel).
+- Se elevó a MVP el **seguimiento básico en tiempo real** en el mapa de lanzadera (6.4) con refresco 5–10 s y alertas si falta ubicación, conectado a la regla de ubicación previa de conductores.
+- Se actualizó `ROADMAP.md` marcando el ítem 7 como completado.
+
+### 🧠 Decisiones tomadas:
+
+- Mantener tracking en vivo desde T-40 min configurable hasta llegada, priorizando refresco 5–10 s (máx. 15 s si se optimiza batería/datos).
+- Alertas de falta de ubicación se reflejan tanto en mapa como en notificaciones (badge/⚠️).
+
+### 🎯 Próximos pasos:
+
+- Completar guías visuales básicas pendientes (tipografía, paleta, patrones de modales/chips) para cerrar entregables de Fase 0.
+- Revisar `DATABASE_SCHEMA.md` para alinear nomenclatura de horarios/fechas con las specs finalizadas.
 
 ---
 
