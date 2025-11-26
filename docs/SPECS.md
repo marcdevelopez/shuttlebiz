@@ -248,9 +248,28 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Cambios en horarios
   - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
-- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones
+- **Configuración:** Usuario puede desactivar tipos específicos de notificaciones: lo que se puede hacer es que no salga el aviso es decir que no quede en icono arriba en la appbar, ni suene, pero si se entra en ajustes/notificaciones, se podran ver todas ellas, y borrar todas a la vez si se desean. Se marcaran como vistas al abrir la pantalla de notificaciones, y arriba al pulsar icono de "eliminar todas": se eliminan (requiere confirmación).
 - **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
-- **Centro de notificaciones:** Historial in-app de notificaciones recibidas. Almacena el historial de notificaciones recibidas por el usuario, permitiéndole consultarlas posteriormente. Debe mostrar notificaciones leídas/no leídas, fecha/hora y permitir acciones como abrir, archivar o eliminar 🔔.
+
+- **Centro de notificaciones:** Historial in-app de notificaciones recibidas en forma de ítems en una lista. Almacena el historial de notificaciones recibidas por el usuario, permitiéndole consultarlas posteriormente.
+- **Visualización de estados:**
+  - **No leídas**: icono de sobre cerrado con punto rojo, fondo blanco
+  - **Leídas**: icono de sobre abierto, fondo gris claro
+  - Cada ítem muestra: título, descripción breve, fecha/hora
+- **Pestañas organizativas:**
+  - **No leídas**: todas las notificaciones nuevas; al abrirlas pasan automáticamente a leídas
+  - **Leídas**: historial completo de notificaciones ya vistas
+  - **Solicitudes**: invitaciones a grupos, peticiones de conducción (cuando ya hay conductor), asignaciones de conducción por admin/creador, respuestas a creación de vehículo
+  - Pestaña se marca en **rojo** o con **icono de alerta** si requiere respuesta urgente
+  - Notificaciones se abren como modal al tocar push de notificación
+  - **Cambios en horarios/lanzaderas**: modificaciones, nuevas lanzaderas, nuevos horarios
+- **Filtros y acciones:**
+  - **Icono de filtro**: permite filtrar por grupo y/o lanzadera (listas con checkboxes, selecciones múltiples se suman)
+  - **Icono limpiar filtro**: reinicia selección
+  - **Acciones disponibles**: abrir detalle, eliminar notificación 🔔
+- **Alertas especiales:**
+  - **Conductor sin ubicación** cerca de hora de salida: aparece en pestaña Solicitudes
+  - Si el usuario es el conductor aludido: el icono 🔔 del AppBar añade un **extra de ubicación** para visibilidad rápida
 
 ---
 
@@ -316,6 +335,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - (2) chat,
   - (3) horario y
   - (4) mapa (siempre desde bottom bar o iconos visibles, no desde menús ocultos).
+- **Icono de notificaciones (🔔)**: aparece solo si hay no leídas; se coloca en la AppBar a la derecha y siempre **a la izquierda** del icono ✋. Muestra badge numérico si hay nuevas. Al pulsar abre la **Pantalla 7: Centro de Notificaciones**. Si no hay no leídas, el icono no se muestra.
 - El icono de mano ✋ abre siempre la **Pantalla 8: Mis Solicitudes** desde las AppBar de **Home, Chat, Horario y Mapa** en los tres niveles (Grupos, Grupo, Lanzadera). **No se muestra en pantallas secundarias** (formularios, detalles internos) salvo que la lógica del flujo requiera ese acceso contextual.
 - **Breadcrumb en AppBar**: indicar nivel actual arriba (ej. `Grupos > Trabajo > Nave-Estación`). En Nivel Grupos se muestra solo `Grupos`; en Nivel Grupo `Grupos > [Grupo]`; en Nivel Lanzadera `Grupos > [Grupo] > [Lanzadera]`. Si el espacio es limitado, usar truncado con elipsis en los nombres de grupo/lanzadera.
 
@@ -1557,6 +1577,77 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 
 ---
 
+## **7. Centro de Notificaciones**
+
+Pantalla independiente accesible desde el **icono de notificaciones (🔔)** en las AppBar de Home/Chat/Horarios/Mapa en los tres niveles (Grupos, Grupo, Lanzadera). Si no hay no leídas, el icono no se muestra.
+
+### **AppBar**
+
+- Título: **“Notificaciones”**
+- Botón **Marcar todas como leídas** (texto o icono) en lado derecho: el historial se conserva, aunque ya no aparece el icono de notificacion en appbar.
+- Flecha atrás → vuelve a la pantalla previa manteniendo la pestaña activa.
+
+### **Contenido**
+
+- **Tabs/filtros** (superior): `No leídas`, `Leídas`, `Solicitudes` (invitaciones/peticiones), `Cambios en horarios/lanzaderas`.
+- **Lista de notificaciones** (orden cronológico desc):
+  - Icono: sobre cerrado con punto rojo para no leídas; sobre abierto y fondo gris claro para leídas (fondo blanco para no leídas).
+  - Título + descripción breve + timestamp.
+  - Badge si está no leída.
+  - Acciones contextuales según tipo (ej.: Aceptar/Rechazar invitación; Ver cambios; Eliminar) incluyen los botones al abrir. Si es una notificación de solicitud (conducción por parte de admin/creador, otro usuario, o de creación de vehículo), la notificación al abrirse incluye botones para aceptar o rechazar.
+- **Estados vacíos**: mensaje claro y CTA para volver o refrescar.
+- **Filtros**: icono de filtro para elegir grupo y lanzadera (listas con checkboxes, múltiples selecciones suman); icono de limpiar filtro para reiniciar selección.
+
+### **Pestaña `Solicitudes`** (detalles adicionales)
+
+Contiene notificaciones que requieren **respuesta activa** del usuario:
+
+- **Invitaciones a grupos**: botones [Aceptar] [Rechazar] inline
+- **Peticiones de conducción**: cuando ya hay conductor asignado, solicitud de cambio
+- **Asignaciones de conducción**: admin/creador asigna conductor, requiere aceptación
+- **Respuestas a creación de vehículo**: confirmación de vehículo añadido por admin
+
+**Indicador de urgencia:**
+
+- Si requiere respuesta en **menos de X minutos** (configurable, por defecto 15-30 min):
+  - La pestaña se marca en **rojo** con icono **⚠️**
+  - La notificación aparece al tope de la lista
+  - Al tocar, se abre **modal prioritario** con acciones destacadas
+
+**Alerta especial: Conductor sin ubicación**
+
+- Aparece cuando un conductor no activa geolocalización **40 minutos antes** de la salida (o tiempo configurado)
+- Si el usuario actual **es el conductor**:
+  - Icono 🔔 del AppBar muestra **badge extra de ubicación (📍)**
+  - Notificación marcada con ⚠️ y prioridad máxima
+  - Modal directo al abrir: **"Activa tu ubicación para continuar como conductor"** → [Activar ubicación] [Cancelar]
+
+### **Comportamiento de marcado automático**
+
+- Al tocar una notificación en `No leídas`:
+  - Se marca automáticamente como **leída**
+  - Desaparece de `No leídas` y aparece en `Leídas`
+  - Badge numérico del icono 🔔 se actualiza en tiempo real
+- **Botón "Marcar todas como leídas"**:
+  - Marca todas las notificaciones actuales como leídas (sin eliminar historial)
+  - El icono 🔔 desaparece del AppBar si no quedan no leídas
+
+### **Comportamiento**
+
+- Tocar una notificación:
+  - Si es invitación de grupo → abre detalle con botones **[Aceptar] [Rechazar]**; también crea entrada en lista de chats privados con el invitante (bloqueada hasta que el invitado responda o acepte).
+  - Si es cambio de horario/lanzadera → abre la pantalla relevante (horarios/detalle de salida) y marca como leída.
+- Al marcar como leída se actualiza el badge del icono 🔔.
+  Las notificaciones de invitación a grupo también muestran, dentro del chat privado del invitante, botones inline **[Aceptar invitación] / [Rechazar]**; aceptar desde cualquiera de los dos lugares desbloquea el chat completo.
+
+### **Generación de no leídas**
+
+- Nuevas lanzaderas, nuevos horarios o modificaciones → generan no leída automáticamente.
+- Invitaciones a grupos → generan no leída y entrada en pestaña `Invitaciones`.
+  Solicitudes y respuestas (peticiones de conducción, creación de vehículo, asignaciones) → aparecen en `Solicitudes`; si requieren respuesta urgente, la pestaña se marca en rojo/alerta y el icono 🔔 añade indicador de ubicación si la alerta es por conductor sin ubicación cerca de la salida (si el usuario es el conductor aludido).
+
+---
+
 ## **8. PANTALLA “MIS SOLICITUDES”**
 
 _(Acceso universal desde el icono ✋ en todas las AppBars de la app)_
@@ -1946,6 +2037,7 @@ Tendrá varios canales de chat:
   - **Chats privados** (lista de privados iniciados en ese contexto: miembros del grupo o de la lanzadera).
 - Desde **Chat grupal**, al tocar la pestaña **Chats privados** se muestra la lista de privados activos (nombre, foto, último mensaje, no leídos). Al tocar uno → abre el chat privado. El selector permanece para volver a Chat grupal.
 - Desde **Chat privado**, el selector permite volver a **Chat grupal** del mismo nivel con un toque. La flecha atrás sigue subiendo de nivel (Lanzadera → Grupo → Grupos) manteniendo la pestaña Chat activa.
+- Invitaciones a grupos: además de aparecer en notificaciones, generan una entrada en la lista de chats privados con el invitante. La notificación tendrá un botón para enviar mensaje privado al invitante. El invitado puede responder primero para hacer preguntas y/o aceptar, esto se hara haciendo uso directo del chat privado, es decir, en el mismo chat que recibe la invitación puede responder y entonces sí recibirá el invitante el mensaje; Si el invitado acepta la invitación (desde notificaciones o botón inline en chat privado), el chat se desbloquea completamente y ambos pueden conversar libremente. hasta que el invitado envíe un mensaje o acepte, el invitante no puede escribir. Si el invitado rechaza la invitación en notificaciones, el chat se cierra para ambos y no se pueden enviar mensajes.
 
 - Al pulsar sobre la imagen de usuario (superior izquierda a la derecha de la flecha de subir nivel) se abre el perfil del usuario, que es otra pantalla en la que se muestra:
 
