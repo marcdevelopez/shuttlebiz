@@ -13,7 +13,7 @@ Sirve para:
 
 # 📍 Estado actual
 
-Fase activa: **0 — cierre de punto 8 completo**
+Fase activa: **0 — punto 9: Guías visuales básicas por empezar**
 Última actualización: 2025-11-26
 
 ---
@@ -137,6 +137,40 @@ Fase activa: **0 — cierre de punto 8 completo**
 
 - Completar guías visuales básicas pendientes (tipografía, paleta, patrones de modales/chips) para cerrar entregables de Fase 0.
 - Revisar `DATABASE_SCHEMA.md` para alinear nomenclatura de horarios/fechas con las specs finalizadas.
+
+---
+
+## 🗓️ Día 6 — 2025-11-27
+
+### ✔ Trabajo realizado:
+
+- Se registró que el ítem **"Conductor visible en listado"** de la Fase 0 ya estaba cubierto en `SPECS.md` (sección 5.3: tarjetas de lanzaderas muestran `Conductor: Nombre` / `Sin conductor` junto a plazas).
+- Se afinó **Gestión de vehículos**: acceso visible a creador/admin, conductores asignados/solicitados y creadores de un vehículo del grupo; permisos claros (creador/admin gestionan, conductores pueden elegir y solicitar alta/edición con aprobación). `SPECS.md` y `ROADMAP.md` actualizados.
+- Se detalló la alerta **T-30 min sin vehículo**: push + banner persistente con CTA a Pantalla 10, recordatorio a 5 min, escalado a creador/admin y chat; badge rojo hasta asignar vehículo.
+- Se especificó el flujo **“Elegir como lanzadera”** en Pantalla 10.2: visibilidad por rol (creador/admin, conductor asignado/solicitado, creador del vehículo), texto dinámico según número de salidas, selector cuando hay varias, validación de solapes y feedback con Snackbar + retorno a la pantalla previa; notificación T-30 abre Pantalla 10 con lanzadera preseleccionada.
+- Se documentó el **Modal de continuidad de conductor** en Pantallas (6.3.2.a): UI, botones, timeout de 2 min, manejo si ya hay conductor asignado y salto al selector de vehículo si acepta sin vehículo.
+- Se añadió el **Modal de conflictos de horario** (6.3.3.a): tarjetas comparativas (actuales/fusión/nuevas), layout, badges, selección única, confirmación/cancelación y avisos de conflicto.
+- Se añadió el **Modal de eliminación de horario** (6.3.1.a): UI con campo “ELIMINAR”, advertencia de cancelación de solicitudes, botones, y notificaciones tras confirmar.
+- Se incorporó la **Pantalla/Modal de invitación a grupo (receptor)** (7): detalle de invitación, botones Aceptar/Rechazar, info de grupo, integración con notificaciones y chat privado.
+- Se especificó el **Modal de cambio rápido de grupo** (5.1.a): acceso desde el nombre del grupo en AppBar, bottom sheet con buscador, lista de grupos con rol/badges y próxima salida, selección mantiene la pestaña activa en el nuevo grupo.
+- Se añadió el **Modal prioritario de activación de ubicación** (7.2): texto, acciones (activar ubicación / cancelar conducción), comportamiento de alerta/badge y flujo de reasignación al cancelar.
+- Se añadió el **Modal de alertas de conductor (admin/creador → conductor)** (7.3): invitación/servicio, aceptación/rechazo con motivo, vista de estado para admin (reasignar, mensaje, cancelar) y flujos de reenvío/escalado.
+- Se añadió la **Pantalla de solicitudes pendientes** (5.5.a): buscador, lista de solicitudes con contexto, acciones Aceptar/Rechazar con feedback, estado vacío e integración con gestión de grupo.
+- Se añadió el **Modal de solicitud de membresía** (4.1.3.a): botón Solicitar unirse, mensaje opcional, resumen del grupo, feedback y estado en Mis Solicitudes.
+- Se creó la **Pantalla de historial de notas/averías** (10.2.a): lista cronológica con iconos ℹ️/⚠️, autor/fechas, filtros, agregar/editar/eliminar propias notas, y diferenciación visual entre avería y característica.
+- Se añadió visibilidad de averías activas: badge ⚠️ en listado de vehículos (10) y icono ⚠️ en encabezado de 10.2 que enlaza a 10.2.a filtrado por averías.
+- Se detallaron **estados de error y vacíos** (sin conexión, sin grupos, sin lanzaderas, sin horarios hoy, conflicto de horarios con modal 6.3.3.a).
+- Se definió el **Modal de guardar cambios** (6.3.3.b) para salidas sin guardar con opciones Descartar/Guardar/Cancelar.
+- Se añadió patrón base de empty states (icono, título, descripción, CTA) y los estados de “sin notificaciones” y “sin solicitudes”.
+
+### 🧠 Decisiones tomadas:
+
+- Mantener la visibilidad de conductor únicamente en listados de horarios (5.3); no se replica en la pantalla de Chat (5.2) porque no aporta al flujo de chat.
+- El creador de un vehículo puede proponer ediciones aunque no tenga rol de conductor activo; los cambios requieren aprobación de creador/admin si no tiene ese rol.
+
+### 🎯 Próximos pasos:
+
+- Continuar con el cierre de guías visuales básicas para completar la Fase 0.
 
 ---
 
