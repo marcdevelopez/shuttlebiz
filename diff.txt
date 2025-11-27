@@ -1,0 +1,683 @@
+diff --git a/docs/ROADMAP.md b/docs/ROADMAP.md
+index 1f7c9f6..2ef931f 100644
+--- a/docs/ROADMAP.md
++++ b/docs/ROADMAP.md
+@@ -2,8 +2,8 @@
+ 
+ ## 📍 Estado actual
+ 
+-- Última actualización: 24/11/2025
+-- Specs en progreso: sección 5 (Nivel Grupo) completada; pendiente cierre final y guía visual básica
++- Última actualización: 27/11/2025
++- Specs: secciones 6.x y modales 7.x cerradas; pendiente solo guía visual básica
+ - Arquitectura decidida: Flutter + Riverpod + GoRouter + Firebase (Auth/Firestore/FCM), Storage para medios
+ - Scope MVP recortado: sin backups Drive/iCloud, sin multimedia ni búsqueda en chat, sin automatismos avanzados de conductor (5/40 min) en primera iteración
+ 
+@@ -85,8 +85,8 @@
+ **9. Otras Funcionalidades**
+ 
+ - **Conductor visible en listado**: Mostrar "Conductor: Nombre" o "Sin conductor" en ítems de 5.3
+-- **Gestión de vehículos**: Enlace explícito desde ajustes de grupo (5.5)
+-- **Cerrar secciones pendientes**: Completar pantallas 6.x+ y reglas UI pendientes en `docs/SPECS.md`
++- **Gestión de vehículos**: enlace desde ajustes de grupo (5.5); visible para creador/admin, conductores asignados/solicitados y creadores de un vehículo del grupo; permisos: creador/admin gestionan; conductores pueden elegir vehículo y solicitar alta/edición (requiere aprobación si no son creador/admin). Alerta T-30 sin vehículo: push + banner con CTA a Pantalla 10, recordatorio a 5 min, escalado a creador/admin y chat, badge rojo hasta asignar. Botón “Elegir como lanzadera” en 10.2 con selector de salida si hay varias y feedback con Snackbar.
++- **Cerrar secciones pendientes** Completar pantallas 6.x+ y reglas UI pendientes en `docs/SPECS.md` (incl. modales 6.3.1.a, 6.3.2.a, 6.3.3.a y 7.x de notificaciones: invitación a grupo, activación de ubicación, alertas de conductor)
+ - **Guías visuales básicas**: Tipografía, paleta, layout por nivel (Grupos/Grupo/Lanzadera), patrones de modales y chips de horarios
+ 
+ #### 🟢 Prioridad Baja (Versiones Futuras - Documentar para Roadmap)
+diff --git a/docs/SPECS.md b/docs/SPECS.md
+index 184112f..c13a4f4 100644
+--- a/docs/SPECS.md
++++ b/docs/SPECS.md
+@@ -168,9 +168,7 @@ El sistema define cómo se asigna y mantiene el rol de conductor en una lanzader
+ #### **1.1 Conductor por salida única (con continuidad opcional)**
+ 
+ - El conductor se asigna únicamente para la **salida concreta** seleccionada.
+-- Tras completar el viaje (cuando marque “Llegada” o el sistema detecte la llegada) y siempre que haya mas salidas ese día con esa misma lanzadera, se mostrará un modal:
+-
+-**“¿Deseas continuar como conductor en la siguiente salida?”**
++- Tras completar el viaje (cuando marque “Llegada” o el sistema detecte la llegada) y siempre que haya más salidas ese día con esa misma lanzadera, se mostrará el **Modal de continuidad de conductor** (ver **6.3.2.a** para UI y comportamiento).
+ 
+ Opciones:
+ 
+@@ -665,6 +663,20 @@ La pantalla puede mostrar dos situaciones:
+   - Solicitar unirse (se podrá agregar un mensaje al admin/creador del grupo)
+ - AppBar sin icono ✋ (pantalla secundaria de detalle).
+ 
++#### **4.1.3.a Modal de solicitud de membresía (grupo público)**
++
++- **Acceso:** botón **“Solicitar unirse”** en 4.1.3.
++- **UI:** bottom sheet/modal centrado (bloqueante hasta decidir).
++  - Título: **“Solicitar unirse a [Nombre del grupo]”**
++  - Texto breve: “Enviaremos tu solicitud al creador/admin. Puedes añadir un mensaje.”
++  - Campo opcional de mensaje (máx. 200 caracteres).
++  - Resumen del grupo: tipo (Público/Privado), miembros, lanzaderas activas.
++  - Botones:
++    - **[Enviar solicitud]** (primario) → crea solicitud pendiente.
++    - **[Cancelar]** (secundario) → cierra sin cambios.
++- **Feedback:** Snackbar **“Solicitud enviada”** y badge en `Mis Solicitudes` (Pantalla 8) mostrando estado Pendiente; si el grupo tiene auto-aprobación ON, se añade de inmediato y se muestra “Unido al grupo”.
++- **Comportamiento:** si ya existe una solicitud pendiente, el botón muestra estado “Solicitud enviada” y deshabilita reenvío; si fue rechazada, permite reenviar tras un cooldown (definir en backend).
++
+ ### UNIRSE A GRUPO EXISTENTE
+ 
+ Flujo para usuarios que quieren unirse a un grupo creado por otros.
+@@ -906,10 +918,10 @@ La pantalla puede mostrar dos situaciones:
+   - **Tocar una lanzadera** → abre la **Pantalla de Lanzadera** correspondiente, bajando al nivel de "Lanzadera".
+ - **Icono ✋ Mis Solicitudes** en la AppBar → abre la **Pantalla 8 (Estado de Mis Solicitudes)**. Este icono aparece en las vistas de Home/Chat/Horarios/Mapa del nivel Grupo; no en formularios u otras pantallas secundarias.
+ - **Flecha atrás** (←) en la esquina superior izquierda → regresa al **Nivel Grupos (4.1)**.
+-- **Nombre del grupo** visible en el AppBar. Al pulsarlo, se abre un modal para cambiar rápidamente a otro grupo del usuario.
+-- **Menú (⋮)** en esquina superior derecha con opciones:
++- **Nombre del grupo** visible en el AppBar. Al pulsarlo, se abre un modal para cambiar rápidamente a otro grupo del usuario (ver **5.1.a**).
++- **Menú (⋮)** en esquina superior derecha con opciones (la opción de vehículos solo aparece activa si el usuario es Creador/Admin, tiene rol de conductor asignado/solicitado en alguna lanzadera del grupo o es creador de un vehículo del grupo):
+   - Gestión del grupo → abre **Pantalla 5.5**
+-  - Gestión de vehículos → abre **Pantalla 10**
++  - Gestión de vehículos → abre **Pantalla 10** (creadores/admins gestionan; conductores asignados o creadores de un vehículo pueden elegirlo y solicitar alta/edición con aprobación)
+   - Configuración del grupo
+   - Invitar miembros
+ - **Botón flotante (FAB) "+"** (solo visible para Creadores/Admins):
+@@ -918,6 +930,22 @@ La pantalla puede mostrar dos situaciones:
+ 
+ ---
+ 
++#### **5.1.a Modal de cambio rápido de grupo**
++
++- **Cuándo se muestra:** al pulsar el nombre del grupo en el AppBar del Nivel Grupo (Home/Chat/Horarios/Mapa).
++- **Objetivo:** cambiar de grupo sin salir a la lista principal.
++- **UI:** bottom sheet modal (altura media) o diálogo centrado en desktop/tablet.
++  - Campo de búsqueda para filtrar por nombre de grupo.
++  - Lista de grupos del usuario:
++    - Nombre + badge de rol (Creador/Admin/Miembro).
++    - Contador de lanzaderas activas y próxima salida (si existe) en texto secundario.
++    - Grupo actual marcado con check ✔ y deshabilitado para selección.
++  - Botones: **[Cerrar]** (secundario) y acción implícita al tocar un grupo.
++- **Acción al seleccionar grupo:** cambia contexto al grupo elegido, cierra modal y refresca la pantalla actual manteniendo la pestaña (Home/Chat/Horarios/Mapa) en ese nuevo grupo.
++- **Comportamiento adicional:** si no hay más grupos, muestra mensaje “No tienes otros grupos” y solo botón **[Cerrar]**.
++
++---
++
+ ### **Pantalla 5.1.1 Creación de Lanzadera (NEW SHUTTLE)**
+ 
+ - **Función**: Pantalla para crear una nueva lanzadera desde el Home de Grupo.
+@@ -1126,23 +1154,36 @@ Cada ítem corresponde con cada una de las lanzaderas del grupo (ítem == lanzad
+ 
+ Cada lanzadera (ítem de lista) una **tarjeta compacta** con:
+ 
+-```
+-**Encabezado:**
+-- Nombre Lanzadera + `Origen → Destino`
++- **Encabezado:**
+ 
+-**Bloque de estado actual** (solo el más relevante):
++```
++Nombre Lanzadera + Origen → Destino
++```
+ 
++- **Bloque de estado actual** (_solo el más relevante_):
+ - **SI hay salida en curso:**
+-  - 🔴 `En curso · Salió 11:33 · 4/4 viajeros`
++
++```
++🔴 En curso · Salió 11:33 · 4/4 viajeros · Conductor: Pepito Grillo
++```
+ 
+ - **SI NO hay salida en curso, mostrar próxima:**
+-  - 🟢 `Próxima: hoy 12:00 · 3/4 plazas · Conductor: Juan M.`
+-  - o
+-  - ⚠️ `Próxima: hoy 12:00 · 3/4 plazas · Sin conductor`
++
++```
++🟢 Próxima: hoy 12:00 · 3/4 plazas · Conductor: Juan M.
++```
++
++- o
++
++```
++⚠️ Próxima: hoy 12:00 · 3/4 plazas · Sin conductor
++```
+ 
+ **Resumen compacto de horarios:**
+-- `L-V: 7:00, 8:30, 14:00, 18:00`
+-- `S-D: 9:00, 20:00`
++
++```
++L-V: 7:00, 8:30, 14:00, 18:00
++S-D: 9:00, 20:00
+ ```
+ 
+ **Diseño visual:**
+@@ -1304,7 +1345,7 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
+   - Explicación de diferencias a modo de info.
+ - **Gestión de solicitudes**:
+   - Auto-aprobación de nuevos miembros (toggle)
+-  - Lista de solicitudes pendientes (si auto-aprobación está desactivada)
++  - Lista de solicitudes pendientes (si auto-aprobación está desactivada) → ver **5.5.a**
+ - **Configuración de lanzaderas**:
+   - Tiempo mínimo para selección de vehículo (por defecto 30 minutos, editable)
+   - Tiempo de aviso de conductor sin ubicación (por defecto 40 minutos, editable)
+@@ -1315,13 +1356,13 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
+   - Por número de móvil → envía invitación por SMS ??
+   - Compartir enlace → genera enlace único de invitación
+   - Código de invitación → genera código de 6 dígitos
+-- **Gestión de vehículos** → abre **Pantalla 10**
++- **Gestión de vehículos** (solo visible si el usuario es Creador/Admin, conductor asignado o creador de un vehículo del grupo) → abre **Pantalla 10**
+ - **Eliminar grupo** (solo Creador):
+   - Requiere confirmación con modal
+   - Advierte sobre lanzaderas activas y solicitudes pendientes
+   - Solicita confirmación escribiendo el nombre del grupo
+ 
+-### **Para miembros regulares:**
++### **Para usuarios que NO SEAN CREADOR/ADMIN del grupo:**
+ 
+ #### **Vista de solo lectura**
+ 
+@@ -1344,6 +1385,25 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
+ 
+ ---
+ 
++#### **5.5.a Pantalla de solicitudes pendientes (auto-aprobación OFF)**
++
++- **Acceso:** desde Gestión del grupo (5.5) cuando la auto-aprobación está desactivada.
++- **Función:** revisar y decidir sobre solicitudes de ingreso al grupo.
++- **Contenido:**
++  - Buscador por nombre/teléfono.
++  - Lista de solicitudes:
++    - Avatar + nombre + teléfono (si disponible).
++    - Fecha de solicitud.
++    - Contexto: cómo llegó (enlace, código, invitación directa).
++    - Reputación rápida y contador de viajes (si existe).
++    - Mensaje opcional del solicitante (si lo envió).
++  - Filtros: pendientes/aceptadas/rechazadas (por defecto pendientes).
++- **Acciones por ítem:**
++  - **[Aceptar]** (primario) → agrega al grupo, envía notificación al usuario, limpia de pendientes.
++  - **[Rechazar]** (secundario/destructive) → opcional motivo breve; notifica al usuario.
++- **Feedback:** snackbar “Solicitud aceptada/rechazada” y actualización en tiempo real de la lista.
++- **Estado vacío:** “No hay solicitudes pendientes” + CTA **Invitar miembros**.
++
+ ## **6 NIVEL DE LANZADERA** _(vista específica de lanzadera)_
+ 
+ En este nivel se maneja una lanzadera de un grupo:
+@@ -1438,7 +1498,7 @@ De arriba abajo:
+   Al pulsarlo, se abre la **pantalla 6.1.3 Creación/Edición de Horario**, accesible solo para Creadores/Admin del grupo o del Biz en la app.
+ 
+ - Adicionalmente, si se es **Creador/Admin**, una **pulsación larga sobre un horario existente** abrirá un **modal de confirmación** para **eliminar dicho horario**.
+-  Este modal informará de forma clara que la acción es irreversible y requerirá introducir un **código de confirmación** antes de proceder, con las opciones **“Eliminar”** o **“Cancelar”**, para evitar eliminaciones accidentales.
++  Este modal (ver **6.3.1.a**) informa que la acción es irreversible y requiere confirmación explícita antes de proceder.
+ 
+ #### **AppBar (izquierda → derecha)**
+ 
+@@ -1488,6 +1548,21 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
+ 
+ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
+ 
++#### **6.3.1.a Modal de confirmación de eliminación de horario**
++
++- **Cuándo se muestra:** pulsación larga sobre un horario en la lista (solo Creador/Admin).
++- **Objetivo:** evitar borrados accidentales y avisar de impactos.
++- **UI:** modal centrado, icono ⚠️, bloqueante (no se cierra tocando fuera).
++  - Título: **“Eliminar este horario”**
++  - Texto de advertencia:
++    - “La eliminación es irreversible.”
++    - Si hay datos disponibles, mostrar: `Se cancelarán X solicitudes activas y se notificará a los afectados.`
++  - Campo de confirmación: input corto que requiere escribir **ELIMINAR** para habilitar el botón.
++  - Botones:
++    - **[Eliminar horario]** (primario, rojo) → habilitado solo si se escribió ELIMINAR.
++    - **[Cancelar]** (secundario) → cierra sin cambios.
++- **Al confirmar:** se elimina el horario, se cancelan solicitudes activas asociadas, se envían notificaciones a viajeros/conductor/admins y se muestra Snackbar “Horario eliminado y solicitudes canceladas”.
++
+ > ### **6.3.2 Hora Salida: Detalle y Solicitud**
+ >
+ > AppBar sin icono ✋ (pantalla secundaria de detalle/solicitud).
+@@ -1595,6 +1670,34 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero
+ > - Si el horario **ya ha pasado**, se deshabiltará el botón solicitar plaza y si es pulsado lanza snak o notificacion "esta salida ya no acepta solicitudes".
+ > - Si existe **conductor tardío** o cambios de última hora, el sistema mantiene la coherencia y notifica a afectados (ver 5. Reglas y Validaciones).
+ 
++#### **6.3.2.a Modal de continuidad de conductor (post-viaje)**
++
++- **Cuándo se muestra:** Al marcar “Llegada” (o detección automática) y solo si hay otra salida del mismo día para la misma lanzadera y el conductor no tiene asignación por rango.
++- **No se muestra** si la siguiente salida ya tiene conductor asignado; en su lugar se muestra mensaje informativo: **“Ya hay un conductor asignado para esta salida.”**
++- **UI:** Modal centrado, bloqueante (no se cierra tocando fuera).
++  - Título: **“¿Deseas continuar como conductor en la siguiente salida?”**
++  - Subtítulo: “Si continúas, seguirás como conductor en la siguiente salida disponible.”
++  - Botones:
++    - **[Sí, continuar]** (primario) → confirma rol para la siguiente salida disponible si no hay otro conductor asignado. Si no tiene vehículo asignado, abre selector de vehículo (6.3.2 / Pantalla 10) y aplican reglas T-30.
++    - **[No, finalizar]** (secundario) → libera el rol tras la salida actual.
++- **Timeout:** 2 minutos sin respuesta → se cierra como “sin respuesta”; se dispara el flujo de avisos (push a admins a los 5 min y aviso T-40 al chat si sigue sin conductor).
++
++> #### **6.3.2.b Subpantalla de asignación de conductor (Creador/Admin)**
++>
++> - **Acceso:** botón **“Asignar conductor”** visible solo para Creador/Admin en 6.3.2 y desde notificación 7.3 (abre esta subpantalla con la salida preseleccionada).
++> - **Contenido:**
++>   - Buscador de miembros por nombre.
++>   - Lista de miembros con:
++>     - Nombre + badge de rol (Creador/Admin/Miembro).
++>     - Disponibilidad: en el grupo, tiene vehículo, ubicación permitida (indicadores).
++>     - Reputación rápida (conductor/viajero) y contador de viajes.
++>     - Opción de preseleccionar vehículo (selector rápido si tiene vehículos).
++>   - Aviso si la salida ya tiene conductor asignado.
++> - **Acciones:**
++>   - **[Asignar como conductor]** (primario) → dispara alerta 7.3 al usuario seleccionado; si hay vehículo preseleccionado, se adjunta.
++>   - **[Cancelar]** (secundario) → cierra sin cambios.
++> - **Feedback:** Snackbar **“Solicitud de conductor enviada a [usuario]”**; el estado queda visible en 7.3 hasta aceptación/rechazo.
++
+ ### **6.3.3 Pantalla Creación/Edición Horario**
+ 
+ Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
+@@ -1612,16 +1715,7 @@ En esta pantalla será posible:
+ - **[Cancelar]**
+ - **[Ver horas actuales]**
+ 
+-Si se pulsa **Ver horas actuales**, se muestran **tres tarjetas comparativas** con el resultado final de las horas para ese día, para elegir **una sola opción**:
+-
+-- **Horas actuales**: mantiene exactamente las horas que ya tiene el día.
+-- **Fusionar horas**: mezcla horas actuales + nuevas sin duplicados (mostrar lista resultante).
+-- **Horas nuevas**: sustituye las horas actuales por las nuevas seleccionadas.
+-
+-Tras elegir una tarjeta:
+-
+-- aparece un botón **[Confirmar]** para aplicar la opción.
+-- Si el usuario sale del modal pulsando **Cancelar** (o cualquier otra acción que implique cancelación de la selección), el día que acababa de seleccionar quedará **deseleccionado automáticamente**.
++Si se pulsa **Ver horas actuales**, se abre el **Modal de conflictos de horario** (ver **6.3.3.a**) con tres tarjetas comparativas para elegir una sola opción.
+ 
+ En caso de deseleccionar un día que ya formaba parte del horario, se abrirá un modal de confirmación preguntando qué acción realizar.  
+ Este modal mostrará las siguientes opciones:
+@@ -1655,7 +1749,7 @@ De este modo, los horarios creados en un sentido se aplican a todos los días ma
+ En la parte superior se mostrarán los lugares de recogida y destino correspondientes a cada vista de Ida o Vuelta, para evitar confusiones. Por ejemplo, si en la vista de ida los horarios indican salidas desde la Estación hacia la Nave, se mostrará arriba: “Salida desde: Estación · Destino: Nave”, y viceversa en la vista de vuelta.
+ Además, el color del texto de cada lugar (tanto en “Salida desde” como en “Destino”) coincidirá con el color del sentido del viaje —azul para Ida y rojo para Vuelta— para facilitar su comprensión visual. Cada sentido mantendrá siempre su color asociado, aunque los lugares intercambien su posición como origen o destino según esté seleccionada la vista de Ida o de Vuelta en la sección de horas.
+ 
+-El guardado de cambios se hará desde el boton de guardar abajo a la derecha en la misma pantalla (tambien estará el de cancelar a la izquierda). Si sale de la pantalla sin pulsar el botón de guardado se abre un modal que pide confirmación para guardar cambios (este estado hay que guardarlo para que esta parte se cumpla aunque se cierre la app).
++El guardado de cambios se hará desde el boton de guardar abajo a la derecha en la misma pantalla (tambien estará el de cancelar a la izquierda). Si sale de la pantalla sin pulsar el botón de guardado se abre un modal que pide confirmación para guardar cambios (ver **6.3.3.b**) (este estado hay que guardarlo para que esta parte se cumpla aunque se cierre la app).
+ 
+ **Estados visuales de días (selector semanal en 6.3.3):**
+ 
+@@ -1665,6 +1759,34 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en
+ 
+ **Leyenda/ayuda breve:** “Gris = ocupado por otro horario; Azul/Rojo = seleccionado; Blanco = disponible.”
+ 
++#### **6.3.3.a Modal de conflictos de horario**
++
++- **Cuándo se muestra:** al pulsar un día ocupado por otro horario y elegir **Ver horas actuales**.
++- **Layout:** modal centrado, ancho medio; scroll si hay muchas horas.
++- **Tarjetas (stack vertical en móvil):**
++  1. **Horas actuales** (badge gris “Actual”): lista de horas actuales en chips.
++  2. **Fusionar horas** (badge azul “Fusionar”): mezcla sin duplicados; chips resultantes.
++  3. **Horas nuevas** (badge verde “Nuevas”): solo las horas nuevas seleccionadas; chips.
++- **Selección:** solo una tarjeta puede estar activa; estado seleccionado con borde y check ✔.
++- **Acciones:**
++  - **[Confirmar]** (primario) habilitado solo con tarjeta seleccionada → aplica opción.
++  - **[Cancelar]** (secundario) → cierra sin cambios y deja el día deseleccionado.
++- **Estados visuales adicionales:**
++  - Tarjeta deshabilitada (opacidad reducida) si no hay datos (ej. sin horas nuevas).
++  - Si la opción fusionar no cambia nada, mostrar aviso “Sin cambios; se mantienen las horas actuales”.
++
++#### **6.3.3.b Modal de guardar cambios (salir sin guardar)**
++
++- **Cuándo se muestra:** al intentar salir con cambios no guardados en pantallas de edición (p. ej. 6.3.3).
++- **UI:** modal centrado/bottom sheet bloqueante.
++  - Título: **“Tienes cambios sin guardar”**
++  - Texto: “¿Qué deseas hacer?”
++  - Botones:
++    - **[Descartar]** (secundario) → cierra y pierde cambios.
++    - **[Guardar]** (primario) → ejecuta guardado y luego cierra.
++    - **[Cancelar]** (texto) → vuelve a la edición sin cambiar nada.
++- **Comportamiento:** si no hay conexión, mostrar aviso en el modal (“Se guardará al recuperar conexión” o bloquear “Guardar” según política offline).
++
+ #### **6.4 Mapa** _(incluido en MVP)_
+ 
+ - Trayecto en línea azul
+@@ -1706,7 +1828,7 @@ Pantalla independiente accesible desde el **icono de notificaciones (🔔)** en
+   - Icono: sobre cerrado con punto rojo para no leídas; sobre abierto y fondo gris claro para leídas (fondo blanco para no leídas).
+   - Título + descripción breve + timestamp.
+   - Badge si está no leída.
+-  - Acciones contextuales según tipo (ej.: Aceptar/Rechazar invitación; Ver cambios; Eliminar) incluyen los botones al abrir. Si es una notificación de solicitud (conducción por parte de admin/creador, otro usuario, o de creación de vehículo), la notificación al abrirse incluye botones para aceptar o rechazar.
++  - Acciones contextuales según tipo (ej.: Aceptar/Rechazar invitación; Ver cambios; Eliminar) incluyen los botones al abrir. Si es una notificación de solicitud (conducción por parte de admin/creador, otro usuario, o de creación de vehículo), la notificación al abrirse incluye botones para aceptar o rechazar. Las invitaciones a grupos abren el **Modal/Pantalla 7.1**.
+ - **Estados vacíos**: mensaje claro y CTA para volver o refrescar.
+ - **Filtros**: icono de filtro para elegir grupo y lanzadera (listas con checkboxes, múltiples selecciones suman); icono de limpiar filtro para reiniciar selección.
+ 
+@@ -1732,7 +1854,7 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
+ - Si el usuario actual **es el conductor**:
+   - Icono 🔔 del AppBar muestra **badge extra de ubicación (📍)**
+   - Notificación marcada con ⚠️ y prioridad máxima
+-  - Modal directo al abrir: **"Activa tu ubicación para continuar como conductor"** → [Activar ubicación] [Cancelar]
++  - Modal directo al abrir (ver **7.2**): **"Activa tu ubicación para continuar como conductor"** → [Activar ubicación] [Cancelar]
+ 
+ ### **Comportamiento de marcado automático**
+ 
+@@ -1747,8 +1869,10 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
+ ### **Comportamiento**
+ 
+ - Tocar una notificación:
+-  - Si es invitación de grupo → abre detalle con botones **[Aceptar] [Rechazar]**; también crea entrada en lista de chats privados con el invitante (bloqueada hasta que el invitado responda o acepte).
++  - Si es invitación de grupo → abre detalle **7.1** con botones **[Aceptar] [Rechazar]**; también crea entrada en lista de chats privados con el invitante (bloqueada hasta que el invitado responda o acepte).
+   - Si es cambio de horario/lanzadera → abre la pantalla relevante (horarios/detalle de salida) y marca como leída.
++  - Si es alerta de conductor sin ubicación → abre el **Modal prioritario 7.2**.
++  - Si es alerta/asignación de conductor (admin/creador) → abre el **Modal 7.3** para aceptar/rechazar con motivo.
+ - Al marcar como leída se actualiza el badge del icono 🔔.
+   Las notificaciones de invitación a grupo también muestran, dentro del chat privado del invitante, botones inline **[Aceptar invitación] / [Rechazar]**; aceptar desde cualquiera de los dos lugares desbloquea el chat completo.
+ 
+@@ -1760,6 +1884,77 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
+ 
+ ---
+ 
++## **7.1 PANTALLA / MODAL DE INVITACIÓN A GRUPO (RECEPTOR)**
++
++### **Función**
++
++- Mostrar detalle de una invitación recibida a un grupo y permitir **Aceptar** o **Rechazar** con información suficiente antes de decidir.
++
++### **Accesos**
++
++- Al tocar una notificación de invitación (Notificaciones 6.2).
++- Desde el chat privado con el invitante vía botones inline **[Aceptar invitación] / [Rechazar]**.
++
++### **Contenido**
++
++- Invitante: nombre + avatar (tap abre perfil).
++- Grupo: nombre, tipo (Público/Privado), recuento de miembros, breve descripción (si existe).
++- Nivel de visibilidad: badge **Público** / **Privado**.
++- Información extra: fecha de creación (opcional), número de lanzaderas activas (si disponible).
++
++### **UI y acciones**
++
++- Modal/pantalla centrada (según plataforma), bloqueante hasta decidir:
++  - Título: **“Te han invitado a un grupo”**
++  - Subtítulo: **“[Invitante] te invita a unirte a [Nombre del grupo]”**
++  - Botones:
++    - **[Aceptar]** (primario) → une al grupo, marca notificación como aceptada y desbloquea chat con invitante.
++    - **[Rechazar]** (secundario/destructive) → declina, cierra modal, marca notificación como rechazada.
++  - Enlace contextual: **“Ver info del grupo”** → muestra resumen (nombre, tipo, miembros, lanzaderas activas).
++- Al aceptar: toast/snackbar “Te uniste a [grupo]”; grupo aparece en lista de grupos; chat privado con invitante queda abierto.
++- Al rechazar: toast “Invitación rechazada”; el chat queda cerrado/bloqueado.
++
++### **Comportamiento con notificaciones y chat**
++
++- Si se acepta desde notificación o modal, se sincroniza el estado con el chat privado (desbloqueado).
++- Si se rechaza, el chat se cierra para ambos.
++- La notificación pasa a leída; si había badge en pestaña `Solicitudes`, se reduce.
++
++### **7.2 Modal prioritario de activación de ubicación (conductor)**
++
++- **Cuándo se muestra:** alerta especial de conductor sin ubicación (T-40 min configurable) cuando el usuario es el conductor.
++- **UI:** modal centrado o bottom sheet bloqueante (no cierra al tocar fuera).
++  - Título: **“Activa tu ubicación para continuar como conductor”**
++  - Texto: “Faltan [X] minutos para la salida. La ubicación es obligatoria para seguir como conductor.”
++  - Botones:
++    - **[Activar ubicación]** (primario) → abre permisos/ajustes según plataforma y reintenta activación.
++    - **[Cancelar conducción]** (secundario/destructive) → libera el rol; se notifica a creador/admin y chat de lanzadera.
++- **Comportamiento:**
++  - Si activa ubicación, se cierra el modal y se limpia el badge de alerta.
++  - Si cancela conducción, se dispara flujo de reasignación (avisos a admin/chat) y la salida queda sin conductor hasta que se asigne otro.
++  - Si cierra con back/sistema, se mantiene la alerta y badge hasta resolver.
++
++### **7.3 Modal/Pantalla de alertas de conductor (admin/creador → conductor)**
++
++- **Contexto:** alertas del sistema de conductores (asignación o aviso de servicio) disparadas por admin/creador hacia un usuario conductor.
++- **Accesos:** notificación en pestaña `Solicitudes`, y botón inline en chat privado admin↔conductor (panel de vehículos) abre el mismo flujo.
++- **UI (conductor):** modal centrado / bottom sheet, prioridad alta.
++  - Título: **“Servicio de lanzadera como conductor”**
++  - Subtítulo: “Has sido seleccionado para conducir la lanzadera [Nombre] el [día] a las [hora].”
++  - Botones:
++    - **[Aceptar]** (primario) → confirma asignación; si no hay vehículo, abre selector (10) y aplica reglas T-30.
++    - **[Rechazar]** (secundario/destructive) → requiere motivo (picker con opciones rápidas: “Imprevisto urgente”, “No estoy asignado”, “Otro conductor será”, + texto opcional).
++  - Enlace: **“Ver detalles de la salida”** → lleva a 6.3.2.
++- **UI (admin/creador):** vista de respuesta en la notificación (o panel de solicitudes) con estado:
++  - Pendiente / Aceptada / Rechazada (con motivo).
++  - Acciones: **[Reasignar]** (selector de usuario), **[Enviar mensaje]** (abre chat privado), **[Cancelar alerta]**.
++- **Comportamiento:**
++  - Si no hay respuesta en 5 min → reenvío al conductor y aviso a otros admins; a T-40 se publica en chat de lanzadera “Se necesita conductor”.
++  - Al aceptar: se notifica a admin/creador y chat; se limpia la alerta de solicitudes.
++  - Al rechazar: se notifica a admin/creador con motivo; se invita a reasignar; la alerta queda resuelta.
++
++---
++
+ ## **8. PANTALLA “MIS SOLICITUDES”**
+ 
+ _(Acceso universal desde el icono ✋ en todas las AppBars de la app)_
+@@ -2208,13 +2403,21 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
+ **Reglas y comportamiento**
+ 
+ - Si faltan menos de **30 minutos** y aún no hay vehículo elegido:
+-  - Se enviará notificación de urgencia al conductor.
+-  - Si no responde en 5 minutos, se notifica al creador/admin y al chat de la lanzadera.
++  - **Alerta al conductor (no silenciable)**: push + banner in-app persistente con CTA **[Elegir vehículo ahora]** (abre Pantalla 10 con la lanzadera preseleccionada) y **[Recordar en 5 min]**.
++  - **Timeout 5 min sin acción**: se reenvía la alerta al conductor y se notifica a creador/admin + chat de la lanzadera con mensaje de urgencia (“Salida sin vehículo asignado”). El conductor mantiene un badge rojo en la AppBar hasta asignar vehículo.
++  - **Tap en la notificación**: abre directamente Pantalla 10 en modo selección (lista de vehículos con botón “elegir como lanzadera”); al confirmar, se cierra la alerta.
+ 
+ **Acceso a las funciones**:
+ 
+ - **Ver:** pulsando ítem/vehículo en la listview.
+-- **Elegir:** pulsando ítem/vehículo y luego, dentro del vehículo, arriba botón **"elegir como lanzadera"**.
++- **Badge de averías:** si un vehículo tiene averías activas, mostrar badge **⚠️** rojo en el ítem de la lista.
++- **Elegir como lanzadera (selección para salida)**:
++  - Botón visible dentro de la ficha (Pantalla 10.2) solo si el usuario es Creador/Admin, conductor asignado/solicitado o creador del vehículo.
++  - Texto dinámico:
++    - Si el usuario tiene **1 salida como conductor** próxima/activa: **"Elegir para [hoy/fecha] [hora]"**.
++    - Si tiene **>1 salida como conductor**: **"Elegir vehículo"** → abre selector de salidas; cada opción muestra fecha/hora y lanzadera.
++  - Validaciones: no muestra salidas solapadas si el vehículo ya está reservado; indica conflicto con badge ⚠️ si se intenta elegir.
++  - Feedback: al elegir se muestra Snackbar **"Vehículo asignado a [lanzadera · hora]"** y se vuelve a la pantalla previa (6.3.2 o 8) desde donde se inició la selección; el badge rojo de falta de vehículo se limpia si aplica.
+ - **Agregar:** En la listview de items/vehículos, abajo a la derecha, botón flotante (+).
+ - **Editar y eliminar:** pulsación larga sobre el ítem del vehículo en la lista:
+   - Arriba la barra da a elegir entre eliminar o editar:
+@@ -2223,14 +2426,17 @@ Al abrir la pantalla es una listview que en principio está vacía y se van agre
+ 
+ **Acceso a la pantalla Gestión de vehículos**:
+ 
+-- Desde Ajustes del grupo (cada grupo maneja sus vehículos).
++- Desde Ajustes del grupo y menú ⋮ del Nivel Grupo, habilitado para:
++  - Creadores y administradores.
++  - Usuarios con rol de conductor asignado (o solicitud aprobada) en alguna lanzadera del grupo.
++  - Usuarios que hayan creado un vehículo del grupo (pueden acceder para proponer correcciones aunque no estén asignados como conductores en ese momento).
+ - Cuando se apruebe como conductor a un usuario, ya que asignar un vehículo es paso obligado para poder usar una lanzadera.
+ 
+ **Permiso de acceso para crear/agregar, editar o eliminar vehículos:**
+ 
+ - **Creadores y administradores:** pueden agregar vehículos directamente (aprobados automáticamente). Pueden editar/eliminar cualquier vehículo del grupo.
+ - **Cualquier miembro actuando como conductor:** puede solicitar aprobación para crear nuevos vehículos cuando va a conducir.
+-- **Conductor que creó el vehículo:** puede editar su propio vehículo sin autorización adicional.
++- **Conductor que creó el vehículo:** puede proponer ediciones de su propio vehículo en cualquier momento, aunque no esté asignado como conductor en una salida actual; los cambios quedan pendientes de aprobación de creador/admin si el usuario no es creador/admin.
+ 
+ **Funcionalidades:**
+ 
+@@ -2277,6 +2483,11 @@ En esta pantalla se puede modificar de un vehículo:
+ 
+ ### 10.2 Pantalla VISTA DE VEHÍCULO
+ 
++**Encabezado:**
++
++- Nombre del vehículo (+ matrícula opcional).
++- **Averías activas:** si existen, mostrar icono **⚠️** rojo junto al nombre; al pulsarlo → abre 10.2.a con filtro “Averías” activado.
++
+ > **Datos del vehículo**
+ 
+ - **Obligatorios:**
+@@ -2314,29 +2525,85 @@ En esta pantalla se puede modificar de un vehículo:
+ - Debajo de un titulo "Historial de Vehículo" hay un container con listview, con items de cada uso que ha tenido el vehículo:
+   - ej.: “Última vez: Lanzadera Nave ↔ Estación, 7:30 - 05/11/2025”.
+   - En varias lineas si es necesario, bien organizado y limpio.
++    > **Notas y advertencias adicionales**
++    >
++    > **Función**:
++    > Este apartado contiene información útil relacionada con el uso real del vehículo (características, peculiaridades, trucos, averías, etc.).
++
++**Interfaz en Pantalla 10.2 (Vista de Vehículo):**
++
++- **Preview compacto de notas** en un container no scrollable:
+ 
+-> **Notas y advertencias adicionales** > > **Función**:
+-> Este apartado contiene información útil relacionada con el uso real del vehículo (características, peculiaridades, trucos, averías, etc.).
+-
+-- Se muestra en un **container scrollable** con **ListView** de notas.
+-- Cada nota mostrará:
+-
+-  - Fecha de creación
+-  - Fecha de última confirmación/verificación de que nota sigue activa y útil.
+-  - Usuario que la registró
+-  - Mensaje de la nota.
+-
+-- Las notas se clasifican en:
+-  - **Característica**
+-  - **Avería**
+-- Si la nota es una **Avería**, aparecerá un icono de advertencia en:
+-  - El ítem del vehículo en la lista
+-  - La cabecera del vehículo dentro de su ficha
+-- En la parte inferior derecha del listado habrá un **botón flotante (FAB)** para agregar nuevas notas:
+-  - Al pulsarse: abre modal:
+-    - Por defecto cada nota será una carcteristica del vehiculo, abrá que pulsar el icono averia (dentro del modal) para advertir que la nota es una avería.
+-    - Debajo estará el espacio para el texto de la nota.
+-    - Botónes de cancelar y añadir nota.
++  - Muestra **máximo 3 notas más recientes** (chips compactos con icono, fecha y primeras palabras).
++  - Si hay **averías activas**: badge rojo **⚠️** visible en la cabecera del vehículo y junto al título "Notas".
++  - Botón **"Ver todas las notas"** → abre **10.2.a** (historial completo).
++
++- **Botón flotante (FAB +)** en parte inferior derecha para **agregar nueva nota**:
++  - Abre modal:
++    - Toggle o botón para elegir tipo: **Característica** (por defecto) / **Avería** (icono ⚠️).
++    - Campo de texto para el contenido de la nota (200-500 caracteres).
++    - Botones: **[Cancelar]** **[Añadir nota]**.
++
++#### **10.2.a Pantalla de historial completo de notas/averías**
++
++- **Función:** ver y gestionar **todas** las notas/averías de un vehículo específico.
++- **Acceso:** desde 10.2 (Vista de vehículo) → botón **"Ver todas las notas"**.
++
++**Contenido:**
++
++- **Lista cronológica completa** (más recientes arriba, scrollable) con todas las notas del vehículo:
++  - Icono: ℹ️ para **Característica**, ⚠️ para **Avería**.
++  - Etiqueta/badge: "Característica" (azul claro) / "Avería" (rojo).
++  - Texto completo de la nota.
++  - Autor (nombre del usuario que la creó) y fechas:
++    - Fecha de creación.
++    - Fecha de última verificación/confirmación (si aplica).
++- **Filtros rápidos** (chips superiores): **[Todas]** **[Averías]** **[Características]**.
++
++**Acciones:**
++
++- **Agregar nota:** FAB (+) reutiliza el modal descrito en 10.2 (tipo, texto, Cancelar/Añadir).
++- **Editar/Eliminar (notas propias):** si el usuario creó la nota:
++  - Tap sobre la nota → abre modal de edición (mismo formulario que creación); al guardar actualiza la nota.
++  - Opción **"Eliminar"** (botón destructive) para borrar su propia nota.
++- **Notas de otros usuarios:** solo lectura (no editable ni eliminable).
++
++**Diferenciación visual:**
++
++- **Averías:** borde/strip rojo lateral, badge ⚠️ destacado.
++- **Características:** borde neutro o azul claro, icono ℹ️.
++- Autor y fechas en texto secundario gris (#757575).
++- Si hay muchas notas, agrupación opcional por mes/semana (separadores de fecha).
++
++**Indicadores en Pantalla 10 (Lista de vehículos):**
++
++- Si un vehículo tiene **averías activas**, mostrar badge **⚠️** en el ítem de la lista (junto a miniatura o matrícula).
++
++---
++
++### **10.3 Selección de vehículo para salida activa (Conductor)**
++
++**Contexto**: Cuando un usuario es conductor de una salida, debe elegir vehículo antes de T-30 min.
++
++**Accesos al flujo**:
++
++1. Desde **Pantalla 6.3.2 (Detalle de Salida)**: botón "Seleccionar vehículo" (visible solo para conductor)
++2. Desde **Pantalla 8 (Mis Solicitudes)**: en ítems donde el usuario es conductor, botón "Elegir vehículo"
++3. Desde **notificación de urgencia T-30**: al tocar abre directamente Pantalla 10 con la lanzadera preseleccionada
++
++**Dentro de Pantalla 10.2 (Vista de Vehículo)**:
++
++- Botón **"Elegir para salida [hora]"** según reglas de visibilidad descritas en “Acceso a las funciones” (solo creador/admin, conductor asignado/solicitado o creador del vehículo).
++- Al pulsar:
++  - Si hay **1 salida** pendiente/activa donde es conductor → asigna directamente, muestra Snackbar "Vehículo asignado", vuelve a pantalla previa (6.3.2 o 8).
++  - Si hay **múltiples salidas** → abre selector con lista (fecha/hora/lanzadera); tras elegir, asigna y muestra Snackbar.
++  - Si hay conflicto (vehículo ya asignado en horario solapado) → muestra aviso ⚠️ y no permite elegir esa salida.
++
++**Notificación de urgencia T-30**:
++
++- **Tipo**: push + banner in-app persistente (no silenciable) con CTA **[Elegir vehículo ahora]** y **[Recordar en 5 min]**; al tocar abre Pantalla 10 en modo selección.
++- **Escalado**: si en 5 min no hay acción, se notifica a creador/admin y al chat de lanzadera; se mantiene badge rojo hasta asignar vehículo.
++- **Si ignora**: a los 5 min, notificación a creador/admin + mensaje en chat de lanzadera
+ 
+ ---
+ 
+@@ -2563,6 +2830,30 @@ Tendrá varios canales de chat:
+ - **Sin horarios hoy:** Estado informativo cuando no hay viajes programados
+ - **Conflicto de horarios:** Manejo de overlapping entre diferentes viajes
+ 
++### **Estados de error y vacíos (UI detallada)**
++
++**Patrón base de empty state:**
++- Layout centrado vertical, icono 64–80dp gris medio (#9E9E9E), título 18sp semi-bold gris oscuro (#424242), descripción 14sp gris medio (#757575) máx. 2 líneas, CTA principal (si aplica) + CTA secundario opcional.
++
++- **Sin conexión (global):** overlay full-screen con icono `wifi_off`, mensaje “Sin conexión”, detalle “Revisa tu red o inténtalo de nuevo”; botón primario **[Reintentar]** y botón texto **[Trabajar sin conexión]** si hay caché disponible (solo lectura de últimos datos).
++- **Sin grupos (Nivel Grupos):** ilustración ligera + mensaje “No tienes grupos aún”; CTAs: **[Buscar grupos públicos]** y **[Crear grupo]** (primario). Botón secundario **[Pegar enlace de invitación]** si hay portapapeles con link.
++- **Sin lanzaderas en grupo (Nivel Grupo - Home):** estado ya descrito en 5.1, reforzar CTA: **[Crear primera lanzadera]** (creador/admin) o mensaje “Pide a un admin que cree la primera lanzadera” (miembro).
++- **Sin horarios hoy (Nivel Grupo - Horarios / Nivel Lanzadera - Horarios):** mensaje “No hay salidas para hoy en este grupo/lanzadera”; CTAs contextuales: **[Configurar primer horario]** (creador/admin) o **[Ver otros días]** (filtra calendario).
++- **Sin notificaciones (Pantalla 7):** icono 🔔 apagado, “No tienes notificaciones”, sin CTA o **[Actualizar]**.
++- **Sin solicitudes (Pantalla 8):** icono 📋, “No tienes solicitudes”, texto “Cuando solicites una plaza o conducción, aparecerá aquí”.
++- **Conflicto de horarios (solapamiento):** usar el modal 6.3.3.a; estado visual previo en selector de días: días en gris con badge ⚠️ y tooltip “Día ocupado por otro horario”.
++
++### **Modal reutilizable "Guardar cambios"**
++
++- **Cuándo se usa:** cualquier pantalla de edición si el usuario intenta salir con cambios sin guardar (5.1.1, 6.3.3, 9.1, 10.1, etc.).
++- **UI:** modal centrado/bottom sheet bloqueante; icono ⚠️ opcional.
++- **Texto:** Título “Tienes cambios sin guardar”; descripción “¿Qué deseas hacer?”.
++- **Botones:**
++  - **[Descartar]** (destructive/secondary) → pierde cambios y cierra.
++  - **[Guardar]** (primario) → valida y guarda; si falla validación, muestra errores y mantiene en pantalla.
++  - **[Cancelar]** (texto) → cierra modal y sigue en edición.
++- **Sin conexión:** si no hay red, mostrar nota “Se guardará al recuperar conexión” o deshabilitar “Guardar” según política offline de la pantalla.
++
+ ### **Accesibilidad:**
+ 
+ - Soporte para lectores de pantalla
+diff --git a/docs/dev_log.md b/docs/dev_log.md
+index f1bfb87..7c21ba6 100644
+--- a/docs/dev_log.md
++++ b/docs/dev_log.md
+@@ -13,7 +13,7 @@ Sirve para:
+ 
+ # 📍 Estado actual
+ 
+-Fase activa: **0 — cierre de punto 8 completo**
++Fase activa: **0 — punto 9: Guías visuales básicas por empezar**
+ Última actualización: 2025-11-26
+ 
+ ---
+@@ -140,6 +140,40 @@ Fase activa: **0 — cierre de punto 8 completo**
+ 
+ ---
+ 
++## 🗓️ Día 6 — 2025-11-27
++
++### ✔ Trabajo realizado:
++
++- Se registró que el ítem **"Conductor visible en listado"** de la Fase 0 ya estaba cubierto en `SPECS.md` (sección 5.3: tarjetas de lanzaderas muestran `Conductor: Nombre` / `Sin conductor` junto a plazas).
++- Se afinó **Gestión de vehículos**: acceso visible a creador/admin, conductores asignados/solicitados y creadores de un vehículo del grupo; permisos claros (creador/admin gestionan, conductores pueden elegir y solicitar alta/edición con aprobación). `SPECS.md` y `ROADMAP.md` actualizados.
++- Se detalló la alerta **T-30 min sin vehículo**: push + banner persistente con CTA a Pantalla 10, recordatorio a 5 min, escalado a creador/admin y chat; badge rojo hasta asignar vehículo.
++- Se especificó el flujo **“Elegir como lanzadera”** en Pantalla 10.2: visibilidad por rol (creador/admin, conductor asignado/solicitado, creador del vehículo), texto dinámico según número de salidas, selector cuando hay varias, validación de solapes y feedback con Snackbar + retorno a la pantalla previa; notificación T-30 abre Pantalla 10 con lanzadera preseleccionada.
++- Se documentó el **Modal de continuidad de conductor** en Pantallas (6.3.2.a): UI, botones, timeout de 2 min, manejo si ya hay conductor asignado y salto al selector de vehículo si acepta sin vehículo.
++- Se añadió el **Modal de conflictos de horario** (6.3.3.a): tarjetas comparativas (actuales/fusión/nuevas), layout, badges, selección única, confirmación/cancelación y avisos de conflicto.
++- Se añadió el **Modal de eliminación de horario** (6.3.1.a): UI con campo “ELIMINAR”, advertencia de cancelación de solicitudes, botones, y notificaciones tras confirmar.
++- Se incorporó la **Pantalla/Modal de invitación a grupo (receptor)** (7): detalle de invitación, botones Aceptar/Rechazar, info de grupo, integración con notificaciones y chat privado.
++- Se especificó el **Modal de cambio rápido de grupo** (5.1.a): acceso desde el nombre del grupo en AppBar, bottom sheet con buscador, lista de grupos con rol/badges y próxima salida, selección mantiene la pestaña activa en el nuevo grupo.
++- Se añadió el **Modal prioritario de activación de ubicación** (7.2): texto, acciones (activar ubicación / cancelar conducción), comportamiento de alerta/badge y flujo de reasignación al cancelar.
++- Se añadió el **Modal de alertas de conductor (admin/creador → conductor)** (7.3): invitación/servicio, aceptación/rechazo con motivo, vista de estado para admin (reasignar, mensaje, cancelar) y flujos de reenvío/escalado.
++- Se añadió la **Pantalla de solicitudes pendientes** (5.5.a): buscador, lista de solicitudes con contexto, acciones Aceptar/Rechazar con feedback, estado vacío e integración con gestión de grupo.
++- Se añadió el **Modal de solicitud de membresía** (4.1.3.a): botón Solicitar unirse, mensaje opcional, resumen del grupo, feedback y estado en Mis Solicitudes.
++- Se creó la **Pantalla de historial de notas/averías** (10.2.a): lista cronológica con iconos ℹ️/⚠️, autor/fechas, filtros, agregar/editar/eliminar propias notas, y diferenciación visual entre avería y característica.
++- Se añadió visibilidad de averías activas: badge ⚠️ en listado de vehículos (10) y icono ⚠️ en encabezado de 10.2 que enlaza a 10.2.a filtrado por averías.
++- Se detallaron **estados de error y vacíos** (sin conexión, sin grupos, sin lanzaderas, sin horarios hoy, conflicto de horarios con modal 6.3.3.a).
++- Se definió el **Modal de guardar cambios** (6.3.3.b) para salidas sin guardar con opciones Descartar/Guardar/Cancelar.
++- Se añadió patrón base de empty states (icono, título, descripción, CTA) y los estados de “sin notificaciones” y “sin solicitudes”.
++
++### 🧠 Decisiones tomadas:
++
++- Mantener la visibilidad de conductor únicamente en listados de horarios (5.3); no se replica en la pantalla de Chat (5.2) porque no aporta al flujo de chat.
++- El creador de un vehículo puede proponer ediciones aunque no tenga rol de conductor activo; los cambios requieren aprobación de creador/admin si no tiene ese rol.
++
++### 🎯 Próximos pasos:
++
++- Continuar con el cierre de guías visuales básicas para completar la Fase 0.
++
++---
++
+ # 🧾 Notas generales
+ 
+ - Actualiza al final de cada sesión

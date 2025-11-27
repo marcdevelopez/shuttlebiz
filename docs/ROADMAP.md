@@ -2,8 +2,8 @@
 
 ## 📍 Estado actual
 
-- Última actualización: 24/11/2025
-- Specs en progreso: sección 5 (Nivel Grupo) completada; pendiente cierre final y guía visual básica
+- Última actualización: 27/11/2025
+- Specs: secciones 6.x y modales 7.x cerradas; pendiente solo guía visual básica
 - Arquitectura decidida: Flutter + Riverpod + GoRouter + Firebase (Auth/Firestore/FCM), Storage para medios
 - Scope MVP recortado: sin backups Drive/iCloud, sin multimedia ni búsqueda en chat, sin automatismos avanzados de conductor (5/40 min) en primera iteración
 
@@ -85,8 +85,8 @@
 **9. Otras Funcionalidades**
 
 - **Conductor visible en listado**: Mostrar "Conductor: Nombre" o "Sin conductor" en ítems de 5.3
-- **Gestión de vehículos**: Enlace explícito desde ajustes de grupo (5.5)
-- **Cerrar secciones pendientes**: Completar pantallas 6.x+ y reglas UI pendientes en `docs/SPECS.md`
+- **Gestión de vehículos**: enlace desde ajustes de grupo (5.5); visible para creador/admin, conductores asignados/solicitados y creadores de un vehículo del grupo; permisos: creador/admin gestionan; conductores pueden elegir vehículo y solicitar alta/edición (requiere aprobación si no son creador/admin). Alerta T-30 sin vehículo: push + banner con CTA a Pantalla 10, recordatorio a 5 min, escalado a creador/admin y chat, badge rojo hasta asignar. Botón “Elegir como lanzadera” en 10.2 con selector de salida si hay varias y feedback con Snackbar.
+- **Cerrar secciones pendientes** Completar pantallas 6.x+ y reglas UI pendientes en `docs/SPECS.md` (incl. modales 6.3.1.a, 6.3.2.a, 6.3.3.a y 7.x de notificaciones: invitación a grupo, activación de ubicación, alertas de conductor)
 - **Guías visuales básicas**: Tipografía, paleta, layout por nivel (Grupos/Grupo/Lanzadera), patrones de modales y chips de horarios
 
 #### 🟢 Prioridad Baja (Versiones Futuras - Documentar para Roadmap)
