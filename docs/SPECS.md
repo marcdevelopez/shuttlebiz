@@ -117,6 +117,28 @@ Si prefieres fuentes embebidas en vez de Google Fonts dinámico, añade los arch
 - **Accesibilidad:** Asegurar AA en texto sobre fondos; evitar usar primario sobre fondos suaves sin contraste suficiente (usar gris oscuro para texto en fondos suaves).
 - **Notas de implementación (Flutter):** Mapear primario a `colorScheme.primary`, secundarios a `secondary`; usar `surface` para cards y `surfaceVariant` para fondos suaves; asignar `error` y `tertiary` a colores de estado para reutilizar en Snackbars/banners.
 
+### **Layout por nivel (mobile-first)**
+
+Marco visual para que los equipos usen el mismo esqueleto. El **contenido funcional ya está definido en las secciones de pantallas** (5.x, 6.x, 7.x, 10.x); aquí solo se fijan contenedores, spacing y elementos persistentes.
+
+- **Grupos (nivel 0):**
+  - AppBar con breadcrumb corto `Grupos`, icono 🔔 y CTA ✋ según contexto; búsqueda/filtros en menú ⋮.
+  - Lista vertical con cards de grupo; padding 16; grid base 4px; separadores `#E5E7EB`.
+  - FAB `+` anclado para crear grupo; empty state centrado (icono + título 16/600 + descripción 14/400 + CTA primario).
+- **Grupo (nivel 1):**
+  - AppBar con breadcrumb `Grupos > [Grupo]`, menú ⋮ (ajustes, invitaciones), iconos 🔔/✋.
+  - Tabs PageView fijas: Home, Chat, Horarios, Mapa; indicador primario; mantener pestaña activa al subir/bajar nivel.
+  - Contenido de cada tab respeta lo descrito en 5.x; cards con radio 12 y sombra suave; listas con padding 16.
+- **Lanzadera (nivel 2):**
+  - AppBar con breadcrumb `Grupos > Grupo > Lanzadera`, menú ⋮ (editar lanzadera, vehículos), iconos 🔔/✋.
+  - Tabs PageView: Home, Chat, Horarios, Mapa (misma pestaña activa que al salir de nivel Grupo).
+  - Contenido de cada tab según 6.x: chips de fechas/horas arriba, listas con chips de hora (fuente acento), estados coloreados por estado de reserva; panel fijo de chat conductor↔admin en pantallas de vehículos según specs.
+- **Patrones comunes:**
+  - Padding horizontal 16; cards radio 12; sombra sutil en superficies elevadas.
+  - Empty states coherentes: icono, título 16/600, descripción 14/400 gris secundario, CTA primario.
+  - Modales/bottom sheets: handle, título 16/600, acciones primarias a la derecha; texto secundario en gris.
+  - Chips: altura 32–36, borde `#E5E7EB`, relleno primario/estado según tipo; texto 14/500; usa fuente acento para horas/contadores.
+
 <br>
 
 ## **1\. Autenticación y Roles de Usuario**

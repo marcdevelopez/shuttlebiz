@@ -168,6 +168,7 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 - Se añadió la guía de **Tipografía oficial** de ShuttleBiz en `docs/SPECS.md` (Manrope principal, Space Grotesk/JetBrains Mono como acento numérico).
 - Se documentó el snippet de carga de fuentes en Flutter (`pubspec.yaml` + `google_fonts`) y ejemplos de uso de la fuente acento en chips/badges/tablas.
 - Se añadió la **paleta de color ShuttleBiz Core** en `docs/SPECS.md` con primario azul, secundario verde, neutrales, estados y guía de uso por componente/Flutter.
+- Se documentó el **layout por nivel (Grupos/Grupo/Lanzadera)** como marco visual (breadcrumbs, tabs, padding/cards, empty states, modales, chips) aclarando que el contenido funcional sigue lo definido en pantallas 5.x/6.x/7.x/10.x.
 
 ### 🧠 Decisiones tomadas:
 
