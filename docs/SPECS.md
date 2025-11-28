@@ -40,6 +40,68 @@ antes de usarlo en pantallas o flujos. Accesos rápidos: [CTA](GLOSSARY.md#cta-c
 
 En estas reglas se dan las funcionalidades básicas y reglas básicas de la app. En la sección de IU se describen las pantallas más importantes para implementar estas funcionalidades.
 
+---
+
+## **Guía Visual Básica**
+
+### **Tipografía oficial de ShuttleBiz**
+
+- **Familia principal:** `Manrope` (Google Fonts). Usa 400/500/600 como base; `450 (Medium)` es opcional para listas densas y lectura prolongada. Pensada para máxima legibilidad en móviles y listas densas.
+- **Fallbacks:** `Manrope, SF Pro Text, Segoe UI, sans-serif`.
+- **Pesos recomendados:**
+  - 400 → cuerpo
+  - 500 → etiquetas, chips, estado
+  - 600 → títulos, AppBar, CTAs
+- **Acentos numéricos/técnicos:** `Space Grotesk` 500 como primaria para horarios, contadores, chips, códigos y datos técnicos. Alternativa monoespaciada: `JetBrains Mono` 400–500 si se prefiere alineación de columnas. Aplicar solo en componentes numéricos/columnas para mejorar lectura de tiempos y tablas.
+- **Escala (mobile-first):** H1/AppBar 20px/28lh; H2 18/26; H3/CTAs 16/24 (semibold); Cuerpo 15/22 (regular); Notas/Caps 13/18.
+- **Tono y uso:** Títulos y CTAs peso 600; Cuerpo 400; Chips/Badges 500; evitar MAYÚSCULAS sostenidas salvo alertas.
+- **Ritmo visual:** Grid base 4px; espaciado entre párrafos 8–12px; máx. 64–72 chars por línea (web) y 42–50 (móvil).
+- **Accesibilidad:** Cumplir WCAG AA de contraste; respetar `textScaleFactor` y tamaños dinámicos; evitar condensar tracking.
+- **Internacionalización:** Soporte de tildes y ñ; revisar kerning en números con separadores (10:30, 08:05); tipografía acento numérica recomendada para exactitud visual.
+- **Uso por componente (ejemplos):** `Manrope` en títulos, cuerpo, botones y tabs; `Space Grotesk` en chips de hora, badges con contadores, columnas numéricas de tablas y códigos de referencia; `JetBrains Mono` solo si se requiere monoespaciado estricto en tablas o logs.
+
+#### **Carga en Flutter (pubspec + GoogleFonts)**
+
+```yaml
+# pubspec.yaml (fragmento)
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.0
+```
+
+```dart
+// theming base
+import 'package:google_fonts/google_fonts.dart';
+
+final manrope = GoogleFonts.manropeTextTheme();
+
+ThemeData buildTheme() {
+  return ThemeData(
+    textTheme: manrope.copyWith(
+      titleLarge: manrope.titleLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 20, height: 1.4),
+      titleMedium: manrope.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 18, height: 1.44),
+      titleSmall: manrope.titleSmall?.copyWith(fontWeight: FontWeight.w600, fontSize: 16, height: 1.5),
+      bodyMedium: manrope.bodyMedium?.copyWith(fontWeight: FontWeight.w400, fontSize: 15, height: 1.46),
+      labelMedium: manrope.labelMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 14, height: 1.5),
+      labelSmall: manrope.labelSmall?.copyWith(fontWeight: FontWeight.w400, fontSize: 13, height: 1.38),
+    ),
+  );
+}
+
+// Uso puntual de acento numérico en chips/badges/tablas
+Text(
+  '08:35',
+  style: GoogleFonts.spaceGrotesk(
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
+    height: 1.5,
+  ),
+);
+```
+
+Si prefieres fuentes embebidas en vez de Google Fonts dinámico, añade los archivos a `assets/fonts` y decláralos en `flutter: fonts:` usando los mismos nombres de familia.
+
 <br>
 
 ## **1\. Autenticación y Roles de Usuario**
