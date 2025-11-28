@@ -40,6 +40,105 @@ antes de usarlo en pantallas o flujos. Accesos rápidos: [CTA](GLOSSARY.md#cta-c
 
 En estas reglas se dan las funcionalidades básicas y reglas básicas de la app. En la sección de IU se describen las pantallas más importantes para implementar estas funcionalidades.
 
+---
+
+## **Guía Visual Básica**
+
+### **Tipografía oficial de ShuttleBiz**
+
+- **Familia principal:** `Manrope` (Google Fonts). Usa 400/500/600 como base; `450 (Medium)` es opcional para listas densas y lectura prolongada. Pensada para máxima legibilidad en móviles y listas densas.
+- **Fallbacks:** `Manrope, SF Pro Text, Segoe UI, sans-serif`.
+- **Pesos recomendados:**
+  - 400 → cuerpo
+  - 500 → etiquetas, chips, estado
+  - 600 → títulos, AppBar, CTAs
+- **Acentos numéricos/técnicos:** `Space Grotesk` 500 como primaria para horarios, contadores, chips, códigos y datos técnicos. Alternativa monoespaciada: `JetBrains Mono` 400–500 si se prefiere alineación de columnas. Aplicar solo en componentes numéricos/columnas para mejorar lectura de tiempos y tablas.
+- **Escala (mobile-first):** H1/AppBar 20px/28lh; H2 18/26; H3/CTAs 16/24 (semibold); Cuerpo 15/22 (regular); Notas/Caps 13/18.
+- **Tono y uso:** Títulos y CTAs peso 600; Cuerpo 400; Chips/Badges 500; evitar MAYÚSCULAS sostenidas salvo alertas.
+- **Ritmo visual:** Grid base 4px; espaciado entre párrafos 8–12px; máx. 64–72 chars por línea (web) y 42–50 (móvil).
+- **Accesibilidad:** Cumplir WCAG AA de contraste; respetar `textScaleFactor` y tamaños dinámicos; evitar condensar tracking.
+- **Internacionalización:** Soporte de tildes y ñ; revisar kerning en números con separadores (10:30, 08:05); tipografía acento numérica recomendada para exactitud visual.
+- **Uso por componente (ejemplos):** `Manrope` en títulos, cuerpo, botones y tabs; `Space Grotesk` en chips de hora, badges con contadores, columnas numéricas de tablas y códigos de referencia; `JetBrains Mono` solo si se requiere monoespaciado estricto en tablas o logs.
+
+#### **Carga en Flutter (pubspec + GoogleFonts)**
+
+```yaml
+# pubspec.yaml (fragmento)
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.0
+```
+
+```dart
+// theming base
+import 'package:google_fonts/google_fonts.dart';
+
+final manrope = GoogleFonts.manropeTextTheme();
+
+ThemeData buildTheme() {
+  return ThemeData(
+    textTheme: manrope.copyWith(
+      titleLarge: manrope.titleLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 20, height: 1.4),
+      titleMedium: manrope.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 18, height: 1.44),
+      titleSmall: manrope.titleSmall?.copyWith(fontWeight: FontWeight.w600, fontSize: 16, height: 1.5),
+      bodyMedium: manrope.bodyMedium?.copyWith(fontWeight: FontWeight.w400, fontSize: 15, height: 1.46),
+      labelMedium: manrope.labelMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 14, height: 1.5),
+      labelSmall: manrope.labelSmall?.copyWith(fontWeight: FontWeight.w400, fontSize: 13, height: 1.38),
+    ),
+  );
+}
+
+// Uso puntual de acento numérico en chips/badges/tablas
+Text(
+  '08:35',
+  style: GoogleFonts.spaceGrotesk(
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
+    height: 1.5,
+  ),
+);
+```
+
+Si prefieres fuentes embebidas en vez de Google Fonts dinámico, añade los archivos a `assets/fonts` y decláralos en `flutter: fonts:` usando los mismos nombres de familia.
+
+### **Paleta de color (ShuttleBiz Core)**
+
+- **Primario (acciones/AppBar/badges info):** Azul Cobalto `#1D6FFF`; presionado `#1558CC`; fondo suave `#E8F1FF`.
+- **Secundario (éxito/confirmación/chips positivos):** Verde Pino `#0FB67A`; presionado `#0A8B5F`; fondo suave `#E7F8F1`.
+- **Neutros (estructura y texto):** Texto principal `#1A1A1A`; texto secundario `#4B5563`; deshabilitado `#9CA3AF`; fondo app `#F7F9FC`; superficies `#FFFFFF`; bordes/divisores `#E5E7EB`.
+- **Estados:** Éxito `#0FB67A`; Advertencia `#F5A524` (fondo suave `#FFF4E0`); Error `#D7263D` (fondo suave `#FFE8ED`); Info `#1D6FFF`.
+- **Uso por componente:**
+  - Botón primario / FAB / links principales: Primario con texto `#FFFFFF`.
+  - Botón secundario / chips informativos: Secundario o neutro con borde `#E5E7EB`.
+  - Badges numéricos: Fondo primario o error según contexto; texto `#FFFFFF`.
+  - Alertas: color de estado + fondo suave + icono; texto `#1A1A1A` (o blanco si fondo es oscuro).
+  - Tabs/indicadores: Indicador primario; fondo tab bar `#FFFFFF` con sombra ligera.
+- **Accesibilidad:** Asegurar AA en texto sobre fondos; evitar usar primario sobre fondos suaves sin contraste suficiente (usar gris oscuro para texto en fondos suaves).
+- **Notas de implementación (Flutter):** Mapear primario a `colorScheme.primary`, secundarios a `secondary`; usar `surface` para cards y `surfaceVariant` para fondos suaves; asignar `error` y `tertiary` a colores de estado para reutilizar en Snackbars/banners.
+
+### **Layout por nivel (mobile-first)**
+
+Marco visual para que los equipos usen el mismo esqueleto. El **contenido funcional ya está definido en las secciones de pantallas** (5.x, 6.x, 7.x, 10.x); aquí solo se fijan contenedores, spacing y elementos persistentes.
+
+- **Grupos (nivel 0):**
+  - AppBar con breadcrumb corto `Grupos`, icono 🔔 y CTA ✋ según contexto; búsqueda/filtros en menú ⋮.
+  - Lista vertical con cards de grupo; padding 16; grid base 4px; separadores `#E5E7EB`.
+  - FAB `+` anclado para crear grupo; empty state centrado (icono + título 16/600 + descripción 14/400 + CTA primario).
+- **Grupo (nivel 1):**
+  - AppBar con breadcrumb `Grupos > [Grupo]`, menú ⋮ (ajustes, invitaciones), iconos 🔔/✋.
+  - Tabs PageView fijas: Home, Chat, Horarios, Mapa; indicador primario; mantener pestaña activa al subir/bajar nivel.
+  - Contenido de cada tab respeta lo descrito en 5.x; cards con radio 12 y sombra suave; listas con padding 16.
+- **Lanzadera (nivel 2):**
+  - AppBar con breadcrumb `Grupos > Grupo > Lanzadera`, menú ⋮ (editar lanzadera, vehículos), iconos 🔔/✋.
+  - Tabs PageView: Home, Chat, Horarios, Mapa (misma pestaña activa que al salir de nivel Grupo).
+  - Contenido de cada tab según 6.x: chips de fechas/horas arriba, listas con chips de hora (fuente acento), estados coloreados por estado de reserva; panel fijo de chat conductor↔admin en pantallas de vehículos según specs.
+- **Patrones comunes:**
+  - Padding horizontal 16; cards radio 12; sombra sutil en superficies elevadas.
+  - Empty states coherentes: icono, título 16/600, descripción 14/400 gris secundario, CTA primario.
+  - Modales/bottom sheets: handle, título 16/600, acciones primarias a la derecha; texto secundario en gris.
+  - Chips: altura 32–36, borde `#E5E7EB`, relleno primario/estado según tipo; texto 14/500; usa fuente acento para horas/contadores.
+
 <br>
 
 ## **1\. Autenticación y Roles de Usuario**
@@ -341,35 +440,39 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 ### Patrones de Modales y Diálogos
 
-- Los **modales** se utilizarán para confirmar acciones, mostrar avisos importantes o solicitar decisiones rápidas al usuario.  
-  Ejemplo: Confirmar creación de lanzadera o agregar el primer horario.
+Marco común para todos los modales/genéricos; los flujos específicos se detallan en 5.x/6.x/7.x/10.x.
 
-- **Estructura visual recomendada:**
-
-  - Fondo blanco con bordes suaves y ligera sombra.
-  - Texto principal en gris oscuro (#212121).
-  - Título o pregunta en negrita.
-  - Espaciado amplio para evitar toques accidentales.
-  - Línea divisoria superior a los botones de acción.
-
-- **Botones dentro del modal:**
-
-  - **Cancelar:** texto gris oscuro sin fondo (estilo “text button”).
-  - **Aceptar / Confirmar:** fondo rojo (#D32F2F) con texto blanco.
-  - Separación por línea gris (#E0E0E0) entre ambos botones.
-  - Los botones siempre alineados en horizontal, centrados o de borde a borde.
-
+- **Tipos:**
+  - **Confirmación breve:** altura compacta, título + descripción corta + botones primario/secundario.
+  - **Alerta crítica:** icono de estado (error/advertencia), fondo suave de estado detrás del encabezado; botón primario rojo (`#D7263D`) o amarillo (`#F5A524`) según gravedad.
+  - **Bottom sheet (acciones/contexto):** handle superior, puede cerrarse por swipe/tap fuera si no es bloqueante.
+  - **Formulario corto:** incluye campos 1–3 inputs; CTA primaria alineada a la derecha.
+- **Layout:**
+  - Padding 20px, espaciado vertical 12px; radio 12; sombra suave.
+  - Título 16/600 (`Manrope`), body 14/400; icono opcional alineado a la izquierda.
+  - Botones en fila: primario a la derecha (color según acción), secundario texto/borde gris `#E5E7EB`.
+  - Para bottom sheets: margin-top handle de 32px ancho, altura 4px, color `#E5E7EB`.
 - **Comportamiento:**
+  - Bloqueantes por defecto (no cerrar al tocar fuera) salvo informativos o bottom sheets de contexto.
+  - Estado deshabilitado con opacidad 0.4; foco visible en inputs y botones (stroke primario).
+  - Mensajes de error bajo campos en rojo `#D7263D`, 12/400.
+- **Accesibilidad:**
+  - Soportar `textScaleFactor`; mínimo 44x44 en botones; lector de pantalla con orden lógico.
+  - Contraste AA: texto oscuro sobre fondo blanco; botones primarios con texto blanco.
 
-  - El modal debe bloquear la interacción con el resto de la interfaz hasta cerrarse.
-  - Al pulsar fuera del modal no debe cerrarse automáticamente, excepto en modales informativos no críticos.
-  - Debe ser consistente en toda la app (mismo color, tipografía y espaciado).
+### Patrones de Chips y Badges
 
-- **Ejemplo:**
-  “¿Desea agregar el primer horario?”  
-  [Cancelar] [ Aceptar ]
-
-**Objetivo:** Mantener coherencia visual, simplicidad y claridad en las confirmaciones sin distraer de la acción principal.
+- **Chips de horarios/estados:**
+  - Altura 32–36; padding horizontal 12–16; radio 16.
+  - Fuente acento (`Space Grotesk` 14/500) para horas y contadores; `Manrope` 14/500 en etiquetas.
+  - Bordes `#E5E7EB` para neutros; relleno primario `#1D6FFF` para selección; rellenos de estado: éxito `#E7F8F1`, advertencia `#FFF4E0`, error `#FFE8ED`.
+  - Texto: primario/blanco en chip primario; gris oscuro en neutros; rojo `#D7263D` en estado error.
+- **Badges numéricos:**
+  - Fondo primario para contadores generales; fondo error para alertas; texto blanco 12/600.
+  - Tamaño mínimo 18x18; borde redondo completo.
+- **Filtros/pestañas chips:**
+  - Estado seleccionado con borde 0 y relleno primario; no seleccionado con borde `#E5E7EB`.
+  - Espaciado entre chips 8px; filas con wrap en móvil.
 
 <br>
 

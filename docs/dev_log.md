@@ -13,8 +13,8 @@ Sirve para:
 
 # 📍 Estado actual
 
-Fase activa: **0 — punto 9: Guías visuales básicas por empezar**
-Última actualización: 2025-11-26
+Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía lista)**
+Última actualización: 2025-11-27
 
 ---
 
@@ -80,33 +80,20 @@ Fase activa: **0 — punto 9: Guías visuales básicas por empezar**
 - Se cerró el **Flujo de Horarios y Gestión Modular**: separación edición lanzadera vs. horarios, flujo de creación sin horarios + modal, detalle de salida (solicitar/anular), chips Ida/Vuelta y comentario único por lanzadera.
 - Se cerró el **Sistema de Conflictos de Días en Horarios**: días ocupados visibles en gris, modal con tarjetas comparativas (horas actuales/fusionar/nuevas) y confirmación, y guía visual de estados de día.
 - Se cerró **Chats Privados entre Usuarios**: pestaña para cambiar entre chat grupal y lista de privados por nivel, botón de mensaje en perfil, y chat conductor↔creador/admin como panel fijo en gestión de vehículos.
-
----
-
-## 🗓️ Día 4 — 2025-11-26
-
-### ✔ Trabajo realizado:
-
 - Se definió el **Centro de Notificaciones** (Pantalla 7): icono 🔔 con badge, tabs (no leídas, leídas, solicitudes, cambios, chats), filtros grupo/lanzadera, acciones (aceptar/rechazar invitaciones, abrir chat, eliminar) y alertas urgentes (ej. conductor sin ubicación con badge 📍).
 
 ### 🧠 Decisiones tomadas:
 
 - Invitaciones visibles tanto en notificaciones como en chat privado del invitante con botones inline; aceptar en cualquiera desbloquea el chat.
 - Pestaña `Solicitudes` resaltada si requiere respuesta urgente; badge 📍 en icono 🔔 si el conductor debe activar ubicación.
-
-### 🎯 Próximos pasos:
-
-- Completar fase 0 pendientes (terminología por nivel, guías visuales básicas).
-- `ROADMAP.md` actualizado: prioridad alta ítem 4 marcado como completado (especificación cerrada).
-
-### 🧠 Decisiones tomadas:
-
 - Pantalla 8 es pantalla independiente, no modal; enlaces de acceso solo desde AppBars principales.
 - Claridad de AppBars: se documentó explícitamente dónde se muestra/oculta el icono ✋ para evitar ambigüedades.
 - Navegación: al bajar/subir de nivel se mantiene la pestaña activa del PageView; breadcrumb obligatorio en AppBar; transiciones slide+fade 150–200 ms; menús ⋮ definidos por nivel/pestaña.
 
 ### 🎯 Próximos pasos:
 
+- Completar fase 0 pendientes (terminología por nivel, guías visuales básicas).
+- `ROADMAP.md` actualizado: prioridad alta ítem 4 marcado como completado (especificación cerrada).
 - Continuar con prioridades altas pendientes de Fase 0 (navegación/menús contextuales, flujo de horarios, sistema de conflictos, chats privados).
 - Refinar guía visual básica (tipografía, paleta, patrones de modales/chips) en `SPECS.md`.
 
@@ -171,6 +158,27 @@ Fase activa: **0 — punto 9: Guías visuales básicas por empezar**
 ### 🎯 Próximos pasos:
 
 - Continuar con el cierre de guías visuales básicas para completar la Fase 0.
+
+---
+
+## 🗓️ Día 7 — 2025-11-28
+
+### ✔ Trabajo realizado:
+
+- Se añadió la guía de **Tipografía oficial** de ShuttleBiz en `docs/SPECS.md` (Manrope principal, Space Grotesk/JetBrains Mono como acento numérico).
+- Se documentó el snippet de carga de fuentes en Flutter (`pubspec.yaml` + `google_fonts`) y ejemplos de uso de la fuente acento en chips/badges/tablas.
+- Se añadió la **paleta de color ShuttleBiz Core** en `docs/SPECS.md` con primario azul, secundario verde, neutrales, estados y guía de uso por componente/Flutter.
+- Se documentó el **layout por nivel (Grupos/Grupo/Lanzadera)** como marco visual (breadcrumbs, tabs, padding/cards, empty states, modales, chips) aclarando que el contenido funcional sigue lo definido en pantallas 5.x/6.x/7.x/10.x.
+- Se actualizaron los **patrones de modales y chips/badges** en `docs/SPECS.md`: tipos (confirmación, alerta, bottom sheet, formularios), layout/padding/colores según paleta, accesibilidad y estilo de chips de horarios/estados.
+
+### 🧠 Decisiones tomadas:
+
+- Mantener commits separados por bloque visual: tipografía, paleta, layouts/patrones.
+- Rama para el punto 9: `feature/f0-visual-guides` con commits temáticos.
+
+### 🎯 Próximos pasos:
+
+- Documentar layouts/patrones de modales y chips para cerrar Fase 0.
 
 ---
 
