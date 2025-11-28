@@ -174,7 +174,7 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 ### 🧠 Decisiones tomadas:
 
 - Mantener commits separados por bloque visual: tipografía, paleta, layouts/patrones.
-- Rama sugerida para el punto 9: `feature/f0-visual-guides` con commits temáticos.
+- Rama para el punto 9: `feature/f0-visual-guides` con commits temáticos.
 
 ### 🎯 Próximos pasos:
 

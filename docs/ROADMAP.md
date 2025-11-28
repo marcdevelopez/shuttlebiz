@@ -2,10 +2,22 @@
 
 ## 📍 Estado actual
 
-- Última actualización: 27/11/2025
-- Specs: secciones 6.x y modales 7.x cerradas; pendiente solo guía visual básica
+- Última actualización: 28/11/2025
+- Specs cerradas incl. guías visuales básicas (tipografía, paleta, layout por nivel, modales/chips); pendiente solo outline/kit de pantallas de referencia
 - Arquitectura decidida: Flutter + Riverpod + GoRouter + Firebase (Auth/Firestore/FCM), Storage para medios
 - Scope MVP recortado: sin backups Drive/iCloud, sin multimedia ni búsqueda en chat, sin automatismos avanzados de conductor (5/40 min) en primera iteración
+
+### Principios de escalabilidad (guarda-raíles)
+
+- Capas separadas (UI/estado/dominio/datos) con repositorios por dominio; nada de UI acoplada a Firestore directo.
+- Modelos versionados y esquemas flexibles en Firestore (`type/version`, subcolecciones claras por feature) para crecer sin migraciones masivas.
+- GoRouter con rutas nombradas y parámetros; PageView/tab scopes por nivel ya definidos para insertar pantallas nuevas sin rehacer navegación.
+- Riverpod por feature con providers scoped (auth, usuario, grupo, lanzadera, chat, notificaciones); sin singletons globales.
+- Reglas de negocio en servicios/use-cases (asignación de conductor, validación de horarios, rebooking) para extender a lista de espera, automatismos 5/40, etc.
+- Feature flags/config remota para activar post-MVP (backups, multimedia, tracking avanzado) sin ramas invasivas.
+- Componentes UI reutilizables (cards, chips, modales) alineados a la guía visual; evita remaquetar al añadir estados nuevos.
+- Contratos de eventos/notificaciones extensibles (campos `meta/extra`) y logs estructurados para depurar crecimiento.
+- Índices pensados para filtros típicos (grupo/lanzadera/fecha/estado) y cuotas de Firestore/FCM monitorizadas.
 
 ---
 
@@ -82,7 +94,7 @@
 - Documentar factores que afectan: cancelaciones (viajero/conductor), viajes completados, puntualidad, reportes
 - Especificar visibilidad: perfil público (⭐ + desglose), perfil privado (estadísticas completas), lista de solicitudes por salida (puntuación rápida)
 
-**9. Otras Funcionalidades**
+**9. Otras Funcionalidades** ✅ _Especificación cerrada en `SPECS.md` (28/11/2025)_
 
 - **Conductor visible en listado**: Mostrar "Conductor: Nombre" o "Sin conductor" en ítems de 5.3
 - **Gestión de vehículos**: enlace desde ajustes de grupo (5.5); visible para creador/admin, conductores asignados/solicitados y creadores de un vehículo del grupo; permisos: creador/admin gestionan; conductores pueden elegir vehículo y solicitar alta/edición (requiere aprobación si no son creador/admin). Alerta T-30 sin vehículo: push + banner con CTA a Pantalla 10, recordatorio a 5 min, escalado a creador/admin y chat, badge rojo hasta asignar. Botón “Elegir como lanzadera” en 10.2 con selector de salida si hay varias y feedback con Snackbar.
@@ -93,8 +105,8 @@
 
 **10. Backlog Futuro**
 
-- OCR para horarios: agregar lanzadera desde imagen con sugerencia IA
-- Crear `CHANGELOG.md` en raíz del proyecto con formato estándar
+- OCR para horarios — spike de viabilidad: definir input (foto impresa vs. captura), precisión mínima y fallback manual.
+- Crear `CHANGELOG.md` — tarea de release: activar cuando arranque Fase 5 (Polish & Deploy).
 
 #### 📦 Entregables
 
@@ -172,6 +184,6 @@ Objetivo: robustez y UX.
 ## 🎮 Próximos pasos inmediatos
 
 1. ✅ Fase 0 añadida al roadmap con estimación realista y tareas detalladas por prioridad
-2. Completar SPECS y guía visual básica (Fase 0) y reflejar avances en `dev_log.md`
+2. ✅ Completar SPECS y guía visual básica (Fase 0) y reflejar avances en `dev_log.md`
 3. Abrir issues por fase (F0/F1/F2…) en GitHub Projects con criterios de aceptación
-4. Tras cerrar Fase 0, arrancar Fase 1: bootstrap Flutter + Firebase + GoRouter/Riverpod y login por teléfono
+4. Tras cerrar Fase 0 (pendiente outline/kit de pantallas), arrancar Fase 1: bootstrap Flutter + Firebase + GoRouter/Riverpod y login por teléfono
