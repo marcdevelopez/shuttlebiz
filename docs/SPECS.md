@@ -102,6 +102,21 @@ Text(
 
 Si prefieres fuentes embebidas en vez de Google Fonts dinámico, añade los archivos a `assets/fonts` y decláralos en `flutter: fonts:` usando los mismos nombres de familia.
 
+### **Paleta de color (ShuttleBiz Core)**
+
+- **Primario (acciones/AppBar/badges info):** Azul Cobalto `#1D6FFF`; presionado `#1558CC`; fondo suave `#E8F1FF`.
+- **Secundario (éxito/confirmación/chips positivos):** Verde Pino `#0FB67A`; presionado `#0A8B5F`; fondo suave `#E7F8F1`.
+- **Neutros (estructura y texto):** Texto principal `#1A1A1A`; texto secundario `#4B5563`; deshabilitado `#9CA3AF`; fondo app `#F7F9FC`; superficies `#FFFFFF`; bordes/divisores `#E5E7EB`.
+- **Estados:** Éxito `#0FB67A`; Advertencia `#F5A524` (fondo suave `#FFF4E0`); Error `#D7263D` (fondo suave `#FFE8ED`); Info `#1D6FFF`.
+- **Uso por componente:**
+  - Botón primario / FAB / links principales: Primario con texto `#FFFFFF`.
+  - Botón secundario / chips informativos: Secundario o neutro con borde `#E5E7EB`.
+  - Badges numéricos: Fondo primario o error según contexto; texto `#FFFFFF`.
+  - Alertas: color de estado + fondo suave + icono; texto `#1A1A1A` (o blanco si fondo es oscuro).
+  - Tabs/indicadores: Indicador primario; fondo tab bar `#FFFFFF` con sombra ligera.
+- **Accesibilidad:** Asegurar AA en texto sobre fondos; evitar usar primario sobre fondos suaves sin contraste suficiente (usar gris oscuro para texto en fondos suaves).
+- **Notas de implementación (Flutter):** Mapear primario a `colorScheme.primary`, secundarios a `secondary`; usar `surface` para cards y `surfaceVariant` para fondos suaves; asignar `error` y `tertiary` a colores de estado para reutilizar en Snackbars/banners.
+
 <br>
 
 ## **1\. Autenticación y Roles de Usuario**
