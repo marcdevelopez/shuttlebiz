@@ -440,35 +440,39 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 ### Patrones de Modales y Diálogos
 
-- Los **modales** se utilizarán para confirmar acciones, mostrar avisos importantes o solicitar decisiones rápidas al usuario.  
-  Ejemplo: Confirmar creación de lanzadera o agregar el primer horario.
+Marco común para todos los modales/genéricos; los flujos específicos se detallan en 5.x/6.x/7.x/10.x.
 
-- **Estructura visual recomendada:**
-
-  - Fondo blanco con bordes suaves y ligera sombra.
-  - Texto principal en gris oscuro (#212121).
-  - Título o pregunta en negrita.
-  - Espaciado amplio para evitar toques accidentales.
-  - Línea divisoria superior a los botones de acción.
-
-- **Botones dentro del modal:**
-
-  - **Cancelar:** texto gris oscuro sin fondo (estilo “text button”).
-  - **Aceptar / Confirmar:** fondo rojo (#D32F2F) con texto blanco.
-  - Separación por línea gris (#E0E0E0) entre ambos botones.
-  - Los botones siempre alineados en horizontal, centrados o de borde a borde.
-
+- **Tipos:**
+  - **Confirmación breve:** altura compacta, título + descripción corta + botones primario/secundario.
+  - **Alerta crítica:** icono de estado (error/advertencia), fondo suave de estado detrás del encabezado; botón primario rojo (`#D7263D`) o amarillo (`#F5A524`) según gravedad.
+  - **Bottom sheet (acciones/contexto):** handle superior, puede cerrarse por swipe/tap fuera si no es bloqueante.
+  - **Formulario corto:** incluye campos 1–3 inputs; CTA primaria alineada a la derecha.
+- **Layout:**
+  - Padding 20px, espaciado vertical 12px; radio 12; sombra suave.
+  - Título 16/600 (`Manrope`), body 14/400; icono opcional alineado a la izquierda.
+  - Botones en fila: primario a la derecha (color según acción), secundario texto/borde gris `#E5E7EB`.
+  - Para bottom sheets: margin-top handle de 32px ancho, altura 4px, color `#E5E7EB`.
 - **Comportamiento:**
+  - Bloqueantes por defecto (no cerrar al tocar fuera) salvo informativos o bottom sheets de contexto.
+  - Estado deshabilitado con opacidad 0.4; foco visible en inputs y botones (stroke primario).
+  - Mensajes de error bajo campos en rojo `#D7263D`, 12/400.
+- **Accesibilidad:**
+  - Soportar `textScaleFactor`; mínimo 44x44 en botones; lector de pantalla con orden lógico.
+  - Contraste AA: texto oscuro sobre fondo blanco; botones primarios con texto blanco.
 
-  - El modal debe bloquear la interacción con el resto de la interfaz hasta cerrarse.
-  - Al pulsar fuera del modal no debe cerrarse automáticamente, excepto en modales informativos no críticos.
-  - Debe ser consistente en toda la app (mismo color, tipografía y espaciado).
+### Patrones de Chips y Badges
 
-- **Ejemplo:**
-  “¿Desea agregar el primer horario?”  
-  [Cancelar] [ Aceptar ]
-
-**Objetivo:** Mantener coherencia visual, simplicidad y claridad en las confirmaciones sin distraer de la acción principal.
+- **Chips de horarios/estados:**
+  - Altura 32–36; padding horizontal 12–16; radio 16.
+  - Fuente acento (`Space Grotesk` 14/500) para horas y contadores; `Manrope` 14/500 en etiquetas.
+  - Bordes `#E5E7EB` para neutros; relleno primario `#1D6FFF` para selección; rellenos de estado: éxito `#E7F8F1`, advertencia `#FFF4E0`, error `#FFE8ED`.
+  - Texto: primario/blanco en chip primario; gris oscuro en neutros; rojo `#D7263D` en estado error.
+- **Badges numéricos:**
+  - Fondo primario para contadores generales; fondo error para alertas; texto blanco 12/600.
+  - Tamaño mínimo 18x18; borde redondo completo.
+- **Filtros/pestañas chips:**
+  - Estado seleccionado con borde 0 y relleno primario; no seleccionado con borde `#E5E7EB`.
+  - Espaciado entre chips 8px; filas con wrap en móvil.
 
 <br>
 
