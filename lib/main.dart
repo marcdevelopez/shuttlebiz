@@ -106,7 +106,7 @@ class _ComingSoonScreenState extends State<_ComingSoonScreen>
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 12,
                               spreadRadius: 2,
                               offset: const Offset(0, 6),
@@ -139,7 +139,7 @@ class _ComingSoonScreenState extends State<_ComingSoonScreen>
                         borderRadius: BorderRadius.circular(18),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
+                            color: Colors.black.withValues(alpha: 0.15),
                             blurRadius: 12,
                             spreadRadius: 1,
                             offset: const Offset(0, 6),
