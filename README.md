@@ -1,5 +1,7 @@
 # ShuttleBiz APP
 
+[![CI](https://github.com/marcdevelopez/shuttlebiz/actions/workflows/ci.yml/badge.svg)](https://github.com/marcdevelopez/shuttlebiz/actions/workflows/ci.yml)
+
 **ShuttleBiz** es una app móvil pensada para coordinar lanzaderas compartidas dentro de grupos con un propósito común (empleados, eventos, comunidades). La prioridad es **organizar viajes en grupo**, con chat, reserva de plazas y ubicación en tiempo real del conductor.
 
 > El proyecto está en fase temprana de planificación y diseño, preparando requerimientos, wireframes y viabilidad técnica con Flutter y Firebase.
