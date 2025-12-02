@@ -28,3 +28,7 @@ Instancia concreta de una lanzadera en una fecha y hora.
 ## Badge
 
 Pequeño indicador visual de estado (colores verde, rojo, azul, gris, etc.).
+
+## CI (Integración Continua)
+
+Pipeline automatizado (GitHub Actions) que ejecuta análisis, tests y builds en cada PR/push. Debe estar en verde antes de hacer merge a `main`.

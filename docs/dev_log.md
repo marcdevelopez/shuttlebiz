@@ -182,6 +182,25 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 
 ---
 
+## 🗓️ Día 8 — 2025-12-02
+
+### ✔ Trabajo realizado:
+
+- Se documentó en `README.md` el flujo obligatorio de PR + espera de CI en verde antes de mergear.
+- Se añadieron referencias a capturas de estado de CI (`docs/assets/ci/pr-checks-pending.png` y `pr-checks-green.png`) para guiar al equipo.
+- Se añadió una nota de política de CI en `docs/ROADMAP.md` (Procesos/Calidad).
+
+### 🧠 Decisiones tomadas:
+
+- No se permite mergear PRs con checks pendientes o fallidos; si CI falla tras el merge, se corrige desde una rama nueva.
+
+### 🎯 Próximos pasos:
+
+- Añadir las capturas reales en `docs/assets/ci/` para que se muestren en GitHub.
+- Mantener esta política en cada nueva rama/PR para evitar romper `main`.
+
+---
+
 # 🧾 Notas generales
 
 - Actualiza al final de cada sesión
