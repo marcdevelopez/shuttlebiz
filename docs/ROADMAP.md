@@ -19,6 +19,10 @@
 - Contratos de eventos/notificaciones extensibles (campos `meta/extra`) y logs estructurados para depurar crecimiento.
 - Índices pensados para filtros típicos (grupo/lanzadera/fecha/estado) y cuotas de Firestore/FCM monitorizadas.
 
+### Procesos y calidad
+
+- Política CI: todo PR debe esperar checks verdes antes de mergear; merges directos sin CI están prohibidos.
+
 ---
 
 ## 📅 Fases

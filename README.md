@@ -6,6 +6,21 @@
 
 > El proyecto está en fase temprana de planificación y diseño, preparando requerimientos, wireframes y viabilidad técnica con Flutter y Firebase.
 
+## Flujo de PR y CI
+
+- CI = Integración Continua (pipeline automatizado que corre análisis, tests y build en GitHub Actions).
+- Crea rama feature y haz push.
+- Abre PR y espera a que CI aparezca y termine en verde antes de mergear.
+- No merges si los checks están pendientes o fallidos.
+- Tras merge a `main`, CI se ejecuta de nuevo; si falla, corrige en una rama nueva.
+- Referencias visuales: consulta las capturas en `docs/assets/ci/pr-checks-pending.png` (checks pendientes) y `docs/assets/ci/pr-checks-green.png` (checks en verde) para ver el estado esperado.
+
+**Checks pendientes (PR recien abierta)**  
+![Checks pendientes](docs/assets/ci/pr-checks-pending.png)
+
+**Checks en verde (listo para merge)**  
+![Checks en verde](docs/assets/ci/pr-checks-green.png)
+
 ---
 
 ## 📋 Documentación
