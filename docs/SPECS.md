@@ -12,15 +12,23 @@
 
 <img src="assets/diagrams/ShuttleBiz-title.png" width="250" alt="ShuttleBiz Title" style="margin: -50px 0;">
 
-## Requerimientos Funcionales
-
-#### **Aplicación donde los usuarios crean y usan lanzaderas para unir personas en un vehículo para viajar a determinado destino, con la posibilidad de comunicarse y saber la posición de cada uno.**
-
 </div>
+
+#### **Aplicación que permite crear y gestionar lanzaderas para conectar a varias personas que comparten un mismo trayecto.**
+
+**Los usuarios pueden unirse a un vehículo hacia un destino concreto, comunicarse entre ellos, ver la ubicación en tiempo real de cada participante, programar horarios y organizar grupos que utilicen lanzaderas comunes.**
 
 <br>
 
 ---
+
+<div align="center">
+
+# ESPECIFICACIONES TÉNICAS Y REQUISITOS FUNCIONALES
+
+</div>
+
+<br>
 
 <br>
 
@@ -38,7 +46,9 @@ antes de usarlo en pantallas o flujos. Accesos rápidos: [CTA](GLOSSARY.md#cta-c
 
 # **`Reglas de Negocio (Business Rules)`**
 
-En estas reglas se dan las funcionalidades básicas y reglas básicas de la app. En la sección de IU se describen las pantallas más importantes para implementar estas funcionalidades.
+En esta sección se dan las funcionalidades básicas y reglas básicas de la app.
+
+En la sección de IU se describen las pantallas más importantes para implementar estas funcionalidades.
 
 ---
 
@@ -46,8 +56,9 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
 
 ### **Tipografía oficial de ShuttleBiz**
 
-- **Familia principal:** `Manrope` (Google Fonts). Usa 400/500/600 como base; `450 (Medium)` es opcional para listas densas y lectura prolongada. Pensada para máxima legibilidad en móviles y listas densas.
-- **Fallbacks:** `Manrope, SF Pro Text, Segoe UI, sans-serif`.
+- **Distribución:** Fuentes embebidas dentro del proyecto (`assets/fonts`) para uso offline; no se cargan desde Google Fonts en runtime.
+- **Familia principal:** `Manrope` (embebida). Usa 400/500/600 como base; `450 (Medium)` es opcional para listas densas y lectura prolongada. Pensada para máxima legibilidad en móviles y listas densas.
+- **Fallbacks locales:** `Manrope, SF Pro Text, Segoe UI, sans-serif`.
 - **Pesos recomendados:**
   - 400 → cuerpo
   - 500 → etiquetas, chips, estado
@@ -60,93 +71,209 @@ En estas reglas se dan las funcionalidades básicas y reglas básicas de la app.
 - **Internacionalización:** Soporte de tildes y ñ; revisar kerning en números con separadores (10:30, 08:05); tipografía acento numérica recomendada para exactitud visual.
 - **Uso por componente (ejemplos):** `Manrope` en títulos, cuerpo, botones y tabs; `Space Grotesk` en chips de hora, badges con contadores, columnas numéricas de tablas y códigos de referencia; `JetBrains Mono` solo si se requiere monoespaciado estricto en tablas o logs.
 
-#### **Carga en Flutter (pubspec + GoogleFonts)**
+#### **Carga en Flutter (fuentes embebidas)**
 
 ```yaml
 # pubspec.yaml (fragmento)
-dependencies:
-  flutter:
-    sdk: flutter
-  google_fonts: ^6.2.0
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-Regular.ttf
+        - asset: assets/fonts/Manrope-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Manrope-SemiBold.ttf
+          weight: 600
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk-Medium.ttf
+          weight: 500
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Medium.ttf
+          weight: 500
 ```
 
 ```dart
-// theming base
-import 'package:google_fonts/google_fonts.dart';
+// theming base con fuentes embebidas
+const baseTextTheme = TextTheme(
+  titleLarge: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w600, fontSize: 20, height: 1.4),
+  titleMedium: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w600, fontSize: 18, height: 1.44),
+  titleSmall: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w600, fontSize: 16, height: 1.5),
+  bodyMedium: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w400, fontSize: 15, height: 1.46),
+  labelMedium: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w500, fontSize: 14, height: 1.5),
+  labelSmall: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w400, fontSize: 13, height: 1.38),
+);
 
-final manrope = GoogleFonts.manropeTextTheme();
+const accentNumeric = TextStyle(
+  fontFamily: 'SpaceGrotesk',
+  fontWeight: FontWeight.w500,
+  fontSize: 16,
+  height: 1.5,
+);
 
 ThemeData buildTheme() {
   return ThemeData(
-    textTheme: manrope.copyWith(
-      titleLarge: manrope.titleLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 20, height: 1.4),
-      titleMedium: manrope.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 18, height: 1.44),
-      titleSmall: manrope.titleSmall?.copyWith(fontWeight: FontWeight.w600, fontSize: 16, height: 1.5),
-      bodyMedium: manrope.bodyMedium?.copyWith(fontWeight: FontWeight.w400, fontSize: 15, height: 1.46),
-      labelMedium: manrope.labelMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 14, height: 1.5),
-      labelSmall: manrope.labelSmall?.copyWith(fontWeight: FontWeight.w400, fontSize: 13, height: 1.38),
-    ),
+    textTheme: baseTextTheme,
   );
 }
 
 // Uso puntual de acento numérico en chips/badges/tablas
 Text(
   '08:35',
-  style: GoogleFonts.spaceGrotesk(
-    fontWeight: FontWeight.w500,
-    fontSize: 16,
-    height: 1.5,
-  ),
+  style: accentNumeric,
 );
 ```
 
-Si prefieres fuentes embebidas en vez de Google Fonts dinámico, añade los archivos a `assets/fonts` y decláralos en `flutter: fonts:` usando los mismos nombres de familia.
+<br>
 
-### **Paleta de color (ShuttleBiz Core)**
+---
 
-- **Primario (acciones/AppBar/badges info):** Azul Cobalto `#1D6FFF`; presionado `#1558CC`; fondo suave `#E8F1FF`.
-- **Secundario (éxito/confirmación/chips positivos):** Verde Pino `#0FB67A`; presionado `#0A8B5F`; fondo suave `#E7F8F1`.
-- **Neutros (estructura y texto):** Texto principal `#1A1A1A`; texto secundario `#4B5563`; deshabilitado `#9CA3AF`; fondo app `#F7F9FC`; superficies `#FFFFFF`; bordes/divisores `#E5E7EB`.
-- **Estados:** Éxito `#0FB67A`; Advertencia `#F5A524` (fondo suave `#FFF4E0`); Error `#D7263D` (fondo suave `#FFE8ED`); Info `#1D6FFF`.
-- **Uso por componente:**
-  - Botón primario / FAB / links principales: Primario con texto `#FFFFFF`.
-  - Botón secundario / chips informativos: Secundario o neutro con borde `#E5E7EB`.
-  - Badges numéricos: Fondo primario o error según contexto; texto `#FFFFFF`.
-  - Alertas: color de estado + fondo suave + icono; texto `#1A1A1A` (o blanco si fondo es oscuro).
-  - Tabs/indicadores: Indicador primario; fondo tab bar `#FFFFFF` con sombra ligera.
-- **Accesibilidad:** Asegurar AA en texto sobre fondos; evitar usar primario sobre fondos suaves sin contraste suficiente (usar gris oscuro para texto en fondos suaves).
-- **Notas de implementación (Flutter):** Mapear primario a `colorScheme.primary`, secundarios a `secondary`; usar `surface` para cards y `surfaceVariant` para fondos suaves; asignar `error` y `tertiary` a colores de estado para reutilizar en Snackbars/banners.
+### **`Paleta de color (ShuttleBiz Core)`**
 
-### **Layout por nivel (mobile-first)**
+_(Actualizada según la identidad oficial de marca de ShuttleBiz)_
+
+### **Colores de marca (Brand Colors)**
+
+- **Primario (acciones principales / botones / indicadores / links):** Azul Shuttle `#3664a9`
+
+  - **Presionado:** `#2B5085`
+  - **Fondo suave:** `#E8EEF7`
+
+- **Primario Oscuro (AppBar / navegación / contenedores destacados):** Azul Marcador `#203038`
+
+- **Acento Suave (chips, tags, fondos suaves, resaltados secundarios):** Verde Grisáceo `#8BAAA4`
+
+  - **Presionado:** `#6D8E89`
+  - **Fondo suave:** `#EFF4F3`
+
+- **Acción Crítica / Confirmación fuerte:** Rojo Biz `#b80d06`
+
+  - **Presionado:** `#8E0804`
+  - **Fondo suave:** `#FCEAEA`
+
+### **Neutros (estructura y texto)**
+
+- **Texto principal:** `#203038`
+- **Texto secundario:** `#4E6F71`
+- **Texto deshabilitado:** `#9CA3AF`
+- **Fondo de app:** `#F6F8F9`
+- **Superficies (cards, sheets):** `#FFFFFF`
+- **Divisores / Bordes:** `#E1E5E8`
+
+### **Colores de estado**
+
+- **Éxito:** `#4AAE8C`
+
+  - Fondo suave: `#E8F4EF`
+
+- **Advertencia:** `#F5A524`
+
+  - Fondo suave: `#FFF4E0`
+
+- **Error:** Rojo Biz `#b80d06`
+
+  - Fondo suave: `#FCEAEA`
+
+- **Info:** Azul Shuttle `#3664a9`
+
+  - Fondo suave: `#E8EEF7`
+
+### **Uso por componente**
+
+- **Botón primario / FAB / acciones principales:**
+
+  - Fondo: `#3664a9`
+  - Texto: `#FFFFFF`
+
+- **Botón de acción crítica:**
+
+  - Fondo: Rojo Biz `#b80d06`
+  - Texto: `#FFFFFF`
+
+- **Botón secundario / chips informativos:**
+
+  - Fondo: acento `#8BAAA4` o neutro `#FFFFFF`
+  - Bordes: `#E1E5E8`
+  - Texto: `#203038`
+
+- **AppBar / encabezados / navegación:**
+
+  - Fondo: Azul Marcador `#203038`
+  - Texto e iconos: `#FFFFFF`
+
+- **Badges numéricos:**
+
+  - Fondo: primario `#3664a9` o error `#b80d06`
+  - Texto: `#FFFFFF`
+
+- **Tabs:**
+
+  - Indicador: Azul Shuttle `#3664a9`
+  - Fondo tab bar: `#FFFFFF` con sombra suave
+
+- **Alertas / banners:**
+
+  - Info: Azul Shuttle
+  - Éxito: `#4AAE8C`
+  - Error: Rojo Biz
+  - Advertencia: `#F5A524`
+  - Texto: `#203038` o blanco si el fondo es muy oscuro
+
+### **Accesibilidad**
+
+- Asegurar contraste **AA/AAA** para texto sobre todos los fondos.
+- Evitar usar el primario sobre fondos suaves sin suficiente contraste;
+  en esos casos, usar `#203038` como texto.
+- El acento `#8BAAA4` debe combinarse siempre con texto `#203038`.
+
+### **Notas de implementación (Flutter)**
+
+- Mapear:
+
+  - `colorScheme.primary` → Azul Shuttle (`#3664a9`)
+  - `colorScheme.secondary` → Acento suave (`#8BAAA4`)
+  - `colorScheme.surface` → Superficies (`#FFFFFF`)
+  - `colorScheme.background` → Fondo app (`#F6F8F9`)
+  - `colorScheme.error` → Rojo Biz (`#b80d06`)
+  - `colorScheme.tertiary` → Éxito (`#4AAE8C`)
+
+- Usar `surfaceVariant` para fondos suaves de listas, chips y contenedores secundarios.
+- Evitar Material 3 dinámico para no alterar la identidad visual.
+
+---
+
+### **`Layout por nivel (mobile-first)`**
 
 Marco visual para que los equipos usen el mismo esqueleto. El **contenido funcional ya está definido en las secciones de pantallas** (5.x, 6.x, 7.x, 10.x); aquí solo se fijan contenedores, spacing y elementos persistentes.
 
 - **Grupos (nivel 0):**
-  - AppBar con breadcrumb corto `Grupos`, icono 🔔 y CTA ✋ según contexto; búsqueda/filtros en menú ⋮.
+  - AppBar con breadcrumb corto `Mis Grupos`, icono 🔔 y CTA ✋ según contexto; búsqueda/filtros en menú ⋮.
   - Lista vertical con cards de grupo; padding 16; grid base 4px; separadores `#E5E7EB`.
   - FAB `+` anclado para crear grupo; empty state centrado (icono + título 16/600 + descripción 14/400 + CTA primario).
 - **Grupo (nivel 1):**
-  - AppBar con breadcrumb `Grupos > [Grupo]`, menú ⋮ (ajustes, invitaciones), iconos 🔔/✋.
+  - AppBar con breadcrumb `[$Grupo]`, menú ⋮ (ajustes, invitaciones), iconos 🔔/✋.
   - Tabs PageView fijas: Home, Chat, Horarios, Mapa; indicador primario; mantener pestaña activa al subir/bajar nivel.
   - Contenido de cada tab respeta lo descrito en 5.x; cards con radio 12 y sombra suave; listas con padding 16.
 - **Lanzadera (nivel 2):**
-  - AppBar con breadcrumb `Grupos > Grupo > Lanzadera`, menú ⋮ (editar lanzadera, vehículos), iconos 🔔/✋.
+  - AppBar con breadcrumb `[$Lanzadera]`, menú ⋮ (editar lanzadera, vehículos), iconos 🔔/✋.
   - Tabs PageView: Home, Chat, Horarios, Mapa (misma pestaña activa que al salir de nivel Grupo).
   - Contenido de cada tab según 6.x: chips de fechas/horas arriba, listas con chips de hora (fuente acento), estados coloreados por estado de reserva; panel fijo de chat conductor↔admin en pantallas de vehículos según specs.
 - **Patrones comunes:**
   - Padding horizontal 16; cards radio 12; sombra sutil en superficies elevadas.
   - Empty states coherentes: icono, título 16/600, descripción 14/400 gris secundario, CTA primario.
   - Modales/bottom sheets: handle, título 16/600, acciones primarias a la derecha; texto secundario en gris.
-  - Chips: altura 32–36, borde `#E5E7EB`, relleno primario/estado según tipo; texto 14/500; usa fuente acento para horas/contadores.
+  - Chips: altura 32–36, borde `#E1E5E8`, relleno primario/estado según tipo; texto 14/500; usa fuente acento para horas/contadores.
 
 <br>
 
-## **1\. Autenticación y Roles de Usuario**
+## **`1. Autenticación y Roles de Usuario`**
 
 - 🔐 **Login por número de teléfono** con verificación SMS/OTP.
-- ✅ **Sesión persistente** tras primer acceso.
-- 🚪 **Sin cierre de sesión manual**: el usuario permanece logueado; solo puede cambiar de número (manteniendo UID) o eliminar la cuenta.
-- 🔁 **Sistema de recuperación y respaldo:**
+- **Sesión persistente** tras primer acceso.
+- **Sin cierre de sesión manual**: el usuario permanece logueado; solo puede cambiar de número (manteniendo UID) o eliminar la cuenta.
+- **Sistema de recuperación y respaldo:**
   - **Recuperación por SMS**: Si se pierde el login, recuperable con el número registrado
   - **Datos básicos en Firebase**: UID, número de teléfono y datos mínimos de perfil
   - **Respaldo en la nube personal**: Chats e historial en Google Drive (Android) o iCloud (iOS)
@@ -157,18 +284,18 @@ Marco visual para que los equipos usen el mismo esqueleto. El **contenido funcio
 
 ---
 
-## **2\. Gestión de Grupos ("Biz")**
+## **`2. Gestión de Grupos ("Biz")`**
 
 - Los usuarios pueden **crear un grupo** (biz) para organizar lanzaderas.
-- 👤 Solo el **creador del grupo** puede:
+- Solo el **creador del grupo** puede:
   - Crear o modificar lanzaderas.
   - Expulsar usuarios.
   - Asignar administradores de grupo.
 - **Visibilidad del grupo** configurable al crearlo:
-  - **Privado**: solo accesible por invitación directa del creador/admin
+  - **Privado**: solo accesible por invitación directa del creador/admin. No es visible en la lista pública de grupos.
   - **Público**: aparece en la lista de grupos disponibles y permite solicitar acceso
   - **Modificable**: la visibilidad puede cambiarse después de crear el grupo
-- 👥 **Acceso según visibilidad**:
+- **Acceso según visibilidad**:
   - **Grupos privados**: solo invitación del creador/administrador
   - **Grupos públicos**: solicitud desde lista pública + aprobación del creador/admin
 - Los usuarios agregados verán automáticamente ese grupo en su pantalla de grupos.
@@ -405,6 +532,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Cambios en horarios
   - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
+  - **Acción de admin (solo creador)**: acciones privilegiadas realizadas por un admin con opción de **[Deshacer]** mientras la ventana esté activa
 - **Configuración:** Usuario puede desactivar tipos específicos de notificaciones (sin perder el historial en el Centro de Notificaciones). Se gestiona en **Pantalla 12 (Configuración) > Notificaciones**: permite desactivar sonido/banner/badge por tipo, activar silencio programado, y forzar que solo lleguen como in-app (sin push). Las críticas (ej. conductor sin ubicación) no se pueden silenciar por completo.
 - **Implementación:** Push notifications con Firebase Cloud Messaging (FCM)
 
@@ -1507,11 +1635,38 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
 - **Feedback:** snackbar “Solicitud aceptada/rechazada” y actualización en tiempo real de la lista.
 - **Estado vacío:** “No hay solicitudes pendientes” + CTA **Invitar miembros**.
 
+---
+
+#### **5.5.b Cambio de visibilidad del grupo**
+
+- **Control principal:** Toggle único **Privado / Público** dentro de la sección Configuración de 5.5 (sin navegar a otra pantalla).
+- **Ayuda inline:** texto breve bajo el toggle explicando:
+  - Privado → solo invitación; no aparece en la lista pública.
+  - Público → aparece en lista pública; cualquiera puede solicitar acceso.
+- **Confirmación al pasar de Privado → Público:**
+  - Modal bloqueante: título “Hacer público el grupo”, copy “Aparecerá en la lista pública y podrán llegar nuevas solicitudes. ¿Continuar?”. Botones **[Cancelar]** (secundario) / **[Confirmar]** (primario).
+  - Si se confirma, aplica cambio y muestra snackbar “Visibilidad actualizada a Público”.
+- **Cambio de Público → Privado:** aplica directo, snackbar “Visibilidad actualizada a Privado” (sin modal).
+- **Permisos:** solo Creador/Admin ven y pueden editar el toggle; los demás lo ven deshabilitado con estado actual.
+
+#### **5.5.c Deshacer acciones de admin (solo Creador)**
+
+- **Alcance:** Cualquier acción de admin con permisos elevados (expulsar miembro, cambiar visibilidad, aprobar/rechazar solicitudes de membresía, editar/activar/desactivar lanzaderas o vehículos del grupo, ajustes de auto-aprobación) genera un evento reversible para el Creador.
+- **Aviso inmediato:** Al ejecutarse, el Creador recibe snackbar contextual con CTA **[Deshacer]** y contador (p.ej. 60 s). El admin que ejecutó ve confirmación estándar (sin deshacer).
+- **Notificación (solo Creador):** Se crea una notificación tipo “Acción de admin” con resumen de la acción y CTA **[Deshacer]** disponible mientras la ventana siga activa (p.ej. 10 min). Si expira, el CTA aparece deshabilitado con texto “Ventana de deshacer expirada”.
+- **Centro de Notificaciones:** Al abrir la notificación, mostrar modal/simple sheet con detalles (quién, qué, cuándo) y botones **[Deshacer]** / **[Cerrar]**. Deshacer revierte el cambio y emite snackbar “Acción revertida” + nueva notificación a afectados.
+- **Reversión:** Revierte el estado previo (restaurar miembro expulsado, volver a visibilidad anterior, reabrir solicitud, revertir cambio de auto-aprobación, revertir activación/desactivación de lanzadera/vehículo). Registro de auditoría mantiene ambas acciones.
+- **Permisos:** Solo el Creador puede ver/usar Deshacer; si el Creador ejecuta la acción, no se genera deshacer (ya es autor).
+
+---
+
 ## **6 NIVEL DE LANZADERA** _(vista específica de lanzadera)_
 
 En este nivel se maneja una lanzadera de un grupo:
 
 **Estructura**: BottomNavigationBar + PageView con 4 secciones: HOME de Lanzadera, Chat, horario y Mapa.
+
+---
 
 ### **6.1 Pantalla Home de Lanzadera**
 
@@ -1931,7 +2086,7 @@ Pantalla independiente accesible desde el **icono de notificaciones (🔔)** en 
   - Icono: sobre cerrado con punto rojo para no leídas; sobre abierto y fondo gris claro para leídas (fondo blanco para no leídas).
   - Título + descripción breve + timestamp.
   - Badge si está no leída.
-  - Acciones contextuales según tipo (ej.: Aceptar/Rechazar invitación; Ver cambios; Eliminar) incluyen los botones al abrir. Si es una notificación de solicitud (conducción por parte de admin/creador, otro usuario, o de creación de vehículo), la notificación al abrirse incluye botones para aceptar o rechazar. Las invitaciones a grupos abren el **Modal/Pantalla 7.1**.
+  - Acciones contextuales según tipo (ej.: Aceptar/Rechazar invitación; Ver cambios; Eliminar) incluyen los botones al abrir. Si es una notificación de solicitud (conducción por parte de admin/creador, otro usuario, o de creación de vehículo), la notificación al abrirse incluye botones para aceptar o rechazar. Las invitaciones a grupos abren el **Modal/Pantalla 7.1**. Las de **Acción de admin** (solo Creador) muestran CTA **[Deshacer]** con indicador de tiempo restante; si expiró, el botón aparece deshabilitado con nota.
 - **Estados vacíos**: mensaje claro y CTA para volver o refrescar.
 - **Filtros**: icono de filtro para elegir grupo y lanzadera (listas con checkboxes, múltiples selecciones suman); icono de limpiar filtro para reiniciar selección.
 
@@ -2876,6 +3031,48 @@ Tendrá varios canales de chat:
 
 ---
 
+### **12.2 Cambiar número de teléfono (manteniendo UID)**
+
+**Función**: Permitir actualizar el número de teléfono del usuario sin generar una nueva cuenta (mantiene UID y datos asociados: grupos, lanzaderas, reputación, backups).
+
+**Acceso**: Desde **Pantalla 12 (Configuración)** → opción **“Cambiar número de teléfono”**. También accesible indirectamente desde Perfil (9.1) que redirige aquí.
+
+**Flujo (paso a paso)**:
+
+1. **Resumen actual**: Mostrar número actual (solo lectura, con prefijo país) y nota “Tu cuenta y UID se mantienen; solo cambiaremos tu número de login”. CTA primario **[Continuar]**.
+2. **Nuevo número**: Pantalla con:
+   - Selector de país (dropdown/buscador con bandera + prefijo, preselecciona país anterior).
+   - Campo **Nuevo número** (valida formato E.164 del país; botón **[Enviar código]** activo solo si es válido y distinto al actual).
+   - Mensaje de privacidad: “El número no se muestra a otros salvo que lo habilites en Privacidad”.
+3. **Verificación OTP**:
+   - Input de 6 dígitos (autofocus y autoadvance). Timer de reenvío (p.ej. 60s) + CTA **[Reenviar código]** tras expirar.
+   - Si el OTP es correcto → confirmar cambio; si falla, mostrar error y permitir reintentar.
+4. **Confirmación**:
+   - Mensaje de éxito: “Número actualizado” + recordatorio de que la sesión sigue activa y el UID no cambia.
+   - CTA **[Volver]** a Configuración.
+
+**Validaciones y reglas**:
+
+- No permitir usar el mismo número actual.
+- Verificación obligatoria vía SMS/OTP antes de aplicar el cambio.
+- Si el nuevo número ya está asociado a otra cuenta/UID → mostrar error “Número ya en uso; usa otro o recupera esa cuenta”.
+- Manejar límite de intentos OTP y bloqueos temporales (antifraude).
+- Si falla el envío de SMS (sin conexión o límite de envíos) → mostrar estado y sugerir reintentar más tarde.
+- Persistencia: tras éxito, actualizar el número en Auth y en el perfil público (si la visibilidad del número estaba activada).
+- Backups: no requieren acción; se mantienen ligados al UID.
+
+**Estados de error/vacíos**:
+
+- Sin red: mostrar banner/alerta “Sin conexión; no se puede enviar el código”. Deshabilitar **[Enviar código]**.
+- OTP incorrecto: texto de error bajo el input; no reinicia el timer.
+- Límite de reenvíos alcanzado: mensaje claro y temporizador hasta próximo intento.
+
+**UI**:
+
+- Layout consistente con el resto de Configuración: AppBar con título “Cambiar número”, botón atrás; body con secciones en cards o bloques con padding 16.
+- Botón primario para **[Enviar código]** y **[Confirmar]**; secundario de texto **[Cancelar]**.
+- Indicador de progreso al verificar OTP.
+
 ### **13. Modal de valoración al finalizar el viaje**
 
 (\*) Nota: Ver 5.2 para reglas y cálculo de reputación.
@@ -2936,6 +3133,7 @@ Tendrá varios canales de chat:
 ### **Estados de error y vacíos (UI detallada)**
 
 **Patrón base de empty state:**
+
 - Layout centrado vertical, icono 64–80dp gris medio (#9E9E9E), título 18sp semi-bold gris oscuro (#424242), descripción 14sp gris medio (#757575) máx. 2 líneas, CTA principal (si aplica) + CTA secundario opcional.
 
 - **Sin conexión (global):** overlay full-screen con icono `wifi_off`, mensaje “Sin conexión”, detalle “Revisa tu red o inténtalo de nuevo”; botón primario **[Reintentar]** y botón texto **[Trabajar sin conexión]** si hay caché disponible (solo lectura de últimos datos).
