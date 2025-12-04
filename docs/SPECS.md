@@ -371,7 +371,7 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ## **5\. Reglas y Validaciones**
 
-- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La validación usa el **punto de preparación/garaje** y su **margen de traslado (tiempo para llegar al Origen)**: se descuenta este margen a la hora de salida en Origen para exigir que el conductor esté en el garaje a tiempo (si garaje = Origen, margen 0). La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
+- El usuario que sea conductor en una lanzadera deberá tener su posición localizada al menos **40 minutos antes** de la hora de salida en Origen (configurable). Si el garaje es distinto del Origen, además debe estar localizable en el garaje a más tardar en `hora de salida – margen de traslado`; si garaje = Origen, el margen es 0. La app avisa en T-40; si no está en la zona esperada, se avisa a creador/admin y, si no responden, al chat de la lanzadera. La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
 - **Solo puede haber un conductor por horario**.
 - **Se puede anular una solicitud**.
 - **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
@@ -381,7 +381,7 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ### Gestión automática de cancelaciones\*\*
 
-- **40 minutos antes**: Si no hay conductor, aviso a creador y administradores (este tiempo debería de ser modificable a cada grupo para necesidades concretas).
+- **40 minutos antes** (configurable y considerando el margen de traslado): Si no hay conductor, aviso a creador y administradores.
 - **Conductor tardío**: Aunque está previsto evitar que una lanzadera se quede sin conductor con la anterior regla, es posible, una vez pasada la hora de la salida, recuperar esa salida, de forma tardía, y requiere de avisos a usuarios mediante chat en grupo/lanzadera y notificación, además de volver a activarse la hora de salida, junto a las demás horas de salida, pero con icono con [+ x min] de tal manera que sea intuitivo entender que sale pero tarde (cambiando el tono del chip a un tono mas fuerte o cambiar su forma).
 - **Hora de salida pasada**: El chip de hora de salida desaparece si la salida ya salió, o no tuvo conductor (esto es posible, ya que los chips de salida corresponden con la fecha seleccionada y si la hora pasa ya no es posible solicitarla si no es cambiando a una fecha posterior, desde el dia de la semana arriba, o desde la fecha directamente). Si está completa, se puede acceder al detalle, pero no se podrá solicitar plaza
 
@@ -405,7 +405,7 @@ Opciones:
 - Si el conductor no responde al modal de continuidad:
 
   - A los **5 minutos**, los administradores reciben una notificación push indicando que se necesita conductor. Ellos pueden asignar la conducción a otro usuario.
-  - A los **40 minutos antes de la siguiente salida**, si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
+  - A los **40 minutos antes de la siguiente salida** (configurable; si hay margen de traslado se toma como referencia la hora de salida en Origen), si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
   - Si otro usuario solicita ser conductor:
     - Si el conductor anterior respondió “No” a la pregunta de continuar, se aprueba automáticamente la solicitud nueva de conductor.
     - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuantra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante.
@@ -491,7 +491,7 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 ### **Políticas de Geolocalización** _(para implementación con mapas)_
 
 - **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje
-  - Se activa automáticamente 40 minutos antes de la salida (o configuración distinta en ajustes).
+  - Se activa automáticamente antes de la salida en Origen (por defecto T-40, configurable). Si hay margen de traslado desde garaje, se espera ubicación en garaje a `hora de salida – margen` y el aviso T-40 se cuenta sobre la hora de salida en Origen.
   - Visible para todos los viajeros de esa lanzadera específica.
   - Necesaria para coordinación y seguridad del grupo.
   - **Consentimiento requerido**: Aceptar términos de conductor incluye localización.
@@ -512,7 +512,7 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 
 - **Cuándo se activa la localización**:
 
-  - **Caso 1**: conductor: Tiempo fijo antes de la salida (40 minutos, configurable)
+  - **Caso 1**: conductor: Tiempo fijo antes de la salida en Origen (por defecto 40 minutos, configurable; si hay margen de traslado, la presencia se valida en garaje a `hora de salida – margen`).
   - **Caso 2**: viajero: Cuando decide mostrar ubicación, si no la establece como predeterminada en preferencias de su perfil.
 
 - **Visibilidad de ubicaciones**:
@@ -1579,7 +1579,7 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
   - Lista de solicitudes pendientes (si auto-aprobación está desactivada) → ver **5.5.a**
 - **Configuración de lanzaderas**:
   - Tiempo mínimo para selección de vehículo (por defecto 30 minutos, editable)
-  - Tiempo de aviso de conductor sin ubicación (por defecto 40 minutos, editable)
+  - Tiempo de aviso de conductor sin ubicación (por defecto 40 minutos antes de la salida en Origen, editable; considerar margen de traslado desde garaje)
 
 #### **Acciones**
 
@@ -2119,7 +2119,7 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
 
 **Alerta especial: Conductor sin ubicación**
 
-- Aparece cuando un conductor no activa geolocalización **40 minutos antes** de la salida (o tiempo configurado)
+- Aparece cuando un conductor no activa geolocalización en la ventana configurada (por defecto **40 minutos antes** de la salida en Origen); si hay margen de traslado desde garaje, también se dispara si no está localizable en garaje a `hora de salida – margen`.
 - Si el usuario actual **es el conductor**:
   - Icono 🔔 del AppBar muestra **badge extra de ubicación (📍)**
   - Notificación marcada con ⚠️ y prioridad máxima
