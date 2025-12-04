@@ -328,13 +328,13 @@ Marco visual para que los equipos usen el mismo esqueleto. El **contenido funcio
 - Requiere definir:
   - **Nombre**
   - **Origen** y **destino**
-  - **Ubicación de preparación/garaje** (punto donde se toma el vehículo antes de salir) y **tiempo de preparación** hasta el Origen (puede ser automático/calculado o configurado por creador/admin; si se usa el mismo punto que Origen, no se descuenta tiempo)
+  - **Ubicación de preparación/garaje** (punto donde se toma el vehículo antes de salir) y **tiempo para llegar al Origen** (margen de traslado desde garaje si aplica; puede ser automático/calculado o configurado por creador/admin; si se usa el mismo punto que Origen, el margen es 0)
   - **Periodicidad**: puntual (fecha única) o frecuencia semanal
   - **Plazas por defecto**
   - **Comentario** (opcional: normas, detalles de recogida)
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
 
-El tiempo de preparación se resta a la hora de salida en Origen para validar si el conductor está a tiempo en el punto de garaje. El creador/admin puede optar por usar automáticamente el cálculo sugerido por el sistema o definir manualmente ese margen. Si el garaje = Origen, el tiempo de preparación es 0.
+El margen de traslado (tiempo para llegar desde el garaje al Origen) se resta a la hora de salida en Origen para validar si el conductor está a tiempo en el punto de garaje. El creador/admin puede optar por usar automáticamente el cálculo sugerido por el sistema o definir manualmente ese margen. Si el garaje = Origen, el margen es 0.
 
 ### **3.2. Configuración de horarios**
 
@@ -371,7 +371,7 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ## **5\. Reglas y Validaciones**
 
-- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La validación usa el **punto de preparación/garaje** y su **tiempo de preparación**: se descuenta este margen a la hora de salida en Origen para exigir que el conductor esté en el garaje a tiempo (si garaje = Origen, margen 0). La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
+- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La validación usa el **punto de preparación/garaje** y su **margen de traslado (tiempo para llegar al Origen)**: se descuenta este margen a la hora de salida en Origen para exigir que el conductor esté en el garaje a tiempo (si garaje = Origen, margen 0). La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
 - **Solo puede haber un conductor por horario**.
 - **Se puede anular una solicitud**.
 - **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
@@ -1190,7 +1190,7 @@ La pantalla puede mostrar dos situaciones:
   - **Origen y destino** (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
   - **Plazas por defecto**: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
   - **Comentario de la Lanzadera**: Normas, instrucciones, etc. Campo amplio, debajo de "Plazas por defecto".
-  - **Ubicación de preparación/garaje y tiempo de preparación**: punto donde se toma/prepara el vehículo antes de salir y margen de tiempo hasta el Origen. El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
+  - **Ubicación de preparación/garaje y tiempo para llegar al Origen**: punto donde se toma/prepara el vehículo antes de salir y margen de traslado hasta el Origen (desde garaje si aplica). El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
     ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema
     asumirá que el garaje es el mismo punto de Origen (margen = 0).
 
@@ -1247,7 +1247,7 @@ La pantalla puede mostrar dos situaciones:
 
 - **Función**:
   Permitir al creador/admin definir el **punto de garaje o preparación**
-  del vehículo y el **tiempo estimado** hasta el Origen.
+  del vehículo y el **tiempo estimado para llegar al Origen** (desde garaje si aplica).
 
 - Se abre al pulsar **"Seleccione ubicación de garaje"** en **Pantalla 5.1.1**.
 - AppBar sin icono ✋ (pantalla secundaria auxiliar).
@@ -1691,9 +1691,9 @@ Esta página contiene:
 - **Ubicación de garaje/preparación**: puede editarse en cualquier momento.
   Al pulsar, abre **Pantalla 5.1.2b** (Elección de Garaje) donde se puede:
   - Cambiar la ubicación del garaje
-  - Ajustar el tiempo de preparación (automático o manual)
+  - Ajustar el tiempo para llegar al Origen (margen de traslado, automático o manual)
   - Marcar "Usar mismo punto que Origen" (margen = 0)
-- **Nota**: Cambiar la ubicación de garaje o el tiempo de preparación afecta
+- **Nota**: Cambiar la ubicación de garaje o el tiempo para llegar al Origen afecta
   la validación de puntualidad del conductor en las próximas salidas.
 
 Tiene un menu derecho en el appbar, al igual que el resto de paginas de cada pestaña (chat, horario y mapa)
