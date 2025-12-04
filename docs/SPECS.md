@@ -1825,6 +1825,11 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >
 > AppBar sin icono ✋ (pantalla secundaria de detalle/solicitud).
 >
+> **Acción AppBar (solo Creador/Admin):** botón **“Asignar”** que abre la subpantalla **6.3.2.b** con la salida actual preseleccionada.
+> - Ubicación: extremo derecho del AppBar.
+> - Plataforma: en Material/Android se muestra solo el icono `person_add`; en iOS/Cupertino usa texto “Asignar” (o icono + label si se usa Material en iOS). Desktop/Web: icono con tooltip “Asignar conductor”.
+> - Mock rápido: `[←][Título]                 [Asignar/person_add]`
+>
 > Esta pantalla será la que se use para la solicitud de plazas, solicitud/asignacion de conductor, elección de vehiculo y cancelaciones.
 > Esta pantalla comienza con el texto superior:
 > **"Salida: [día], [hora]"**
@@ -1837,6 +1842,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >
 > - **Icono del conductor** con foto de perfil, mostrando **“Conductor: [nombre]”** o, si aún no está asignado, **“Sin conductor asignado”**.
 >   Al pulsar el nombre o icono, se abre su perfil, desde donde puede iniciarse un chat.
+>   Para **Creador/Admin**, si no hay conductor, aparece un enlace de texto **“Asignar conductor”** junto al estado (alineado con la fila de conductor, estilo text button), que abre la subpantalla **6.3.2.b**.
 >
 > - **Icono del vehículo** con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**. y plazas del vehiculo [numero] asientos sin contar conductor.
 >   Si esta lanzadera tiene asociado un vehículo predeterminado (en la pantalla 10 se diescribe como se asocia un vehículo a una lanzadera), aparecerá de forma automática, pudiendose modificar si se necesita otro vehículo pulsando sobre el vechículo.
@@ -1950,6 +1956,11 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >     - Disponibilidad: en el grupo, tiene vehículo, ubicación permitida (indicadores).
 >     - Reputación rápida (conductor/viajero) y contador de viajes.
 >     - Opción de preseleccionar vehículo (selector rápido si tiene vehículos).
+>   - **Ámbito de asignación** (radio chips):
+>     - **Salida puntual** (preseleccionada) — asigna solo la salida actual.
+>     - **Día completo** — incluye todas las salidas del día; oculta/deshabilita el bloque de horas.
+>     - **Rango de horas** — muestra contenedor con dos `TimePicker` en fila: **Desde** / **Hasta** (validación `Hasta > Desde`). Checkbox “Aplicar a todas las salidas entre estas horas”. Subtexto de ayuda: “Cubre todas las salidas de este día entre [desde] y [hasta]”.
+>   - Resumen compacto bajo el CTA: “Asignación: [Salida puntual / Día completo / Rango 07:00–12:00]”.
 >   - Aviso si la salida ya tiene conductor asignado.
 > - **Acciones:**
 >   - **[Asignar como conductor]** (primario) → dispara alerta 7.3 al usuario seleccionado; si hay vehículo preseleccionado, se adjunta.
