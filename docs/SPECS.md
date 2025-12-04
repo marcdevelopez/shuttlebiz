@@ -360,8 +360,8 @@ Integrado en las secciones 6.1.3, donde se describe en detalle el flujo de creac
 
 **Transición entre modos:**
 
-- Al **seleccionar el primer día semanal**: el modo cambia de "fecha única" a "frecuencia semanal" automáticamente
-- Al **deseleccionar el último día**: el modo cambia de "frecuencia semanal" a "fecha única" automáticamente.
+- Al **seleccionar el primer día semanal**: el modo cambia de "fecha única" a "frecuencia semanal" automáticamente.
+- Al **deseleccionar el único día restante** (cuando solo queda uno marcado): el modo cambia de "frecuencia semanal" a "fecha única" automáticamente.
 
 ## **4\. Consulta de horario y Solicitud de Lanzadera**
 
