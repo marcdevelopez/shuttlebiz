@@ -468,7 +468,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
      - Conductor: usa **punto de preparación/garaje** y su **margen**; si garaje=Origen, se evalúa sobre Origen. ≥ margen (o ≥5 min en Origen) → 5; justo a tiempo → 0; intermedio → proporcional 0–5.
   2. **Fiabilidad (Imprevisibilidad)** (auto): penaliza cancelaciones (0 si cancela; 5 si no cancela, media por viajes).
   3. **Trato/compañerismo** (pública): valoración 0–5 del usuario.
-- **Peso**: categorías 1 y 2 peso 1; categoría 3 peso 2. Reputación = (cat1 + cat2 + 2·cat3) / 4. Si no hay datos de una categoría, no se promedia esa parte.
+- **Peso**: categorías 1 y 2 peso 1; categoría 3 peso 2. Reputación = (cat1 + cat2 + 2\*cat3) / 4. Si no hay datos de una categoría, no se promedia esa parte.
 - Se recalcula en cada viaje completado o cancelado.
 
 ### **5.2.2 Reglas adicionales**
@@ -477,7 +477,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
 - Solo se puede valorar si el viaje fue **completado**.
 - Máximo **una valoración por trayecto** y usuario/rol.
 - Se almacena: fecha/hora, rol, grupo, lanzadera, salida, categoría afectada.
-- Si el usuario no comparte ubicación no puede ser conductor; para viajeros la puntualidad solo se calcula si hubo ubicación.
+- Si el usuario no comparte ubicación no puede ser conductor; para viajeros la puntualidad solo se calcula si hubo ubicación, la cual es obligatoria.
 - **UI del modal (ver 13)**: control 0–5 estrellas, texto opcional (máx. 120 caracteres), checkbox de reporte y botones **Enviar** / **Omitir**.
 
 ### **5.2.3 Recálculo automático de reputación**
@@ -492,18 +492,15 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 
 ---
 
-## **6\. Comunicación y Notificaciones**
+## **6\. COMUNICACIÓN Y NOTIFICACIONES**
 
 ### 6.1 **GESTIÓN DE COMUNICACIONES**
 
 - Está previsto Chat desde la Mínima Versión Publicable, ya que es básico para la comunicación entre los usuarios y no sería eficiente sin los chats.
 - El chat será a nivel de Grupo y de Lanzadera, además de chats privados y unos específico para comunicación entre creador/admins y conductor para eleccón de vehiculos o problemas durante el viaje.
 - **Privacidad de contacto**: el número de teléfono por defecto no será visible entre usuarios, aunque se puede hacer visible desde ajustes. Cada usuario podrá configurar así si mostrar su número de teléfono en su perfil.
-  - **Versiones futuras**: llamada de voz integrada en la app.
-- Notificaciones push:
-  - Cuando un usuario se une a un grupo.
-  - Cuando alguien solicita una plaza (informándose de plazas restantes).
-  - Aviso previo de salida, y cuando salga la lanzadera del origen (para los solicitantes de la lanzadera).
+- **Versiones futuras**: llamada de voz integrada en la app.
+- Notificaciones push: ver listado completo y comportamiento (push + in-app, con persistencia en Centro de Notificaciones) en **6.2 Gestión de Notificaciones**.
 - **Visualización de mapas incluida en MVP**:
   - **Pantalla de Grupo**: Mapas de todas las lanzaderas del grupo para consultar recorridos.
   - **Pantalla de Lanzadera**: Mapa específico con trayecto, origen, destino y ubicación del usuario.
@@ -547,10 +544,14 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 - **Tipos de notificaciones:**
   - Nueva lanzadera creada en grupo
+  - Nuevo miembro se une a un grupo
   - Alguien solicita plaza
   - Plaza confirmada/rechazada
-  - Recordatorio 40 min antes del viaje
+  - Recordatorio 40 min antes del viaje (y otros recordatorios configurables)
+  - Lanzadera sale del origen (inicio de viaje) para solicitantes
+  - Delegación/asignación automática de conductor (cuando se cede por falta de respuesta/presencia)
   - Viajero con plaza sin ubicación o fuera del punto de salida/destino en ventana T-20 (alerta a la lanzadera y al propio viajero)
+  - Conductor sin ubicación T-40 (alerta crítica a admins/conductor)
   - Cambios en horarios
   - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
@@ -563,20 +564,18 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - **No leídas**: icono de sobre cerrado con punto rojo, fondo blanco
   - **Leídas**: icono de sobre abierto, fondo gris claro
   - Cada ítem muestra: título, descripción breve, fecha/hora
-- **Pestañas organizativas:**
-  - **No leídas**: todas las notificaciones nuevas; al abrirlas pasan automáticamente a leídas
-  - **Leídas**: historial completo de notificaciones ya vistas
-  - **Solicitudes**: invitaciones a grupos, peticiones de conducción (cuando ya hay conductor), asignaciones de conducción por admin/creador, respuestas a creación de vehículo
-  - Pestaña se marca en **rojo** o con **icono de alerta** si requiere respuesta urgente
-  - Notificaciones se abren como modal al tocar push de notificación
-  - **Cambios en horarios/lanzaderas**: modificaciones, nuevas lanzaderas, nuevos horarios
+- **Pestañas organizativas** (solo 2):
+  - **No leídas**: todas las notificaciones nuevas; al abrirlas pasan automáticamente a leídas. Si hay urgentes, la pestaña muestra badge/rojo.
+  - **Leídas**: historial completo ya visto.
+- **Filtros/chips dentro de cada pestaña** (categorizan sin duplicar): `Solicitudes` (invitaciones a grupos, peticiones/asignaciones de conductor, vehículos), `Cambios de horarios/lanzaderas` (modificaciones, nuevas lanzaderas/horarios), y cualquier categoría futura.
+- Al tocar una push abre el detalle/modal con el filtro/categoría correspondiente; se marca como leída y al cerrar (flecha atrás) regresa a la pestaña y filtro desde donde se abrió.
 - **Filtros y acciones:**
   - **Icono de filtro**: permite filtrar por grupo y/o lanzadera (listas con checkboxes, selecciones múltiples se suman)
   - **Icono limpiar filtro**: reinicia selección
-  - **Acciones disponibles**: abrir detalle, eliminar notificación 🔔
+- **Acciones disponibles**: pulsación corta abre el detalle; pulsación larga muestra opción **Eliminar notificación** 🔔 (con confirmación/undo).
 - **Alertas especiales:**
   - **Conductor sin ubicación** cerca de hora de salida: aparece en pestaña Solicitudes
-  - **Viajero ausente (con plaza)**: push al viajero y aviso a la lanzadera. En app muestra modal: título “No te detectamos en el punto de salida”, botones **[Estoy aquí]** (reintenta geolocalización y hace check-in si está en geocerca) y **[Abrir mapa]** (centra en origen). Cierre al confirmar o tras check-in exitoso; si persiste sin ubicación, mantiene alerta a lanzadera (sin compartir coordenadas exactas).
+  - **Viajero ausente (con plaza)**: push al viajero y aviso a la lanzadera. En app del viajero ausente muestra modal: título “No te detectamos en el punto de salida”, botones **[Estoy aquí]** (reintenta geolocalización y hace check-in si está en geocerca) y **[Abrir mapa]** (centra en origen) para ver su ubicación y el del conductor. Cierre al confirmar o tras check-in exitoso; si persiste sin ubicación, mantiene alerta a lanzadera (sin compartir coordenadas exactas).
   - Si el usuario es el conductor aludido: el icono 🔔 del AppBar muestra un badge adicional 📍 (tooltip “Activa ubicación”), y al tocarlo abre el modal prioritario 7.2 con CTA directa **[Activar ubicación]**.
 
 ---
