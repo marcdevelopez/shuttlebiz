@@ -372,9 +372,28 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 ## **5\. Reglas y Validaciones**
 
 - El usuario que sea conductor en una lanzadera deberá tener su posición localizada al menos **40 minutos antes** de la hora de salida en Origen (configurable). Si el garaje es distinto del Origen, además debe estar localizable en el garaje a más tardar en `hora de salida – margen de traslado`; si garaje = Origen, el margen es 0. La app avisa en T-40; si no está en la zona esperada, se avisa a creador/admin y, si no responden, al chat de la lanzadera. La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
+- Todo usuario con plaza debe tener geolocalización activa en la ventana del viaje (por defecto desde T-20 configurable hasta llegada detectada o timeout post-llegada) para confirmar que está en el punto de salida y destino. Se activa en segundo plano aunque la app esté cerrada, con geocercas y baja frecuencia para optimizar batería. Si no se obtiene ubicación, se avisa al propio usuario y, como alerta a la lanzadera, que falta un viajero (sin compartir su ubicación exacta).
 - **Solo puede haber un conductor por horario**.
 - **Se puede anular una solicitud**.
-- **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
+- **Visibilidad de plazas en lanzaderas activas**:
+  - Badge compacto `confirmadas/total` (solo viajeros; el conductor no ocupa plaza) en Home, Horarios, Mapa y Chat de nivel Grupo/Lanzadera cuando la próxima salida es hoy o mañana; se oculta si la siguiente salida es en >1 día o la lanzadera está cerrada/archivada.
+  - Color del badge (paleta existente): verde (`#4AAE8C`) si ≥70 % libres, ámbar (`#F5A524`) si 30–69 %, rojo Biz (`#b80d06`) si <30 %, gris si está completa (`confirmadas = total`). Texto “Completo” opcional cuando está llena.
+  - Si hay varias salidas hoy/mañana, se muestra la más próxima.
+  - Ubicaciones concretas:
+    - **5.1 Home de Grupo**: badge en esquina superior derecha de cada tarjeta de lanzadera; tap → bottom sheet.
+    - **5.2 Chat de Grupo**: badge a la derecha del nombre en cada ítem de chat de lanzadera (lista), no dentro del hilo; tap → bottom sheet.
+    - **5.3 Horarios de Grupo**: junto al texto de próxima/en curso en cada tarjeta de lanzadera; tap → bottom sheet.
+    - **5.4 Mapa de Grupo**: overlay en esquina superior derecha del mapa en miniatura de cada lanzadera; tap → bottom sheet.
+    - **6.1 Home de Lanzadera**: junto al nombre en la cabecera; visible en cualquier pestaña del nivel Lanzadera.
+    - **6.2 Chat de Lanzadera**: chip en AppBar; microbadge en el avatar de cada mensaje con estado (🚗/✓/⏳/—) para la próxima salida hoy/mañana; tap en chip o menú contextual de avatar → bottom sheet.
+    - **6.3 Horarios de Lanzadera**: solo en 6.3.2, ya que se muestra el bloque de solicitudes, no duplicar badge.
+    - **6.4 Mapa de Lanzadera**: badge en AppBar; overlay opcional sobre marcador de origen si hay próxima salida; tap → bottom sheet.
+  - Tap en el badge → bottom sheet con la próxima salida reutilizando el bloque “Solicitudes” de 6.3.2:
+    - Cabecera: nombre de lanzadera, día/hora (“Hoy”/“Mañana”), Origen → Destino, badge.
+    - Sección Confirmados (expandida): avatar + nombre; icono 🚗 en conductor.
+    - Sección Pendientes (colapsable): contador; avatar + nombre + badge “Pendiente”; si es creador/admin, botones [✓ Aceptar]/[✗ Rechazar].
+    - CTA: **[Ver detalles completos]** → abre 6.3.2.
+  - Chat de lanzadera (6.2): microbadge en el avatar para la próxima salida hoy/mañana — 🚗 conductor, ✓ confirmada, ⏳ pendiente, — sin plaza; tap abre menú contextual con “Ver perfil” y “Ver estado en salida” (llama al mismo bottom sheet). Se actualiza en tiempo real cuando cambia el estado.
 - **No se puede solicitar plaza** si está completa.
 - Cada solicitud se guarda con fecha, rol y grupo asociado, en "Mis Solicitudes", resaltando en primer lugar la/s que está/n activas en ese momento.
 - Validaciones para evitar solapamientos en la configuración de horarios (cubierto en sistema de **_Creación/Edición Horario pantalla 6.1.3_**)
@@ -382,16 +401,18 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 ### Gestión automática de cancelaciones\*\*
 
 - **40 minutos antes** (configurable y considerando el margen de traslado): Si no hay conductor, aviso a creador y administradores.
-- **Conductor tardío**: Aunque está previsto evitar que una lanzadera se quede sin conductor con la anterior regla, es posible, una vez pasada la hora de la salida, recuperar esa salida, de forma tardía, y requiere de avisos a usuarios mediante chat en grupo/lanzadera y notificación, además de volver a activarse la hora de salida, junto a las demás horas de salida, pero con icono con [+ x min] de tal manera que sea intuitivo entender que sale pero tarde (cambiando el tono del chip a un tono mas fuerte o cambiar su forma).
-- **Hora de salida pasada**: El chip de hora de salida desaparece si la salida ya salió, o no tuvo conductor (esto es posible, ya que los chips de salida corresponden con la fecha seleccionada y si la hora pasa ya no es posible solicitarla si no es cambiando a una fecha posterior, desde el dia de la semana arriba, o desde la fecha directamente). Si está completa, se puede acceder al detalle, pero no se podrá solicitar plaza
+- **Salida recuperada con conductor tardío**: Si ya pasó la hora de salida y se confirma un conductor después, la salida se reabre como “en curso (tarde)”, se avisa en chat de grupo/lanzadera y por notificación, y el chip de la hora muestra +X min (color/estilo diferenciado) para indicar que saldrá con retraso.
+- **Hora de salida pasada**: En la fecha seleccionada, si la hora ya pasó o la salida no tuvo conductor, el chip queda deshabilitado y no se puede solicitar plaza (solo cambiando a otra fecha). Aunque una salida completa permite ver el detalle, no permite nuevas solicitudes.
 
-## **5.1 Persistencia y continuidad del rol de conductor**
+### **5.1 Persistencia y continuidad del rol de conductor**
 
-El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera. Solo existen dos modalidades claras de funcionamiento:
+El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera.
 
-### **1. Modos de asignación del conductor**
+### **Modos de asignación del conductor**
 
-#### **1.1 Conductor por salida única (con continuidad opcional)**
+Solo existen dos modalidades claras de funcionamiento:
+
+#### **1. Conductor por salida única (con continuidad opcional)**
 
 - El conductor se asigna únicamente para la **salida concreta** seleccionada.
 - Tras completar el viaje (cuando marque “Llegada” o el sistema detecte la llegada) y siempre que haya más salidas ese día con esa misma lanzadera, se mostrará el **Modal de continuidad de conductor** (ver **6.3.2.a** para UI y comportamiento).
@@ -408,7 +429,7 @@ Opciones:
   - A los **40 minutos antes de la siguiente salida** (configurable; si hay margen de traslado se toma como referencia la hora de salida en Origen), si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
   - Si otro usuario solicita ser conductor:
     - Si el conductor anterior respondió “No” a la pregunta de continuar, se aprueba automáticamente la solicitud nueva de conductor.
-    - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuantra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante.
+  - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuentra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante. Se notifica por push/in-app a conductor saliente, solicitante y creador/admin, y se publica aviso en el chat de la lanzadera indicando el cambio de conductor (sin compartir ubicación).
 
 - Si el conductor eligió **“Sí, continuar”** pero no tiene vehículo asignado (o vehiculo predeterminado para esa lanzadera):
 
@@ -418,7 +439,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
 
 **“Ya hay un conductor asignado para esta salida.”**
 
-#### **1.2 Conductor asignado por rango temporal (día completo o bloque de horarios)**
+#### **2. Conductor asignado por rango temporal (día completo o bloque de horarios)**
 
 - Solo puede asignarlo un Creador/Admin.
 - El conductor puede ser asignado para:
@@ -430,7 +451,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
   - Es conductor automáticamente para todas las salidas incluidas en el rango.
   - No aparece el modal de continuidad.
 
-### **2. Restricciones generales**
+### Restricciones generales\*\*
 
 - Solo puede haber **un conductor por salida**.
 - No se puede asignar conductor una vez que la salida ya ocurrió.
@@ -490,35 +511,35 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 
 ### **Políticas de Geolocalización** _(para implementación con mapas)_
 
-- **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje
+- **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje.
   - Se activa automáticamente antes de la salida en Origen (por defecto T-40, configurable). Si hay margen de traslado desde garaje, se espera ubicación en garaje a `hora de salida – margen` y el aviso T-40 se cuenta sobre la hora de salida en Origen.
   - Visible para todos los viajeros de esa lanzadera específica.
   - Necesaria para coordinación y seguridad del grupo.
   - **Consentimiento requerido**: Aceptar términos de conductor incluye localización.
-- **🧑‍🤝‍🧑 Viajero**: Geolocalización **opcional**
-  - El usuario decide si mostrar su ubicación o no.
-  - **Impacto en perfil**: No mostrar ubicación queda reflejado en perfil público.
-  - Puede ser factor negativo para aceptación en futuros grupos.
-  - Solo visible para el conductor y usuarios con plaza en la lanzadera.
-  - **Consentimiento granular**: Preguntar en cada viaje o establecer siempre geolocalizado duarnte viajes (esta opción aparecerá en preferencias del perfil).
+- **🧑‍🤝‍🧑 Viajero con plaza**: Geolocalización **obligatoria** en la ventana del viaje para confirmar asistencia y completar el trayecto.
+  - Permiso de localización se solicita en la instalación/onboarding para permitir activación automática; si no está otorgado, se vuelve a pedir al acercarse la salida (por defecto T-20, configurable por grupo).
+  - Activación automática en segundo plano para usuarios con plaza desde T-20 (configurable) antes de la salida hasta la llegada detectada o timeout post-llegada; no depende de tener la app abierta.
+  - Usos: verificar que está en el origen a la hora, confirmar llegada al destino y marcar viaje como realizado; disparar avisos si falta alguien en el punto de salida.
+  - Optimización de batería: geocercas en origen/destino y muestreo reducido fuera de zona crítica; se pausa al terminar la ventana.
+  - Visibilidad: conductor/admin ven ubicaciones de viajeros; el resto de viajeros solo recibe aviso si alguien con plaza no está en el punto en la ventana de salida (no se comparte ubicación exacta salvo esa alerta de ausencia).
 
 ### **🔒 Privacidad y Retención de Datos GPS**
 
-- Los datos de GPS son solo usados para la localización puntual para el tiempo de lanzadera.
-- No se almacenan datos de geolocalización
-- Solo es usada la gelocalización para confirmación de posición del vehículo (conductor) y de los usarios que así lo deseen, para facilitar el uso de la lanzadera en grupo.
+- Los datos de GPS se usan solo durante la ventana del viaje para validar conductor y presencia de usuarios con plaza.
+- No se almacenan datos de geolocalización una vez finalizado el trayecto.
+- La ubicación de viajeros solo se muestra a conductor/admin; al resto se les notifica únicamente la ausencia de alguien con plaza (sin compartir coordenadas).
 
 ### ** Activación del Tracking** _(para implementación con mapas)_
 
 - **Cuándo se activa la localización**:
 
   - **Caso 1**: conductor: Tiempo fijo antes de la salida en Origen (por defecto 40 minutos, configurable; si hay margen de traslado, la presencia se valida en garaje a `hora de salida – margen`).
-  - **Caso 2**: viajero: Cuando decide mostrar ubicación, si no la establece como predeterminada en preferencias de su perfil.
+  - **Caso 2**: viajero con plaza: Activación automática en segundo plano desde T-20 (configurable) antes de la salida hasta llegada detectada o timeout post-llegada; si no hay permiso, se solicita en ese momento. Se usa para check-in en origen/destino y para disparar avisos de ausencia.
 
 - **Visibilidad de ubicaciones**:
-  - **Conductor puede ver**: Ubicación de todos los viajeros de la lanzadera (si la han activado).
-  - **Viajeros pueden ver**: Ubicación del conductor + otros viajeros que lo permitan.
-  - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad), si no tienen activada la localización, y si se ven será solo durante el tiempo de la lanzadera (previo 40 minutos y hasta el fin del viaje).
+  - **Conductor puede ver**: Ubicación de todos los viajeros con plaza durante la ventana activa.
+  - **Viajeros pueden ver**: Ubicación del conductor; no ven ubicaciones de otros viajeros, salvo alerta de que alguien no está en el punto de salida.
+  - **Seguridad**: La visibilidad se limita a la ventana del viaje (previo T-20 y hasta fin del trayecto) y se restringe a conductor/admin; solo se comparte al resto el estado de ausencia sin coordenadas.
 
 ### 6.2 **GESTIÓN DE NOTIFICACIONES**
 
@@ -529,6 +550,7 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Alguien solicita plaza
   - Plaza confirmada/rechazada
   - Recordatorio 40 min antes del viaje
+  - Viajero con plaza sin ubicación o fuera del punto de salida/destino en ventana T-20 (alerta a la lanzadera y al propio viajero)
   - Cambios en horarios
   - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
@@ -554,7 +576,8 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - **Acciones disponibles**: abrir detalle, eliminar notificación 🔔
 - **Alertas especiales:**
   - **Conductor sin ubicación** cerca de hora de salida: aparece en pestaña Solicitudes
-  - Si el usuario es el conductor aludido: el icono 🔔 del AppBar añade un **extra de ubicación** para visibilidad rápida
+  - **Viajero ausente (con plaza)**: push al viajero y aviso a la lanzadera. En app muestra modal: título “No te detectamos en el punto de salida”, botones **[Estoy aquí]** (reintenta geolocalización y hace check-in si está en geocerca) y **[Abrir mapa]** (centra en origen). Cierre al confirmar o tras check-in exitoso; si persiste sin ubicación, mantiene alerta a lanzadera (sin compartir coordenadas exactas).
+  - Si el usuario es el conductor aludido: el icono 🔔 del AppBar muestra un badge adicional 📍 (tooltip “Activa ubicación”), y al tocarlo abre el modal prioritario 7.2 con CTA directa **[Activar ubicación]**.
 
 ---
 
@@ -1826,6 +1849,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 > AppBar sin icono ✋ (pantalla secundaria de detalle/solicitud).
 >
 > **Acción AppBar (solo Creador/Admin):** botón **“Asignar”** que abre la subpantalla **6.3.2.b** con la salida actual preseleccionada.
+>
 > - Ubicación: extremo derecho del AppBar.
 > - Plataforma: en Material/Android se muestra solo el icono `person_add`; en iOS/Cupertino usa texto “Asignar” (o icono + label si se usa Material en iOS). Desktop/Web: icono con tooltip “Asignar conductor”.
 > - Mock rápido: `[←][Título]                 [Asignar/person_add]`
@@ -1937,6 +1961,8 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 #### **6.3.2.a Modal de continuidad de conductor (post-viaje)**
 
 - **Cuándo se muestra:** Al marcar “Llegada” (o detección automática) y solo si hay otra salida del mismo día para la misma lanzadera y el conductor no tiene asignación por rango.
+- **Detección automática:** geocerca en el punto de destino/fin de trayecto; al entrar en la zona, se marca la llegada y se abre este modal sin requerir tap manual.
+- **Fallbacks si falla la geolocalización:** el conductor puede marcar manualmente el fin del recorrido; si no lo hace, el sistema usa la duración teórica estimada + unos minutos de margen y muestra el modal al vencer ese tiempo.
 - **No se muestra** si la siguiente salida ya tiene conductor asignado; en su lugar se muestra mensaje informativo: **“Ya hay un conductor asignado para esta salida.”**
 - **UI:** Modal centrado, bloqueante (no se cierra tocando fuera).
   - Título: **“¿Deseas continuar como conductor en la siguiente salida?”**
