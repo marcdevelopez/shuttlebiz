@@ -580,49 +580,49 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 ---
 
-## **7\. UX/UI Consideraciones**
+## **7. UX/UI Consideraciones**
 
 - Cambiar de grupo: desde pantalla de Grupo o lanzadera, volviendo en la pila de pantallas atras con la flecha hasta el nivel Grupos.
-- Días sin lanzaderas sencillamente no se muestran en la pantalla "Consulta/Horario 6.1.1".
-- Colores y botones para horarios de ida y vuelta (ver pantalla)
+- Días sin lanzaderas sencillamente no se muestran en la pantalla, días sin lanzaderas/horas asociadas no aparecen (no se muestran como vacíos, deshabilitados ni con placeholders) para evitar confusión “[Consulta/Horario 6.3.1](#6-3-1-consulta-horario)”.
+- Colores y botones para horarios de ida y vuelta (ver pantalla). El detalle de cómo se presentan está descrito en la [pantalla 6.3.1 Consulta/Horario](#6-3-1-consulta-horario) y en la [pantalla 6.3.3 Creación/Edición Horario](#6-3-3-creacion-edicion-horario): el toggle de sentido (activo a la izquierda, tamaño mayor) y los chips de horas coloreados según el sentido.
 - Implementación recomendada:
   - Riverpod para actualización reactiva.
 
 ### Patrones de Modales y Diálogos
 
-Marco común para todos los modales/genéricos; los flujos específicos se detallan en 5.x/6.x/7.x/10.x.
+Marco común para todos los modales/genéricos:
 
 - **Tipos:**
   - **Confirmación breve:** altura compacta, título + descripción corta + botones primario/secundario.
-  - **Alerta crítica:** icono de estado (error/advertencia), fondo suave de estado detrás del encabezado; botón primario rojo (`#D7263D`) o amarillo (`#F5A524`) según gravedad.
+  - **Alerta crítica:** icono de estado (error/advertencia), fondo suave de estado detrás del encabezado (`#FCEAEA` para error); botón primario rojo Biz (`#b80d06`) o amarillo (`#F5A524`) según gravedad.
   - **Bottom sheet (acciones/contexto):** handle superior, puede cerrarse por swipe/tap fuera si no es bloqueante.
-  - **Formulario corto:** incluye campos 1–3 inputs; CTA primaria alineada a la derecha.
+  - **Formulario corto:** incluye campos 1–3 inputs; CTA primaria alineada a la derecha (ej.: Guardar/Aceptar a la derecha, Cancelar a la izquierda)
 - **Layout:**
-  - Padding 20px, espaciado vertical 12px; radio 12; sombra suave.
+  - Padding 20px, espaciado vertical 12px; radio 12 en el contenedor (bordes redondeados del modal/sheet); sombra suave.
   - Título 16/600 (`Manrope`), body 14/400; icono opcional alineado a la izquierda.
-  - Botones en fila: primario a la derecha (color según acción), secundario texto/borde gris `#E5E7EB`.
-  - Para bottom sheets: margin-top handle de 32px ancho, altura 4px, color `#E5E7EB`.
+  - Botones en fila: primario a la derecha (color según acción); secundario como texto u outlined con borde gris `#E5E7EB`.
+  - Para bottom sheets: handle superior (rectángulo de agarre) centrado de 32px de ancho y 4px de alto en color `#E5E7EB`, separado del contenido con un pequeño margen superior.
 - **Comportamiento:**
   - Bloqueantes por defecto (no cerrar al tocar fuera) salvo informativos o bottom sheets de contexto.
-  - Estado deshabilitado con opacidad 0.4; foco visible en inputs y botones (stroke primario).
-  - Mensajes de error bajo campos en rojo `#D7263D`, 12/400.
+  - Estado deshabilitado: controles inactivos (sin interacción) y renderizados con opacidad 0.4; foco visible en inputs y botones (stroke primario).
+  - Mensajes de error bajo campos en rojo Biz `#b80d06`, 12/400.
 - **Accesibilidad:**
   - Soportar `textScaleFactor`; mínimo 44x44 en botones; lector de pantalla con orden lógico.
-  - Contraste AA: texto oscuro sobre fondo blanco; botones primarios con texto blanco.
+  - Contraste AA: garantizar ratio ≥4.5:1; texto oscuro sobre fondo claro y, en botones primarios de color, texto blanco.
 
 ### Patrones de Chips y Badges
 
 - **Chips de horarios/estados:**
-  - Altura 32–36; padding horizontal 12–16; radio 16.
+  - Altura 32–36 px; padding horizontal 12–16 px; radio 16 px.
   - Fuente acento (`Space Grotesk` 14/500) para horas y contadores; `Manrope` 14/500 en etiquetas.
-  - Bordes `#E5E7EB` para neutros; relleno primario `#1D6FFF` para selección; rellenos de estado: éxito `#E7F8F1`, advertencia `#FFF4E0`, error `#FFE8ED`.
-  - Texto: primario/blanco en chip primario; gris oscuro en neutros; rojo `#D7263D` en estado error.
+  - Bordes `#E5E7EB` para neutros; relleno primario `#3664a9` para selección; rellenos de estado: éxito `#E7F8F1`, advertencia `#FFF4E0`, error `#FCEAEA`.
+  - Texto: primario/blanco en chip primario; gris oscuro en neutros; rojo Biz `#b80d06` en estado error.
 - **Badges numéricos:**
-  - Fondo primario para contadores generales; fondo error para alertas; texto blanco 12/600.
+- Fondo primario `#3664a9` para contadores generales; fondo error `#b80d06` para alertas; texto blanco 12/600.
   - Tamaño mínimo 18x18; borde redondo completo.
 - **Filtros/pestañas chips:**
-  - Estado seleccionado con borde 0 y relleno primario; no seleccionado con borde `#E5E7EB`.
-  - Espaciado entre chips 8px; filas con wrap en móvil.
+  - Estado seleccionado sin borde (0 px) y con relleno primario; no seleccionado con borde gris `#E5E7EB`.
+  - espaciado horizontal de 8px; las filas hacen wrap en móvil.
 
 <br>
 
@@ -1772,7 +1772,7 @@ De arriba abajo:
     Total plazas solicitadas: 3 / 4
     ```
 
-- Al pulsar sobre un ítem de horario se abre la **pantalla 6.1.1 Consulta/Horario**, donde se muestra con más detalle la información del horario.
+- Al pulsar sobre un ítem de horario se abre la **[pantalla 6.3.1 Consulta/Horario](#6-3-1-consulta-horario)**, donde se muestra con más detalle la información del horario.
 
 - Si además se es **Creador/Admin del grupo** al que pertenece la lanzadera, se muestra un **botón flotante (+)** en la esquina inferior derecha para **agregar un nuevo horario**.
   Al pulsarlo, se abre la **pantalla 6.1.3 Creación/Edición de Horario**, accesible solo para Creadores/Admin del grupo o del Biz en la app.
@@ -1786,6 +1786,8 @@ De arriba abajo:
 - **Título**: "Horarios · [Nombre Lanzadera]".
 - **Icono ✋ Mis Solicitudes** → abre la **Pantalla 8** (presente en las vistas principales del nivel Lanzadera).
 - **Menú (⋮)** → filtros/orden y acciones de horario.
+
+<a id="6-3-1-consulta-horario"></a>
 
 ### **6.3.1 Pantalla de consulta/Horario**
 
@@ -1992,12 +1994,14 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >   - **[Cancelar]** (secundario) → cierra sin cambios.
 > - **Feedback:** Snackbar **“Solicitud de conductor enviada a [usuario]”**; el estado queda visible en 7.3 hasta aceptación/rechazo.
 
+<a id="6-3-3-creacion-edicion-horario"></a>
+
 ### **6.3.3 Pantalla Creación/Edición Horario**
 
 Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
 
 1. Pulsando el botón de añadir (+) abajo a la derecha en la pantalla 6.1 Lanzadera; en este caso será creación de nuevo horario;
-2. Pulsando el lápiz de edicion de horario en la pantalla 6.1.1 "Pantalla de consulta/Horario", que es la vista normal de horario.
+2. Pulsando el lápiz de edicion de horario en la [pantalla 6.3.1 "Pantalla de consulta/Horario"](#6-3-1-consulta-horario), que es la vista normal de horario.
 
 AppBar sin icono ✋ (pantalla secundaria de creación/edición).
 
