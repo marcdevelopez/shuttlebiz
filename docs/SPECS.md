@@ -328,13 +328,13 @@ Marco visual para que los equipos usen el mismo esqueleto. El **contenido funcio
 - Requiere definir:
   - **Nombre**
   - **Origen** y **destino**
-  - **Ubicación de preparación/garaje** (punto donde se toma el vehículo antes de salir) y **tiempo de preparación** hasta el Origen (puede ser automático/calculado o configurado por creador/admin; si se usa el mismo punto que Origen, no se descuenta tiempo)
+  - **Ubicación de preparación/garaje** (punto donde se toma el vehículo antes de salir) y **tiempo para llegar al Origen** (margen de traslado desde garaje si aplica; puede ser automático/calculado o configurado por creador/admin; si se usa el mismo punto que Origen, el margen es 0)
   - **Periodicidad**: puntual (fecha única) o frecuencia semanal
   - **Plazas por defecto**
   - **Comentario** (opcional: normas, detalles de recogida)
 - 🧭 Cada lanzadera pertenece a un único grupo (no es global).
 
-El tiempo de preparación se resta a la hora de salida en Origen para validar si el conductor está a tiempo en el punto de garaje. El creador/admin puede optar por usar automáticamente el cálculo sugerido por el sistema o definir manualmente ese margen. Si el garaje = Origen, el tiempo de preparación es 0.
+El margen de traslado (tiempo para llegar desde el garaje al Origen) se resta a la hora de salida en Origen para validar si el conductor está a tiempo en el punto de garaje. El creador/admin puede optar por usar automáticamente el cálculo sugerido por el sistema o definir manualmente ese margen. Si el garaje = Origen, el margen es 0.
 
 ### **3.2. Configuración de horarios**
 
@@ -360,8 +360,8 @@ Integrado en las secciones 6.1.3, donde se describe en detalle el flujo de creac
 
 **Transición entre modos:**
 
-- Al **seleccionar el primer día semanal**: el modo cambia de "fecha única" a "frecuencia semanal" automáticamente
-- Al **deseleccionar el último día**: el modo cambia de "frecuencia semanal" a "fecha única" automáticamente.
+- Al **seleccionar el primer día semanal**: el modo cambia de "fecha única" a "frecuencia semanal" automáticamente.
+- Al **deseleccionar el único día restante** (cuando solo queda uno marcado): el modo cambia de "frecuencia semanal" a "fecha única" automáticamente.
 
 ## **4\. Consulta de horario y Solicitud de Lanzadera**
 
@@ -371,27 +371,48 @@ La idea es mostrar una [salida](GLOSSARY.md#salida) en concreto, con los datos d
 
 ## **5\. Reglas y Validaciones**
 
-- El usuario que sea conductor en una lanzadera deberá de tener su posición localizada con 40 minutos de anterioridad a la hora de salida. La app deberá de avisar al conductor que active su ubización. Si no está en la zona de salida con 40 minutos (este tiempo puede ser configurado en ajustes de la lanzadera o del grupo) se dará aviso a creador/admins. Si Creador/admin no responden al aviso, se avisará al chat de la lanzadera de que el conductor no está en su puesto. De esta manera se asegura conductor y soluciones. La validación usa el **punto de preparación/garaje** y su **tiempo de preparación**: se descuenta este margen a la hora de salida en Origen para exigir que el conductor esté en el garaje a tiempo (si garaje = Origen, margen 0). La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
+- El usuario que sea conductor en una lanzadera deberá tener su posición localizada al menos **40 minutos antes** de la hora de salida en Origen (configurable). Si el garaje es distinto del Origen, además debe estar localizable en el garaje a más tardar en `hora de salida – margen de traslado`; si garaje = Origen, el margen es 0. La app avisa en T-40; si no está en la zona esperada, se avisa a creador/admin y, si no responden, al chat de la lanzadera. La ubicación recibida se muestra en el mapa de lanzadera (6.4) y, si no se recibe, se activa la alerta especial de notificaciones descrita en la sección 7.
+- Todo usuario con plaza debe tener geolocalización activa en la ventana del viaje (por defecto desde T-20 configurable hasta llegada detectada o timeout post-llegada) para confirmar que está en el punto de salida y destino. Se activa en segundo plano aunque la app esté cerrada, con geocercas y baja frecuencia para optimizar batería. Si no se obtiene ubicación, se avisa al propio usuario y, como alerta a la lanzadera, que falta un viajero (sin compartir su ubicación exacta).
 - **Solo puede haber un conductor por horario**.
 - **Se puede anular una solicitud**.
-- **Plazas disponibles visibles** en todo momento, con posibilidad de ver qué usuarios solicitaron plaza.
+- **Visibilidad de plazas en lanzaderas activas**:
+  - Badge compacto `confirmadas/total` (solo viajeros; el conductor no ocupa plaza) en Home, Horarios, Mapa y Chat de nivel Grupo/Lanzadera cuando la próxima salida es hoy o mañana; se oculta si la siguiente salida es en >1 día o la lanzadera está cerrada/archivada.
+  - Color del badge (paleta existente): verde (`#4AAE8C`) si ≥70 % libres, ámbar (`#F5A524`) si 30–69 %, rojo Biz (`#b80d06`) si <30 %, gris si está completa (`confirmadas = total`). Texto “Completo” opcional cuando está llena.
+  - Si hay varias salidas hoy/mañana, se muestra la más próxima.
+  - Ubicaciones concretas:
+    - **5.1 Home de Grupo**: badge en esquina superior derecha de cada tarjeta de lanzadera; tap → bottom sheet.
+    - **5.2 Chat de Grupo**: badge a la derecha del nombre en cada ítem de chat de lanzadera (lista), no dentro del hilo; tap → bottom sheet.
+    - **5.3 Horarios de Grupo**: junto al texto de próxima/en curso en cada tarjeta de lanzadera; tap → bottom sheet.
+    - **5.4 Mapa de Grupo**: overlay en esquina superior derecha del mapa en miniatura de cada lanzadera; tap → bottom sheet.
+    - **6.1 Home de Lanzadera**: junto al nombre en la cabecera; visible en cualquier pestaña del nivel Lanzadera.
+    - **6.2 Chat de Lanzadera**: chip en AppBar; microbadge en el avatar de cada mensaje con estado (🚗/✓/⏳/—) para la próxima salida hoy/mañana; tap en chip o menú contextual de avatar → bottom sheet.
+    - **6.3 Horarios de Lanzadera**: solo en 6.3.2, ya que se muestra el bloque de solicitudes, no duplicar badge.
+    - **6.4 Mapa de Lanzadera**: badge en AppBar; overlay opcional sobre marcador de origen si hay próxima salida; tap → bottom sheet.
+  - Tap en el badge → bottom sheet con la próxima salida reutilizando el bloque “Solicitudes” de 6.3.2:
+    - Cabecera: nombre de lanzadera, día/hora (“Hoy”/“Mañana”), Origen → Destino, badge.
+    - Sección Confirmados (expandida): avatar + nombre; icono 🚗 en conductor.
+    - Sección Pendientes (colapsable): contador; avatar + nombre + badge “Pendiente”; si es creador/admin, botones [✓ Aceptar]/[✗ Rechazar].
+    - CTA: **[Ver detalles completos]** → abre 6.3.2.
+  - Chat de lanzadera (6.2): microbadge en el avatar para la próxima salida hoy/mañana — 🚗 conductor, ✓ confirmada, ⏳ pendiente, — sin plaza; tap abre menú contextual con “Ver perfil” y “Ver estado en salida” (llama al mismo bottom sheet). Se actualiza en tiempo real cuando cambia el estado.
 - **No se puede solicitar plaza** si está completa.
 - Cada solicitud se guarda con fecha, rol y grupo asociado, en "Mis Solicitudes", resaltando en primer lugar la/s que está/n activas en ese momento.
 - Validaciones para evitar solapamientos en la configuración de horarios (cubierto en sistema de **_Creación/Edición Horario pantalla 6.1.3_**)
 
 ### Gestión automática de cancelaciones\*\*
 
-- **40 minutos antes**: Si no hay conductor, aviso a creador y administradores (este tiempo debería de ser modificable a cada grupo para necesidades concretas).
-- **Conductor tardío**: Aunque está previsto evitar que una lanzadera se quede sin conductor con la anterior regla, es posible, una vez pasada la hora de la salida, recuperar esa salida, de forma tardía, y requiere de avisos a usuarios mediante chat en grupo/lanzadera y notificación, además de volver a activarse la hora de salida, junto a las demás horas de salida, pero con icono con [+ x min] de tal manera que sea intuitivo entender que sale pero tarde (cambiando el tono del chip a un tono mas fuerte o cambiar su forma).
-- **Hora de salida pasada**: El chip de hora de salida desaparece si la salida ya salió, o no tuvo conductor (esto es posible, ya que los chips de salida corresponden con la fecha seleccionada y si la hora pasa ya no es posible solicitarla si no es cambiando a una fecha posterior, desde el dia de la semana arriba, o desde la fecha directamente). Si está completa, se puede acceder al detalle, pero no se podrá solicitar plaza
+- **40 minutos antes** (configurable y considerando el margen de traslado): Si no hay conductor, aviso a creador y administradores.
+- **Salida recuperada con conductor tardío**: Si ya pasó la hora de salida y se confirma un conductor después, la salida se reabre como “en curso (tarde)”, se avisa en chat de grupo/lanzadera y por notificación, y el chip de la hora muestra +X min (color/estilo diferenciado) para indicar que saldrá con retraso.
+- **Hora de salida pasada**: En la fecha seleccionada, si la hora ya pasó o la salida no tuvo conductor, el chip queda deshabilitado y no se puede solicitar plaza (solo cambiando a otra fecha). Aunque una salida completa permite ver el detalle, no permite nuevas solicitudes.
 
-## **5.1 Persistencia y continuidad del rol de conductor**
+### **5.1 Persistencia y continuidad del rol de conductor**
 
-El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera. Solo existen dos modalidades claras de funcionamiento:
+El sistema define cómo se asigna y mantiene el rol de conductor en una lanzadera.
 
-### **1. Modos de asignación del conductor**
+### **Modos de asignación del conductor**
 
-#### **1.1 Conductor por salida única (con continuidad opcional)**
+Solo existen dos modalidades claras de funcionamiento:
+
+#### **1. Conductor por salida única (con continuidad opcional)**
 
 - El conductor se asigna únicamente para la **salida concreta** seleccionada.
 - Tras completar el viaje (cuando marque “Llegada” o el sistema detecte la llegada) y siempre que haya más salidas ese día con esa misma lanzadera, se mostrará el **Modal de continuidad de conductor** (ver **6.3.2.a** para UI y comportamiento).
@@ -405,10 +426,10 @@ Opciones:
 - Si el conductor no responde al modal de continuidad:
 
   - A los **5 minutos**, los administradores reciben una notificación push indicando que se necesita conductor. Ellos pueden asignar la conducción a otro usuario.
-  - A los **40 minutos antes de la siguiente salida**, si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
+  - A los **40 minutos antes de la siguiente salida** (configurable; si hay margen de traslado se toma como referencia la hora de salida en Origen), si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
   - Si otro usuario solicita ser conductor:
     - Si el conductor anterior respondió “No” a la pregunta de continuar, se aprueba automáticamente la solicitud nueva de conductor.
-    - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuantra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante.
+  - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuentra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante. Se notifica por push/in-app a conductor saliente, solicitante y creador/admin, y se publica aviso en el chat de la lanzadera indicando el cambio de conductor (sin compartir ubicación).
 
 - Si el conductor eligió **“Sí, continuar”** pero no tiene vehículo asignado (o vehiculo predeterminado para esa lanzadera):
 
@@ -418,7 +439,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
 
 **“Ya hay un conductor asignado para esta salida.”**
 
-#### **1.2 Conductor asignado por rango temporal (día completo o bloque de horarios)**
+#### **2. Conductor asignado por rango temporal (día completo o bloque de horarios)**
 
 - Solo puede asignarlo un Creador/Admin.
 - El conductor puede ser asignado para:
@@ -430,7 +451,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
   - Es conductor automáticamente para todas las salidas incluidas en el rango.
   - No aparece el modal de continuidad.
 
-### **2. Restricciones generales**
+### Restricciones generales\*\*
 
 - Solo puede haber **un conductor por salida**.
 - No se puede asignar conductor una vez que la salida ya ocurrió.
@@ -447,7 +468,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
      - Conductor: usa **punto de preparación/garaje** y su **margen**; si garaje=Origen, se evalúa sobre Origen. ≥ margen (o ≥5 min en Origen) → 5; justo a tiempo → 0; intermedio → proporcional 0–5.
   2. **Fiabilidad (Imprevisibilidad)** (auto): penaliza cancelaciones (0 si cancela; 5 si no cancela, media por viajes).
   3. **Trato/compañerismo** (pública): valoración 0–5 del usuario.
-- **Peso**: categorías 1 y 2 peso 1; categoría 3 peso 2. Reputación = (cat1 + cat2 + 2·cat3) / 4. Si no hay datos de una categoría, no se promedia esa parte.
+- **Peso**: categorías 1 y 2 peso 1; categoría 3 peso 2. Reputación = (cat1 + cat2 + 2\*cat3) / 4. Si no hay datos de una categoría, no se promedia esa parte.
 - Se recalcula en cada viaje completado o cancelado.
 
 ### **5.2.2 Reglas adicionales**
@@ -456,7 +477,7 @@ Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea
 - Solo se puede valorar si el viaje fue **completado**.
 - Máximo **una valoración por trayecto** y usuario/rol.
 - Se almacena: fecha/hora, rol, grupo, lanzadera, salida, categoría afectada.
-- Si el usuario no comparte ubicación no puede ser conductor; para viajeros la puntualidad solo se calcula si hubo ubicación.
+- Si el usuario no comparte ubicación no puede ser conductor; para viajeros la puntualidad solo se calcula si hubo ubicación, la cual es obligatoria.
 - **UI del modal (ver 13)**: control 0–5 estrellas, texto opcional (máx. 120 caracteres), checkbox de reporte y botones **Enviar** / **Omitir**.
 
 ### **5.2.3 Recálculo automático de reputación**
@@ -471,18 +492,15 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 
 ---
 
-## **6\. Comunicación y Notificaciones**
+## **6\. COMUNICACIÓN Y NOTIFICACIONES**
 
 ### 6.1 **GESTIÓN DE COMUNICACIONES**
 
 - Está previsto Chat desde la Mínima Versión Publicable, ya que es básico para la comunicación entre los usuarios y no sería eficiente sin los chats.
 - El chat será a nivel de Grupo y de Lanzadera, además de chats privados y unos específico para comunicación entre creador/admins y conductor para eleccón de vehiculos o problemas durante el viaje.
 - **Privacidad de contacto**: el número de teléfono por defecto no será visible entre usuarios, aunque se puede hacer visible desde ajustes. Cada usuario podrá configurar así si mostrar su número de teléfono en su perfil.
-  - **Versiones futuras**: llamada de voz integrada en la app.
-- Notificaciones push:
-  - Cuando un usuario se une a un grupo.
-  - Cuando alguien solicita una plaza (informándose de plazas restantes).
-  - Aviso previo de salida, y cuando salga la lanzadera del origen (para los solicitantes de la lanzadera).
+- **Versiones futuras**: llamada de voz integrada en la app.
+- Notificaciones push: ver listado completo y comportamiento (push + in-app, con persistencia en Centro de Notificaciones) en **6.2 Gestión de Notificaciones**.
 - **Visualización de mapas incluida en MVP**:
   - **Pantalla de Grupo**: Mapas de todas las lanzaderas del grupo para consultar recorridos.
   - **Pantalla de Lanzadera**: Mapa específico con trayecto, origen, destino y ubicación del usuario.
@@ -490,35 +508,35 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 
 ### **Políticas de Geolocalización** _(para implementación con mapas)_
 
-- **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje
-  - Se activa automáticamente 40 minutos antes de la salida (o configuración distinta en ajustes).
+- **🚗 Conductor**: Geolocalización **obligatoria** durante el viaje.
+  - Se activa automáticamente antes de la salida en Origen (por defecto T-40, configurable). Si hay margen de traslado desde garaje, se espera ubicación en garaje a `hora de salida – margen` y el aviso T-40 se cuenta sobre la hora de salida en Origen.
   - Visible para todos los viajeros de esa lanzadera específica.
   - Necesaria para coordinación y seguridad del grupo.
   - **Consentimiento requerido**: Aceptar términos de conductor incluye localización.
-- **🧑‍🤝‍🧑 Viajero**: Geolocalización **opcional**
-  - El usuario decide si mostrar su ubicación o no.
-  - **Impacto en perfil**: No mostrar ubicación queda reflejado en perfil público.
-  - Puede ser factor negativo para aceptación en futuros grupos.
-  - Solo visible para el conductor y usuarios con plaza en la lanzadera.
-  - **Consentimiento granular**: Preguntar en cada viaje o establecer siempre geolocalizado duarnte viajes (esta opción aparecerá en preferencias del perfil).
+- **🧑‍🤝‍🧑 Viajero con plaza**: Geolocalización **obligatoria** en la ventana del viaje para confirmar asistencia y completar el trayecto.
+  - Permiso de localización se solicita en la instalación/onboarding para permitir activación automática; si no está otorgado, se vuelve a pedir al acercarse la salida (por defecto T-20, configurable por grupo).
+  - Activación automática en segundo plano para usuarios con plaza desde T-20 (configurable) antes de la salida hasta la llegada detectada o timeout post-llegada; no depende de tener la app abierta.
+  - Usos: verificar que está en el origen a la hora, confirmar llegada al destino y marcar viaje como realizado; disparar avisos si falta alguien en el punto de salida.
+  - Optimización de batería: geocercas en origen/destino y muestreo reducido fuera de zona crítica; se pausa al terminar la ventana.
+  - Visibilidad: conductor/admin ven ubicaciones de viajeros; el resto de viajeros solo recibe aviso si alguien con plaza no está en el punto en la ventana de salida (no se comparte ubicación exacta salvo esa alerta de ausencia).
 
 ### **🔒 Privacidad y Retención de Datos GPS**
 
-- Los datos de GPS son solo usados para la localización puntual para el tiempo de lanzadera.
-- No se almacenan datos de geolocalización
-- Solo es usada la gelocalización para confirmación de posición del vehículo (conductor) y de los usarios que así lo deseen, para facilitar el uso de la lanzadera en grupo.
+- Los datos de GPS se usan solo durante la ventana del viaje para validar conductor y presencia de usuarios con plaza.
+- No se almacenan datos de geolocalización una vez finalizado el trayecto.
+- La ubicación de viajeros solo se muestra a conductor/admin; al resto se les notifica únicamente la ausencia de alguien con plaza (sin compartir coordenadas).
 
 ### ** Activación del Tracking** _(para implementación con mapas)_
 
 - **Cuándo se activa la localización**:
 
-  - **Caso 1**: conductor: Tiempo fijo antes de la salida (40 minutos, configurable)
-  - **Caso 2**: viajero: Cuando decide mostrar ubicación, si no la establece como predeterminada en preferencias de su perfil.
+  - **Caso 1**: conductor: Tiempo fijo antes de la salida en Origen (por defecto 40 minutos, configurable; si hay margen de traslado, la presencia se valida en garaje a `hora de salida – margen`).
+  - **Caso 2**: viajero con plaza: Activación automática en segundo plano desde T-20 (configurable) antes de la salida hasta llegada detectada o timeout post-llegada; si no hay permiso, se solicita en ese momento. Se usa para check-in en origen/destino y para disparar avisos de ausencia.
 
 - **Visibilidad de ubicaciones**:
-  - **Conductor puede ver**: Ubicación de todos los viajeros de la lanzadera (si la han activado).
-  - **Viajeros pueden ver**: Ubicación del conductor + otros viajeros que lo permitan.
-  - **Seguridad**: Los viajeros NO se ven entre sí automáticamente (privacidad), si no tienen activada la localización, y si se ven será solo durante el tiempo de la lanzadera (previo 40 minutos y hasta el fin del viaje).
+  - **Conductor puede ver**: Ubicación de todos los viajeros con plaza durante la ventana activa.
+  - **Viajeros pueden ver**: Ubicación del conductor; no ven ubicaciones de otros viajeros, salvo alerta de que alguien no está en el punto de salida.
+  - **Seguridad**: La visibilidad se limita a la ventana del viaje (previo T-20 y hasta fin del trayecto) y se restringe a conductor/admin; solo se comparte al resto el estado de ausencia sin coordenadas.
 
 ### 6.2 **GESTIÓN DE NOTIFICACIONES**
 
@@ -526,9 +544,14 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
 
 - **Tipos de notificaciones:**
   - Nueva lanzadera creada en grupo
+  - Nuevo miembro se une a un grupo
   - Alguien solicita plaza
   - Plaza confirmada/rechazada
-  - Recordatorio 40 min antes del viaje
+  - Recordatorio 40 min antes del viaje (y otros recordatorios configurables)
+  - Lanzadera sale del origen (inicio de viaje) para solicitantes
+  - Delegación/asignación automática de conductor (cuando se cede por falta de respuesta/presencia)
+  - Viajero con plaza sin ubicación o fuera del punto de salida/destino en ventana T-20 (alerta a la lanzadera y al propio viajero)
+  - Conductor sin ubicación T-40 (alerta crítica a admins/conductor)
   - Cambios en horarios
   - Mensajes del chat
   - **Invitación recibida** para ser miembro de un grupo
@@ -541,66 +564,65 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - **No leídas**: icono de sobre cerrado con punto rojo, fondo blanco
   - **Leídas**: icono de sobre abierto, fondo gris claro
   - Cada ítem muestra: título, descripción breve, fecha/hora
-- **Pestañas organizativas:**
-  - **No leídas**: todas las notificaciones nuevas; al abrirlas pasan automáticamente a leídas
-  - **Leídas**: historial completo de notificaciones ya vistas
-  - **Solicitudes**: invitaciones a grupos, peticiones de conducción (cuando ya hay conductor), asignaciones de conducción por admin/creador, respuestas a creación de vehículo
-  - Pestaña se marca en **rojo** o con **icono de alerta** si requiere respuesta urgente
-  - Notificaciones se abren como modal al tocar push de notificación
-  - **Cambios en horarios/lanzaderas**: modificaciones, nuevas lanzaderas, nuevos horarios
+- **Pestañas organizativas** (solo 2):
+  - **No leídas**: todas las notificaciones nuevas; al abrirlas pasan automáticamente a leídas. Si hay urgentes, la pestaña muestra badge/rojo.
+  - **Leídas**: historial completo ya visto.
+- **Filtros/chips dentro de cada pestaña** (categorizan sin duplicar): `Solicitudes` (invitaciones a grupos, peticiones/asignaciones de conductor, vehículos), `Cambios de horarios/lanzaderas` (modificaciones, nuevas lanzaderas/horarios), y cualquier categoría futura.
+- Al tocar una push abre el detalle/modal con el filtro/categoría correspondiente; se marca como leída y al cerrar (flecha atrás) regresa a la pestaña y filtro desde donde se abrió.
 - **Filtros y acciones:**
   - **Icono de filtro**: permite filtrar por grupo y/o lanzadera (listas con checkboxes, selecciones múltiples se suman)
   - **Icono limpiar filtro**: reinicia selección
-  - **Acciones disponibles**: abrir detalle, eliminar notificación 🔔
+- **Acciones disponibles**: pulsación corta abre el detalle; pulsación larga muestra opción **Eliminar notificación** 🔔 (con confirmación/undo).
 - **Alertas especiales:**
   - **Conductor sin ubicación** cerca de hora de salida: aparece en pestaña Solicitudes
-  - Si el usuario es el conductor aludido: el icono 🔔 del AppBar añade un **extra de ubicación** para visibilidad rápida
+  - **Viajero ausente (con plaza)**: push al viajero y aviso a la lanzadera. En app del viajero ausente muestra modal: título “No te detectamos en el punto de salida”, botones **[Estoy aquí]** (reintenta geolocalización y hace check-in si está en geocerca) y **[Abrir mapa]** (centra en origen) para ver su ubicación y el del conductor. Cierre al confirmar o tras check-in exitoso; si persiste sin ubicación, mantiene alerta a lanzadera (sin compartir coordenadas exactas).
+  - Si el usuario es el conductor aludido: el icono 🔔 del AppBar muestra un badge adicional 📍 (tooltip “Activa ubicación”), y al tocarlo abre el modal prioritario 7.2 con CTA directa **[Activar ubicación]**.
 
 ---
 
-## **7\. UX/UI Consideraciones**
+## **7. UX/UI Consideraciones**
 
 - Cambiar de grupo: desde pantalla de Grupo o lanzadera, volviendo en la pila de pantallas atras con la flecha hasta el nivel Grupos.
-- Días sin lanzaderas sencillamente no se muestran en la pantalla "Consulta/Horario 6.1.1".
-- Colores y botones para horarios de ida y vuelta (ver pantalla)
+- Días sin lanzaderas sencillamente no se muestran en la pantalla, días sin lanzaderas/horas asociadas no aparecen (no se muestran como vacíos, deshabilitados ni con placeholders) para evitar confusión “[Consulta/Horario 6.3.1](#6-3-1-consulta-horario)”.
+- Colores y botones para horarios de ida y vuelta (ver pantalla). El detalle de cómo se presentan está descrito en la [pantalla 6.3.1 Consulta/Horario](#6-3-1-consulta-horario) y en la [pantalla 6.3.3 Creación/Edición Horario](#6-3-3-creacion-edicion-horario): el toggle de sentido (activo a la izquierda, tamaño mayor) y los chips de horas coloreados según el sentido.
 - Implementación recomendada:
   - Riverpod para actualización reactiva.
 
 ### Patrones de Modales y Diálogos
 
-Marco común para todos los modales/genéricos; los flujos específicos se detallan en 5.x/6.x/7.x/10.x.
+Marco común para todos los modales/genéricos:
 
 - **Tipos:**
   - **Confirmación breve:** altura compacta, título + descripción corta + botones primario/secundario.
-  - **Alerta crítica:** icono de estado (error/advertencia), fondo suave de estado detrás del encabezado; botón primario rojo (`#D7263D`) o amarillo (`#F5A524`) según gravedad.
+  - **Alerta crítica:** icono de estado (error/advertencia), fondo suave de estado detrás del encabezado (`#FCEAEA` para error); botón primario rojo Biz (`#b80d06`) o amarillo (`#F5A524`) según gravedad.
   - **Bottom sheet (acciones/contexto):** handle superior, puede cerrarse por swipe/tap fuera si no es bloqueante.
-  - **Formulario corto:** incluye campos 1–3 inputs; CTA primaria alineada a la derecha.
+  - **Formulario corto:** incluye campos 1–3 inputs; CTA primaria alineada a la derecha (ej.: Guardar/Aceptar a la derecha, Cancelar a la izquierda)
 - **Layout:**
-  - Padding 20px, espaciado vertical 12px; radio 12; sombra suave.
+  - Padding 20px, espaciado vertical 12px; radio 12 en el contenedor (bordes redondeados del modal/sheet); sombra suave.
   - Título 16/600 (`Manrope`), body 14/400; icono opcional alineado a la izquierda.
-  - Botones en fila: primario a la derecha (color según acción), secundario texto/borde gris `#E5E7EB`.
-  - Para bottom sheets: margin-top handle de 32px ancho, altura 4px, color `#E5E7EB`.
+  - Botones en fila: primario a la derecha (color según acción); secundario como texto u outlined con borde gris `#E5E7EB`.
+  - Para bottom sheets: handle superior (rectángulo de agarre) centrado de 32px de ancho y 4px de alto en color `#E5E7EB`, separado del contenido con un pequeño margen superior.
 - **Comportamiento:**
   - Bloqueantes por defecto (no cerrar al tocar fuera) salvo informativos o bottom sheets de contexto.
-  - Estado deshabilitado con opacidad 0.4; foco visible en inputs y botones (stroke primario).
-  - Mensajes de error bajo campos en rojo `#D7263D`, 12/400.
+  - Estado deshabilitado: controles inactivos (sin interacción) y renderizados con opacidad 0.4; foco visible en inputs y botones (stroke primario).
+  - Mensajes de error bajo campos en rojo Biz `#b80d06`, 12/400.
 - **Accesibilidad:**
   - Soportar `textScaleFactor`; mínimo 44x44 en botones; lector de pantalla con orden lógico.
-  - Contraste AA: texto oscuro sobre fondo blanco; botones primarios con texto blanco.
+  - Contraste AA: garantizar ratio ≥4.5:1; texto oscuro sobre fondo claro y, en botones primarios de color, texto blanco.
 
 ### Patrones de Chips y Badges
 
 - **Chips de horarios/estados:**
-  - Altura 32–36; padding horizontal 12–16; radio 16.
+  - Altura 32–36 px; padding horizontal 12–16 px; radio 16 px.
   - Fuente acento (`Space Grotesk` 14/500) para horas y contadores; `Manrope` 14/500 en etiquetas.
-  - Bordes `#E5E7EB` para neutros; relleno primario `#1D6FFF` para selección; rellenos de estado: éxito `#E7F8F1`, advertencia `#FFF4E0`, error `#FFE8ED`.
-  - Texto: primario/blanco en chip primario; gris oscuro en neutros; rojo `#D7263D` en estado error.
+  - Bordes `#E5E7EB` para neutros; relleno primario `#3664a9` para selección; rellenos de estado: éxito `#E7F8F1`, advertencia `#FFF4E0`, error `#FCEAEA`.
+  - Texto: primario/blanco en chip primario; gris oscuro en neutros; rojo Biz `#b80d06` en estado error.
 - **Badges numéricos:**
-  - Fondo primario para contadores generales; fondo error para alertas; texto blanco 12/600.
+- Fondo primario `#3664a9` para contadores generales; fondo error `#b80d06` para alertas; texto blanco 12/600.
   - Tamaño mínimo 18x18; borde redondo completo.
 - **Filtros/pestañas chips:**
-  - Estado seleccionado con borde 0 y relleno primario; no seleccionado con borde `#E5E7EB`.
-  - Espaciado entre chips 8px; filas con wrap en móvil.
+  - Estado seleccionado sin borde (0 px) y con relleno primario; no seleccionado con borde gris `#E5E7EB`.
+  - espaciado horizontal de 8px; las filas hacen wrap en móvil.
 
 <br>
 
@@ -610,67 +632,56 @@ Marco común para todos los modales/genéricos; los flujos específicos se detal
 
 ## **🔹 Barra Superior de navegación**
 
-### **Estructura:**
+### **Estructura y acciones**
 
-[ ← volver nivel ] [ Logo / Nombre ] [ Nombre de pantalla ] [ Icono Mis Solicitudes ] [ ⋮ Menú ]
+[ ← (si no es raíz) ] [ Breadcrumb por nivel (Grupos > Grupo > Lanzadera), segmentos coloreados y tramo actual resaltado ] [ 🔔 (solo si hay no leídas) ] [ ✋ Mis Solicitudes ] [ ⋮ Menú contextual ]
+- Menú ⋮ para acciones del contexto actual; no hay menú hamburguesa.
+- Tabs principales siempre visibles (BottomNavigationBar): Home, Chat, Horarios, Mapa. Existen en los tres niveles y mantienen la pestaña activa al subir/bajar.
+- **🔔 Notificaciones**: solo con no leídas, siempre a la izquierda de ✋; abre Pantalla 7.
+- **✋ Mis Solicitudes**: abre Pantalla 8 en Home/Chat/Horarios/Mapa de los tres niveles; no en pantallas secundarias.
+- Breadcrumb muestra el nivel actual (`Grupos > [Grupo] > [Lanzadera]`); truncar con elipsis si falta espacio.
 
-### **Patrón de Menús y Acciones Superiores**
-
-- El **menú de tres puntos verticales (⋮)** en la esquina superior derecha se utilizará para **acciones y ajustes del contexto actual** de la pantalla (modificar datos, configuración, opciones avanzadas).
-- El **menú hamburguesa (≡)** **no se usará** en la app, ya que la navegación principal se realiza con **BottomNavigationBar** y encabezados.
-- Nunca existirán ambos menús en la misma vista.
-- Acceso a navegación y secciones principales (de izquierda a derecha):
-  - (1) home de grupos, grupo o lanzadera,
-  - (2) chat,
-  - (3) horario y
-  - (4) mapa (siempre desde bottom bar o iconos visibles, no desde menús ocultos).
-- **Icono de notificaciones (🔔)**: aparece solo si hay no leídas; se coloca en la AppBar a la derecha y siempre **a la izquierda** del icono ✋. Muestra badge numérico si hay nuevas. Al pulsar abre la **Pantalla 7: Centro de Notificaciones**. Si no hay no leídas, el icono no se muestra.
-- El icono de mano ✋ abre siempre la **Pantalla 8: Mis Solicitudes** desde las AppBar de **Home, Chat, Horario y Mapa** en los tres niveles (Grupos, Grupo, Lanzadera). **No se muestra en pantallas secundarias** (formularios, detalles internos) salvo que la lógica del flujo requiera ese acceso contextual.
-- **Breadcrumb en AppBar**: indicar nivel actual arriba (ej. `Grupos > Trabajo > Nave-Estación`). En Nivel Grupos se muestra solo `Grupos`; en Nivel Grupo `Grupos > [Grupo]`; en Nivel Lanzadera `Grupos > [Grupo] > [Lanzadera]`. Si el espacio es limitado, usar truncado con elipsis en los nombres de grupo/lanzadera.
-
-**Objetivo:** Mantener claridad, evitar confusión del usuario y seguir las pautas de Material/Flutter modernas.
+**Objetivo:** claridad y consistencia con Material/Flutter.
 
 ### **Navegación anidada con PageView**
 
-Navegación entre 3 niveles:
+**Implementación Flutter recomendada (unificada):**
 
-La aplicación permite navegar hacia abajo y hacia arriba entre estos tres niveles jerárquicos:
+- Un `PageView` con `PageController` por nivel (Grupos, Grupo, Lanzadera) y `BottomNavigationBar` de 4 tabs: Home, Chat, Horarios, Mapa.
+- Al bajar/subir de nivel se empuja una ruta del siguiente nivel que contiene su propio `PageView`, conservando el índice de pestaña activo (usa `Navigator`/`Router`/`go_router` con shell routes).
+- Cada tab mantiene estado con `AutomaticKeepAliveClientMixin`; el índice actual se guarda en estado global (`Riverpod`/`ChangeNotifier`/`ValueNotifier`) para restaurarlo al cambiar de nivel.
+- Botón atrás gestionado con `WillPopScope/PopScope`: primero cierra modales, luego sube nivel manteniendo la pestaña; en raíz, sale si no hay overlays.
+- Transición de nivel con `PageRouteBuilder` y `SlideTransition + FadeTransition` vertical 150–200 ms, coherente con la spec.
 
-### **1. Nivel Grupos**
+### **1. Nivel Grupos (tab Home)**
 
-Aquí se muestran todos los grupos en una ListView:
+- ListView con todos los grupos; se pueden crear o solicitar unirse.
+- Tocar un grupo abre el **Nivel Grupo**.
 
-- Se pueden crear grupos o solicitar formar parte de uno.
-- Al pulsar un grupo en la ListView, se accede al **Nivel Grupo**.
+### **2. Nivel Grupo (tab Home)**
 
-### **2. Nivel Grupo**
+- Se crean lanzaderas y se listan en una ListView.
+- Tocar una lanzadera abre el **Nivel Lanzadera**.
 
-- Desde este nivel se pueden crear lanzaderas.
-- Las lanzaderas del grupo se muestran en una ListView.
-- Al pulsar una lanzadera en la lista, se accede al **Nivel Lanzadera**.
+### **3. Nivel Lanzadera (tab Home)**
 
-### **3. Nivel Lanzadera**
-
-- Se muestran los datos detallados de la lanzadera y el comentario asociado.
-- También aparece un resumen con las últimas novedades de la lanzadera, a modo de muro.
+- Detalle de la lanzadera y comentario.
+- Muro de novedades (cronológico inverso, tarjetas scrollables con icono/tipo/fecha) para: rechazos de acciones de admin por el Creador, ausencia de conductor, eliminación o modificación de horarios, ingreso de nuevos usuarios y otros cambios relevantes. Tocar un evento abre su contexto.
 
 ### **Estructura común de navegación**
 
-Cada nivel dispone de **4 páginas**, y los elementos de la primera página (ListView) sirven para cambiar de nivel:
-
-- En el **Nivel Grupos**, un ítem de la ListView lleva al Nivel Grupo.
-- En el **Nivel Grupo**, un ítem de la ListView lleva al Nivel Lanzadera.
-- En el **Nivel Lanzadera** ya no existen ítems para navegar hacia abajo, porque es el último nivel. Desde aquí solo se puede subir con la flecha de atrás.
+- Cada nivel tiene **4 páginas** (Home, Chat, Horarios, Mapa); la ListView de Home permite bajar de nivel. En Lanzadera no hay navegación descendente; solo se sube con flecha atrás.
 
 ### **Reglas de navegación entre niveles**
 
-- Para retroceder, debe existir una **flecha de atrás** en cada pantalla del _Home_ correspondiente.
+- Para retroceder, debe existir una **flecha de atrás** en cada pestaña principal (Home, Chat, Horarios, Mapa) del nivel activo.
+- En el nivel raíz (Grupos), la AppBar **no muestra flecha atrás**; el botón atrás del sistema muestra la confirmación de salida.
 - La navegación superior (flecha atrás arriba a la izquierda) permite subir niveles:
 
   - De **Lanzadera → Grupo**
   - De **Grupo → Grupos**
 
-- El **botón atrás del sistema** respeta la jerarquía: primero cierra modales/toasts, luego sube un nivel (Lanzadera → Grupo → Grupos) manteniendo la pestaña actual del PageView; en el nivel raíz (Grupos) cierra la app si no hay overlays.
+- El **botón atrás del sistema** respeta la jerarquía: primero cierra modales/toasts, luego sube un nivel (Lanzadera → Grupo → Grupos) manteniendo la pestaña actual del PageView; en el nivel raíz (Grupos) muestra confirmación **“¿Deseas salir de la app?”** (aceptar para salir, cancelar para permanecer) si no hay overlays.
 - **Transiciones entre niveles**: animación vertical (slide up/down) con fade ligero, 150–200 ms, al bajar o subir de nivel. Cambio de pestaña dentro de un nivel usa el PageView nativo (swipe/handoff sin animación extra).
 
 ### **PageView en toda la aplicación**
@@ -689,20 +700,22 @@ Reglas de PageView y stack:
 Menús contextuales (⋮) por nivel y pestaña:
 
 - Nivel Grupos:
-  - Home: crear grupo, ajustes personales rápidos.
+  - Home: crear grupo, ajustes personales rápidos (ver 4.1.4).
   - Chat: ajustes generales de chat, ver chats de grupo silenciados.
-  - Horarios: ordenar/filtros globales de horarios, exportar (futuro).
+  - Horarios: ordenar/filtros globales de horarios, exportar (futuro) (ver 4.3.1).
   - Mapa: tipo de mapa, mostrar/ocultar tráfico y leyenda, centrar ubicación, configuración de capas.
 - Nivel Grupo:
-  - Home: gestión del grupo (5.5), gestión de vehículos (10), invitar miembros, configuración del grupo.
-  - Chat: ver miembros, silenciar/activar notificaciones, configuración del chat.
-  - Horarios: ordenar/filtros de horarios del grupo, configuración de vista.
+  - Home: gestión del grupo (5.5), gestión de vehículos (10), invitar miembros, configuración del grupo (menú ⋮ en Home abre estas pantallas/flows: 5.5 para gestión y configuración, 10 para vehículos, flujo de invitación descrito en 5.5 y 4.1.x).
+  - Chat: ver miembros (ver 5.2.1), silenciar/activar notificaciones, configuración del chat (ver 5.2.2).
+  - Horarios: ordenar/filtros de horarios del grupo (ver 5.3.1), configuración de vista (ver 5.3.2).
   - Mapa: tipo de mapa, leyenda, mostrar/ocultar lanzaderas.
 - Nivel Lanzadera:
-  - Home: ajustes de lanzadera (nombre/origen/destino/plazas por defecto/comentario).
-  - Chat: ajustes del chat de lanzadera.
-  - Horarios: filtros/orden de horarios, acceso a creación/edición (según rol).
-  - Mapa: opciones de visualización del trayecto y capas.
+  - Home: ajustes de lanzadera (nombre/origen/destino/plazas por defecto/comentario); menú ⋮ → abre editor (5.1.1) en modo edición con campos precargados y las restricciones descritas en 6.1.
+  - Chat: ajustes del chat de lanzadera (ver 6.2.1).
+  - Horarios: filtros/orden de horarios (ver 6.3.1.b).
+  - Mapa: opciones de visualización del trayecto (menú ⋮ → 6.4.1).
+
+Nota: en Horarios de Nivel Lanzadera, la creación/edición se hace vía FAB (+) y lápiz que abren 6.3.3 (solo Creador/Admin), no desde el menú ⋮.
 
 <br>
 
@@ -908,6 +921,16 @@ La pantalla puede mostrar dos situaciones:
 - **Feedback:** Snackbar **“Solicitud enviada”** y badge en `Mis Solicitudes` (Pantalla 8) mostrando estado Pendiente; si el grupo tiene auto-aprobación ON, se añade de inmediato y se muestra “Unido al grupo”.
 - **Comportamiento:** si ya existe una solicitud pendiente, el botón muestra estado “Solicitud enviada” y deshabilita reenvío; si fue rechazada, permite reenviar tras un cooldown (definir en backend).
 
+### **4.1.4 Ajustes personales rápidos (Nivel Grupos · Home)**
+
+- **Acceso:** menú (⋮) en la AppBar del tab Home en Nivel Grupos.
+- **Tipo:** bottom sheet compacta; cambios aplican al usuario (no al grupo) y muestran snackbar de confirmación.
+- **Opciones:**
+  - **Silenciar notificaciones rápido:** chips 1 h / hasta mañana / indefinido; botón **[Configurar notificaciones]** abre Pantalla 12.1 para ajustes completos.
+  - **Privacidad de contacto:** toggle “Mostrar mi número en perfil” (hereda el valor de Privacidad; cambia el flag global).
+  - **Tema de la app:** toggle claro/oscuro; botón **[Ajustes de app]** abre Pantalla 12.
+  - **Editar perfil:** atajo a Pantalla 9.1 (Mi Perfil) para editar nombre/foto y preferencias completas.
+
 ### UNIRSE A GRUPO EXISTENTE
 
 Flujo para usuarios que quieren unirse a un grupo creado por otros.
@@ -960,6 +983,17 @@ Lista con un ítem por cada grupo:
 
 **Objetivo UX:**
 Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertical, sin cambiar de pestaña (la pestaña Chat permanece activa en todos los niveles).
+
+### **4.2.1 Ver chats de grupo silenciados (modal)**
+
+- **Acceso:** opción “Ver chats de grupo silenciado” en el menú (⋮) de la AppBar de 4.2.
+- **Tipo:** bottom sheet/modal scrollable.
+- **Contenido:** lista de chats silenciados con:
+  - Nombre del grupo.
+  - Estado: “Silenciado indefinidamente” o “Silenciado hasta hh:mm / fecha”.
+  - Acciones por ítem: **[Reactivar notificaciones]** y **[Abrir chat]**.
+- **Acciones globales:** botón **[Reactivar todos]** (si hay más de uno silenciado).
+- **Estado vacío:** icono + texto “No tienes chats silenciados” y CTA **[Ir a ajustes de chat]** (abre ajustes generales de chat del nivel Grupos).
 
 ---
 
@@ -1044,9 +1078,19 @@ El buscador filtra **grupos y lanzaderas** por:
 - nombre de grupo
 - nombre de lanzadera
 - día (“viernes”)
-- hora (“7:30”)
-- sentido (“ida”, “vuelta”)
+  - hora (“7:30”)
+  - sentido (“ida”, “vuelta”)
   Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
+
+### **4.3.1 Modal de filtros/orden (Nivel Grupos · Horarios)**
+
+- **Acceso:** menú (⋮) de la AppBar en 4.3 (Horarios · Mis Grupos).
+- **Tipo:** bottom sheet; aplica filtros de forma inmediata al cerrar con **[Aplicar]**.
+- **Controles:**
+  - Orden (radio): Próxima salida (por defecto) / Distancia al origen / Nombre de grupo.
+  - Filtros (toggles): Solo lanzaderas activas; Solo lanzaderas con plazas disponibles.
+  - Exportar horarios (futuro): opción mostrada deshabilitada/“Próximamente”.
+- **Acciones:** **[Restablecer]** (vuelve a orden por defecto sin filtros) y **[Aplicar]**.
 
 ---
 
@@ -1070,17 +1114,18 @@ Lista vertical donde **cada ítem es un grupo**.
 Cada ítem de grupo muestra:
 
 - **Nombre del grupo** (encabezado)
-- **Mapa del grupo** con:
+  - **Mapa del grupo** con:
 
-  - Todas las rutas de lanzadera del grupo **superpuestas** en el mismo mapa
-  - Cada ruta con un color distinto
-  - Marcadores de origen (azul) y destino (rojo) de cada lanzadera
-  - **Posición del usuario** (opcional, si no afecta rendimiento UI)
+    - Todas las rutas de lanzadera del grupo **superpuestas** en el mismo mapa
+    - Cada ruta con un color distinto
+    - Marcadores de origen (azul) y destino (rojo) de cada lanzadera
+    - **Posición del usuario** (opcional, si no afecta rendimiento UI)
+    - **Rendimiento:** cargar el mapa de cada grupo on-demand (lazy) al aparecer en viewport; usar preview estático/imagen si hay muchos grupos para no saturar; limitar mapas activos simultáneos y suspender los fuera de vista.
 
-- **Leyenda bajo el mapa**:
-  - Lista horizontal o vertical compacta con:
-    - Nombre de cada lanzadera
-    - Color de la ruta correspondiente
+  - **Leyenda bajo el mapa**:
+    - Lista horizontal o vertical compacta con:
+      - Nombre de cada lanzadera
+      - Color de la ruta correspondiente
   - **Al pulsar el nombre de una lanzadera**:
     - Toggle para **mostrar/ocultar** su recorrido en el mapa. resalta la lanzadera y muestra información básica.
     - El nombre se resalta o tacha según visibilidad
@@ -1103,6 +1148,17 @@ Cada ítem de grupo muestra:
   - Botones:
     - **Buscar grupos**
     - **Crear nuevo grupo**
+
+### **4.4.1 Menú de Mapa (Nivel Grupos)**
+
+- **Acceso:** menú (⋮) de la AppBar en 4.4.
+- **Tipo:** bottom sheet compacto.
+- **Opciones:**
+  - **Tipo de mapa:** Estándar / Satélite / Terreno.
+  - **Tráfico:** toggle mostrar/ocultar tráfico en todos los mapas de la lista.
+  - **Leyenda:** toggle mostrar/ocultar la leyenda bajo cada mapa.
+  - **Centrar en mi ubicación:** acción que recentra el mapa visible en la posición del usuario (si está habilitada).
+  - **Capas:** checkbox para rutas de lanzaderas.
 
 ---
 
@@ -1190,7 +1246,7 @@ La pantalla puede mostrar dos situaciones:
   - **Origen y destino** (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
   - **Plazas por defecto**: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
   - **Comentario de la Lanzadera**: Normas, instrucciones, etc. Campo amplio, debajo de "Plazas por defecto".
-  - **Ubicación de preparación/garaje y tiempo de preparación**: punto donde se toma/prepara el vehículo antes de salir y margen de tiempo hasta el Origen. El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
+  - **Ubicación de preparación/garaje y tiempo para llegar al Origen**: punto donde se toma/prepara el vehículo antes de salir y margen de traslado hasta el Origen (desde garaje si aplica). El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
     ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema
     asumirá que el garaje es el mismo punto de Origen (margen = 0).
 
@@ -1247,7 +1303,7 @@ La pantalla puede mostrar dos situaciones:
 
 - **Función**:
   Permitir al creador/admin definir el **punto de garaje o preparación**
-  del vehículo y el **tiempo estimado** hasta el Origen.
+  del vehículo y el **tiempo estimado para llegar al Origen** (desde garaje si aplica).
 
 - Se abre al pulsar **"Seleccione ubicación de garaje"** en **Pantalla 5.1.1**.
 - AppBar sin icono ✋ (pantalla secundaria auxiliar).
@@ -1328,6 +1384,28 @@ La pantalla se divide en dos secciones:
 
 **Objetivo UX:**
 Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertical, sin cambiar de pestaña (la pestaña Chat permanece activa en todos los niveles). El chat general del grupo es accesible y visible, separado de los chats específicos de lanzaderas.
+
+---
+
+### **5.2.1 Ver miembros del grupo (modal)**
+
+- **Acceso:** opción “Ver miembros del grupo” en el menú (⋮) de la AppBar de 5.2 (Chat · Nivel Grupo).
+- **Tipo:** bottom sheet scrollable.
+- **Contenido:** buscador por nombre; lista de miembros con avatar, nombre, rol (Creador/Admin/Conductor/Viajero) y estado (activo/silenciado); indicador si es conductor actual de alguna lanzadera.
+- **Acciones por ítem:** **[Ver perfil]** (abre Pantalla 9), **[Mensaje privado]** (abre o crea chat privado), y para Admin/Creador **[Gestionar]** (abre 5.5 en la sección de miembros).
+- **Estado vacío:** “No hay miembros” (solo para casos de error/inconsistencia).
+
+---
+
+### **5.2.2 Configuración del chat (nivel Grupo)**
+
+- **Acceso:** opción “Configuración del chat” en el menú (⋮) de la AppBar de 5.2.
+- **Tipo:** bottom sheet/modal.
+- **Controles:**
+  - **Silenciar notificaciones:** radio 1 h / hasta mañana / indefinido, con toggle de sonido/vibración; muestra estado actual.
+  - **Fijar chat** en la lista (pin) y **Desfijar** si ya está fijado.
+  - **Acceso a ajustes globales:** botón **[Ajustes de chat y notificaciones]** abre Pantalla 12.1.
+- **Acciones:** **[Guardar]** aplica cambios; **[Cancelar]** cierra sin cambios.
 
 ---
 
@@ -1460,6 +1538,24 @@ Solo se muestran lanzaderas que tengan **al menos una coincidencia relevante**.
 **Objetivo de UX:**
 Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido a qué lanzaderas tienen salidas próximas y en qué horarios, manteniendo coherencia total con el diseño visual de las pantallas de lanzadera.
 
+### **5.3.1 Modal de filtros/orden (Nivel Grupo · Horarios)**
+
+- **Acceso:** menú (⋮) de la AppBar en 5.3 (Horarios · [Grupo]).
+- **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
+- **Controles:**
+  - Orden (radio): Próxima salida (por defecto) / Distancia al origen / Nombre de lanzadera / Alfabético.
+  - Filtros (toggles): Solo lanzaderas con salidas hoy; Solo lanzaderas con plazas disponibles; Por sentido (ida/vuelta); Por rango de horas (selector de intervalo).
+- **Acciones:** **[Restablecer]** (orden por defecto, sin filtros) y **[Aplicar]**.
+
+### **5.3.2 Configuración de vista (Nivel Grupo · Horarios)**
+
+- **Acceso:** menú (⋮) de la AppBar en 5.3.
+- **Tipo:** bottom sheet sencilla.
+- **Controles:**
+  - **Vista compacta / extendida**: toggle. Compacta muestra solo próxima salida y resumen; extendida muestra próximas 2–3 salidas por lanzadera.
+  - **Mostrar salidas pasadas (últimas 2 h)**: toggle para ver salidas recientes ya lanzadas.
+- **Acciones:** **[Guardar]** aplica cambios; **[Cancelar]** cierra sin cambios.
+
 ---
 
 ## **5.4 Pantalla Mapa (Nivel Grupo)** _(incluido en MVP)_
@@ -1531,6 +1627,17 @@ Cada ítem de lanzadera muestra:
 **Objetivo UX:**
 Poder elegir entre cada mapa de lanzadera con las detalle de viajeros y salida que en el nivel de grupos.
 
+### **5.4.1 Menú de Mapa (Nivel Grupo)**
+
+- **Acceso:** menú (⋮) de la AppBar en 5.4.
+- **Tipo:** bottom sheet compacto.
+- **Opciones:**
+  - **Tipo de mapa:** Estándar / Satélite / Terreno.
+  - **Tráfico:** toggle mostrar/ocultar.
+  - **Leyenda:** toggle mostrar/ocultar el bloque de colores/nombres bajo el mapa.
+  - **Mostrar lanzaderas:** checklist por lanzadera para mostrar/ocultar su trayecto en el mapa; al ocultar se quita su ruta y su entrada en la leyenda, pero la tarjeta/lista de la lanzadera sigue visible.
+  - **Centrar en mi ubicación:** acción que recentra el mapa visible.
+
 ---
 
 ## **5.5 Pantalla de GESTIÓN DE GRUPO**
@@ -1579,7 +1686,7 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
   - Lista de solicitudes pendientes (si auto-aprobación está desactivada) → ver **5.5.a**
 - **Configuración de lanzaderas**:
   - Tiempo mínimo para selección de vehículo (por defecto 30 minutos, editable)
-  - Tiempo de aviso de conductor sin ubicación (por defecto 40 minutos, editable)
+  - Tiempo de aviso de conductor sin ubicación (por defecto 40 minutos antes de la salida en Origen, editable; considerar margen de traslado desde garaje)
 
 #### **Acciones**
 
@@ -1691,9 +1798,9 @@ Esta página contiene:
 - **Ubicación de garaje/preparación**: puede editarse en cualquier momento.
   Al pulsar, abre **Pantalla 5.1.2b** (Elección de Garaje) donde se puede:
   - Cambiar la ubicación del garaje
-  - Ajustar el tiempo de preparación (automático o manual)
+  - Ajustar el tiempo para llegar al Origen (margen de traslado, automático o manual)
   - Marcar "Usar mismo punto que Origen" (margen = 0)
-- **Nota**: Cambiar la ubicación de garaje o el tiempo de preparación afecta
+- **Nota**: Cambiar la ubicación de garaje o el tiempo para llegar al Origen afecta
   la validación de puntualidad del conductor en las próximas salidas.
 
 Tiene un menu derecho en el appbar, al igual que el resto de paginas de cada pestaña (chat, horario y mapa)
@@ -1718,6 +1825,16 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 - **Icono de búsqueda** → buscar mensajes en este chat.
 - **Icono Mis Solicitudes (✋)** → abre la **Pantalla 8** (presente en las vistas principales del nivel Lanzadera).
 - **Menú (⋮)** → ajustes del chat.
+
+### **6.2.1 Ajustes del chat de lanzadera (modal)**
+
+- **Acceso:** opción “Ajustes del chat” en el menú (⋮) de la AppBar de 6.2.
+- **Tipo:** bottom sheet/modal.
+- **Controles:**
+  - **Silenciar notificaciones:** radio 1 h / hasta mañana / indefinido; toggle sonido/vibración; muestra estado actual.
+  - **Fijar chat** en la lista (pin) y **Desfijar** si ya está fijado.
+  - **Acceso a ajustes globales:** botón **[Ajustes de chat y notificaciones]** abre Pantalla 12.1.
+- **Acciones:** **[Guardar]** aplica cambios; **[Cancelar]** cierra sin cambios.
 
 ### **6.3 Horarios** _(sección central)_
 
@@ -1750,7 +1867,7 @@ De arriba abajo:
     Total plazas solicitadas: 3 / 4
     ```
 
-- Al pulsar sobre un ítem de horario se abre la **pantalla 6.1.1 Consulta/Horario**, donde se muestra con más detalle la información del horario.
+- Al pulsar sobre un ítem de horario se abre la **[pantalla 6.3.1 Consulta/Horario](#6-3-1-consulta-horario)**, donde se muestra con más detalle la información del horario.
 
 - Si además se es **Creador/Admin del grupo** al que pertenece la lanzadera, se muestra un **botón flotante (+)** en la esquina inferior derecha para **agregar un nuevo horario**.
   Al pulsarlo, se abre la **pantalla 6.1.3 Creación/Edición de Horario**, accesible solo para Creadores/Admin del grupo o del Biz en la app.
@@ -1764,6 +1881,8 @@ De arriba abajo:
 - **Título**: "Horarios · [Nombre Lanzadera]".
 - **Icono ✋ Mis Solicitudes** → abre la **Pantalla 8** (presente en las vistas principales del nivel Lanzadera).
 - **Menú (⋮)** → filtros/orden y acciones de horario.
+
+<a id="6-3-1-consulta-horario"></a>
 
 ### **6.3.1 Pantalla de consulta/Horario**
 
@@ -1821,9 +1940,24 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
     - **[Cancelar]** (secundario) → cierra sin cambios.
 - **Al confirmar:** se elimina el horario, se cancelan solicitudes activas asociadas, se envían notificaciones a viajeros/conductor/admins y se muestra Snackbar “Horario eliminado y solicitudes canceladas”.
 
+#### **6.3.1.b Modal de filtros/orden (Nivel Lanzadera · Horarios)**
+
+- **Acceso:** menú (⋮) de la AppBar en 6.3.
+- **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
+- **Controles:**
+  - Orden (radio): Próxima salida (por defecto) / Día y hora / Sentido (ida/vuelta) / Alfabético (nombre de horario si aplica).
+  - Filtros (toggles): Solo próximas salidas; Solo con plazas disponibles; Por sentido (ida/vuelta); Por día (selector de días activos); Solo sin conductor asignado.
+- **Acciones:** **[Restablecer]** (orden por defecto, sin filtros) y **[Aplicar]**.
+
 > ### **6.3.2 Hora Salida: Detalle y Solicitud**
 >
 > AppBar sin icono ✋ (pantalla secundaria de detalle/solicitud).
+>
+> **Acción AppBar (solo Creador/Admin):** botón **“Asignar”** que abre la subpantalla **6.3.2.b** con la salida actual preseleccionada.
+>
+> - Ubicación: extremo derecho del AppBar.
+> - Plataforma: en Material/Android se muestra solo el icono `person_add`; en iOS/Cupertino usa texto “Asignar” (o icono + label si se usa Material en iOS). Desktop/Web: icono con tooltip “Asignar conductor”.
+> - Mock rápido: `[←][Título]                 [Asignar/person_add]`
 >
 > Esta pantalla será la que se use para la solicitud de plazas, solicitud/asignacion de conductor, elección de vehiculo y cancelaciones.
 > Esta pantalla comienza con el texto superior:
@@ -1837,6 +1971,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >
 > - **Icono del conductor** con foto de perfil, mostrando **“Conductor: [nombre]”** o, si aún no está asignado, **“Sin conductor asignado”**.
 >   Al pulsar el nombre o icono, se abre su perfil, desde donde puede iniciarse un chat.
+>   Para **Creador/Admin**, si no hay conductor, aparece un enlace de texto **“Asignar conductor”** junto al estado (alineado con la fila de conductor, estilo text button), que abre la subpantalla **6.3.2.b**.
 >
 > - **Icono del vehículo** con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**. y plazas del vehiculo [numero] asientos sin contar conductor.
 >   Si esta lanzadera tiene asociado un vehículo predeterminado (en la pantalla 10 se diescribe como se asocia un vehículo a una lanzadera), aparecerá de forma automática, pudiendose modificar si se necesita otro vehículo pulsando sobre el vechículo.
@@ -1931,6 +2066,8 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 #### **6.3.2.a Modal de continuidad de conductor (post-viaje)**
 
 - **Cuándo se muestra:** Al marcar “Llegada” (o detección automática) y solo si hay otra salida del mismo día para la misma lanzadera y el conductor no tiene asignación por rango.
+- **Detección automática:** geocerca en el punto de destino/fin de trayecto; al entrar en la zona, se marca la llegada y se abre este modal sin requerir tap manual.
+- **Fallbacks si falla la geolocalización:** el conductor puede marcar manualmente el fin del recorrido; si no lo hace, el sistema usa la duración teórica estimada + unos minutos de margen y muestra el modal al vencer ese tiempo.
 - **No se muestra** si la siguiente salida ya tiene conductor asignado; en su lugar se muestra mensaje informativo: **“Ya hay un conductor asignado para esta salida.”**
 - **UI:** Modal centrado, bloqueante (no se cierra tocando fuera).
   - Título: **“¿Deseas continuar como conductor en la siguiente salida?”**
@@ -1950,18 +2087,25 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 >     - Disponibilidad: en el grupo, tiene vehículo, ubicación permitida (indicadores).
 >     - Reputación rápida (conductor/viajero) y contador de viajes.
 >     - Opción de preseleccionar vehículo (selector rápido si tiene vehículos).
+>   - **Ámbito de asignación** (radio chips):
+>     - **Salida puntual** (preseleccionada) — asigna solo la salida actual.
+>     - **Día completo** — incluye todas las salidas del día; oculta/deshabilita el bloque de horas.
+>     - **Rango de horas** — muestra contenedor con dos `TimePicker` en fila: **Desde** / **Hasta** (validación `Hasta > Desde`). Checkbox “Aplicar a todas las salidas entre estas horas”. Subtexto de ayuda: “Cubre todas las salidas de este día entre [desde] y [hasta]”.
+>   - Resumen compacto bajo el CTA: “Asignación: [Salida puntual / Día completo / Rango 07:00–12:00]”.
 >   - Aviso si la salida ya tiene conductor asignado.
 > - **Acciones:**
 >   - **[Asignar como conductor]** (primario) → dispara alerta 7.3 al usuario seleccionado; si hay vehículo preseleccionado, se adjunta.
 >   - **[Cancelar]** (secundario) → cierra sin cambios.
 > - **Feedback:** Snackbar **“Solicitud de conductor enviada a [usuario]”**; el estado queda visible en 7.3 hasta aceptación/rechazo.
 
+<a id="6-3-3-creacion-edicion-horario"></a>
+
 ### **6.3.3 Pantalla Creación/Edición Horario**
 
 Se abre desde dos posibles lugares (siendo Creador/Admin del grupo al que pertenece la lanzadera de este horario el usuario que la abre):
 
 1. Pulsando el botón de añadir (+) abajo a la derecha en la pantalla 6.1 Lanzadera; en este caso será creación de nuevo horario;
-2. Pulsando el lápiz de edicion de horario en la pantalla 6.1.1 "Pantalla de consulta/Horario", que es la vista normal de horario.
+2. Pulsando el lápiz de edicion de horario en la [pantalla 6.3.1 "Pantalla de consulta/Horario"](#6-3-1-consulta-horario), que es la vista normal de horario.
 
 AppBar sin icono ✋ (pantalla secundaria de creación/edición).
 
@@ -2067,6 +2211,16 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 
 - Es necesario que en esta pantalla se haga comprobaciones de si el usuario que solicito la lanzadera está en dicha lanzadera durante el viaje para añadir a la lista de viajes realizados en su perfil.
 
+### **6.4.1 Menú de Mapa (Nivel Lanzadera)**
+
+- **Acceso:** menú (⋮) de la AppBar en 6.4.
+- **Tipo:** bottom sheet.
+- **Opciones:**
+  - **Tipo de mapa:** Estándar / Satélite / Terreno.
+  - **Tráfico:** toggle mostrar/ocultar.
+  - **Centrar en vehículo / origen / destino / mi ubicación**: acciones rápidas para recentrar.
+  - **Leyenda:** toggle mostrar/ocultar.
+
 ---
 
 ## **7. Centro de Notificaciones**
@@ -2108,7 +2262,7 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
 
 **Alerta especial: Conductor sin ubicación**
 
-- Aparece cuando un conductor no activa geolocalización **40 minutos antes** de la salida (o tiempo configurado)
+- Aparece cuando un conductor no activa geolocalización en la ventana configurada (por defecto **40 minutos antes** de la salida en Origen); si hay margen de traslado desde garaje, también se dispara si no está localizable en garaje a `hora de salida – margen`.
 - Si el usuario actual **es el conductor**:
   - Icono 🔔 del AppBar muestra **badge extra de ubicación (📍)**
   - Notificación marcada con ⚠️ y prioridad máxima
@@ -2422,7 +2576,7 @@ Aún no hay historial de viajes completados.
 
 **Acceso**:
 
-- Desde el **menú principal** (hamburguesa o perfil en AppBar superior)
+- Desde el **menú principal** (⋮ o avatar/perfil en la AppBar superior)
 - Opción: **"Mi Perfil"** o **"Editar Perfil"**
 - También accesible desde **Pantalla 12 (Configuración)** → "Perfil de usuario"
 
@@ -2884,7 +3038,7 @@ Crear un chat funcional y elegante, coherente con el diseño general de ShuttleB
 - Buscar dentro del chat por texto.
 - Es posible menciones @usuario.
 - Ver informacion de integrantes de ese chat.
-- Silencia/desactivar silencio de notificaciones del chat
+- Silencia/desactivar silencio de notificaciones del chat (opciones coherentes en todos los chats: 1 h / hasta mañana / indefinido, con control de sonido/vibración y estado actual visible).
 - Al pulsar sobre la imagen del usuaro arribe en el chat, se abre el perfil del usuario, donde abrá la opcion de enviar mensaje privado y comenzar chat.
 - Pulsación larga sobre un mensaje da opción de:
   - copiar contenido del mensaje
@@ -2987,11 +3141,12 @@ Tendrá varios canales de chat:
 - Colores y tipografía igual que el resto de pantallas (Roboto / Inter).
 - Consistencia con el botón inferior del menú de navegación:
 
-  - Horarios
+  - Home
   - Chat
+  - Horarios
   - Mapa
 
-- Barra inferior tipo BottomNavigationBar con los tres iconos mencionados.
+- Barra inferior tipo BottomNavigationBar con los cuatro iconos anteriores en las pantallas principales; en pantallas secundarias (formularios, modales, detalle interno) no se muestra.
 
 ---
 
@@ -3114,7 +3269,7 @@ Tendrá varios canales de chat:
 #### **Botones de acción:**
 
 - **En pantalla de lanzaderas:** Botón (+) en esquina inferior derecha para crear nueva lanzadera
-- **En pantalla de grupos:** Botón (+) en barra superior (centro-izquierda, antes del menú hamburguesa) para agregar grupos
+- **En pantalla de grupos:** Botón (+) en barra superior (centro-izquierda, antes del menú ⋮/perfil) para agregar grupos
 
 ### **Estados de Error y Casos Extremos**
 
