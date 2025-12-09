@@ -731,7 +731,15 @@ Nota: en Horarios de Nivel Lanzadera, la creación/edición se hace vía FAB (+)
   - Número de móvil (obligatorio)
 - Botón: Siguiente
   - Enlaza con pantalla de **Registro con Código**.
-- Opcional: subir una imagen de usuario.
+- **UI / estados:**
+  - Selector de país: input + picker con bandera, nombre y prefijo (+34, +52…). Búsqueda por nombre o código; prefijo se rellena automáticamente.
+  - Teléfono: máscara según país seleccionado (espacios opcionales), sólo dígitos. Validación de longitud mínima/máxima por país.
+  - Botón “Siguiente” deshabilitado hasta tener país + número válidos; al pulsar muestra spinner y bloquea doble envío.
+  - Envío de código: tras pulsar “Siguiente” mostrar estado de carga (spinner in-button) y, si éxito, pasar a Pantalla 2 mostrando “Enviamos un código a [número]”. Si falla: toast/modal con “No pudimos enviar el código. Inténtalo de nuevo.”, y reactivar el botón.
+  - Errores: “Introduce un número válido” (si formato/longitud no pasa), “No pudimos enviar el código. Inténtalo de nuevo.” (fallo de envío/OTP) + opción **[Reenviar código]** (cooldown visible, p.ej. 30 s) y enlace **[Contactar soporte]** en error persistente.
+  - Entrada/salida de teclado desplaza la UI; accesos a Recuperación de cuenta (1.1) y Términos/Privacidad en el footer.
+  - Estados vacíos/errores: si no hay conexión, banner “Sin conexión. Reintenta” y deshabilitar “Siguiente”; si el prefijo no se carga, permitir entrada manual y mostrar aviso.
+  - Accesos secundarios: enlace **“¿No puedes iniciar sesión? Recuperar cuenta”** abre 1.1; enlaces **Términos** y **Privacidad** en el pie; enlace **Ayuda/Soporte** abre canal de soporte (mailto/chat según plataforma).
 
 ### 1.1. Pantalla de RECUPERACIÓN DE CUENTA
 
@@ -756,6 +764,13 @@ Nota: en Horarios de Nivel Lanzadera, la creación/edición se hace vía FAB (+)
 - Parte superior: texto indicando que se debe ingresar el código recibido por SMS.
 - Se muestra el número de teléfono al que se envió el código.
 - Los números se introducen sin necesidad de pulsar el espacio para el código, como es usual en las verificaciones por códogo SMS.
+- **UI / estados:**
+  - Campo de código: 6 dígitos, máscara con cuadros/gaps; autofill si llega SMS (autodetección Android/iOS).
+  - Botón “Verificar” deshabilitado hasta tener 6 dígitos válidos; al pulsar muestra spinner y bloquea doble envío. Opcional: auto-verificar al introducir el 6.º dígito si el backend valida en caliente.
+  - Errores: “Código incorrecto” (persistente hasta reintento) y “Código expirado” (muestra CTA para reenviar).
+  - Reenviar código: botón **[Reenviar código]** con cooldown visible (p.ej. 30 s); al reenviar se resetea el campo.
+  - Navegación: back → vuelve a Pantalla 1 conservando el número; el número al que se envió el código se muestra bajo el título (“Enviamos un código a [número]”).
+  - Accesos secundarios: enlace a **Recuperar cuenta (1.1)**; enlaces de **Términos** y **Privacidad** en el pie.
 
 ---
 
@@ -799,7 +814,8 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
 - Botones "Siguiente", "Saltar" y "Empezar"
 - Animaciones suaves entre pantallas
 - Disponible después como ayuda en el menú: Ajustes > Ayuda > Ver tutorial
-- Opción de cambiar todo esto por un simple video: más sencillo y rápido.
+- Opción alternativa: onboarding como video/gif (grabación de pantalla) o carrusel de imágenes; simplifica desarrollo y es más rápido de consumir por el usuario.
+- Persistir progreso: si el usuario cierra la app, retomar en la pantalla siguiente pendiente; si tocó "Saltar", marcar onboarding como completado pero siempre accesible desde Ajustes > Ayuda.
 
 ---
 
@@ -807,10 +823,7 @@ Tutorial interactivo sobre el funcionamiento de la app para nuevos usuarios.
 
 - **Función**:
   - Permite ver los grupos del usuario y crear nuevos grupos. Es la pantalla primera, desde las que salen todas las demas. Es el nivel mas alto (Grupos -> Grupo -> Lanzadera).
-  - Este nivel (como los otros dos: Grupo y Lanzadera) tiene 3 páginas:
-
-Aquí tienes el texto **sin eliminar nada de información**, pero **sin redundancias**, **más claro**, **mejor organizado** y **coherente para specs profesionales**.
-No añadí contenido nuevo, solo reorganicé y limpié.
+  - Este nivel (como los otros dos: Grupo y Lanzadera) tiene 4 pestañas/páginas en el PageView (Home, Chat, Horarios, Mapa).
 
 ---
 
@@ -833,6 +846,7 @@ La pantalla puede mostrar dos situaciones:
      ¿Quieres buscar un Grupo público?
      Búscalo arriba pulsando el ícono de búsqueda.
      ```
+   - Notas de visibilidad: si el usuario ya pertenece o tiene solicitudes activas a grupos públicos/privados, no se muestra el mensaje de buscar grupos públicos; en su lugar se muestra directamente la lista/solicitudes.
 
 2. **Con uno o varios grupos creados o con membresía**
 
@@ -844,7 +858,14 @@ La pantalla puede mostrar dos situaciones:
 
 ### **Contenido de la pantalla**
 
-- **Lista de grupos** (cada ítem con nombre, foto opcional y datos básicos):
+- **Lista de grupos** (cada ítem muestra):
+  - Nombre del grupo.
+  - Foto/emoji opcional.
+  - Visibilidad: Público / Privado.
+  - Rol del usuario en el grupo: Creador / Admin / Miembro.
+  - Número de miembros.
+  - Lanzaderas activas y próxima salida (si aplica).
+  - Badges de solicitudes pendientes/no leídas (si aplica).
   - **Tocar un grupo** → abre la **Pantalla de Grupo** correspondiente, bajando al nivel de "Grupo".
 - **Icono de búsqueda** para descubrir grupos públicos. El icono de búsqueda abre la pantalla **Busqueda de grupos** 4.1.2.
 - **Icono ✋ Mis Solicitudes** en la AppBar → abre la **Pantalla 8 (Estado de Mis Solicitudes)**. Este icono aparece en las vistas de Home/Chat/Horarios/Mapa del nivel Grupos; no en formularios u otras pantallas secundarias.
