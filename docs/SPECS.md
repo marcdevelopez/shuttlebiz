@@ -635,6 +635,7 @@ Marco común para todos los modales/genéricos:
 ### **Estructura y acciones**
 
 [ ← (si no es raíz) ] [ Breadcrumb por nivel (Grupos > Grupo > Lanzadera), segmentos coloreados y tramo actual resaltado ] [ 🔔 (solo si hay no leídas) ] [ ✋ Mis Solicitudes ] [ ⋮ Menú contextual ]
+
 - Menú ⋮ para acciones del contexto actual; no hay menú hamburguesa.
 - Tabs principales siempre visibles (BottomNavigationBar): Home, Chat, Horarios, Mapa. Existen en los tres niveles y mantienen la pestaña activa al subir/bajar.
 - **🔔 Notificaciones**: solo con no leídas, siempre a la izquierda de ✋; abre Pantalla 7.
@@ -700,17 +701,17 @@ Reglas de PageView y stack:
 Menús contextuales (⋮) por nivel y pestaña:
 
 - Nivel Grupos:
-  - Home: crear grupo, ajustes personales rápidos (ver 4.1.4).
+  - Home: crear grupo (atajo secundario; primario es el FAB), ajustes personales rápidos (ver 4.1.4).
   - Chat: ajustes generales de chat, ver chats de grupo silenciados.
   - Horarios: ordenar/filtros globales de horarios, exportar (futuro) (ver 4.3.1).
   - Mapa: tipo de mapa, mostrar/ocultar tráfico y leyenda, centrar ubicación, configuración de capas.
 - Nivel Grupo:
-  - Home: gestión del grupo (5.5), gestión de vehículos (10), invitar miembros, configuración del grupo (menú ⋮ en Home abre estas pantallas/flows: 5.5 para gestión y configuración, 10 para vehículos, flujo de invitación descrito en 5.5 y 4.1.x).
+  - Home: gestión del grupo (5.5), gestión de vehículos (10), invitar miembros, configuración del grupo (menú ⋮ en Home abre estas pantallas/flows: 5.5 para gestión y configuración, 10 para vehículos, flujo de invitación descrito en 5.5 y 4.1.x), ajustes personales rápidos (ver 4.1.4; silenciar ofrece alcance App completa o solo este grupo).
   - Chat: ver miembros (ver 5.2.1), silenciar/activar notificaciones, configuración del chat (ver 5.2.2).
   - Horarios: ordenar/filtros de horarios del grupo (ver 5.3.1), configuración de vista (ver 5.3.2).
   - Mapa: tipo de mapa, leyenda, mostrar/ocultar lanzaderas.
 - Nivel Lanzadera:
-  - Home: ajustes de lanzadera (nombre/origen/destino/plazas por defecto/comentario); menú ⋮ → abre editor (5.1.1) en modo edición con campos precargados y las restricciones descritas en 6.1.
+  - Home: ajustes de lanzadera (nombre/origen/destino/plazas por defecto/comentario); menú ⋮ → abre editor (5.1.1) en modo edición con campos precargados y las restricciones descritas en 6.1; ajustes personales rápidos (ver 4.1.4; silenciar ofrece alcance App completa / este grupo / esta lanzadera).
   - Chat: ajustes del chat de lanzadera (ver 6.2.1).
   - Horarios: filtros/orden de horarios (ver 6.3.1.b).
   - Mapa: opciones de visualización del trayecto (menú ⋮ → 6.4.1).
@@ -846,6 +847,7 @@ La pantalla puede mostrar dos situaciones:
      ¿Quieres buscar un Grupo público?
      Búscalo arriba pulsando el ícono de búsqueda.
      ```
+
    - Notas de visibilidad: si el usuario ya pertenece o tiene solicitudes activas a grupos públicos/privados, no se muestra el mensaje de buscar grupos públicos; en su lugar se muestra directamente la lista/solicitudes.
 
 2. **Con uno o varios grupos creados o con membresía**
@@ -869,22 +871,31 @@ La pantalla puede mostrar dos situaciones:
   - **Tocar un grupo** → abre la **Pantalla de Grupo** correspondiente, bajando al nivel de "Grupo".
 - **Icono de búsqueda** para descubrir grupos públicos. El icono de búsqueda abre la pantalla **Busqueda de grupos** 4.1.2.
 - **Icono ✋ Mis Solicitudes** en la AppBar → abre la **Pantalla 8 (Estado de Mis Solicitudes)**. Este icono aparece en las vistas de Home/Chat/Horarios/Mapa del nivel Grupos; no en formularios u otras pantallas secundarias.
-- **Opción adicional para crear grupo** en el menú del appbar.
-- **Botón flotante (FAB) “+”**:
-  - Ubicado abajo a la derecha.
-  - Crea un nuevo grupo → navega a **Pantalla 4.1.1 (Crear Grupo)**.
+  - **Botón flotante (FAB) “+”**:
+    - Ubicado abajo a la derecha.
+    - Crea un nuevo grupo → navega a **Pantalla 4.1.1 (Crear Grupo)**.
 
 ---
 
 ### **Pantalla 4.1.1 Creación de Grupo**
 
-- Se abre desde menú de appbar, o desde botón flotante (FAB).
+- Se abre desde el menú contextual (⋮) del tab Home en Nivel Grupos o desde el botón flotante (FAB).
 - AppBar sin icono ✋ (solo flecha atrás y título); es una pantalla secundaria.
+- Acceso/rol: disponible para cualquier usuario autenticado; quien crea pasa a ser **Creador** del nuevo grupo.
 - Contiene:
-  - Imagen para el grupo
-  - Caja de texto para el nombre del grupo
-  - Configuración obligatoria de **Visibilidad** (Privado/Público).
-  - botones de Guardar y Cancelar
+  - Imagen para el grupo (opcional): permite tomar foto o elegir de galería; comprime/recorta si excede tamaño habitual móvil; placeholder por defecto si no hay imagen; opción de reemplazar/eliminar (en edición se muestra icono de lápiz/borrar sobre la imagen).
+  - Caja de texto para el nombre del grupo: autofocus, límite visible (p.ej. 50–80 caracteres), validar mínimo razonable (p.ej. 3); prohibir duplicados si backend lo exige y mostrar error específico.
+  - Configuración obligatoria de **Visibilidad** (Privado/Público) vía radio/segmented; valor por defecto **Privado**.
+  - Botones de **Guardar** (primario) y **Cancelar** (secundario).
+- Estados y comportamiento:
+  - **Guardar** deshabilitado hasta tener nombre válido y visibilidad seleccionada; al pulsar muestra spinner y evita doble envío.
+  - Si se pulsa **Cancelar** con cambios sin guardar, mostrar confirmación antes de salir.
+  - Errores: nombre vacío/invalidado, conflicto de nombre, fallo al subir imagen; mostrar mensaje bajo el campo o toast/modal según severidad.
+  - Éxito: snackbar/toast “Grupo creado” y retorno a la lista de grupos.
+- Offline:
+  - Si no hay red al guardar, mostrar aviso y permitir guardar como borrador local; reintentar automáticamente al recuperar conexión o manualmente desde un aviso persistente.
+- UX/teclado:
+  - Scroll/ajuste para que el teclado no tape botones; autofocus en nombre; mantiene focus/estado al reabrir tras error.
 
 ---
 
@@ -901,32 +912,69 @@ La pantalla puede mostrar dos situaciones:
       _Ajustes del grupo → Enviar invitación → Compartir enlace_.
     - Al pulsarlo, la app leerá el contenido del portapapeles:
 
+      - Solicita permiso de portapapeles si aplica y muestra estado de carga breve.
+
       - **Si contiene un enlace válido de invitación ShuttleBiz**, la app abrirá directamente la pantalla **4.1.3 Detalle de grupo público**, mostrando la información del grupo e incluyendo el botón **“Solicitar unirse”**.
+        - Feedback positivo: toast “Enlace reconocido, abriendo…”.
       - **Si el enlace no es válido**, se mostrará un modal indicando:
         **“El enlace copiado no corresponde a una invitación válida.”**
 
-  - **Lista de grupos públicos**, ordenados por:
+  - **Icono/acción “Ordenar” (↑↓)** en el AppBar: abre modal con dos opciones excluyentes:
 
-    1. Proximidad (si tienen lanzaderas activas),
-    2. Luego los que no tienen lanzaderas,
-    3. Y finalmente por fecha de creación o número de usuarios (criterio configurable).
+    - **Más nuevos primero** (fecha de creación descendente) [por defecto].
+    - **Más miembros primero** (número de usuarios descendente).
+      El criterio elegido se usa como desempate dentro de cada bloque y se recuerda mientras dure la sesión.
+    - UI recomendada: bottom sheet con radios (`RadioListTile`), cierre al seleccionar o al pulsar **[Aplicar]**.
+
+  - **Lista de grupos públicos** (una sola lista), ordenada por:
+
+    1. **Grupos con lanzaderas activas:** proximidad ascendente al usuario; dentro de distancias similares se ordena por el criterio elegido (más nuevos / más miembros). (\*)
+    2. **Grupos sin lanzaderas activas:** proximidad ascendente; dentro del bloque se aplica el mismo criterio elegido. (\*)
+    3. Si no hay geolocalización (sin permisos o error), toda la lista se ordena solo por el criterio elegido.
+
+    (\*) Nota: Por lanzadera activa se entiende que tienen horarios próximos configurados (horarios futuros). Esta sección siempre se muestra primero. Se muestran subtítulos obligatorios en la lista continua para que la agrupación sea clara: “Con lanzaderas activas” y, después, “Sin lanzaderas activas”.
 
   - **Datos mostrados por grupo**:
 
     - nombre,
     - número de miembros,
-    - lanzaderas activas.
+    - distancia al usuario (cuando hay geolocalización, para hacer evidente el orden por proximidad),
+    - lanzaderas activas: Sí/No (badge) y, si aplica, cuántas,
+    - fecha de creación (si disponible).
 
   - Al pulsar un grupo se abre la pantalla **4.1.3 Detalle de Grupo público**, donde se muestran sus datos y se da opción a solicitar membresía.
+
+  - **Estados vacíos/errores**:
+
+    - Sin resultados de búsqueda: mensaje “No encontramos grupos con ese nombre”.
+    - Sin permiso de ubicación: mensaje + CTA “Conceder ubicación” (abre permiso); fallback a orden por criterio elegido.
+    - Error de red: mensaje y opción **[Reintentar]**; mantiene búsqueda escrita.
+
+  - **Carga inicial**: mostrar skeletons/spinner de lista mientras llega la primera página de resultados.
+
+---
 
 ### **Pantalla 4.1.3 Detalle de Grupo público**
 
 - Sirve para ver datos del grupo / solicitar ser parte del grupo:
-  - Nombre del grupo
-  - lista de usuarios
-  - lista de lanzaderas
-  - Solicitar unirse (se podrá agregar un mensaje al admin/creador del grupo)
-- AppBar sin icono ✋ (pantalla secundaria de detalle).
+  - Cabecera: foto/emoji del grupo (si existe), nombre, contador de miembros, contador de lanzaderas activas, fecha de creación (si disponible) y distancia (si vienes de búsqueda con geolocalización). Badge opcional **Público** (todas las que llegan aquí lo son; se muestra solo para claridad).
+  - Lista de usuarios (muestra primeros 3–5 y botón **[Ver todos los miembros]** si hay más; al pulsar se expande en la misma pantalla y el botón pasa a **[Ver menos]**; tocar un miembro abre su perfil).
+  - Lista de lanzaderas (muestra primero las activas/futuras; si hay más, botón **[Ver todas las lanzaderas]** que expande en la misma pantalla; botón **[Ver menos]** para colapsar; tocar una lanzadera abre su detalle en nivel Lanzadera).
+  - CTA **Solicitar unirse** (permite agregar mensaje al admin/creador), abre modal 4.1.3.a de solicitud de membresía:
+    - Si ya hay solicitud pendiente: mostrar estado **“Solicitud enviada”** deshabilitado.
+    - Si el usuario ya es miembro: ocultar CTA y mostrar badge/chip “Ya eres miembro”.
+    - Si el usuario es creador del grupo: ocultar CTA y mostrar badge/chip “Eres creador”.
+- AppBar sin icono ✋ (pantalla secundaria de detalle). Flecha atrás vuelve a la búsqueda conservando scroll y texto buscado.
+- Estados vacíos/errores:
+  - Sin lanzaderas activas: texto “No hay lanzaderas activas todavía”.
+  - Sin miembros visibles: mostrar solo el contador o un mensaje neutro.
+  - Error de carga: mensaje + **[Reintentar]**; permitir pull-to-refresh para refrescar datos.
+  - Carga inicial con skeleton/spinner.
+- Accesibilidad/UX:
+  - Scroll para que el CTA no quede tapado por el teclado; usar `CustomScrollView`/slivers para listas largas; CTA fijo sobre el `safeArea` inferior si el scroll es extenso.
+  - Mantener estado de scroll al volver desde 4.1.3 a 4.1.2.
+
+---
 
 #### **4.1.3.a Modal de solicitud de membresía (grupo público)**
 
@@ -935,19 +983,22 @@ La pantalla puede mostrar dos situaciones:
   - Título: **“Solicitar unirse a [Nombre del grupo]”**
   - Texto breve: “Enviaremos tu solicitud al creador/admin. Puedes añadir un mensaje.”
   - Campo opcional de mensaje (máx. 200 caracteres).
-  - Resumen del grupo: tipo (Público/Privado), miembros, lanzaderas activas.
+  - Resumen del grupo: miembros, lanzaderas activas.
   - Botones:
-    - **[Enviar solicitud]** (primario) → crea solicitud pendiente.
+    - **[Enviar solicitud]** (primario) → crea solicitud pendiente; mostrar spinner y deshabilitar ambos botones mientras se envía; si falla, mostrar error y reactivar.
     - **[Cancelar]** (secundario) → cierra sin cambios.
-- **Feedback:** Snackbar **“Solicitud enviada”** y badge en `Mis Solicitudes` (Pantalla 8) mostrando estado Pendiente; si el grupo tiene auto-aprobación ON, se añade de inmediato y se muestra “Unido al grupo”.
-- **Comportamiento:** si ya existe una solicitud pendiente, el botón muestra estado “Solicitud enviada” y deshabilita reenvío; si fue rechazada, permite reenviar tras un cooldown (definir en backend).
+- **Feedback:** Snackbar **“Solicitud enviada”**; si el grupo tiene auto-aprobación ON, se muestra “Unido al grupo” y el CTA se oculta de inmediato.
+- **Comportamiento:** si ya existe una solicitud pendiente, el botón muestra estado “Solicitud enviada” y deshabilita reenvío; si fue rechazada, permite reenviar tras un cooldown (p.ej. 24 h, definido por backend), mostrando el tiempo restante deshabilitado hasta que venza (formato claro: “Reintentar en 23 h”).
+- **Impacto en otras vistas:** al crear la solicitud se agrega entrada en **Pantalla 8 (Mis Solicitudes)** con estado Pendiente y se actualiza el badge ✋; al auto-aprobar o al ser aprobada manualmente, el grupo aparece en la lista de grupos y el CTA se oculta (se muestra badge/chip de rol correspondiente).
 
-### **4.1.4 Ajustes personales rápidos (Nivel Grupos · Home)**
+---
 
-- **Acceso:** menú (⋮) en la AppBar del tab Home en Nivel Grupos.
-- **Tipo:** bottom sheet compacta; cambios aplican al usuario (no al grupo) y muestran snackbar de confirmación.
+### **4.1.4 Bottom sheet: Ajustes personales rápidos (Acceso desde Home en los 3 niveles)**
+
+ - **Acceso:** ítem de menú **“Ajustes personales rápidos”** en el menú (⋮) de la AppBar del tab Home en Nivel Grupos. El mismo ítem aparece en los tabs Home de Nivel Grupo y Nivel Lanzadera; el alcance de silenciar se detalla en los menús de cada nivel para evitar duplicar especificación.
+- **Tipo:** bottom sheet compacta; cambios aplican al usuario y muestran snackbar de confirmación.
 - **Opciones:**
-  - **Silenciar notificaciones rápido:** chips 1 h / hasta mañana / indefinido; botón **[Configurar notificaciones]** abre Pantalla 12.1 para ajustes completos.
+  - **Silenciar notificaciones:** chips 1 h / hasta mañana / indefinido; botón **[Configurar notificaciones]** abre Pantalla 12.1 para ajustes completos. Alcance por nivel: en **Nivel Grupos** aplica a toda la app; en **Nivel Grupo** o **Nivel Lanzadera** se ofrece elegir alcance según lo indicado en cada menú.
   - **Privacidad de contacto:** toggle “Mostrar mi número en perfil” (hereda el valor de Privacidad; cambia el flag global).
   - **Tema de la app:** toggle claro/oscuro; botón **[Ajustes de app]** abre Pantalla 12.
   - **Editar perfil:** atajo a Pantalla 9.1 (Mi Perfil) para editar nombre/foto y preferencias completas.
@@ -1005,7 +1056,7 @@ Lista con un ítem por cada grupo:
 **Objetivo UX:**
 Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertical, sin cambiar de pestaña (la pestaña Chat permanece activa en todos los niveles).
 
-### **4.2.1 Ver chats de grupo silenciados (modal)**
+### **4.2.1 Bottom sheet/Modal: Ver chats de grupo silenciados**
 
 - **Acceso:** opción “Ver chats de grupo silenciado” en el menú (⋮) de la AppBar de 4.2.
 - **Tipo:** bottom sheet/modal scrollable.
@@ -1101,9 +1152,9 @@ El buscador filtra **grupos y lanzaderas** por:
 - día (“viernes”)
   - hora (“7:30”)
   - sentido (“ida”, “vuelta”)
-  Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
+    Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
 
-### **4.3.1 Modal de filtros/orden (Nivel Grupos · Horarios)**
+### **4.3.1 Bottom sheet: filtros/orden (Nivel Grupos · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 4.3 (Horarios · Mis Grupos).
 - **Tipo:** bottom sheet; aplica filtros de forma inmediata al cerrar con **[Aplicar]**.
@@ -1135,6 +1186,7 @@ Lista vertical donde **cada ítem es un grupo**.
 Cada ítem de grupo muestra:
 
 - **Nombre del grupo** (encabezado)
+
   - **Mapa del grupo** con:
 
     - Todas las rutas de lanzadera del grupo **superpuestas** en el mismo mapa
@@ -1170,7 +1222,7 @@ Cada ítem de grupo muestra:
     - **Buscar grupos**
     - **Crear nuevo grupo**
 
-### **4.4.1 Menú de Mapa (Nivel Grupos)**
+### **4.4.1 Bottom sheet: Menú de Mapa (Nivel Grupos)**
 
 - **Acceso:** menú (⋮) de la AppBar en 4.4.
 - **Tipo:** bottom sheet compacto.
@@ -1232,13 +1284,14 @@ La pantalla puede mostrar dos situaciones:
   - Gestión de vehículos → abre **Pantalla 10** (creadores/admins gestionan; conductores asignados o creadores de un vehículo pueden elegirlo y solicitar alta/edición con aprobación)
   - Configuración del grupo
   - Invitar miembros
+  - Ajustes personales rápidos → abre 4.1.4; opción de silenciar ofrece alcance “App completa” o “Solo este grupo”.
 - **Botón flotante (FAB) "+"** (solo visible para Creadores/Admins):
   - Ubicado abajo a la derecha.
   - Crea una nueva lanzadera → navega a **Pantalla 5.1.1 (Creación de Lanzadera)**.
 
 ---
 
-#### **5.1.a Modal de cambio rápido de grupo**
+#### **5.1.a Bottom sheet/Modal: cambio rápido de grupo**
 
 - **Cuándo se muestra:** al pulsar el nombre del grupo en el AppBar del Nivel Grupo (Home/Chat/Horarios/Mapa).
 - **Objetivo:** cambiar de grupo sin salir a la lista principal.
@@ -1408,7 +1461,7 @@ Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertica
 
 ---
 
-### **5.2.1 Ver miembros del grupo (modal)**
+### **5.2.1 Bottom sheet/Modal: Ver miembros del grupo**
 
 - **Acceso:** opción “Ver miembros del grupo” en el menú (⋮) de la AppBar de 5.2 (Chat · Nivel Grupo).
 - **Tipo:** bottom sheet scrollable.
@@ -1418,7 +1471,7 @@ Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertica
 
 ---
 
-### **5.2.2 Configuración del chat (nivel Grupo)**
+### **5.2.2 Bottom sheet/Modal: Configuración del chat (nivel Grupo)**
 
 - **Acceso:** opción “Configuración del chat” en el menú (⋮) de la AppBar de 5.2.
 - **Tipo:** bottom sheet/modal.
@@ -1559,7 +1612,7 @@ Solo se muestran lanzaderas que tengan **al menos una coincidencia relevante**.
 **Objetivo de UX:**
 Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido a qué lanzaderas tienen salidas próximas y en qué horarios, manteniendo coherencia total con el diseño visual de las pantallas de lanzadera.
 
-### **5.3.1 Modal de filtros/orden (Nivel Grupo · Horarios)**
+### **5.3.1 Bottom sheet: filtros/orden (Nivel Grupo · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 5.3 (Horarios · [Grupo]).
 - **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
@@ -1568,7 +1621,7 @@ Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido
   - Filtros (toggles): Solo lanzaderas con salidas hoy; Solo lanzaderas con plazas disponibles; Por sentido (ida/vuelta); Por rango de horas (selector de intervalo).
 - **Acciones:** **[Restablecer]** (orden por defecto, sin filtros) y **[Aplicar]**.
 
-### **5.3.2 Configuración de vista (Nivel Grupo · Horarios)**
+### **5.3.2 Bottom sheet: Configuración de vista (Nivel Grupo · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 5.3.
 - **Tipo:** bottom sheet sencilla.
@@ -1648,7 +1701,7 @@ Cada ítem de lanzadera muestra:
 **Objetivo UX:**
 Poder elegir entre cada mapa de lanzadera con las detalle de viajeros y salida que en el nivel de grupos.
 
-### **5.4.1 Menú de Mapa (Nivel Grupo)**
+### **5.4.1 Bottom sheet: Menú de Mapa (Nivel Grupo)**
 
 - **Acceso:** menú (⋮) de la AppBar en 5.4.
 - **Tipo:** bottom sheet compacto.
@@ -1832,7 +1885,7 @@ Las vistas principales del **nivel Lanzadera** (Home, Chat, Horarios, Mapa) comp
 - **Flecha atrás** (←) → regresa al **Nivel Grupo** (manteniendo la pestaña actual).
 - **Título**: Nombre de la lanzadera.
 - **Icono ✋ Mis Solicitudes** → abre la **Pantalla 8** (presente en Home/Chat/Horarios/Mapa del nivel Lanzadera).
-- **Menú (⋮)** → opciones de ajustes de lanzadera.
+- **Menú (⋮)** → opciones de ajustes de lanzadera y **Ajustes personales rápidos** (ver 4.1.4; opción de silenciar con alcance App completa / este grupo / esta lanzadera).
 
 #### **6.2 Chat** _(de la lanzadera)_
 
@@ -1847,7 +1900,7 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
 - **Icono Mis Solicitudes (✋)** → abre la **Pantalla 8** (presente en las vistas principales del nivel Lanzadera).
 - **Menú (⋮)** → ajustes del chat.
 
-### **6.2.1 Ajustes del chat de lanzadera (modal)**
+### **6.2.1 Bottom sheet/Modal: Ajustes del chat de lanzadera**
 
 - **Acceso:** opción “Ajustes del chat” en el menú (⋮) de la AppBar de 6.2.
 - **Tipo:** bottom sheet/modal.
@@ -1961,7 +2014,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
     - **[Cancelar]** (secundario) → cierra sin cambios.
 - **Al confirmar:** se elimina el horario, se cancelan solicitudes activas asociadas, se envían notificaciones a viajeros/conductor/admins y se muestra Snackbar “Horario eliminado y solicitudes canceladas”.
 
-#### **6.3.1.b Modal de filtros/orden (Nivel Lanzadera · Horarios)**
+#### **6.3.1.b Bottom sheet: filtros/orden (Nivel Lanzadera · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 6.3.
 - **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
@@ -2232,7 +2285,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 
 - Es necesario que en esta pantalla se haga comprobaciones de si el usuario que solicito la lanzadera está en dicha lanzadera durante el viaje para añadir a la lista de viajes realizados en su perfil.
 
-### **6.4.1 Menú de Mapa (Nivel Lanzadera)**
+### **6.4.1 Bottom sheet: Menú de Mapa (Nivel Lanzadera)**
 
 - **Acceso:** menú (⋮) de la AppBar en 6.4.
 - **Tipo:** bottom sheet.
