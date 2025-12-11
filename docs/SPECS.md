@@ -624,6 +624,15 @@ Marco común para todos los modales/genéricos:
   - Estado seleccionado sin borde (0 px) y con relleno primario; no seleccionado con borde gris `#E5E7EB`.
   - espaciado horizontal de 8px; las filas hacen wrap en móvil.
 
+<a id="patrones-acciones-por-item"></a>
+### Patrones de Acciones por ítem
+
+- **Estructura:** fila de dos botones visibles; primario a la derecha (FilledButton) y secundario a la izquierda (OutlinedButton); espaciado 8 px; padding vertical compacto.
+- **Iconos:** opcionales a la izquierda del texto si aportan claridad; siempre texto para accesibilidad.
+- **Estilos:** usar colores/tipografías del tema; radios heredados (12 px en cards). Tamaño medium por defecto.
+- **Estados:** loading/deshabilitado coherente; mantener el estado de lista/filtro al volver de navegaciones.
+- **Ubicación:** en la ficha, sin gestos ocultos (swipe) salvo que se documente lo contrario. Respetar altura mínima táctil 44 px.
+
 <br>
 
 ---
@@ -951,6 +960,7 @@ La pantalla puede mostrar dos situaciones:
     - Error de red: mensaje y opción **[Reintentar]**; mantiene búsqueda escrita.
 
   - **Carga inicial**: mostrar skeletons/spinner de lista mientras llega la primera página de resultados.
+  - Referencias: flujo de invitaciones/envíos en 5.5.d; recepción de invitación en 7.1.
 
 ---
 
@@ -973,6 +983,7 @@ La pantalla puede mostrar dos situaciones:
 - Accesibilidad/UX:
   - Scroll para que el CTA no quede tapado por el teclado; usar `CustomScrollView`/slivers para listas largas; CTA fijo sobre el `safeArea` inferior si el scroll es extenso.
   - Mantener estado de scroll al volver desde 4.1.3 a 4.1.2.
+  - Referencias: métodos alternativos de invitación y altas en 5.5.d; flujo de invitación recibida en 7.1.
 
 ---
 
@@ -1003,15 +1014,6 @@ La pantalla puede mostrar dos situaciones:
   - **Tema de la app:** toggle claro/oscuro; botón **[Ajustes de app]** abre Pantalla 12.
   - **Editar perfil:** atajo a Pantalla 9.1 (Mi Perfil) para editar nombre/foto y preferencias completas.
 
-### UNIRSE A GRUPO EXISTENTE
-
-Flujo para usuarios que quieren unirse a un grupo creado por otros.
-
-- **Métodos de acceso:**
-  - Código de invitación (6 dígitos). Se envía al usuario mediante número de teléfono (será necesario dar el numero de móvil para recibir la invitación): Un usuario desea que su conocido pertenezca al grupo, en ajustes del grupo hay la opción "enviar invitación de grupo", y en la opción "numero de móvil" se le pide el número del usuario, se envía la invitación al usuario. Si no existe ningún usuario con ese número de teléfono se avisa de que no existe el usuario. Si existe: al usuario le llega una invitación a notificaciones, donde al abrirla podrá aceptar la invitación y tendrá en su lista de grupos el grupo nuevo, añadiendose al usuario como miembro del grupo.
-  - Enlace compartido: en ajustes del grupo hay la opción "enviar invitación de grupo", y en la opción "compartir con enlace", se podrá compartir como texto un enlace que abrirá la app de la misma manera que si recibe invitacion por numero de móvil, pudiendo aceptar y ser parte del grupo.
-  - Búsqueda por nombre (si es público) en la pantalla 4.1.2.
-
 ---
 
 ## **4.2 Pantalla Grupos Chat**
@@ -1026,13 +1028,13 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 
 ### **AppBar (izquierda → derecha)**
 
-- **“Grupos”** (título del módulo)
+- **“Grupos”** (Título de la AppBar)
 - **Icono de búsqueda** → permite buscar entre los chats generales de los grupos del usuario.
 - **Icono Mis Solicitudes (✋)** → acceso rápido a la **Pantalla 8**; se mantiene en las AppBar de Home/Chat/Horarios/Mapa de este nivel.
 - **Menú (⋮)**:
 
-  - Ajustes generales del chat
-  - Ver chats de grupo silenciado
+  - Ajustes generales del chat (abre panel 4.2.2)
+  - Ver chats de grupo silenciados
 
 ### **Contenido**
 
@@ -1043,6 +1045,19 @@ Lista con un ítem por cada grupo:
 - Último mensaje y hora
 - Indicador de mensajes no leídos
 - Al tocar un ítem → se abre el **chat del grupo** dentro del **nivel de Grupo**, en la pestaña de Chat correspondiente.
+
+### **Orden y filtros**
+
+- Orden por actividad reciente: último mensaje/hora descendente.
+- Búsqueda: icono de la AppBar filtra la lista de chats de los grupos del usuario.
+- Filtro rápido (SegmentedButton o fila de `ChoiceChip` táctil bajo la AppBar): **Todos / Silenciados / No silenciados**; cambia la lista en línea y persiste al volver desde 4.2.1; se puede volver a Todos con un toque.
+- Menú (⋮) → opción **“Ver chats de grupo silenciados”** abre el panel 4.2.1 para gestionar silenciados (no cambia el filtro rápido).
+
+### **Estados vacíos/errores**
+
+- Sin grupos/chats: usar patrón de vacío del nivel Grupos; CTAs a **[Crear grupo]** (4.1.1) y **[Buscar grupo público]** (4.1.2).
+- Solo solicitudes (sin membresía aún): copy breve invitando a revisar **Mis Solicitudes** (8) o buscar grupo público.
+- Sin conexión/error: banner “Sin conexión. Reintenta” + botón **[Reintentar]** (reutilizar patrón de error global); preservar filtros/búsqueda/scroll si había.
 
 ### **Navegación**
 
@@ -1056,61 +1071,59 @@ Lista con un ítem por cada grupo:
 **Objetivo UX:**
 Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertical, sin cambiar de pestaña (la pestaña Chat permanece activa en todos los niveles).
 
+---
+
 ### **4.2.1 Bottom sheet/Modal: Ver chats de grupo silenciados**
 
-- **Acceso:** opción “Ver chats de grupo silenciado” en el menú (⋮) de la AppBar de 4.2.
+- **Acceso:** opción “Ver chats de grupo silenciados” en el menú (⋮) de la AppBar de 4.2.
 - **Tipo:** bottom sheet/modal scrollable.
 - **Contenido:** lista de chats silenciados con:
   - Nombre del grupo.
   - Estado: “Silenciado indefinidamente” o “Silenciado hasta hh:mm / fecha”.
-  - Acciones por ítem: **[Reactivar notificaciones]** y **[Abrir chat]**.
+  - Acciones por ítem (ver [Patrones de Acciones por ítem](#patrones-acciones-por-item)): botones **[Abrir chat]** (primario) y **[Reactivar notificaciones]** (secundario) visibles en la ficha; al abrir chat se mantiene el filtro/estado de lista al volver.
 - **Acciones globales:** botón **[Reactivar todos]** (si hay más de uno silenciado).
 - **Estado vacío:** icono + texto “No tienes chats silenciados” y CTA **[Ir a ajustes de chat]** (abre ajustes generales de chat del nivel Grupos).
 
 ---
 
-## **Pantalla 4.3 — Horarios (Nivel Grupos)**
+### **4.2.2 Bottom sheet/Modal: Ajustes generales del chat (nivel Grupos)**
 
-_(Versión final refinada y coherente)_
+- **Acceso:** opción “Ajustes generales del chat” en el menú (⋮) de la AppBar de 4.2.
+- **Tipo:** bottom sheet/modal.
+- **Controles:**
+  - **Silenciar chats de grupo:** radio 1 h / hasta mañana / indefinido; aplica a todos los chats de grupo. CTA secundario **[Silenciar todo]** → abre Notificaciones (12.1).
+  - **Orden/Fijados:** toggle **“Mostrar chats fijados arriba”**; enlace **[Gestionar fijados]** abre un selector de chats de grupo con toggle **Fijar/Desfijar** (mismo patrón de 5.2.2).
+  - **Preferencias de vista:** selector **“Últimos [N] días / Todos”** y toggle **“Mostrar silenciados por defecto”**.
+  - **Accesos rápidos:** botones a **Notificaciones (12.1)** y **Chats silenciados (4.2.1)**.
+- **Acciones:** **[Guardar]** aplica cambios; **[Cancelar]** cierra sin cambios.
+
+---
+
+## **Pantalla 4.3 — Horarios (Nivel Grupos)**
 
 Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom tab-bar junto a **Grupos**, **Chat** y **Mapa**.
 Su función es ofrecer una **vista global** de las próximas salidas en todas las lanzaderas de todos los grupos del usuario.
 
-## **AppBar**
+### **AppBar**
 
 - Título centrado: **“Horarios · Mis Grupos”**
 - Lado derecho:
-  - 🔍 **Buscar** (filtra entre horarios y lanzaderas)
-  - 🧭 Filtro
+  - 🔍 **Buscar** → abre barra de búsqueda inline (ver 4.3.2)
+  - 🧭 **Filtro** → abre bottom sheet 4.3.1 (orden/filtros)
   - ✋ **Mis Solicitudes** (historial) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa de este nivel)
-  - **⋮ Menú**
+  - **⋮ Menú** → abre 4.3.3 (acciones/configuración)
 - Sin flecha de atrás → **es nivel superior**.
 
-## **Contenido principal**
+### **Contenido principal**
 
 La pantalla muestra una **lista vertical de grupos**, y dentro de cada grupo, sus **lanzaderas**, cada una con su **próxima salida**.
 
 - Si un grupo **no tiene ninguna lanzadera con horario**: **no aparece** en esta pantalla.
-- Si **ningún grupo** tiene horarios → mensaje:
+- Si **ningún grupo** tiene horarios: estado vacío usando el patrón común (icono + título 16/600 + descripción 14/400). Copy sugerido: “Aún no tienes horarios de lanzaderas en tus grupos.” (sin CTA obligatorio).
+- Si el usuario **no pertenece a ningún grupo**: estado vacío con copy “Únete a un grupo o crea uno para ver horarios aquí.” y CTAs **[Buscar grupos]** (4.1.2) y **[Crear grupo]** (4.1.1).
+- Sin conexión/error: aplicar patrón global (banner “Sin conexión. Reintenta” + botón **[Reintentar]**), preservando filtros/búsqueda/scroll activos.
 
-```
-Aún no tienes horarios de lanzaderas en tus grupos.
-```
-
-- Si el usuario no pertenece a ningún grupo → mensaje:
-
-```
-Únete a un grupo o crea uno para ver horarios aquí.
-```
-
-seguido de botones que redirigen la pantalla de busqueda de grupos, o creación de grupo:
-
-- **Buscar grupos**
-- **Crear nuevo grupo**
-
-## **Estructura por nivel**
-
-### ⭐ **NIVEL GRUPOS — Cada ítem es un grupo**
+### Estructura — Cada ítem es un grupo**
 
 Cada grupo muestra:
 
@@ -1126,43 +1139,51 @@ Nombre de Grupo
 
 👉 **Al pulsar el grupo completo**, se baja de nivel a la **Pantalla 5.x (Nivel Grupo)** en la pestaña **Horarios**, donde ya se ven todas sus lanzaderas con más detalle.
 
-## **Filtros, orden y búsqueda**
+### **Filtros, orden y búsqueda**
 
-### **Orden por defecto**
+- **Orden por defecto:** próxima salida más cercana en el tiempo.
 
-- **Próxima salida más cercana en el tiempo** (prioriza utilidad real).
-
-### **Orden alternativo (icono filtro)**
-
-- Por próxima salida
-- Por distancia al origen del usuario
-- Por nombre de grupo
-
-### **Filtros**
-
-- Solo lanzaderas activas
-- Solo lanzaderas con plazas disponibles
-
-### **Búsqueda (🔍)**
-
-El buscador filtra **grupos y lanzaderas** por:
-
-- nombre de grupo
-- nombre de lanzadera
-- día (“viernes”)
-  - hora (“7:30”)
-  - sentido (“ida”, “vuelta”)
-    Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
+---
 
 ### **4.3.1 Bottom sheet: filtros/orden (Nivel Grupos · Horarios)**
 
-- **Acceso:** menú (⋮) de la AppBar en 4.3 (Horarios · Mis Grupos).
+- **Acceso:** icono 🧭 Filtro en la AppBar de 4.3 (Horarios · Mis Grupos).
 - **Tipo:** bottom sheet; aplica filtros de forma inmediata al cerrar con **[Aplicar]**.
 - **Controles:**
   - Orden (radio): Próxima salida (por defecto) / Distancia al origen / Nombre de grupo.
+    - **Distancia al origen**: distancia desde la ubicación del usuario al origen de la próxima salida de la lanzadera más próxima de cada grupo; si no hay geolocalización, este criterio se deshabilita (o cae a orden por próxima salida).
   - Filtros (toggles): Solo lanzaderas activas; Solo lanzaderas con plazas disponibles.
   - Exportar horarios (futuro): opción mostrada deshabilitada/“Próximamente”.
 - **Acciones:** **[Restablecer]** (vuelve a orden por defecto sin filtros) y **[Aplicar]**.
+  - Mostrar spinner/badge de carga mientras se aplica; mantener filtros/orden al cerrar o navegar (conservar estado).
+
+---
+
+### **4.3.2 Buscador inline (Nivel Grupos · Horarios)**
+
+- **Acceso:** icono 🔍 de la AppBar en 4.3.
+- **Tipo/UI:** barra inline bajo la AppBar (`SearchBar`/`TextField` con icono de buscar y botón ✕ para limpiar); se abre sobre la lista, foco levanta teclado; debounce ≈300 ms; preserva filtros y scroll al cerrar o navegar.
+- **Alcance del filtro:** grupos y lanzaderas por nombre de grupo, nombre de lanzadera, día (“viernes”), hora (“7:30”) y sentido (“ida”, “vuelta”). Solo se muestran grupos con al menos una coincidencia.
+- **Comportamiento:** case-insensitive; limpiar restablece “Todos”; mantiene búsqueda activa al volver desde detalle de grupo/lanzadera. Estado vacío: mensaje simple “Sin coincidencias”; sin conexión/error: patrón global (banner “Sin conexión. Reintenta” + botón **[Reintentar]**), preservando filtros/búsqueda/scroll.
+- **Estado/almacenamiento:** preservar búsqueda/filtros/scroll al navegar o recomponer (usar `PageStorage`/state local).
+
+### **4.3.3 Bottom sheet/Modal: Menú (acciones y configuración)**
+
+- **Acceso:** menú (⋮) de la AppBar en 4.3 (Horarios · Mis Grupos).
+- **Tipo:** bottom sheet/modal sencillo.
+- **Acciones:**
+  - **Refrescar horarios**: re-sincroniza datos; muestra snackbar “Horarios actualizados”.
+- **Sincronización automática:** la lista se actualiza en tiempo real (suscripción/polling ligero); el refresco es solo para forzar re-sync manual.
+- **Pull-to-refresh:** habilitado en la lista como alternativa al botón de refrescar.
+- **Configuración:**
+  - **Mostrar horarios pasados**: toggle ON/OFF (por defecto OFF); al activarlo muestra también salidas del día ya transcurridas; respeta filtros/orden actuales.
+  - **Ocultar grupos sin salidas próximas**: toggle ON/OFF (por defecto OFF); al activarlo oculta grupos sin salidas en los próximos 7 días.
+- **Futuro/disabled:** **Exportar horarios** → mostrado deshabilitado/“Próximamente”.
+- **Ayuda:** abre breve bottom sheet con tips de uso:
+  - “Aquí ves los horarios de todos tus grupos”
+  - “Usa Filtro (🧭) para ordenar/filtrar por grupo/lanzadera”
+  - “Usa Buscar (🔍) para encontrar grupos/lanzaderas por nombre/día/hora”
+  - “Toca un grupo para ver sus lanzaderas en detalle”
 
 ---
 
@@ -1479,6 +1500,9 @@ Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertica
   - **Silenciar notificaciones:** radio 1 h / hasta mañana / indefinido, con toggle de sonido/vibración; muestra estado actual.
   - **Fijar chat** en la lista (pin) y **Desfijar** si ya está fijado.
   - **Acceso a ajustes globales:** botón **[Ajustes de chat y notificaciones]** abre Pantalla 12.1.
+- **Notas UX:**
+  - Chats fijados se muestran en un bloque superior con icono 📌; el resto sigue ordenado por actividad.
+  - Fijar en nivel Grupo no fija chats de lanzadera (se gestionan por nivel).
 - **Acciones:** **[Guardar]** aplica cambios; **[Cancelar]** cierra sin cambios.
 
 ---
@@ -1618,6 +1642,7 @@ Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido
 - **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
 - **Controles:**
   - Orden (radio): Próxima salida (por defecto) / Distancia al origen / Nombre de lanzadera / Alfabético.
+    - **Distancia al origen**: distancia desde la ubicación del usuario al origen de la próxima salida de cada lanzadera; si no hay geolocalización, se deshabilita (o se mantiene el orden por próxima salida).
   - Filtros (toggles): Solo lanzaderas con salidas hoy; Solo lanzaderas con plazas disponibles; Por sentido (ida/vuelta); Por rango de horas (selector de intervalo).
 - **Acciones:** **[Restablecer]** (orden por defecto, sin filtros) y **[Aplicar]**.
 
@@ -1839,6 +1864,22 @@ Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualqu
 - **Reversión:** Revierte el estado previo (restaurar miembro expulsado, volver a visibilidad anterior, reabrir solicitud, revertir cambio de auto-aprobación, revertir activación/desactivación de lanzadera/vehículo). Registro de auditoría mantiene ambas acciones.
 - **Permisos:** Solo el Creador puede ver/usar Deshacer; si el Creador ejecuta la acción, no se genera deshacer (ya es autor).
 
+#### **5.5.d Flujo de invitaciones y altas al grupo**
+
+- **Generar invitación** (Ajustes del grupo → Enviar invitación):
+  - **Número de móvil:** pide número; si no existe usuario, muestra aviso; si existe, genera invitación y envía notificación/push al receptor (ver 7.1).
+  - **Compartir enlace:** genera enlace único para copiar/compartir; al abrirlo la app redirige al mismo flujo de invitación (7.1) o al detalle 4.1.3 si el grupo es público.
+  - **Código de invitación (6 dígitos):** código vigente asociado al grupo; se puede compartir como texto; al validarlo dispara el mismo flujo que el enlace/invitación directa.
+- **Recepción del invitado:**
+  - Invitación directa (número/enlace) → llega como notificación; al abrir, muestra la pantalla/modal de invitación (7.1) con botones **Aceptar/Rechazar**; al aceptar, el grupo se añade a la lista; al rechazar, se marca la invitación.
+  - Enlace/código pegado desde búsqueda (4.1.2, botón **Pegar enlace de invitación**):
+    - Si el backend lo marca como invitación nominativa emitida por creador/admin, abre directamente la pantalla/modal de invitación (7.1) para confirmar **Aceptar/Rechazar** (sin solicitud).
+    - Si es un enlace/código genérico hacia un grupo público, abre 4.1.3 con CTA **Solicitar unirse** y sigue el flujo de solicitud/aprobación. Mantiene el toast “Enlace reconocido, abriendo…”.
+  - Búsqueda por nombre de grupo público (4.1.2) → abre 4.1.3 → CTA **Solicitar unirse**; la solicitud aparece en Mis Solicitudes (8) y en 5.5.a si la auto-aprobación está desactivada.
+- **Permisos y auto-aprobación:**
+  - Solo Creador/Admin pueden generar invitaciones; la posibilidad de que miembros compartan enlaces depende de la política backend.
+  - Si la auto-aprobación está activa, las altas por invitación se aplican al instante; si está desactivada, quedan pendientes en 5.5.a salvo invitaciones explícitas del creador/admin.
+
 ---
 
 ## **6 NIVEL DE LANZADERA** _(vista específica de lanzadera)_
@@ -1908,6 +1949,9 @@ Este chat es distinto al Chat General del grupo. Se consigue así ser más espec
   - **Silenciar notificaciones:** radio 1 h / hasta mañana / indefinido; toggle sonido/vibración; muestra estado actual.
   - **Fijar chat** en la lista (pin) y **Desfijar** si ya está fijado.
   - **Acceso a ajustes globales:** botón **[Ajustes de chat y notificaciones]** abre Pantalla 12.1.
+- **Notas UX:**
+  - Chats fijados se muestran en un bloque superior con icono 📌; el resto sigue ordenado por actividad.
+  - Fijar en nivel Lanzadera no afecta los fijados del nivel Grupo (independientes por nivel).
 - **Acciones:** **[Guardar]** aplica cambios; **[Cancelar]** cierra sin cambios.
 
 ### **6.3 Horarios** _(sección central)_
