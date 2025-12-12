@@ -2,7 +2,7 @@
 
 ## 📍 Estado actual
 
-- Última actualización: 28/11/2025
+- Última actualización: 11/12/2025
 - Specs cerradas incl. guías visuales básicas (tipografía, paleta, layout por nivel, modales/chips); pendiente solo outline/kit de pantallas de referencia
 - Arquitectura decidida: Flutter + Riverpod + GoRouter + Firebase (Auth/Firestore/FCM), Storage para medios
 - Scope MVP recortado: sin backups Drive/iCloud, sin multimedia ni búsqueda en chat, sin automatismos avanzados de conductor (5/40 min) en primera iteración
@@ -27,9 +27,11 @@
 
 ## 📅 Fases
 
-### Fase 0 — Cierre de especificaciones y guía visual (1 semana)
+### Fase 0 — Cierre de especificaciones y guía visual (1 semana → extendida a 3 semanas; nueva ETA 2025-12-15)
 
 **Objetivo:** SPECS completas y base visual mínima para arrancar desarrollo.
+
+**Estado al 11/12/2025:** Specs y guías visuales básicas completadas (tipografía, paleta, layout, patrones); pendiente outline/kit de pantallas de referencia. Retraso de ~2 semanas respecto al plan inicial; fecha objetivo ajustada al 15/12/2025.
 
 #### 🔴 Prioridad Alta (Crítico para MVP)
 
