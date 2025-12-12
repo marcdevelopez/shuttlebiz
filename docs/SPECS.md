@@ -987,7 +987,7 @@ La pantalla puede mostrar dos situaciones:
 
 ---
 
-#### **4.1.3.a Modal de solicitud de membresía (grupo público)**
+#### **4.1.3.a Modal Solicitud de Membresía (Grupo Público)**
 
 - **Acceso:** botón **“Solicitar unirse”** en 4.1.3.
 - **UI:** bottom sheet/modal centrado (bloqueante hasta decidir).
@@ -1016,7 +1016,7 @@ La pantalla puede mostrar dos situaciones:
 
 ---
 
-## **4.2 Pantalla Grupos Chat**
+## **4.2 Pantalla Chat (Nivel Grupos)**
 
 Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encuentra en el **nivel superior (Grupos)**.
 
@@ -1099,7 +1099,7 @@ Mantener la jerarquía Grupos → Grupo → Lanzadera en una navegación vertica
 
 ---
 
-## **Pantalla 4.3 — Horarios (Nivel Grupos)**
+## **4.3 Pantalla Horarios (Nivel Grupos)**
 
 Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom tab-bar junto a **Grupos**, **Chat** y **Mapa**.
 Su función es ofrecer una **vista global** de las próximas salidas en todas las lanzaderas de todos los grupos del usuario.
@@ -1123,7 +1123,7 @@ La pantalla muestra una **lista vertical de grupos**, y dentro de cada grupo, su
 - Si el usuario **no pertenece a ningún grupo**: estado vacío con copy “Únete a un grupo o crea uno para ver horarios aquí.” y CTAs **[Buscar grupos]** (4.1.2) y **[Crear grupo]** (4.1.1).
 - Sin conexión/error: aplicar patrón global (banner “Sin conexión. Reintenta” + botón **[Reintentar]**), preservando filtros/búsqueda/scroll activos.
 
-### Estructura — Cada ítem es un grupo**
+### **Estructura — Cada ítem es un grupo**
 
 Cada grupo muestra:
 
@@ -1145,7 +1145,7 @@ Nombre de Grupo
 
 ---
 
-### **4.3.1 Bottom sheet: filtros/orden (Nivel Grupos · Horarios)**
+### **4.3.1 Bottom sheet: Filtros/Orden (Nivel Grupos · Horarios)**
 
 - **Acceso:** icono 🧭 Filtro en la AppBar de 4.3 (Horarios · Mis Grupos).
 - **Tipo:** bottom sheet; aplica filtros de forma inmediata al cerrar con **[Aplicar]**.
@@ -1167,7 +1167,7 @@ Nombre de Grupo
 - **Comportamiento:** case-insensitive; limpiar restablece “Todos”; mantiene búsqueda activa al volver desde detalle de grupo/lanzadera. Estado vacío: mensaje simple “Sin coincidencias”; sin conexión/error: patrón global (banner “Sin conexión. Reintenta” + botón **[Reintentar]**), preservando filtros/búsqueda/scroll.
 - **Estado/almacenamiento:** preservar búsqueda/filtros/scroll al navegar o recomponer (usar `PageStorage`/state local).
 
-### **4.3.3 Bottom sheet/Modal: Menú (acciones y configuración)**
+### **4.3.3 Bottom sheet/Modal: Menú (Acciones y Configuración)**
 
 - **Acceso:** menú (⋮) de la AppBar en 4.3 (Horarios · Mis Grupos).
 - **Tipo:** bottom sheet/modal sencillo.
@@ -1187,7 +1187,7 @@ Nombre de Grupo
 
 ---
 
-## **Pantalla 4.4 — Mapa (Nivel Grupos)**
+## **4.4 Pantalla Mapa (Nivel Grupos)**
 
 Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom tab-bar junto a **Grupos Home**, **Chat** y **Horarios**.
 
@@ -1256,7 +1256,7 @@ Cada ítem de grupo muestra:
 
 ---
 
-## **5. NIVEL GRUPO** _(vista completa del grupo)_
+## **5 Nivel Grupo** _(vista completa del grupo)_
 
 - **Función**:
   - Permite ver las lanzaderas del grupo y crear nuevas lanzaderas. Es el segundo nivel de la jerarquía (Grupos → Grupo → Lanzadera).
@@ -1264,7 +1264,7 @@ Cada ítem de grupo muestra:
 
 ---
 
-## **5.1 PANTALLA GRUPO HOME**
+## **5.1 Pantalla Grupo Home (Nivel Grupo)**
 
 ### **Estados iniciales**
 
@@ -1312,7 +1312,7 @@ La pantalla puede mostrar dos situaciones:
 
 ---
 
-#### **5.1.a Bottom sheet/Modal: cambio rápido de grupo**
+#### **5.1.a Bottom sheet/Modal: Cambio Rápido de Grupo**
 
 - **Cuándo se muestra:** al pulsar el nombre del grupo en el AppBar del Nivel Grupo (Home/Chat/Horarios/Mapa).
 - **Objetivo:** cambiar de grupo sin salir a la lista principal.
@@ -1636,7 +1636,7 @@ Solo se muestran lanzaderas que tengan **al menos una coincidencia relevante**.
 **Objetivo de UX:**
 Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido a qué lanzaderas tienen salidas próximas y en qué horarios, manteniendo coherencia total con el diseño visual de las pantallas de lanzadera.
 
-### **5.3.1 Bottom sheet: filtros/orden (Nivel Grupo · Horarios)**
+### **5.3.1 Bottom sheet: Filtros/Orden (Nivel Grupo · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 5.3 (Horarios · [Grupo]).
 - **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
@@ -1646,7 +1646,7 @@ Permitir una vista panorámica de la actividad del grupo, con un vistazo rápido
   - Filtros (toggles): Solo lanzaderas con salidas hoy; Solo lanzaderas con plazas disponibles; Por sentido (ida/vuelta); Por rango de horas (selector de intervalo).
 - **Acciones:** **[Restablecer]** (orden por defecto, sin filtros) y **[Aplicar]**.
 
-### **5.3.2 Bottom sheet: Configuración de vista (Nivel Grupo · Horarios)**
+### **5.3.2 Bottom sheet: Configuración de Vista (Nivel Grupo · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 5.3.
 - **Tipo:** bottom sheet sencilla.
@@ -1739,7 +1739,7 @@ Poder elegir entre cada mapa de lanzadera con las detalle de viajeros y salida q
 
 ---
 
-## **5.5 Pantalla de GESTIÓN DE GRUPO**
+## **5.5 Pantalla Gestión de Grupo (Nivel Grupo)**
 
 Pantalla para administrar el grupo, accesible desde el **menú (⋮)** en cualquier página del **Nivel Grupo**.
 
@@ -2043,7 +2043,7 @@ Los colores de las horas coincidirán en color con la ida o vuelta (numeros en b
 
 Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero sin icono de lápiz para editar arriba en la barra superior (o donde se decida para más usabilidad), sin botón de añadir hora, sin posibilidad de modificar días semanales, ni botones de guardar/cancelar, y todo aquello que esté extra en la vista de edición de horario.
 
-#### **6.3.1.a Modal de confirmación de eliminación de horario**
+#### **6.3.1.a Modal Confirmación de Eliminación de Horario**
 
 - **Cuándo se muestra:** pulsación larga sobre un horario en la lista (solo Creador/Admin).
 - **Objetivo:** evitar borrados accidentales y avisar de impactos.
@@ -2058,7 +2058,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
     - **[Cancelar]** (secundario) → cierra sin cambios.
 - **Al confirmar:** se elimina el horario, se cancelan solicitudes activas asociadas, se envían notificaciones a viajeros/conductor/admins y se muestra Snackbar “Horario eliminado y solicitudes canceladas”.
 
-#### **6.3.1.b Bottom sheet: filtros/orden (Nivel Lanzadera · Horarios)**
+#### **6.3.1.b Bottom sheet: Filtros/Orden (Nivel Lanzadera · Horarios)**
 
 - **Acceso:** menú (⋮) de la AppBar en 6.3.
 - **Tipo:** bottom sheet; aplica al pulsar **[Aplicar]**.
@@ -2181,7 +2181,7 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 > - Si el horario **ya ha pasado**, se deshabiltará el botón solicitar plaza y si es pulsado lanza snak o notificacion "esta salida ya no acepta solicitudes".
 > - Si existe **conductor tardío** o cambios de última hora, el sistema mantiene la coherencia y notifica a afectados (ver 5. Reglas y Validaciones).
 
-#### **6.3.2.a Modal de continuidad de conductor (post-viaje)**
+#### **6.3.2.a Modal de Continuidad de Conductor (post-viaje)**
 
 - **Cuándo se muestra:** Al marcar “Llegada” (o detección automática) y solo si hay otra salida del mismo día para la misma lanzadera y el conductor no tiene asignación por rango.
 - **Detección automática:** geocerca en el punto de destino/fin de trayecto; al entrar en la zona, se marca la llegada y se abre este modal sin requerir tap manual.
@@ -2279,7 +2279,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 
 **Leyenda/ayuda breve:** “Gris = ocupado por otro horario; Azul/Rojo = seleccionado; Blanco = disponible.”
 
-#### **6.3.3.a Modal de conflictos de horario**
+#### **6.3.3.a Modal de Conflictos de Horario**
 
 - **Cuándo se muestra:** al pulsar un día ocupado por otro horario y elegir **Ver horas actuales**.
 - **Layout:** modal centrado, ancho medio; scroll si hay muchas horas.
@@ -2295,7 +2295,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
   - Tarjeta deshabilitada (opacidad reducida) si no hay datos (ej. sin horas nuevas).
   - Si la opción fusionar no cambia nada, mostrar aviso “Sin cambios; se mantienen las horas actuales”.
 
-#### **6.3.3.b Modal de guardar cambios (salir sin guardar)**
+#### **6.3.3.b Modal Guardar Cambios (Salir sin Guardar)**
 
 - **Cuándo se muestra:** al intentar salir con cambios no guardados en pantallas de edición (p. ej. 6.3.3).
 - **UI:** modal centrado/bottom sheet bloqueante.
@@ -2341,7 +2341,7 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 
 ---
 
-## **7. Centro de Notificaciones**
+## **7 Pantalla Centro de Notificaciones**
 
 Pantalla independiente accesible desde el **icono de notificaciones (🔔)** en las AppBar de Home/Chat/Horarios/Mapa en los tres niveles (Grupos, Grupo, Lanzadera). Si no hay no leídas, el icono no se muestra.
 
@@ -2414,7 +2414,7 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
 
 ---
 
-## **7.1 PANTALLA / MODAL DE INVITACIÓN A GRUPO (RECEPTOR)**
+## **7.1 Pantalla/Modal Invitación a Grupo (Receptor)**
 
 ### **Función**
 
@@ -2485,7 +2485,7 @@ Contiene notificaciones que requieren **respuesta activa** del usuario:
 
 ---
 
-## **8. PANTALLA “MIS SOLICITUDES”**
+## **8 Pantalla “Mis Solicitudes”**
 
 _(Acceso universal desde el icono ✋ en todas las AppBars de la app)_
 
@@ -2649,7 +2649,7 @@ Aún no hay historial de viajes completados.
 
 ---
 
-## **9\. Pantalla PERFIL DE USUARIO**
+## **9 Pantalla Perfil de Usuario**
 
 **Función**: Gestión del perfil personal y estadísticas.
 
@@ -2688,7 +2688,7 @@ Aún no hay historial de viajes completados.
 
 ---
 
-## **9.1 Pantalla EDICIÓN DE PERFIL (Mi Perfil)**
+## **9.1 Pantalla Edición de Perfil (Mi Perfil)**
 
 **Función**: Permitir al usuario editar su información personal y configurar preferencias de privacidad y comportamiento en la app.
 
@@ -2925,7 +2925,7 @@ Enlace directo a configuración detallada:
 
 ---
 
-## **10\. GESTIÓN DE VEHÍCULOS** _(por grupo)_
+## **10 Pantalla Gestión de Vehículos (Nivel Grupo)** _(por grupo)_
 
 **Función**: Ver, elegir como lanzadera, agregar, editar y eliminar vehículos frecuentes del grupo.  
 Al abrir la pantalla es una listview que en principio está vacía y se van agregando ítems de vehículos.
@@ -3137,7 +3137,7 @@ En esta pantalla se puede modificar de un vehículo:
 
 ---
 
-## **11. PANTALLAS DE CHAT**
+## **11 Pantallas de Chat**
 
 Comunicación completa entre usuarios con 2 canales de chat: grupo y lanzadera. En la pagina de chat a nivel de grupos, solo será posible elegir entre grupo, y al pulsar se baja al nivel del grupo elegido en la pagina de chat.
 
@@ -3268,7 +3268,7 @@ Tendrá varios canales de chat:
 
 ---
 
-## **12\. Pantalla CONFIGURACIÓN (Settings)**
+## **12 Pantalla Configuración (Settings)**
 
 **Función**: Configuración general de la aplicación.
 
