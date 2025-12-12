@@ -856,6 +856,9 @@ La pantalla puede mostrar dos situaciones:
      ¿Quieres buscar un Grupo público?
      Búscalo arriba pulsando el ícono de búsqueda.
      ```
+   - CTAs claros:
+     - **[Crear grupo]** (FAB “+” abajo a la derecha, abre 4.1.1).
+     - **[Buscar grupo público]** (icono 🔍 en AppBar abre 4.1.2).
 
    - Notas de visibilidad: si el usuario ya pertenece o tiene solicitudes activas a grupos públicos/privados, no se muestra el mensaje de buscar grupos públicos; en su lugar se muestra directamente la lista/solicitudes.
 
@@ -1275,9 +1278,11 @@ La pantalla puede mostrar dos situaciones:
      con los miembros de este grupo.
      ```
 
-2. **Con una o varias lanzaderas creadas**
+2. **Con lanzaderas creadas (con o sin horarios)**
 
-   - Lista normal con todas las lanzaderas.
+   - Lista con todas las lanzaderas:
+     - Las que **no tienen horarios** se muestran con badge/chip “Sin horarios” y CTA inline **[Añadir horario]** → abre 6.3.3 en nivel Lanzadera (mantiene pestaña Horarios).
+     - Las que **tienen horarios** muestran la próxima salida como está descrito.
    - Orden:
 
      1. En primer lugar, las lanzaderas con próxima salida más cercana.
@@ -1286,17 +1291,23 @@ La pantalla puede mostrar dos situaciones:
 
 ### **Contenido de la pantalla**
 
-- **Lista de lanzaderas** (cada ítem con nombre, origen → destino, foto opcional y datos básicos):
+- **Lista de lanzaderas** (cada ítem muestra):
+  - Nombre de la lanzadera.
+  - Origen → Destino.
+  - Foto/emoji opcional.
+  - Próxima salida (hora/fecha) o chip **“Sin horarios”** si no tiene horarios.
+  - Estado de plazas: disponibles/sin plazas (si aplica).
+  - Color de ruta: swatch micro-chip circular (6–12 px) junto al nombre, o barra/pill estrecho a la izquierda como acento; mismo color que en mapa/leyenda. Texto neutro (no sobre fondo de color); opcional chip “Ruta” con borde del color y fondo neutro. Si el color es muy claro, añadir borde para visibilidad.
   - **Tocar una lanzadera** → abre la **Pantalla de Lanzadera** correspondiente, bajando al nivel de "Lanzadera".
 - **Icono ✋ Mis Solicitudes** en la AppBar → abre la **Pantalla 8 (Estado de Mis Solicitudes)**. Este icono aparece en las vistas de Home/Chat/Horarios/Mapa del nivel Grupo; no en formularios u otras pantallas secundarias.
 - **Flecha atrás** (←) en la esquina superior izquierda → regresa al **Nivel Grupos (4.1)**.
 - **Nombre del grupo** visible en el AppBar. Al pulsarlo, se abre un modal para cambiar rápidamente a otro grupo del usuario (ver **5.1.a**).
-- **Menú (⋮)** en esquina superior derecha con opciones (la opción de vehículos solo aparece activa si el usuario es Creador/Admin, tiene rol de conductor asignado/solicitado en alguna lanzadera del grupo o es creador de un vehículo del grupo):
-  - Gestión del grupo → abre **Pantalla 5.5**
-  - Gestión de vehículos → abre **Pantalla 10** (creadores/admins gestionan; conductores asignados o creadores de un vehículo pueden elegirlo y solicitar alta/edición con aprobación)
-  - Configuración del grupo
-  - Invitar miembros
-  - Ajustes personales rápidos → abre 4.1.4; opción de silenciar ofrece alcance “App completa” o “Solo este grupo”.
+- **Menú (⋮)** en esquina superior derecha; visibilidad por rol:
+  - **Gestión del grupo** → abre **Pantalla 5.5** (solo Creador/Admin; oculto o deshabilitado para el resto).
+  - **Gestión de vehículos** → abre **Pantalla 10** (activa solo para Creador/Admin, conductores asignados/solicitados en alguna lanzadera del grupo o creador de un vehículo del grupo; si no aplica, oculto/deshabilitado con tooltip “No disponible para tu rol”).
+  - **Configuración del grupo** (solo Creador/Admin).
+  - **Invitar miembros** (solo Creador/Admin).
+  - **Ajustes personales rápidos** → abre 4.1.4; disponible para todos; opción de silenciar ofrece alcance “App completa” o “Solo este grupo”.
 - **Botón flotante (FAB) "+"** (solo visible para Creadores/Admins):
   - Ubicado abajo a la derecha.
   - Crea una nueva lanzadera → navega a **Pantalla 5.1.1 (Creación de Lanzadera)**.
@@ -1313,34 +1324,44 @@ La pantalla puede mostrar dos situaciones:
     - Nombre + badge de rol (Creador/Admin/Miembro).
     - Contador de lanzaderas activas y próxima salida (si existe) en texto secundario.
     - Grupo actual marcado con check ✔ y deshabilitado para selección.
-  - Botones: **[Cerrar]** (secundario) y acción implícita al tocar un grupo.
+  - Cierre: bottom sheet con handle; se puede cerrar por swipe/tap fuera. Botón **[Cerrar]** (texto) en esquina superior derecha o como acción secundaria al pie como alternativa explícita.
 - **Acción al seleccionar grupo:** cambia contexto al grupo elegido, cierra modal y refresca la pantalla actual manteniendo la pestaña (Home/Chat/Horarios/Mapa) en ese nuevo grupo.
 - **Comportamiento adicional:** si no hay más grupos, muestra mensaje “No tienes otros grupos” y solo botón **[Cerrar]**.
 
 ---
 
-### **Pantalla 5.1.1 Creación de Lanzadera (NEW SHUTTLE)**
+### **Pantalla 5.1.1 Creación/Edición de Lanzadera (NEW SHUTTLE)**
 
 - **Función**: Pantalla para crear una nueva lanzadera desde el Home de Grupo.
 
-- Se abre desde el botón flotante (FAB) en **Pantalla 5.1**.
-- AppBar sin icono ✋ (pantalla secundaria de creación/edición).
+- Se abre desde el botón flotante (FAB) en **Pantalla 5.1** o en modo edición desde menú (⋮) en nivel Lanzadera (6.1).
+- AppBar sin icono ✋ (pantalla secundaria de creación/edición); título dinámico “Crear lanzadera” / “Editar lanzadera”.
 
 - **Campos obligatorios**:
 
-  - **Nombre de la lanzadera** (debe ser corto para UI; se avisará si es excesivamente largo)
-  - **Origen y destino** (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
-  - **Plazas por defecto**: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
-  - **Comentario de la Lanzadera**: Normas, instrucciones, etc. Campo amplio, debajo de "Plazas por defecto".
-  - **Ubicación de preparación/garaje y tiempo para llegar al Origen**: punto donde se toma/prepara el vehículo antes de salir y margen de traslado hasta el Origen (desde garaje si aplica). El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
-    ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema
-    asumirá que el garaje es el mismo punto de Origen (margen = 0).
-  - **Color de ruta (mapa)**: se asigna automáticamente un color de una paleta fija y contrastante (compatible con el estilo de mapa base); se guarda en backend (`color` hex) y se usa en rutas/leyendas. En edición (Creador/Admin), se muestra el color actual y un botón **[Cambiar color]** que abre un selector (grid de círculos) limitado a esa paleta (sin rojo ni tonos poco visibles); al elegir se previsualiza la polilínea/leyenda con el nuevo color. El cambio se aplica al guardar; si se cancela, se mantiene el color previo.
+  - **Nombre de la lanzadera** (debe ser corto para UI; se avisará si es excesivamente largo, p.ej. > 50–60 caracteres)
+  - **Origen y destino** (nombres cortos; avisar si superan p.ej. 30–40 caracteres para evitar desbordes). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
+  - **Vehículo por defecto (opcional):** selector desplegable/bottom sheet con búsqueda (si hay muchos vehículos) justo encima de Plazas, mostrando capacidad y placas; al elegir, autocompleta **Plazas por defecto** con su capacidad (editable dentro de límites). Si no hay vehículos, CTA **[Crear vehículo]** abre Pantalla 10.
+  - **Plazas por defecto**: input numérico obligatorio (TextField con teclado numérico + stepper opcional); mínimo 1, máximo alto (p.ej. 100+ para buses) con validación en caliente. Sugerir valor por defecto (p.ej. 4–5 si no hay vehículo asociado) y, si hay vehículo, precargar con su capacidad; helper text explicando la sugerencia. Validar en edición según reglas de reservas.
+  - **Comentario de la Lanzadera**: Campo amplio opcional para normas/instrucciones (debajo de "Plazas por defecto"); permitir formato básico (negritas, listas con guiones/numeración). Ejemplos: “Normas de solicitud de plaza”, “Salimos puntuales, llega 5 minutos antes”, “Recogida exacta en el punto marcado del mapa”, “Avisad por el chat si llegáis tarde”, “Salida desde el parking habitual”, “Horario aproximado según tráfico”, “Salida flexible ±5 minutos”, “No se espera después de la hora indicada”, “No se permite fumar en el vehículo”, “Ruta directa, sin desvíos; no se hacen paradas intermedias”, “Plazas confirmadas por orden de solicitud”.
+  - **Ubicación de preparación/garaje y tiempo para llegar al Origen**: punto donde se toma/prepara el vehículo antes de salir y margen de traslado hasta el Origen (desde garaje si aplica).
+    - **Selector de garaje**: botón **[Seleccionar ubicación de garaje]** abre 5.1.2b (mapa); muestra resumen seleccionado o “Usar punto de origen”.
+    - **Tiempo de preparación**: opción automática sugerida por el sistema (API de rutas) o manual (minutos, stepper/slider/input numérico); checkbox “Usar mismo punto que Origen” → margen 0.
+    - Copys claros: “Tiempo que necesitas desde el garaje al origen. Lo restaremos a la hora de salida para validar puntualidad.”
+    ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema asumirá que el garaje es el mismo punto de Origen (margen = 0).
+  - **Color de ruta (mapa)**: se asigna automáticamente un color de una paleta fija y contrastante (compatible con el estilo de mapa base); se guarda en backend (`color` hex) y se usa en rutas/leyendas. En creación ya se muestra ese color por defecto y el botón **[Cambiar color]** abre un selector tipo bottom sheet con grid de `ChoiceChip`/icon buttons (sin rojo ni tonos poco visibles) y preview de polilínea/leyenda; no bloqueante. El cambio se aplica al guardar; si se cancela, se mantiene el color previo.
 
 - **Botones**:
 
-  - **Guardar**: Crea la lanzadera y pregunta en un modal si desea agregar el primer horario.
+  - **Guardar**: Crea la lanzadera y pregunta en un modal si desea agregar el primer horario. Valida nombre/origen/destino/garaje (si aplica) y plazas antes de guardar; muestra errores en línea si falla. El color de ruta se autoasigna si no se edita.
   - **Cancelar**: Descarta los cambios y vuelve a **Pantalla 5.1**.
+- **Nota/CTA vehículos:** si no hay vehículo asociado, mostrar bajo el selector (o en su placeholder) un aviso “Asocia un vehículo para precargar plazas y capacidad” con CTA **[Ir a gestión de vehículos]** (abre 10); CTA como texto/enlace junto al aviso. Si no existe ningún vehículo, incluir **[Crear vehículo]** al lado.
+- **Validaciones y accesibilidad**:
+  - Origen ≠ destino; validar que no tengan coordenadas iguales.
+  - Origen/destino obligatorios; mostrar error en línea si faltan o si exceden longitudes.
+  - Plazas fuera de rango: error en línea; vehículo inexistente o no seleccionado si es requerido: mensaje en línea.
+  - Accesibilidad: orden de foco/tabs lógico; labels claros en inputs numéricos y botones; error text accesible.
+- **Persistencia de borrador (opcional):** si sale sin guardar, persistir borrador y restaurar al volver; solicitar confirmación si hay cambios sin guardar.
 
 - **Modal tras guardar ("Horario desde NewShuttle")**:
   - Pregunta: _"¿Desea agregar el primer horario a esta lanzadera?"_
@@ -1430,7 +1451,7 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 ### **AppBar (izquierda → derecha)**
 
 - **Flecha atrás** (←): regresa a **Pantalla 4.2 (Grupos Chat)**, subiendo un nivel en la jerarquía de chats.
-- **Nombre del grupo** (título centrado)
+- **Nombre del grupo** (título centrado; tap abre cambio rápido de grupo 5.1.a)
 - **Icono de búsqueda** → permite buscar mensajes dentro del chat general del grupo.
 - **Icono Mis Solicitudes (✋)** → acceso rápido a la **Pantalla 8**; se mantiene en las AppBar de Home/Chat/Horarios/Mapa del nivel Grupo.
 - **Menú (⋮)**:
@@ -1507,7 +1528,7 @@ Su función es ofrecer una **vista consolidada** de los horarios de todas las la
 ### **AppBar**
 
 - **Flecha atrás** (←) → regresa a **Pantalla 4.3 (Horarios · Mis Grupos)**, subiendo un nivel.
-- Título centrado: **"Horarios · [Nombre del Grupo]"**
+- Título centrado: **"Horarios · [Nombre del Grupo]"**; tap en el título abre cambio rápido de grupo (5.1.a).
 - Lado derecho:
   - 🔍 **Buscar** (filtra entre horarios y lanzaderas del grupo)
   - 🧭 **Filtro**
@@ -1523,6 +1544,7 @@ La pantalla muestra una **lista vertical de lanzaderas del grupo**, cada una con
 ```
 No hay salidas programadas en este grupo.
 ```
+  - Para **Creador/Admin**: CTAs **[Crear horario]** (abre 6.3.3 en nivel Lanzadera con preselección de lanzadera si la hay) y, si no hay lanzaderas, **[Crear lanzadera]** (abre 5.1.1).
 
 Seguido de botones contextuales (solo visibles para Creadores/Admins):
 
@@ -1661,7 +1683,7 @@ Esta pantalla forma parte del **PageView del nivel GRUPO**, dentro del bottom ta
 ### **AppBar**
 
 - **Flecha atrás** (←) → regresa a **Pantalla 4.4 (Mapa · Mis Grupos)**, subiendo un nivel y manteniéndose en la pestaña Mapa.
-- Título centrado: **"Mapa · [Nombre del Grupo]"**
+- Título centrado: **"Mapa · [Nombre del Grupo]"**; tap en el título abre cambio rápido de grupo (5.1.a).
 - Lado derecho:
   - 🔍 **Buscar** (filtra lanzaderas visibles)
   - ✋ **Mis Solicitudes** (icono de mano) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa del nivel Grupo)
@@ -1900,6 +1922,7 @@ Esta página contiene:
   - La edición reutiliza la pantalla **5.1.1 (New Shuttle)** en modo edición, con campos precargados y botones ✔️/✖️; al confirmar, vuelve a Home de Lanzadera.
   - **Origen/Destino con horarios existentes**: si la lanzadera tiene horarios activos, no se permite cambiar origen/destino. Modal: _“Para cambiar origen/destino debes eliminar los horarios existentes (6.3.3)”_. Botones: **[Ver horarios]** (abre 6.3) / **[Cancelar]**.
   - **Plazas por defecto con reservas**: solo se permite reducir plazas si el nuevo valor es ≥ al máximo de plazas reservadas en cualquier horario/salida. Si es menor, modal: _“No puedes reducir plazas por defecto a menos de las reservas actuales (X). Ajusta reservas o reduce después.”_. Subir plazas siempre permitido.
+  - **Vehículo y capacidad**: selector de vehículo del grupo (opcional); si no hay, aviso “Asocia un vehículo para precargar plazas y capacidad” con CTA a **Pantalla 10**. Al elegir vehículo, precargar plazas por defecto con su capacidad y permitir ajuste solo dentro de límites de reservas y lógica de vehículo.
   - **Color de ruta (edición):** el campo muestra el color actual y un botón **[Cambiar color]** que abre el selector de paleta (círculos, mismos colores contrastantes definidos en 5.1.1). La vista previa de ruta/leyenda refleja el color elegido; solo se aplica al guardar (cancelar mantiene el color previo).
 
 **Campos editables adicionales** (solo Creador/Admin):
