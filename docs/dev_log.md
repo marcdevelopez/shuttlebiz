@@ -14,7 +14,7 @@ Sirve para:
 # 📍 Estado actual
 
 Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía lista)**
-Última actualización: 2025-11-27
+Última actualización: 2025-12-11
 
 ---
 
@@ -99,7 +99,7 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 
 ---
 
-## 🗓️ Día 5 — 2025-11-26
+## 🗓️ Día 4 — 2025-11-26
 
 ### ✔ Trabajo realizado:
 
@@ -127,7 +127,7 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 
 ---
 
-## 🗓️ Día 6 — 2025-11-27
+## 🗓️ Día 5 — 2025-11-27
 
 ### ✔ Trabajo realizado:
 
@@ -161,7 +161,7 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 
 ---
 
-## 🗓️ Día 7 — 2025-11-28
+## 🗓️ Día 6 — 2025-11-28
 
 ### ✔ Trabajo realizado:
 
@@ -182,7 +182,7 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 
 ---
 
-## 🗓️ Día 8 — 2025-12-02
+## 🗓️ Día 7 — 2025-12-02
 
 ### ✔ Trabajo realizado:
 
@@ -200,6 +200,31 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 - Mantener esta política en cada nueva rama/PR para evitar romper `main`.
 
 ---
+
+## 🗓️ Día 9 — 2025-12-11
+
+### ✔ Trabajo realizado:
+
+- Actualización de `SPECS.md` (4.2 Grupos Chat): filtros/chips táctiles, ajustes de chat a nivel Grupos (4.2.2), bottom sheet de silenciados (4.2.1) con acciones visibles y ancla a patrones de acciones por ítem, referencias cruzadas y filtros claros.
+- Actualización de `SPECS.md` (4.3 Horarios · Grupos): reorganización con buscador 4.3.2, menú 4.3.3, refinado de filtros/orden 4.3.1, estados vacíos/errores normalizados, ayuda en menú, sincronización automática + pull-to-refresh, preservación de estado (PageStorage), aclarado “Distancia al origen”.
+- Patrones UI: nueva sección “Patrones de Acciones por ítem” con ancla y referencias en las pantallas que la usan.
+- `dev_log.md` renumerado para corregir salto de días y actualizado con estas entradas.
+
+### 🧠 Decisiones tomadas:
+
+- Mantener sincronización automática de horarios; refrescar solo como acción manual opcional (incluye pull-to-refresh).
+- Separar fijados por nivel (grupo/lanzadera) y filtrar silenciados con toggle visible más panel dedicado.
+- Menú de Horarios (4.3) minimal: refrescar, mostrar pasados, ocultar grupos sin salidas próximas, exportar (futuro) y ayuda concisa.
+- Estados vacíos/errores se remiten al patrón global para consistencia; filtros/búsquedas conservan estado al navegar.
+
+### ⚠️ Problemas encontrados:
+
+- `git status` emite warnings/errores al escribir cache en `/tmp` por permisos del entorno; no afectó la edición de docs.
+
+### 🎯 Próximos pasos:
+
+- Consolidar las guías visuales pendientes y reflejar estos cambios en `ROADMAP.md` si aplica.
+- Preparar rama/commit para estos ajustes de documentación.
 
 # 🧾 Notas generales
 
