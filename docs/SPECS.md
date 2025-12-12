@@ -1195,9 +1195,9 @@ Esta pantalla forma parte del **PageView del nivel GRUPOS**, dentro del bottom t
 
 - Título centrado: **"Mapa · Mis Grupos"**
 - Lado derecho:
-  - 🔍 **Buscar** (filtra grupos visibles)
+  - 🔍 **Buscar** → abre barra de búsqueda inline (filtra por nombre de grupo, nombre de lanzadera y origen/destino; case-insensitive; preserva scroll/filtros al cerrar)
   - ✋ **Mis Solicitudes** (icono de mano) → abre la **Pantalla 8** (icono presente en Home/Chat/Horarios/Mapa de este nivel)
-  - **⋮ Menú** (opciones de visualización: tipo de mapa, leyenda, etc.)
+  - **⋮ Menú** → abre 4.4.1 (opciones de visualización: tipo de mapa, leyenda, etc.)
 - Sin flecha de atrás → **es nivel superior**.
 
 ### **Contenido principal**
@@ -1220,39 +1220,30 @@ Cada ítem de grupo muestra:
     - Lista horizontal o vertical compacta con:
       - Nombre de cada lanzadera
       - Color de la ruta correspondiente
+    - Asignación de color: paleta de colores distintos por grupo; cada lanzadera recibe un color único y persistente (guardado en backend) para evitar confusión con rutas distintas; evitar usar rojo para rutas normales (reservar rojo para estados/error).
+    - Fuente de la paleta: colores contrastantes sobre fondo de mapa oscuro/estándar (p.ej., estilo tipo Uber/Amazon Maps); se recomienda fijar estilo de mapa base (ej. Mapbox/Google estilo dark/neutral) y elegir paleta compatible (azules/teales/magentas/mustard/greens; evitar rojo y tonos muy claros que desaparezcan).
+    - Persistencia: el color se asigna al crear la lanzadera (pantalla 5.1.1), se guarda en el backend (`color` hex) y se reutiliza en mapas/leyendas; opcional selector manual solo para creador/admin usando la misma paleta.
   - **Al pulsar el nombre de una lanzadera**:
-    - Toggle para **mostrar/ocultar** su recorrido en el mapa. resalta la lanzadera y muestra información básica.
-    - El nombre se resalta o tacha según visibilidad
+    - Toggle para **mostrar/ocultar** su recorrido en el mapa; resalta la lanzadera y muestra información básica: nombre, `Origen → Destino`, próxima salida (hora/fecha) y estado de plazas (disponibles/sin plazas). Solo se activa el toggle si hay datos mínimos.
+    - Feedback visual: cuando la lanzadera está **visible** en el mapa, su nombre en la leyenda aparece resaltado (color/énfasis). Cuando está **ocultada** mediante el toggle, el nombre se muestra atenuado/tachado para que quede claro que su ruta no se está dibujando.
 
 **Al pulsar sobre el mapa del grupo** → abre **Pantalla 5.4 (Mapa · Nivel Grupo)**, bajando un nivel.
 
 ### **Estados especiales**
 
-- Si un grupo **no tiene lanzaderas**:
-
-  - Muestra solo el nombre del grupo
-  - Mensaje: _"Sin lanzaderas configuradas"_
-  - No muestra mapa
-
-- Si el usuario **no pertenece a ningún grupo**:
-  - Mensaje centrado:
-    ```
-    Únete a un grupo o crea uno para ver mapas de lanzaderas.
-    ```
-  - Botones:
-    - **Buscar grupos**
-    - **Crear nuevo grupo**
+- Ocultar grupos sin lanzaderas (no se listan). Si **ningún grupo** tiene lanzaderas, mostrar estado vacío general con mensaje para unirse/crear grupo y botones **[Buscar grupo público]** (4.1.2) y **[Crear grupo]** (4.1.1).
 
 ### **4.4.1 Bottom sheet: Menú de Mapa (Nivel Grupos)**
 
-- **Acceso:** menú (⋮) de la AppBar en 4.4.
+- **Acceso:** menú (⋮) de la AppBar en **4.4 Pantalla Mapa (Nivel Grupos)**.
 - **Tipo:** bottom sheet compacto.
 - **Opciones:**
-  - **Tipo de mapa:** Estándar / Satélite / Terreno.
+  - **Tipo de mapa:** Estándar / Satélite (opción actual resaltada; persistir última elección).
   - **Tráfico:** toggle mostrar/ocultar tráfico en todos los mapas de la lista.
   - **Leyenda:** toggle mostrar/ocultar la leyenda bajo cada mapa.
   - **Centrar en mi ubicación:** acción que recentra el mapa visible en la posición del usuario (si está habilitada).
   - **Capas:** checkbox para rutas de lanzaderas.
+- **UI:** radio list para tipo de mapa, toggles (Switch) para tráfico/leyenda, checklist con checkboxes para lanzaderas; persiste selección al cerrar.
 
 ---
 
@@ -1344,6 +1335,7 @@ La pantalla puede mostrar dos situaciones:
   - **Ubicación de preparación/garaje y tiempo para llegar al Origen**: punto donde se toma/prepara el vehículo antes de salir y margen de traslado hasta el Origen (desde garaje si aplica). El sistema sugiere un tiempo automático; el creador/admin puede ajustarlo o marcar “usar mismo punto que Origen” (margen 0).
     ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema
     asumirá que el garaje es el mismo punto de Origen (margen = 0).
+  - **Color de ruta (mapa)**: se asigna automáticamente un color de una paleta fija y contrastante (compatible con el estilo de mapa base); se guarda en backend (`color` hex) y se usa en rutas/leyendas. En edición (Creador/Admin), se muestra el color actual y un botón **[Cambiar color]** que abre un selector (grid de círculos) limitado a esa paleta (sin rojo ni tonos poco visibles); al elegir se previsualiza la polilínea/leyenda con el nuevo color. El cambio se aplica al guardar; si se cancela, se mantiene el color previo.
 
 - **Botones**:
 
@@ -1731,11 +1723,12 @@ Poder elegir entre cada mapa de lanzadera con las detalle de viajeros y salida q
 - **Acceso:** menú (⋮) de la AppBar en 5.4.
 - **Tipo:** bottom sheet compacto.
 - **Opciones:**
-  - **Tipo de mapa:** Estándar / Satélite / Terreno.
-  - **Tráfico:** toggle mostrar/ocultar.
+  - **Tipo de mapa:** Estándar / Satélite (opción actual resaltada; persistir última elección).
+  - **Tráfico:** toggle mostrar/ocultar; en vista de conductor se activa por defecto, con opción de desactivarlo fácilmente.
   - **Leyenda:** toggle mostrar/ocultar el bloque de colores/nombres bajo el mapa.
   - **Mostrar lanzaderas:** checklist por lanzadera para mostrar/ocultar su trayecto en el mapa; al ocultar se quita su ruta y su entrada en la leyenda, pero la tarjeta/lista de la lanzadera sigue visible.
   - **Centrar en mi ubicación:** acción que recentra el mapa visible.
+- **UI:** radio list para tipo de mapa, toggles (Switch) para tráfico/leyenda, checklist con checkboxes para lanzaderas; persiste selección al cerrar.
 
 ---
 
@@ -1907,6 +1900,7 @@ Esta página contiene:
   - La edición reutiliza la pantalla **5.1.1 (New Shuttle)** en modo edición, con campos precargados y botones ✔️/✖️; al confirmar, vuelve a Home de Lanzadera.
   - **Origen/Destino con horarios existentes**: si la lanzadera tiene horarios activos, no se permite cambiar origen/destino. Modal: _“Para cambiar origen/destino debes eliminar los horarios existentes (6.3.3)”_. Botones: **[Ver horarios]** (abre 6.3) / **[Cancelar]**.
   - **Plazas por defecto con reservas**: solo se permite reducir plazas si el nuevo valor es ≥ al máximo de plazas reservadas en cualquier horario/salida. Si es menor, modal: _“No puedes reducir plazas por defecto a menos de las reservas actuales (X). Ajusta reservas o reduce después.”_. Subir plazas siempre permitido.
+  - **Color de ruta (edición):** el campo muestra el color actual y un botón **[Cambiar color]** que abre el selector de paleta (círculos, mismos colores contrastantes definidos en 5.1.1). La vista previa de ruta/leyenda refleja el color elegido; solo se aplica al guardar (cancelar mantiene el color previo).
 
 **Campos editables adicionales** (solo Creador/Admin):
 
@@ -2334,10 +2328,11 @@ El guardado de cambios se hará desde el boton de guardar abajo a la derecha en 
 - **Acceso:** menú (⋮) de la AppBar en 6.4.
 - **Tipo:** bottom sheet.
 - **Opciones:**
-  - **Tipo de mapa:** Estándar / Satélite / Terreno.
-  - **Tráfico:** toggle mostrar/ocultar.
+  - **Tipo de mapa:** Estándar / Satélite (opción actual resaltada; persistir última elección).
+  - **Tráfico:** toggle mostrar/ocultar; en vista de conductor se activa por defecto, con opción de desactivarlo fácilmente.
   - **Centrar en vehículo / origen / destino / mi ubicación**: acciones rápidas para recentrar.
   - **Leyenda:** toggle mostrar/ocultar.
+- **UI:** radio list para tipo de mapa, toggles (Switch) para tráfico/leyenda, acciones/checkboxes según aplique; persiste selección al cerrar.
 
 ---
 
