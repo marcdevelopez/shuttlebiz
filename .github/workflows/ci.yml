@@ -17,6 +17,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -27,6 +37,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
       - name: Cache pub
         uses: actions/cache@v4
@@ -56,4 +67,5 @@ jobs:
           path: coverage/lcov.info
 
       - name: Build (APK debug)
-        run: flutter build apk --debug
+        if: github.event_name != 'pull_request'
+        run: flutter build apk --debug --no-pub
