@@ -52,6 +52,13 @@ En la sección de IU se describen las pantallas más importantes para implementa
 
 ---
 
+## **Stack técnico y servicios externos**
+
+- **Mapas y geocodificación:** Preferido `google_maps_flutter` + Google Places/Geocoding (autocompletado, búsqueda directa, inversa y marcador arrastrable con eventos nativos). Alternativa si se evita Google: `mapbox_gl` + Mapbox Geocoding/Autocomplete. Mantener la misma UX, copys y validaciones descritas en las pantallas 5.1.1, 5.1.2a, 5.1.2b y vistas de mapa.
+- **Claves/API:** cargar por entorno (dev/prod) sin hardcode; restringir por packageId/sha1 en Android y bundleId en iOS; usar variables de entorno/secretos de CI.
+
+---
+
 ## **Guía Visual Básica**
 
 ### **Tipografía oficial de ShuttleBiz**
@@ -1386,13 +1393,15 @@ La pantalla puede mostrar dos situaciones:
     El sistema avisará si el nombre es excesivamente largo para evitar problemas de UI.
   - **Dirección o búsqueda en mapa**: Campo de texto con sugerencias de direcciones. Al introducir una dirección, se mostrará el marcador en el mapa.
     Alternativamente, el usuario podrá mover manualmente el marcador en el mapa para seleccionar la ubicación exacta.
-    Por defecto, tendrá detección automática de ubicación actual.
+    Por defecto, tendrá detección automática de ubicación actual (si el permiso falla/deniega: aviso “No pudimos usar tu ubicación, busca o mueve el pin” y se centra en la última ubicación seleccionada o en el centro del mapa base).
+    - Autocompletado: lista bajo el campo; tocar un resultado centra el mapa, coloca el marcador en esa posición y rellena la dirección formateada. Sin resultados: mensaje “No se encontraron direcciones”.
+    - Arrastre manual del marcador: se puede arrastrar o recolocar con tap prolongado en el mapa. Mientras se mueve, se muestran lat/long; al soltar, se actualizan coordenadas y se intenta geocodificación inversa para rellenar la dirección. Si falla la inversa, se mantiene lat/long, la dirección queda editable en blanco y se muestra helper “No se pudo obtener la dirección; se guardará con coordenadas”.
 
 - **Elementos interactivos**:
 
   - Campo de texto "Nombre del lugar" con icono de edición.
   - Campo de búsqueda con autocompletado (basado en API de mapas).
-  - Mapa interactivo con marcador rojo movible.
+  - Mapa interactivo con marcador rojo movible (drag & drop y tap prolongado para reubicar).
   - Botón **"Confirmar"**, que guarda el punto seleccionado y retorna a la pantalla anterior, actualizando el campo correspondiente ("Origen" o "Destino").
 
 - **Comportamiento**:
@@ -1404,6 +1413,7 @@ La pantalla puede mostrar dos situaciones:
 - **Notas adicionales**:
 
   - La pantalla debe mantener consistencia visual con **Pantalla 5.1.1 (NEW SHUTTLE)** y usar la misma paleta de colores y tipografía.
+  - Seguir el stack general de mapas/geocodificación (ver sección "Stack técnico y servicios externos"); mantener interfaz y mensajes descritos sin importar proveedor.
 
 ---
 

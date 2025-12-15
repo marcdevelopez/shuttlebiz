@@ -2,8 +2,8 @@
 
 ## 📍 Estado actual
 
-- Última actualización: 11/12/2025
-- Specs cerradas incl. guías visuales básicas (tipografía, paleta, layout por nivel, modales/chips); pendiente solo outline/kit de pantallas de referencia
+- Última actualización: 15/12/2025
+- Specs cerradas incl. guías visuales básicas (tipografía, paleta, layout por nivel, modales/chips); pendiente outline/kit de pantallas de referencia y consolidar decisiones de stack de mapas en roadmap
 - Arquitectura decidida: Flutter + Riverpod + GoRouter + Firebase (Auth/Firestore/FCM), Storage para medios
 - Scope MVP recortado: sin backups Drive/iCloud, sin multimedia ni búsqueda en chat, sin automatismos avanzados de conductor (5/40 min) en primera iteración
 
@@ -27,11 +27,11 @@
 
 ## 📅 Fases
 
-### Fase 0 — Cierre de especificaciones y guía visual (1 semana → extendida a 3 semanas; nueva ETA 2025-12-15)
+### Fase 0 — Cierre de especificaciones y guía visual (1 semana → extendida a 3.5 semanas; nueva ETA 2025-12-19)
 
 **Objetivo:** SPECS completas y base visual mínima para arrancar desarrollo.
 
-**Estado al 11/12/2025:** Specs y guías visuales básicas completadas (tipografía, paleta, layout, patrones); pendiente outline/kit de pantallas de referencia. Retraso de ~2 semanas respecto al plan inicial; fecha objetivo ajustada al 15/12/2025.
+**Estado al 15/12/2025:** Specs y guías visuales básicas completadas (tipografía, paleta, layout, patrones); pendiente outline/kit de pantallas de referencia y reflejar en roadmap el stack de mapas/geocodificación acordado. Retraso de ~2 semanas respecto al plan inicial; fecha objetivo ajustada al 19/12/2025.
 
 #### 🔴 Prioridad Alta (Crítico para MVP)
 
@@ -190,6 +190,6 @@ Objetivo: robustez y UX.
 ## 🎮 Próximos pasos inmediatos
 
 1. ✅ Fase 0 añadida al roadmap con estimación realista y tareas detalladas por prioridad
-2. ✅ Completar SPECS y guía visual básica (Fase 0) y reflejar avances en `dev_log.md`
+2. ✅ Completar SPECS y guía visual básica (Fase 0) y reflejar avances en `dev_log.md`; pendiente kit de pantallas de referencia y actualizar roadmap con stack de mapas
 3. Abrir issues por fase (F0/F1/F2…) en GitHub Projects con criterios de aceptación
 4. Tras cerrar Fase 0 (pendiente outline/kit de pantallas), arrancar Fase 1: bootstrap Flutter + Firebase + GoRouter/Riverpod y login por teléfono
