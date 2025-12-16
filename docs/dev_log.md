@@ -14,7 +14,7 @@ Sirve para:
 # 📍 Estado actual
 
 Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía lista)**
-Última actualización: 2025-12-11
+Última actualización: 2025-12-15
 
 ---
 
@@ -204,18 +204,22 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 ## 🗓️ Día 8 — 2025-12-10
 
 ### ✔ Trabajo realizado:
+
 - Se refinaron en `SPECS.md` los flujos de búsqueda/alta de grupos y membresía (visibilidad pública/privada, solicitud con mensaje, invitaciones), integrando el PR #66.
 - Se ajustaron las pantallas 4.1.x para detallar estados vacíos/errores y contexto de navegación al buscar/solicitar grupos.
 
 ### 🧠 Decisiones tomadas:
+
 - Grupos públicos requieren solicitud/aprobación; grupos privados solo por invitación.
 - Solicitudes incluyen mensaje opcional y se gestionan en Mis Solicitudes por creador/admin.
 - Se mantiene PageView + menú ⋮ como patrón de navegación y acciones en nivel Grupo.
 
 ### ⚠️ Problemas encontrados:
+
 - Dev log quedó pendiente de registrar este refinamiento el mismo día.
 
 ### 🎯 Próximos pasos:
+
 - Reflejar los ajustes de membresía en `ROADMAP.md`.
 - Revisar consistencia de flujos de invitaciones/solicitudes en pantallas 7/8.
 
@@ -247,36 +251,52 @@ Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía 
 - Preparar rama/commit para estos ajustes de documentación.
 
 ## 🗓️ Día 10 — 2025-12-12
+
 ### ✔ Trabajo realizado:
+
 - `SPECS.md` 5.1.1 (Creación/Edición de Lanzadera): selector de vehículo con búsqueda/CTA a Pantalla 10, plazas con validación en caliente y helper, selector de color como bottom sheet con preview, UI de garaje/tiempo aclarada, validaciones (origen ≠ destino, errores en línea), persistencia de borrador opcional, título dinámico crear/editar y CTAs de vehículo.
 - Menús de mapas 4.4.1/5.4.1/6.4.1 simplificados a standard/satélite con radios/switches/checklist; tráfico auto-on para vista de conductor.
 - Ajustes varios de vacíos/CTAs: chip “Sin horarios” + CTA añadir horario, menús según rol, ancla de cambio de grupo desde el título.
 
 ### 🧠 Decisiones tomadas:
+
 - Menús de mapa limitados a estándar/satélite; tráfico activado por defecto para conductor.
 - Selector de color en bottom sheet con vista previa; validaciones inline en creación/edición de lanzadera.
 
 ### ⚠️ Problemas encontrados:
+
 - No se reportaron.
 
 ### 🎯 Próximos pasos:
+
 - Propagar estas guías a `ROADMAP.md` si aplica; revisar implementación de menús de mapa.
 
 ## 🗓️ Día 11 — 2025-12-15
+
 ### ✔ Trabajo realizado:
+
 - Se añadió la sección general “Stack técnico y servicios externos” al inicio de `SPECS.md` con el stack de mapas/geocodificación.
-- Se refinó 5.1.2a: fallback si falla geolocalización, autocompletado con mensajes de sin resultados, arrastre/tap largo del marcador con geocodificación inversa y errores claros.
+- Se refinó 5.1.2a: fallback si falla geolocalización, autocompletado con debounce/carga/errores, arrastre/tap largo del marcador con geocodificación inversa y estados offline; botón Confirmar con feedback de guardado y validaciones.
+- Se alineó 5.1.2b con el mismo nivel de UX/errores: autolocalización/búsqueda/arrastre, botón “Usar mi ubicación”, estados offline, selector de tiempo segmentado (automático/manual) con checkbox de margen 0 y fallback manual si falla la API.
+- Se afinó el selector de color de ruta: opción activa con outline+check, preview en vivo y acciones Aplicar/Cancelar en el bottom sheet para evitar cambios accidentales.
 
 ### 🧠 Decisiones tomadas:
+
 - Stack preferido: `google_maps_flutter` + Google Places/Geocoding; alternativa `mapbox_gl` + Mapbox Geocoding; claves por entorno sin hardcode, restringidas por packageId/sha1 (Android) y bundleId (iOS).
+- Autolocalización por defecto con reintento explícito y fallback a última ubicación/centro; botón de reintento visible en SnackBar y acción dedicada “Usar mi ubicación”.
+- Tiempo de preparación: automático por defecto, recalcula al mover origen/garaje; sin red/API → fallback manual con último valor sugerido; checkbox “Usar mismo punto que Origen” deshabilita el control.
+- Selector de color: aplica solo al confirmar (Aplicar); cancelar/cerrar mantiene el color previo; outline+check para opción activa.
 - Confirmar siempre la fecha real con el usuario antes de tocar el dev log.
 
 ### ⚠️ Problemas encontrados:
+
 - No se detectaron nuevos bloqueos.
 
 ### 🎯 Próximos pasos:
+
 - Aplicar el stack definido en implementaciones de mapas y reflejarlo en `ROADMAP.md` si corresponde.
 - Mantener la política de aprobación previa para el dev log.
+- Preparar outline/kit de pantallas de referencia para cerrar Fase 0.
 
 ---
 

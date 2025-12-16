@@ -632,6 +632,7 @@ Marco común para todos los modales/genéricos:
   - espaciado horizontal de 8px; las filas hacen wrap en móvil.
 
 <a id="patrones-acciones-por-item"></a>
+
 ### Patrones de Acciones por ítem
 
 - **Estructura:** fila de dos botones visibles; primario a la derecha (FilledButton) y secundario a la izquierda (OutlinedButton); espaciado 8 px; padding vertical compacto.
@@ -863,7 +864,9 @@ La pantalla puede mostrar dos situaciones:
      ¿Quieres buscar un Grupo público?
      Búscalo arriba pulsando el ícono de búsqueda.
      ```
+
    - CTAs claros:
+
      - **[Crear grupo]** (FAB “+” abajo a la derecha, abre 4.1.1).
      - **[Buscar grupo público]** (icono 🔍 en AppBar abre 4.1.2).
 
@@ -1016,7 +1019,7 @@ La pantalla puede mostrar dos situaciones:
 
 ### **4.1.4 Bottom sheet: Ajustes personales rápidos (Acceso desde Home en los 3 niveles)**
 
- - **Acceso:** ítem de menú **“Ajustes personales rápidos”** en el menú (⋮) de la AppBar del tab Home en Nivel Grupos. El mismo ítem aparece en los tabs Home de Nivel Grupo y Nivel Lanzadera; el alcance de silenciar se detalla en los menús de cada nivel para evitar duplicar especificación.
+- **Acceso:** ítem de menú **“Ajustes personales rápidos”** en el menú (⋮) de la AppBar del tab Home en Nivel Grupos. El mismo ítem aparece en los tabs Home de Nivel Grupo y Nivel Lanzadera; el alcance de silenciar se detalla en los menús de cada nivel para evitar duplicar especificación.
 - **Tipo:** bottom sheet compacta; cambios aplican al usuario y muestran snackbar de confirmación.
 - **Opciones:**
   - **Silenciar notificaciones:** chips 1 h / hasta mañana / indefinido; botón **[Configurar notificaciones]** abre Pantalla 12.1 para ajustes completos. Alcance por nivel: en **Nivel Grupos** aplica a toda la app; en **Nivel Grupo** o **Nivel Lanzadera** se ofrece elegir alcance según lo indicado en cada menú.
@@ -1355,13 +1358,16 @@ La pantalla puede mostrar dos situaciones:
     - **Selector de garaje**: botón **[Seleccionar ubicación de garaje]** abre 5.1.2b (mapa); muestra resumen seleccionado o “Usar punto de origen”.
     - **Tiempo de preparación**: opción automática sugerida por el sistema (API de rutas) o manual (minutos, stepper/slider/input numérico); checkbox “Usar mismo punto que Origen” → margen 0.
     - Copys claros: “Tiempo que necesitas desde el garaje al origen. Lo restaremos a la hora de salida para validar puntualidad.”
-    ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema asumirá que el garaje es el mismo punto de Origen (margen = 0).
-  - **Color de ruta (mapa)**: se asigna automáticamente un color de una paleta fija y contrastante (compatible con el estilo de mapa base); se guarda en backend (`color` hex) y se usa en rutas/leyendas. En creación ya se muestra ese color por defecto y el botón **[Cambiar color]** abre un selector tipo bottom sheet con grid de `ChoiceChip`/icon buttons (sin rojo ni tonos poco visibles) y preview de polilínea/leyenda; no bloqueante. El cambio se aplica al guardar; si se cancela, se mantiene el color previo.
+      ℹ️ **Importante**: Si no configuras la ubicación de garaje, el sistema asumirá que el garaje es el mismo punto de Origen (margen = 0).
+  - **Color de ruta (mapa)**: se asigna automáticamente un color de una paleta fija y contrastante (compatible con el estilo de mapa base); se guarda en backend (`color` hex) y se usa en rutas/leyendas. En creación ya se muestra ese color por defecto y el botón **[Cambiar color]** abre un selector tipo bottom sheet con grid de `ChoiceChip`/icon buttons (sin rojo ni tonos poco visibles) y preview de polilínea/leyenda.
+    - Opción activa: contorno/outline visible y check (estilo `ChoiceChip` seleccionado); el preview se actualiza al seleccionar.
+    - Botones en el selector: **[Aplicar]** (confirma y cierra) y **[Cancelar/Cerrar]** (cierra sin cambios); también se puede cerrar por swipe/handle. Si se cancela, se mantiene el color previo.
 
 - **Botones**:
 
   - **Guardar**: Crea la lanzadera y pregunta en un modal si desea agregar el primer horario. Valida nombre/origen/destino/garaje (si aplica) y plazas antes de guardar; muestra errores en línea si falla. El color de ruta se autoasigna si no se edita.
   - **Cancelar**: Descarta los cambios y vuelve a **Pantalla 5.1**.
+
 - **Nota/CTA vehículos:** si no hay vehículo asociado, mostrar bajo el selector (o en su placeholder) un aviso “Asocia un vehículo para precargar plazas y capacidad” con CTA **[Ir a gestión de vehículos]** (abre 10); CTA como texto/enlace junto al aviso. Si no existe ningún vehículo, incluir **[Crear vehículo]** al lado.
 - **Validaciones y accesibilidad**:
   - Origen ≠ destino; validar que no tengan coordenadas iguales.
@@ -1391,29 +1397,44 @@ La pantalla puede mostrar dos situaciones:
 
   - **Nombre del lugar**: Texto corto que identifica el punto (por ejemplo: "Aeropuerto", "Centro Málaga", "Campus UMA").
     El sistema avisará si el nombre es excesivamente largo para evitar problemas de UI.
-  - **Dirección o búsqueda en mapa**: Campo de texto con sugerencias de direcciones. Al introducir una dirección, se mostrará el marcador en el mapa.
+  - **Dirección o búsqueda en mapa**: Campo de texto con sugerencias de direcciones. Al introducir una dirección, se mostrará el marcador en el mapa.  
     Alternativamente, el usuario podrá mover manualmente el marcador en el mapa para seleccionar la ubicación exacta.
-    Por defecto, tendrá detección automática de ubicación actual (si el permiso falla/deniega: aviso “No pudimos usar tu ubicación, busca o mueve el pin” y se centra en la última ubicación seleccionada o en el centro del mapa base).
+    - Localización automática: al abrir la pantalla intenta obtener la ubicación actual; si se consigue, centra el mapa y mueve el marcador a esa posición. Si el permiso falla/deniega: banner inferior (SnackBar) persistente con mensaje “No pudimos usar tu ubicación, busca o mueve el pin” y acción **[Reintentar]**. Se centra (y mueve el marcador) primero en la última ubicación guardada; si no existe, en el centro del mapa base. Tras denegación, el botón **[Reintentar]** vuelve a solicitar el permiso y a intentar la localización.
     - Autocompletado: lista bajo el campo; tocar un resultado centra el mapa, coloca el marcador en esa posición y rellena la dirección formateada. Sin resultados: mensaje “No se encontraron direcciones”.
-    - Arrastre manual del marcador: se puede arrastrar o recolocar con tap prolongado en el mapa. Mientras se mueve, se muestran lat/long; al soltar, se actualizan coordenadas y se intenta geocodificación inversa para rellenar la dirección. Si falla la inversa, se mantiene lat/long, la dirección queda editable en blanco y se muestra helper “No se pudo obtener la dirección; se guardará con coordenadas”.
+      - Se dispara desde 3+ caracteres con debounce de ~300 ms; cancela peticiones en curso al seguir escribiendo.
+      - Mientras busca, mostrar spinner en la lista; si hay error de red/API: mensaje “No se pudo buscar direcciones. Reintenta” y acción **[Reintentar]**.
+      - Al seleccionar un resultado se cierra/oculta la lista, se actualiza el campo de texto con la dirección formateada y se centra/mueve el marcador a esa posición.
+      - Cuando no hay resultados, no mover el marcador (lo mantiene en su posición actual).
+      - UX móvil: lista scrollable con teclado abierto; icono **[X]** para limpiar rápido el campo y reiniciar la búsqueda.
+    - Arrastre manual del marcador: se puede arrastrar o recolocar con tap prolongado (≈500 ms) en el mapa. Mientras se mueve, se muestran lat/long (overlay pequeño junto al pin) y no se recentra automáticamente el mapa para no perder el contexto. Pinch/zoom disponible durante el arrastre.
+      - Al soltar, se actualizan coordenadas y se lanza una sola geocodificación inversa (debounce ~300 ms) para rellenar la dirección; mostrar spinner en el campo de dirección mientras resuelve.
+      - Si la inversa falla, se mantiene lat/long, la dirección queda editable en blanco y se muestra helper “No se pudo obtener la dirección; se guardará con coordenadas” (sin bloquear el flujo).
+      - Al recolocar con tap prolongado, el marcador salta a la posición tocada y se aplica el mismo flujo de geocodificación inversa.
 
 - **Elementos interactivos**:
 
-  - Campo de texto "Nombre del lugar" con icono de edición.
+  - Campo de texto "Nombre del lugar" con icono de edición: label visible, placeholder sugerido “Ej: Aeropuerto”, límite razonable de caracteres (p.ej. 50) con validación y mensaje de error si se supera o está vacío. Estado de error/obligatorio resaltado (helper en rojo). Icono para limpiar el campo si hay texto. Capitalización: no forzar mayúsculas automáticas.
   - Campo de búsqueda con autocompletado (basado en API de mapas).
   - Mapa interactivo con marcador rojo movible (drag & drop y tap prolongado para reubicar).
   - Botón **"Confirmar"**, que guarda el punto seleccionado y retorna a la pantalla anterior, actualizando el campo correspondiente ("Origen" o "Destino").
+    - Estilo CTA primario; deshabilitado hasta que nombre y coordenadas estén completos.
+    - Al pulsar, mostrar estado de carga y bloquear segundo tap; en fallo de guardado, SnackBar “No se pudo guardar. Reintenta”.
 
 - **Comportamiento**:
 
-  - Al confirmar, se guardan las coordenadas (latitud y longitud) junto al nombre elegido.
+  - Al confirmar, se guardan las coordenadas (latitud y longitud), el nombre y la dirección formateada (si existe) y se retorna a la pantalla anterior actualizando el campo correspondiente ("Origen" o "Destino").
   - Si el usuario accede desde "Origen", el título mostrará **"Selecciona el origen"**; si accede desde "Destino", mostrará **"Selecciona el destino"**.
-  - El botón de confirmación se habilita solo cuando ambos campos (nombre y coordenadas) están completos.
+  - El botón de confirmación se habilita solo cuando ambos campos (nombre y coordenadas) están completos y no hay geocodificación inversa pendiente.
+  - Tras guardar con éxito: SnackBar/Toast breve “Guardado”. Si falla el guardado: mostrar error (“No se pudo guardar. Reintenta”) y permanecer en pantalla sin perder los datos ingresados.
 
 - **Notas adicionales**:
 
   - La pantalla debe mantener consistencia visual con **Pantalla 5.1.1 (NEW SHUTTLE)** y usar la misma paleta de colores y tipografía.
   - Seguir el stack general de mapas/geocodificación (ver sección "Stack técnico y servicios externos"); mantener interfaz y mensajes descritos sin importar proveedor.
+  - Mostrar cerca del pin (o bajo el campo de búsqueda) la dirección formateada si existe; si está pendiente/inversa falla, mostrar “Dirección pendiente…” o “Sin dirección, se usará coordenada”.
+  - Estados offline/rate limiting coherentes con el stack: banner “Sin conexión. Reintenta” y limitar reintentos de geocodificación/forward con backoff ligero.
+  - Botón “Usar mi ubicación” visible si el permiso no está concedido/denegado o tras denegación, para reintentar sin depender solo del SnackBar.
+  - Accesibilidad: pin y controles con tamaño mínimo táctil; labels/aria para que lectores de pantalla anuncien coordenadas/dirección y errores.
 
 ---
 
@@ -1428,12 +1449,19 @@ La pantalla puede mostrar dos situaciones:
 
 - **Campos:**
 
-  - **Nombre del lugar**: ej. "Garaje Centro", "Casa del conductor"
-  - **Mapa interactivo** con marcador para ubicación exacta
+  - **Nombre del lugar**: ej. "Garaje Centro", "Casa del conductor". Label visible, placeholder sugerido “Ej: Garaje Centro”, límite razonable (p.ej. 50) con validación y helper en rojo si excede o está vacío. Icono para limpiar; no forzar mayúsculas automáticas.
+  - **Mapa interactivo** con marcador para ubicación exacta:
+    - Localización automática al abrir: intenta obtener la ubicación actual; si éxito, centra y mueve el marcador. Si permiso falla/deniega: SnackBar “No pudimos usar tu ubicación, busca o mueve el pin” con **[Reintentar]**.
+    - Autocompletado opcional bajo el campo (si se habilita búsqueda de direcciones): desde 3+ chars con debounce (~300 ms); selecciona → centra, mueve el marcador y rellena dirección. Sin resultados: “No se encontraron direcciones”.
+    - Arrastre/tap prolongado (≈500 ms) para recolocar; muestra lat/long en overlay pequeño. Al soltar, una geocodificación inversa (debounce ~300 ms) rellena dirección; spinner en el campo mientras resuelve. Si falla: mantener lat/long, dirección editable en blanco y helper “No se pudo obtener la dirección; se guardará con coordenadas”.
+    - Botón “Usar mi ubicación” visible si el permiso no está concedido/denegado o tras denegación, para reintentar sin depender solo del SnackBar.
+    - Estados offline/rate limiting: banner “Sin conexión. Reintenta” y limitar reintentos de geocodificación/forward con backoff ligero.
   - **Tiempo de preparación**:
-    - Opción 1: **Automático** (calculado por sistema vía API de rutas)
-    - Opción 2: **Manual** (creador/admin ingresa minutos)
-    - Opción 3: **Checkbox "Usar mismo punto que Origen"** → margen = 0
+    - UI: selector tipo radio/segmented control con dos opciones: **Automático** (badge con el valor calculado y spinner mientras carga) y **Manual** (al seleccionarla se habilita el input numérico/stepper). Debajo, checkbox independiente **"Usar mismo punto que Origen"** (al activarla deshabilita radio e input y fija margen 0).
+    - Opción 1: **Automático** (por defecto): calculado vía API de rutas; se recalcula al mover garaje/origen.
+    - Opción 2: **Manual**: input numérico (stepper/slider/TextField numérico) para minutos.
+    - Opción 3: **Checkbox "Usar mismo punto que Origen"** → margen = 0; deshabilita automático y manual.
+    - Validación: rango razonable (p.ej. 0–180 min); errores en línea si fuera de rango o vacío en modo manual. Si no hay conexión o falla la API en modo automático, fallback a manual sugerido (último valor) y mostrar aviso.
 
 - **Texto**:
 
@@ -1445,6 +1473,16 @@ conductor esté en el garaje con suficiente antelación. Si seleccionas
 ```
 
 - **Botón Confirmar**: guarda ubicación y tiempo, vuelve a 5.1.1
+
+  - Estilo CTA primario; deshabilitado hasta que nombre, coordenadas y tiempo (si manual) sean válidos y sin geocodificación inversa pendiente.
+  - Al pulsar: estado de carga y bloqueo de segundo tap. Éxito: SnackBar/Toast “Guardado”. Error: “No se pudo guardar. Reintenta” y se mantienen los datos en pantalla.
+
+- **Comportamiento**:
+
+  - Devuelve nombre, dirección formateada (si existe) y lat/long del garaje, más el tiempo seleccionado (automático/manual/margen 0) para rellenar el selector en 5.1.1.
+  - Si se marca “Usar mismo punto que Origen”, se omite geocodificación (margen = 0) y se deshabilita autolocalización del garaje.
+  - Título dinámico según origen de la acción: “Selecciona garaje/preparación”.
+  - Accesibilidad: tamaño mínimo táctil en pin/controles; labels/aria para campos, coordenadas/dirección y errores anunciables por lector de pantalla.
 
 ---
 
@@ -1554,7 +1592,8 @@ La pantalla muestra una **lista vertical de lanzaderas del grupo**, cada una con
 ```
 No hay salidas programadas en este grupo.
 ```
-  - Para **Creador/Admin**: CTAs **[Crear horario]** (abre 6.3.3 en nivel Lanzadera con preselección de lanzadera si la hay) y, si no hay lanzaderas, **[Crear lanzadera]** (abre 5.1.1).
+
+- Para **Creador/Admin**: CTAs **[Crear horario]** (abre 6.3.3 en nivel Lanzadera con preselección de lanzadera si la hay) y, si no hay lanzaderas, **[Crear lanzadera]** (abre 5.1.1).
 
 Seguido de botones contextuales (solo visibles para Creadores/Admins):
 
