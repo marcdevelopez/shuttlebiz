@@ -111,6 +111,7 @@
 
 - OCR para horarios — spike de viabilidad: definir input (foto impresa vs. captura), precisión mínima y fallback manual.
 - Crear `CHANGELOG.md` — tarea de release: activar cuando arranque Fase 5 (Polish & Deploy).
+- Documentar **X. PRINCIPIOS DE USO DE FIREBASE Y LÍMITES OPERATIVOS** en SPECS cuando el backend esté definido.
 
 #### 📦 Entregables
 

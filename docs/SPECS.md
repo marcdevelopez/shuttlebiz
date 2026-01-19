@@ -137,19 +137,16 @@ _(Actualizada según la identidad oficial de marca de ShuttleBiz)_
 ### **Colores de marca (Brand Colors)**
 
 - **Primario (acciones principales / botones / indicadores / links):** Azul Shuttle `#3664a9`
-
   - **Presionado:** `#2B5085`
   - **Fondo suave:** `#E8EEF7`
 
 - **Primario Oscuro (AppBar / navegación / contenedores destacados):** Azul Marcador `#203038`
 
 - **Acento Suave (chips, tags, fondos suaves, resaltados secundarios):** Verde Grisáceo `#8BAAA4`
-
   - **Presionado:** `#6D8E89`
   - **Fondo suave:** `#EFF4F3`
 
 - **Acción Crítica / Confirmación fuerte:** Rojo Biz `#b80d06`
-
   - **Presionado:** `#8E0804`
   - **Fondo suave:** `#FCEAEA`
 
@@ -165,56 +162,45 @@ _(Actualizada según la identidad oficial de marca de ShuttleBiz)_
 ### **Colores de estado**
 
 - **Éxito:** `#4AAE8C`
-
   - Fondo suave: `#E8F4EF`
 
 - **Advertencia:** `#F5A524`
-
   - Fondo suave: `#FFF4E0`
 
 - **Error:** Rojo Biz `#b80d06`
-
   - Fondo suave: `#FCEAEA`
 
 - **Info:** Azul Shuttle `#3664a9`
-
   - Fondo suave: `#E8EEF7`
 
 ### **Uso por componente**
 
 - **Botón primario / FAB / acciones principales:**
-
   - Fondo: `#3664a9`
   - Texto: `#FFFFFF`
 
 - **Botón de acción crítica:**
-
   - Fondo: Rojo Biz `#b80d06`
   - Texto: `#FFFFFF`
 
 - **Botón secundario / chips informativos:**
-
   - Fondo: acento `#8BAAA4` o neutro `#FFFFFF`
   - Bordes: `#E1E5E8`
   - Texto: `#203038`
 
 - **AppBar / encabezados / navegación:**
-
   - Fondo: Azul Marcador `#203038`
   - Texto e iconos: `#FFFFFF`
 
 - **Badges numéricos:**
-
   - Fondo: primario `#3664a9` o error `#b80d06`
   - Texto: `#FFFFFF`
 
 - **Tabs:**
-
   - Indicador: Azul Shuttle `#3664a9`
   - Fondo tab bar: `#FFFFFF` con sombra suave
 
 - **Alertas / banners:**
-
   - Info: Azul Shuttle
   - Éxito: `#4AAE8C`
   - Error: Rojo Biz
@@ -231,7 +217,6 @@ _(Actualizada según la identidad oficial de marca de ShuttleBiz)_
 ### **Notas de implementación (Flutter)**
 
 - Mapear:
-
   - `colorScheme.primary` → Azul Shuttle (`#3664a9`)
   - `colorScheme.secondary` → Acento suave (`#8BAAA4`)
   - `colorScheme.surface` → Superficies (`#FFFFFF`)
@@ -424,7 +409,6 @@ Opciones:
   Este modo se usa siempre que el conductor no tenga una asignación de conducción de días o rango de tiempo.
 
 - Si el conductor no responde al modal de continuidad:
-
   - A los **5 minutos**, los administradores reciben una notificación push indicando que se necesita conductor. Ellos pueden asignar la conducción a otro usuario.
   - A los **40 minutos antes de la siguiente salida** (configurable; si hay margen de traslado se toma como referencia la hora de salida en Origen), si aún no hay conductor, se envía un aviso de urgencia al chat del grupo (se asegura así que quede cubierto el conductor o al menos quede bien avisado).
   - Si otro usuario solicita ser conductor:
@@ -432,7 +416,6 @@ Opciones:
   - Si aún no respondió el conductor a "continuar" con la siguiente salida, se vuelve a enviar solicitud al conductor para que delegue si desea la conducción en el nuevo usuario. Si el conductor no se encuentra en el lugar de salida, y el solicitante de conducción sí se encuentra en el lugar de salida, pasados 5 minutos desde la solicitud de delegación sin respuesta, pasa automáticamente el rol de conductor al nuevo solicitante, previa aceptación de activación de ubicación del solicitante. Se notifica por push/in-app a conductor saliente, solicitante y creador/admin, y se publica aviso en el chat de la lanzadera indicando el cambio de conductor (sin compartir ubicación).
 
 - Si el conductor eligió **“Sí, continuar”** pero no tiene vehículo asignado (o vehiculo predeterminado para esa lanzadera):
-
   - Se abrirá el selector de vehículo (según 6.1.2).
 
 Si la siguiente salida ya tiene conductor asignado, en vez de preguntar si desea continuar, se mostrará:
@@ -529,7 +512,6 @@ El cálculo es inmediato y visible en el perfil del usuario al instante.
 ### ** Activación del Tracking** _(para implementación con mapas)_
 
 - **Cuándo se activa la localización**:
-
   - **Caso 1**: conductor: Tiempo fijo antes de la salida en Origen (por defecto 40 minutos, configurable; si hay margen de traslado, la presencia se valida en garaje a `hora de salida – margen`).
   - **Caso 2**: viajero con plaza: Activación automática en segundo plano desde T-20 (configurable) antes de la salida hasta llegada detectada o timeout post-llegada; si no hay permiso, se solicita en ese momento. Se usa para check-in en origen/destino y para disparar avisos de ausencia.
 
@@ -579,6 +561,32 @@ Sistema completo de notificaciones push e in-app para mantener informados a los 
   - Si el usuario es el conductor aludido: el icono 🔔 del AppBar muestra un badge adicional 📍 (tooltip “Activa ubicación”), y al tocarlo abre el modal prioritario 7.2 con CTA directa **[Activar ubicación]**.
 
 ---
+
+## **6.3 CRITERIOS TÉCNICOS DE MENSAJERÍA Y OPTIMIZACIÓN DE COSTES**
+
+Esta sección define criterios técnicos obligatorios para la implementación de mensajería (chat de grupo, chat de lanzadera y chats privados) con el objetivo de evitar costes innecesarios en Firebase/Firestore. No introduce nuevas funcionalidades ni modifica comportamientos descritos en secciones anteriores.
+
+- **Alcance de listeners**
+  - No debe existir ningún listener global o no acotado a un chat concreto.
+  - Solo debe mantenerse activo el listener del chat que esté visible en pantalla.
+  - Los chats inactivos no deben mantener listeners activos.
+
+- **Carga inicial y paginación**
+  - La carga inicial debe estar limitada a un máximo fijo de mensajes recientes (tope explícito).
+  - Los mensajes antiguos deben cargarse exclusivamente mediante paginación explícita bajo demanda del usuario.
+
+- **Escrituras y actualizaciones**
+  - No deben realizarse escrituras derivadas de estados visuales (por ejemplo: typing, lectura, scroll o presencia visual).
+  - Las actualizaciones solo deben ocurrir ante eventos funcionales reales: mensaje enviado, editado o eliminado.
+
+- **Uso de notificaciones**
+  - Firebase Cloud Messaging (FCM) debe ser el mecanismo principal para avisar de nuevos mensajes.
+  - No debe implementarse polling ni refrescos periódicos para detectar mensajes.
+
+- **Principios de control de coste**
+  - Firestore debe usarse como fuente de sincronización, no como stream infinito.
+  - Los chats inactivos no deben generar tráfico remoto ni operaciones en Firestore.
+  - El modo local (cuando exista) no debe generar tráfico remoto ni operaciones en Firestore.
 
 ## **7. UX/UI Consideraciones**
 
@@ -635,6 +643,7 @@ Marco común para todos los modales/genéricos:
 ### **Estructura y acciones**
 
 [ ← (si no es raíz) ] [ Breadcrumb por nivel (Grupos > Grupo > Lanzadera), segmentos coloreados y tramo actual resaltado ] [ 🔔 (solo si hay no leídas) ] [ ✋ Mis Solicitudes ] [ ⋮ Menú contextual ]
+
 - Menú ⋮ para acciones del contexto actual; no hay menú hamburguesa.
 - Tabs principales siempre visibles (BottomNavigationBar): Home, Chat, Horarios, Mapa. Existen en los tres niveles y mantienen la pestaña activa al subir/bajar.
 - **🔔 Notificaciones**: solo con no leídas, siempre a la izquierda de ✋; abre Pantalla 7.
@@ -677,7 +686,6 @@ Marco común para todos los modales/genéricos:
 - Para retroceder, debe existir una **flecha de atrás** en cada pestaña principal (Home, Chat, Horarios, Mapa) del nivel activo.
 - En el nivel raíz (Grupos), la AppBar **no muestra flecha atrás**; el botón atrás del sistema muestra la confirmación de salida.
 - La navegación superior (flecha atrás arriba a la izquierda) permite subir niveles:
-
   - De **Lanzadera → Grupo**
   - De **Grupo → Grupos**
 
@@ -821,7 +829,6 @@ No añadí contenido nuevo, solo reorganicé y limpié.
 La pantalla puede mostrar dos situaciones:
 
 1. **Sin grupos propios ni pertenencia a ninguno**
-
    - Mensaje de invitación:
 
      ```
@@ -835,10 +842,8 @@ La pantalla puede mostrar dos situaciones:
      ```
 
 2. **Con uno o varios grupos creados o con membresía**
-
    - Lista normal con todos los grupos.
    - Orden:
-
      1. En primer lugar, los grupos que el usuario ha creado (si ha creado alguno).
      2. Luego, los demás grupos a los que se pertenezca, priorizando los que estén mas cerca el origen o destino de alguna de sus lanzaderas.
 
@@ -872,26 +877,21 @@ La pantalla puede mostrar dos situaciones:
 - Se abre desde el icono de búsqueda de la pantalla 4.1 **GRUPOS HOME**.
 - AppBar sin icono ✋ (pantalla secundaria de búsqueda).
 - Contendrá:
-
   - **Campo de búsqueda por nombre del grupo**.
   - **Botón “Pegar enlace de invitación”**
-
     - Útil para procesar enlaces de invitación generados desde:
       _Ajustes del grupo → Enviar invitación → Compartir enlace_.
     - Al pulsarlo, la app leerá el contenido del portapapeles:
-
       - **Si contiene un enlace válido de invitación ShuttleBiz**, la app abrirá directamente la pantalla **4.1.3 Detalle de grupo público**, mostrando la información del grupo e incluyendo el botón **“Solicitar unirse”**.
       - **Si el enlace no es válido**, se mostrará un modal indicando:
         **“El enlace copiado no corresponde a una invitación válida.”**
 
   - **Lista de grupos públicos**, ordenados por:
-
     1. Proximidad (si tienen lanzaderas activas),
     2. Luego los que no tienen lanzaderas,
     3. Y finalmente por fecha de creación o número de usuarios (criterio configurable).
 
   - **Datos mostrados por grupo**:
-
     - nombre,
     - número de miembros,
     - lanzaderas activas.
@@ -958,7 +958,6 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 - **Icono de búsqueda** → permite buscar entre los chats generales de los grupos del usuario.
 - **Icono Mis Solicitudes (✋)** → acceso rápido a la **Pantalla 8**; se mantiene en las AppBar de Home/Chat/Horarios/Mapa de este nivel.
 - **Menú (⋮)**:
-
   - Ajustes generales del chat
   - Ver chats de grupo silenciado
 
@@ -1080,7 +1079,7 @@ El buscador filtra **grupos y lanzaderas** por:
 - día (“viernes”)
   - hora (“7:30”)
   - sentido (“ida”, “vuelta”)
-  Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
+    Solo se muestran grupos que tengan **al menos una coincidencia relevante**.
 
 ### **4.3.1 Modal de filtros/orden (Nivel Grupos · Horarios)**
 
@@ -1115,7 +1114,6 @@ Cada ítem de grupo muestra:
 
 - **Nombre del grupo** (encabezado)
   - **Mapa del grupo** con:
-
     - Todas las rutas de lanzadera del grupo **superpuestas** en el mismo mapa
     - Cada ruta con un color distinto
     - Marcadores de origen (azul) y destino (rojo) de cada lanzadera
@@ -1135,7 +1133,6 @@ Cada ítem de grupo muestra:
 ### **Estados especiales**
 
 - Si un grupo **no tiene lanzaderas**:
-
   - Muestra solo el nombre del grupo
   - Mensaje: _"Sin lanzaderas configuradas"_
   - No muestra mapa
@@ -1177,7 +1174,6 @@ Cada ítem de grupo muestra:
 La pantalla puede mostrar dos situaciones:
 
 1. **Sin lanzaderas creadas en el grupo**
-
    - Mensaje de invitación:
 
      ```
@@ -1191,10 +1187,8 @@ La pantalla puede mostrar dos situaciones:
      ```
 
 2. **Con una o varias lanzaderas creadas**
-
    - Lista normal con todas las lanzaderas.
    - Orden:
-
      1. En primer lugar, las lanzaderas con próxima salida más cercana.
      2. Luego, las lanzaderas ordenadas por proximidad del origen al usuario.
      3. Finalmente, lanzaderas sin horarios configurados.
@@ -1241,7 +1235,6 @@ La pantalla puede mostrar dos situaciones:
 - AppBar sin icono ✋ (pantalla secundaria de creación/edición).
 
 - **Campos obligatorios**:
-
   - **Nombre de la lanzadera** (debe ser corto para UI; se avisará si es excesivamente largo)
   - **Origen y destino** (nombres cortos, se avisará de evitar nombres largos). Las coordenadas se elegirán pulsando en los botones **"Seleccione el origen"** y **"Seleccione el destino"**, para no sobrecargar esta pantalla. Al pulsar uno de estos botones, se abre **Pantalla 5.1.2 Elección Origen/Destino**.
   - **Plazas por defecto**: Será la capacidad habitual del vehículo, modificable por el conductor el día del viaje.
@@ -1251,7 +1244,6 @@ La pantalla puede mostrar dos situaciones:
     asumirá que el garaje es el mismo punto de Origen (margen = 0).
 
 - **Botones**:
-
   - **Guardar**: Crea la lanzadera y pregunta en un modal si desea agregar el primer horario.
   - **Cancelar**: Descarta los cambios y vuelve a **Pantalla 5.1**.
 
@@ -1273,7 +1265,6 @@ La pantalla puede mostrar dos situaciones:
 - AppBar sin icono ✋ (pantalla secundaria auxiliar).
 
 - **Campos obligatorios**:
-
   - **Nombre del lugar**: Texto corto que identifica el punto (por ejemplo: "Aeropuerto", "Centro Málaga", "Campus UMA").
     El sistema avisará si el nombre es excesivamente largo para evitar problemas de UI.
   - **Dirección o búsqueda en mapa**: Campo de texto con sugerencias de direcciones. Al introducir una dirección, se mostrará el marcador en el mapa.
@@ -1281,20 +1272,17 @@ La pantalla puede mostrar dos situaciones:
     Por defecto, tendrá detección automática de ubicación actual.
 
 - **Elementos interactivos**:
-
   - Campo de texto "Nombre del lugar" con icono de edición.
   - Campo de búsqueda con autocompletado (basado en API de mapas).
   - Mapa interactivo con marcador rojo movible.
   - Botón **"Confirmar"**, que guarda el punto seleccionado y retorna a la pantalla anterior, actualizando el campo correspondiente ("Origen" o "Destino").
 
 - **Comportamiento**:
-
   - Al confirmar, se guardan las coordenadas (latitud y longitud) junto al nombre elegido.
   - Si el usuario accede desde "Origen", el título mostrará **"Selecciona el origen"**; si accede desde "Destino", mostrará **"Selecciona el destino"**.
   - El botón de confirmación se habilita solo cuando ambos campos (nombre y coordenadas) están completos.
 
 - **Notas adicionales**:
-
   - La pantalla debe mantener consistencia visual con **Pantalla 5.1.1 (NEW SHUTTLE)** y usar la misma paleta de colores y tipografía.
 
 ---
@@ -1309,7 +1297,6 @@ La pantalla puede mostrar dos situaciones:
 - AppBar sin icono ✋ (pantalla secundaria auxiliar).
 
 - **Campos:**
-
   - **Nombre del lugar**: ej. "Garaje Centro", "Casa del conductor"
   - **Mapa interactivo** con marcador para ubicación exacta
   - **Tiempo de preparación**:
@@ -1347,7 +1334,6 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 - **Icono de búsqueda** → permite buscar mensajes dentro del chat general del grupo.
 - **Icono Mis Solicitudes (✋)** → acceso rápido a la **Pantalla 8**; se mantiene en las AppBar de Home/Chat/Horarios/Mapa del nivel Grupo.
 - **Menú (⋮)**:
-
   - Ver miembros del grupo
   - Silenciar/activar notificaciones del chat
   - Configuración del chat
@@ -1358,7 +1344,6 @@ Pantalla accesible desde la pestaña inferior **Chat** cuando el usuario se encu
 La pantalla se divide en dos secciones:
 
 1. **Chat general del grupo** (parte superior o sección principal):
-
    - Interfaz de chat completa (ver **Pantalla 11** para detalles de diseño de chat)
    - Título visible: "Chat general · [Nombre del grupo]"
    - Todos los miembros pueden participar
@@ -1445,7 +1430,6 @@ Seguido de botones contextuales (solo visibles para Creadores/Admins):
 **Caso 2: Existen lanzaderas pero ninguna tiene horarios**
 
 - Botón: **"Configurar primer horario"**
-
   - Muestra selector para elegir la lanzadera
   - Navega a **Pantalla 6.3.3 (Creación/Edición de Horario)**
   - Tras guardar, regresa automáticamente a esta pantalla (5.3).
@@ -1583,7 +1567,6 @@ Lista vertical donde **cada ítem es una lanzadera**.
 Cada ítem de lanzadera muestra:
 
 - **Encabezado**:
-
   - Nombre de la lanzadera
   - `Origen → Destino`
 
@@ -1592,9 +1575,7 @@ Cada ítem de lanzadera muestra:
   - Marcador azul en origen
   - Marcador rojo en destino
 - **Indicador en el punto de origen** (solo si hay próxima salida):
-
   - **Marcador con número de viajeros**:
-
     - 🟢 `3/4` (fondo verde si hay plazas libres)
     - 🔴 `4/4` (fondo rojo si está completa)
 
@@ -1608,7 +1589,6 @@ Cada ítem de lanzadera muestra:
 ### **Estados especiales**
 
 - Si el grupo **no tiene lanzaderas**:
-
   - Mensaje centrado:
     ```
     Este grupo aún no tiene lanzaderas.
@@ -1845,7 +1825,6 @@ De arriba abajo:
 
 - Lista de distintos horarios; cada horario es un grupo de días semanales o una fecha única de lanzadera, y se ordenan de **más próximo a más lejano en el tiempo**.
   Cada ítem de horario mostrará:
-
   - La **primera línea**: fecha y horas de comienzo y final del horario (a modo de título resumen).
     Ejemplo: `L, M, X, J, V de 7:00 a 12:30`
 
@@ -1972,7 +1951,6 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 > - **Icono del conductor** con foto de perfil, mostrando **“Conductor: [nombre]”** o, si aún no está asignado, **“Sin conductor asignado”**.
 >   Al pulsar el nombre o icono, se abre su perfil, desde donde puede iniciarse un chat.
 >   Para **Creador/Admin**, si no hay conductor, aparece un enlace de texto **“Asignar conductor”** junto al estado (alineado con la fila de conductor, estilo text button), que abre la subpantalla **6.3.2.b**.
->
 > - **Icono del vehículo** con foto (si está asignado), seguido de **[marca-modelo] [matrícula]**. y plazas del vehiculo [numero] asientos sin contar conductor.
 >   Si esta lanzadera tiene asociado un vehículo predeterminado (en la pantalla 10 se diescribe como se asocia un vehículo a una lanzadera), aparecerá de forma automática, pudiendose modificar si se necesita otro vehículo pulsando sobre el vechículo.
 >   Si no está asignado vehículo para esa salida aparecerá "Sin vehículo" y si el susario es conductor y pulsa ese texto botón se abre la pantalla de vehiculos 10. GESTIÓN DE VEHÍCULOS.
@@ -2031,7 +2009,6 @@ Si no se es Creador/Admin del grupo: la vista de esta pantalla será igual pero 
 > - Se muestra **snackbar de éxito**: “Plaza reservada correctamente”.
 > - Se envía **notificación** a los miembros relevantes según la configuración (ver sección Notificaciones).
 > - En el chat de la lanzadera se publica un **aviso automático** con:
->
 >   - Nueva plaza reservada:
 >   - Nombre del solicitante.
 >   - Hora del viaje.
@@ -2384,7 +2361,6 @@ Pantalla independiente donde el usuario ve **todas sus solicitudes activas e his
 
 - Título centrado: **“Mis Solicitudes”**
 - Iconos:
-
   - 🔍 Buscar
   - 🧭 Filtros
   - ⋮ Menú contextual (exportar historial CSV/PDF en futuro)
@@ -2446,7 +2422,6 @@ Cada solicitud se muestra como una **tarjeta** con:
 ### **PENDIENTE**
 
 - Usuario ve:
-
   - Rol solicitado
   - [CTA](GLOSSARY.md#cta-call-to-action): **Cancelar solicitud**
   - Si es solicitud de conducción, aparece **“Pendiente de aprobación del admin”**
@@ -2454,31 +2429,26 @@ Cada solicitud se muestra como una **tarjeta** con:
 ### **CONFIRMADA**
 
 - Viajero:
-
   - Mostrar plazas confirmadas
   - Botón: **Cancelar** (si estás antes del límite configurado)
 
 - Conductor:
-
   - Acción: **Renunciar** (si está en ventana permitida)
   - Si está fuera de hora → modal con warning
 
 ### **EN CURSO**
 
 - Viajero:
-
   - Cancelación deshabilitada
   - Acción alternativa: **Solicitar cancelación** (notifica al conductor/admin)
 
 - Conductor:
-
   - Acciones: **Marcar salida / llegada / completar viaje**
 
 ### **COMPLETADA**
 
 - Solo lectura.
 - Datos extra:
-
   - Hora real de salida / llegada
   - Conductor final
   - Vehículo utilizado
@@ -2486,7 +2456,6 @@ Cada solicitud se muestra como una **tarjeta** con:
 ### **CANCELADA**
 
 - Motivo en rojo:
-
   - “Cancelada por usuario”
   - “Cancelada por falta de conductor”
   - “Cancelada por administrador”
@@ -2498,7 +2467,6 @@ Cada solicitud se muestra como una **tarjeta** con:
 - Grupo o Lanzadera
 - Rango de fechas
 - Búsqueda:
-
   - Nombre de lanzadera
   - Grupo
   - Fecha
@@ -2903,7 +2871,6 @@ En esta pantalla se puede modificar de un vehículo:
 > **Datos del vehículo**
 
 - **Obligatorios:**
-
   - Marca / modelo
   - Número de matrícula
   - Número de plazas (sin contar al conductor)
@@ -2945,7 +2912,6 @@ En esta pantalla se puede modificar de un vehículo:
 **Interfaz en Pantalla 10.2 (Vista de Vehículo):**
 
 - **Preview compacto de notas** en un container no scrollable:
-
   - Muestra **máximo 3 notas más recientes** (chips compactos con icono, fecha y primeras palabras).
   - Si hay **averías activas**: badge rojo **⚠️** visible en la cabecera del vehículo y junto al título "Notas".
   - Botón **"Ver todas las notas"** → abre **10.2.a** (historial completo).
@@ -3076,7 +3042,6 @@ Tendrá varios canales de chat:
 - Invitaciones a grupos: además de aparecer en notificaciones, generan una entrada en la lista de chats privados con el invitante. La notificación tendrá un botón para enviar mensaje privado al invitante. El invitado puede responder primero para hacer preguntas y/o aceptar, esto se hara haciendo uso directo del chat privado, es decir, en el mismo chat que recibe la invitación puede responder y entonces sí recibirá el invitante el mensaje; Si el invitado acepta la invitación (desde notificaciones o botón inline en chat privado), el chat se desbloquea completamente y ambos pueden conversar libremente. hasta que el invitado envíe un mensaje o acepte, el invitante no puede escribir. Si el invitado rechaza la invitación en notificaciones, el chat se cierra para ambos y no se pueden enviar mensajes.
 
 - Al pulsar sobre la imagen de usuario (superior izquierda a la derecha de la flecha de subir nivel) se abre el perfil del usuario, que es otra pantalla en la que se muestra:
-
   - Teléfono (lo es publico)
   - Usuario desde (fecha)
   - Veces que uso lanzaderas
@@ -3140,7 +3105,6 @@ Tendrá varios canales de chat:
 
 - Colores y tipografía igual que el resto de pantallas (Roboto / Inter).
 - Consistencia con el botón inferior del menú de navegación:
-
   - Home
   - Chat
   - Horarios
@@ -3328,7 +3292,6 @@ Tendrá varios canales de chat:
 #### **Conflictos de Conductores:**
 
 1. **¿Qué pasa si hay dos conductores para la misma lanzadera/horario?**
-
    - Sistema de resolución: primer conductor confirmado tiene prioridad
    - Notificación al segundo solicitante con opciones alternativas
 
@@ -3339,7 +3302,6 @@ Tendrá varios canales de chat:
 #### **Gestión de Plazas:**
 
 3. **¿Conductor cancela el día del viaje?**
-
    - Sistema de notificaciones automáticas a todos los pasajeros
    - Opciones de rebooking o cancelación automática
 
@@ -3350,12 +3312,10 @@ Tendrá varios canales de chat:
 #### **Gestión de Grupos:**
 
 5. **¿Usuario abandona grupo con lanzaderas activas?**
-
    - Limpieza automática de datos y notificaciones relevantes
    - Transferencia o cancelación de lanzaderas si es creador
 
 6. **¿Creador del grupo elimina su cuenta?**
-
    - Sistema de transferencia de ownership automática
    - Disolución controlada del grupo si no hay sucesores
 
@@ -3421,25 +3381,20 @@ No implementa lógica de negocio, pero mejora la consistencia y reusabilidad en 
 ### Categorías principales
 
 - **UI**
-
   - `showSnackBarSuccess()` y `showSnackBarError()` para mensajes visuales coherentes.
   - `dismissKeyboard()` para cerrar el teclado desde cualquier pantalla.
   - Detección automática de modo oscuro.
 
 - **Diálogos**
-
   - `showConfirmationDialog()` con título, mensaje y botones configurables.
 
 - **Validación**
-
   - `validateEmail()`, `validateLink()`, `validateEmpty()` usados en formularios de login, grupos y lanzaderas.
 
 - **Geolocalización básica**
-
   - `calculateDistance(lat1, lon1, lat2, lon2)` — cálculo aproximado de distancia (no sustituye el tracking GPS).
 
 - **Utilidades generales**
-
   - `generateInvitationCode()` — usado en flujos de invitación por código.
   - `formatDuration()` — formatea duración de viajes u operaciones.
   - `getFileSize()` — devuelve tamaño legible de archivos.
@@ -3474,21 +3429,18 @@ No implementa lógica de negocio, pero mejora la consistencia y reusabilidad en 
 ### **Post-Fase 5 (Polish & Deploy):**
 
 - [ ] **Sistema de estadísticas de viajeros**:
-
   - Contador de viajes cancelados por usuario
   - Sistema de opiniones y puntuaciones entre usuarios
   - Reputación visible para otros miembros del grupo
   - Historial de comportamiento para mejorar la confianza
 
 - [ ] **IA Asistente en ShuttleBiz**:
-
   - Interpretación de solicitudes en lenguaje natural
   - Sugerencias automáticas de horarios y rutas
   - Optimización de ocupación de vehículos
   - Predicción de demanda por rutas
 
 - [ ] **Sistema de Ayuda Inteligente** _(tipo bot contextual)_:
-
   - **Sugerencias contextuales**: En cada pantalla, el sistema sugiere próximas acciones posibles
   - **Ejemplos de sugerencias**:
     - Al crear grupo → "¿Quieres crear tu primera lanzadera?"
@@ -3499,7 +3451,6 @@ No implementa lógica de negocio, pero mejora la consistencia y reusabilidad en 
   - **Aprendizaje de patrones**: Sugiere acciones basadas en comportamiento del usuario
 
 - [ ] **Sistema de comunicación avanzado**:
-
   - Llamadas directas integradas en la app
   - Videollamadas para coordinación grupal
   - Sistema de mensajes de voz
@@ -3544,47 +3495,38 @@ De modo que hay que hacer una lista de product backlog aquí:
 Sería interesante organizar cada trabajo según estos roles, para mejor organización en github, por grupos de trabajo:
 
 - **Product Manager / Product Owner**:
-
   - Define y supervisa la visión del producto, los objetivos y la hoja de ruta.
   - Entiende las necesidades del cliente y colabora con los interesados para alinear el producto con los objetivos comerciales.
 
 - **Project Manager**:
-
   - Gestiona los plazos, recursos y comunicación del proyecto.
   - Asegura que el proyecto se mantenga dentro del cronograma y el presupuesto.
 
 - **Scrum Master**:
-
   - Facilita la implementación de prácticas ágiles y elimina obstáculos que puedan ralentizar el progreso del equipo.
   - Trabaja con el Product Owner para gestionar el backlog del producto y priorizar tareas.
 
 - **UX Designer**:
-
   - Se enfoca en la experiencia del usuario, asegurando que la aplicación sea intuitiva y fácil de usar.
   - Crea personas, storyboards de usuario y wireframes, así como flujos de interacción.
 
 - **UI Designer**:
-
   - Se encarga de los aspectos visuales de la aplicación, como el diseño de la interfaz, colores y tipografía.
   - Crea maquetas y prototipos de las pantallas de la aplicación.
 
 - **Developers**:
-
   - Construyen la aplicación según los requisitos y el diseño.
   - Pueden ser desarrolladores de Android (Kotlin/Java), iOS (Swift/Objective-C) o desarrolladores multiplataforma (React Native, Flutter).
 
 - **QA Engineer**:
-
   - Realiza pruebas en la aplicación para identificar y resolver errores o problemas funcionales.
   - Colabora con los desarrolladores para asegurar la calidad del producto.
 
 - **DevOps Engineer / Release Manager**:
-
   - Se encarga de desplegar la aplicación en marketplaces como App Store y Google Play.
   - Implementa procesos de automatización y monitoreo para asegurar un despliegue eficiente.
 
 - **Otros roles** (opcional):
-
   - **Visual Designer**: Crea elementos visuales avanzados y animaciones.
   - **Technical Writer**: Elabora documentación técnica y guías de usuario.
   - **Growth Hacker**: Analiza y optimiza métricas de adquisición y compromiso de usuarios.
