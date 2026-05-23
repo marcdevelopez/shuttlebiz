@@ -14,11 +14,28 @@ Sirve para:
 # 📍 Estado actual
 
 Fase activa: **0 — punto 9: Guías visuales básicas en progreso (tipografía lista)**
-Última actualización: 2025-12-15
+Última actualización: 2026-05-23
 
 ---
 
 # 📅 Diario de desarrollo
+
+## 🗓️ Día 9 — 2026-05-23
+
+### ✔ Trabajo realizado:
+
+- Se movió el trabajo local a una rama basada en `develop` para cumplir el flujo obligatorio de ramas (`chore/git-update-20260523`).
+- Se normalizó el estado de Git excluyendo artefactos locales (`ios/build/` y `log.txt`) en `.gitignore`.
+- Se añadió `docs/idea-mensajeria-escalable.md` como nota de arquitectura para mensajería desacoplada/local-first.
+- Se actualizó `docs/ROADMAP.md` para reflejar la directriz de escalabilidad de mensajería y su referencia documental.
+
+### 🧠 Decisiones tomadas:
+
+- Mantener la propuesta de mensajería desacoplada como guía arquitectónica documentada sin alterar aún reglas funcionales de `SPECS.md`.
+
+### 🎯 Próximos pasos:
+
+- Validar la propuesta de mensajería en una iteración de specs/chat antes de implementación en Fase 4.
 
 ## 🗓️ Día 1 — 2025-11-20
 
