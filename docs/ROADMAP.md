@@ -2,7 +2,7 @@
 
 ## 📍 Estado actual
 
-- Última actualización: 15/12/2025
+- Última actualización: 23/05/2026
 - Specs cerradas incl. guías visuales básicas (tipografía, paleta, layout por nivel, modales/chips); pendiente outline/kit de pantallas de referencia
 - Arquitectura decidida: Flutter + Riverpod + GoRouter + Firebase (Auth/Firestore/FCM), Storage para medios
 - Scope MVP recortado: sin backups Drive/iCloud, sin multimedia ni búsqueda en chat, sin automatismos avanzados de conductor (5/40 min) en primera iteración
@@ -14,6 +14,7 @@
 - GoRouter con rutas nombradas y parámetros; PageView/tab scopes por nivel ya definidos para insertar pantallas nuevas sin rehacer navegación.
 - Riverpod por feature con providers scoped (auth, usuario, grupo, lanzadera, chat, notificaciones); sin singletons globales.
 - Reglas de negocio en servicios/use-cases (asignación de conductor, validación de horarios, rebooking) para extender a lista de espera, automatismos 5/40, etc.
+- Mensajería desacoplada del proveedor remoto (no UI directa a Firestore) y preparada para lectura local-first del historial; referencia de trabajo en `docs/idea-mensajeria-escalable.md`.
 - Feature flags/config remota para activar post-MVP (backups, multimedia, tracking avanzado) sin ramas invasivas.
 - Componentes UI reutilizables (cards, chips, modales) alineados a la guía visual; evita remaquetar al añadir estados nuevos.
 - Contratos de eventos/notificaciones extensibles (campos `meta/extra`) y logs estructurados para depurar crecimiento.
